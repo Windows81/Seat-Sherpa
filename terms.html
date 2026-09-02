@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seat Sherpa — Terms of Service</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 24px;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    h1 { font-size: 28px; margin-bottom: 8px; }
+    h2 { font-size: 20px; margin-top: 40px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; }
+    h3 { font-size: 16px; margin-top: 24px; }
+    .updated { color: #666; font-size: 14px; margin-bottom: 32px; }
+    a { color: #00a8a0; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    .keyword { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .callout {
+      background: #fff7e6;
+      border-left: 4px solid #f5a623;
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    nav.toc {
+      background: #f6f8fa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px 24px;
+      margin: 24px 0 32px;
+    }
+    nav.toc h3 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+    nav.toc ol { margin: 0; padding-left: 18px; }
+    nav.toc li { margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+  <h1>Terms of Service</h1>
+  <p class="updated">Last updated: August 10, 2026</p>
+
+  <p>
+    These Terms of Service ("Terms") govern your use of the Seat Sherpa
+    mobile application and related services (collectively, the "Service")
+    operated by Seat Sherpa ("we", "us", or "our"). Seat Sherpa is a
+    peer-to-peer carpool coordination platform that helps drivers and
+    passengers share long-distance trips they were already taking. The
+    Service is currently available in California and Nevada. By using the
+    Service, you agree to these Terms.
+  </p>
+
+  <nav class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#nature">Nature of the Service</a></li>
+      <li><a href="#account">Account &amp; Eligibility</a></li>
+      <li><a href="#use">Acceptable Use</a></li>
+      <li><a href="#drivers">Drivers</a></li>
+      <li><a href="#passengers">Passengers</a></li>
+      <li><a href="#fees">Processing Fees &amp; Cost Sharing</a></li>
+      <li><a href="#cancellation">Cancellations &amp; Refunds</a></li>
+      <li><a href="#insurance">Insurance &amp; Independent Contractor Status</a></li>
+      <li><a href="#sms">SMS Verification Program</a></li>
+      <li><a href="#liability">Disclaimers &amp; Limitations of Liability</a></li>
+      <li><a href="#disputes">Disputes</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+  </nav>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="nature">1. Nature of the Service</h2>
+  <p>
+    <strong>Seat Sherpa is a technology platform.</strong> The Service connects
+    individuals (drivers) who are planning a long-distance trip in their own
+    personal vehicle with other individuals (passengers) who would like to
+    share the trip and contribute toward the driver's costs.
+  </p>
+  <p>
+    <strong>Seat Sherpa is NOT a transportation carrier, taxi service,
+    ride-hail company, or Transportation Network Company.</strong> We do not
+    own, operate, or dispatch vehicles. We do not employ drivers. We do not
+    determine routes, set prices, or guarantee that any trip will occur. We
+    facilitate introductions and payments between users; the trip itself is
+    arranged between the driver and passenger.
+  </p>
+  <p>
+    Per-seat amounts paid by passengers are intended to reimburse the driver
+    for a share of the actual operating cost of the vehicle (fuel, wear,
+    insurance, depreciation), and are capped at a level no greater than the
+    IRS standard mileage rate multiplied by the trip distance, divided by the
+    number of seats offered. This is a cost-sharing arrangement, not a
+    payment for transportation services. Drivers do not earn a profit from
+    rides posted on the Service.
+  </p>
+
+  <div class="callout">
+    <strong>Note on regulatory classification.</strong> The Service is
+    designed to operate as a cost-shared carpool platform under California
+    and Nevada law and is not currently registered as a Transportation
+    Network Company. This classification is fact-dependent and may be
+    reviewed by regulators. We reserve the right to modify the Service to
+    maintain compliance with applicable law in any jurisdiction.
+  </div>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="account">2. Account &amp; Eligibility</h2>
+  <p>
+    To use the Service you must be at least 18 years old, provide accurate
+    registration information, and verify a phone number via SMS one-time
+    code. Drivers must additionally hold a current, valid driver's license
+    and complete payment onboarding through our payment processor (Stripe).
+  </p>
+  <p>
+    You are responsible for maintaining the confidentiality of your account
+    credentials and for all activity under your account. Notify us at
+    <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
+    immediately if you suspect unauthorized access.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="use">3. Acceptable Use</h2>
+  <p>You agree not to:</p>
+  <ul>
+    <li>Use the Service for any unlawful purpose, including transportation of contraband.</li>
+    <li>Harass, threaten, or discriminate against other users.</li>
+    <li>Misrepresent your identity, vehicle, or driving record.</li>
+    <li>Drive under the influence of alcohol or drugs.</li>
+    <li>Circumvent the in-app payment system (e.g., by collecting cash directly).</li>
+    <li>Use the Service to operate as a commercial carrier or taxi service.</li>
+    <li>Solicit passengers for compensation outside the cost-sharing structure described in these Terms.</li>
+    <li>Use the Service to compete commercially with Seat Sherpa.</li>
+  </ul>
+  <p>
+    Violations may result in account suspension or termination without
+    refund of fees paid.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="drivers">4. Drivers</h2>
+  <p>
+    <strong>You are an independent user of the Service, not an employee,
+    contractor, agent, or representative of Seat Sherpa.</strong> You receive
+    no wages, salary, benefits, or guarantees of work from Seat Sherpa. You
+    decide independently when, where, and whether to offer a trip; you set
+    your own per-seat contribution amount within the limits set by the
+    Service; and you control all aspects of the trip itself.
+  </p>
+
+  <h3>4.1 Driver Self-Attestation</h3>
+  <p>
+    By signing up as a driver and each time you post a trip, you affirmatively
+    represent, warrant, and attest that all of the following statements are
+    true and will remain true throughout your use of the Service:
+  </p>
+  <ul>
+    <li>
+      <strong>License.</strong> You hold a valid, current driver's license
+      for the jurisdiction in which you operate, and the license has not
+      been suspended, revoked, or restricted in any way that limits your
+      ability to operate a passenger vehicle.
+    </li>
+    <li>
+      <strong>Vehicle.</strong> You own or have lawful authority to operate
+      the vehicle you offer through the Service. The vehicle is currently
+      registered with the state, has passed any required smog or safety
+      inspections, and is in safe operating condition.
+    </li>
+    <li>
+      <strong>Insurance.</strong> You maintain personal automobile liability
+      insurance that meets or exceeds the minimum coverage required by the
+      state in which you operate, and you keep that coverage in continuous
+      force throughout your use of the Service. You acknowledge that personal
+      auto policies may contain "livery exclusion" language that an insurer
+      could interpret to limit or void coverage for trips arranged through
+      the Service, and you are solely responsible for confirming with your
+      insurance carrier whether your policy covers Seat Sherpa trips and/or
+      for obtaining a ride-sharing endorsement (see Section 8.2).
+    </li>
+    <li>
+      <strong>Background.</strong> You have not been convicted of a violent
+      felony, sexual offense, or any felony involving the operation of a
+      motor vehicle (including DUI/DWI) within the past seven years, and
+      you are not currently the subject of an open criminal case in any
+      such category.
+    </li>
+    <li>
+      <strong>Cost-sharing intent.</strong> Trips you post on the Service
+      reflect actual personal trips you intend to take regardless of whether
+      a passenger books a seat. You are not soliciting passengers on the
+      Service in order to operate a commercial transportation business, and
+      the per-seat amounts you receive are intended as contributions toward
+      a share of your actual operating costs (fuel, wear, depreciation,
+      insurance) — not as fares or commercial compensation.
+    </li>
+    <li>
+      <strong>Sobriety and fitness.</strong> You will not operate a vehicle
+      while under the influence of alcohol, illegal drugs, or any
+      medication that materially impairs your ability to drive safely.
+    </li>
+    <li>
+      <strong>Accuracy.</strong> All information you provide to Seat Sherpa
+      — your identity, vehicle, license, driving history, and any other
+      profile information — is true, accurate, and complete to the best of
+      your knowledge. You will update Seat Sherpa promptly if any of this
+      information changes (for example, license expiration, vehicle change,
+      change of insurance).
+    </li>
+  </ul>
+  <p>
+    These attestations are material to Seat Sherpa's decision to allow you
+    to use the Service. <strong>If any attestation is or becomes false,
+    Seat Sherpa may suspend or terminate your access immediately, without
+    refund, and you may be personally liable for any harm that results.</strong>
+  </p>
+
+  <h3>4.2 Platform Role</h3>
+  <p>
+    Seat Sherpa does not direct drivers' routes, schedules, or activities
+    while operating their vehicles. Drivers are not paid by the hour, by
+    the mile, or by any time-based or activity-based formula. Seat Sherpa
+    does not own or maintain the vehicles offered through the Service, and
+    has no operational control over the trips themselves.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="passengers">5. Passengers</h2>
+  <p>
+    Passengers acknowledge that drivers are independent users of the Service,
+    not employees of Seat Sherpa, and that Seat Sherpa does not employ,
+    dispatch, supervise, or train drivers. Seat Sherpa facilitates
+    introductions and payments but is not a transportation provider and
+    does not own or operate the vehicles offered on the Service.
+  </p>
+  <p>
+    By booking a seat, you acknowledge that any trip is voluntary, that the
+    driver has independently decided to make the trip, and that your payment
+    represents a contribution toward the driver's actual operating costs —
+    not a fare for transportation services.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="fees">6. Processing Fees &amp; Cost Sharing</h2>
+
+  <h3>6.1 Per-Seat Contribution Amount</h3>
+  <p>
+    Drivers set the per-seat contribution amount for the rides they post,
+    subject to a maximum cap calculated by Seat Sherpa for each route. The
+    cap is calculated as:
+  </p>
+  <p style="margin-left: 24px; font-family: ui-monospace, monospace;">
+    max_per_seat = (trip_distance × IRS_standard_mileage_rate) ÷ seats_offered
+  </p>
+  <p>
+    This cap is intended to ensure that the total amount collected across
+    all seats does not exceed the IRS-recognized cost of operating the
+    vehicle for the trip. Seat Sherpa does not control or recommend
+    individual seat prices; we only set the maximum permitted.
+  </p>
+
+  <h3>6.2 Passenger Processing Fee</h3>
+  <p>
+    Seat Sherpa adds a <strong>processing fee equal to 5%</strong> of the
+    seat contribution to each booking. This fee is added on top of the
+    seat amount and is clearly shown to the passenger as a separate line
+    item <strong>before they confirm payment</strong>. The fee covers
+    credit card processing, secure payment infrastructure, fraud
+    prevention, customer support, and platform operating costs.
+  </p>
+  <p>
+    Certain bookings also include a <strong>flat booking fee of $0.99</strong>
+    (for example, bookings placed with promotional ride credits or on
+    specially discounted rides). When it applies, the booking fee is always
+    shown as its own line item in the price breakdown
+    <strong>before you confirm payment</strong> &mdash; the total you see at
+    checkout is the total you are charged. Refunds treat the booking fee the
+    same way as the processing fee.
+  </p>
+
+  <h3>6.3 Driver Processing Fee</h3>
+  <p>
+    Seat Sherpa retains a <strong>processing fee equal to 5%</strong> of
+    the seat contribution from each completed ride. This fee is deducted
+    from the driver's payout and covers credit card processing, 1099
+    reporting through Stripe Connect, and platform operating costs. The
+    driver's earnings dashboard shows the net amount after this fee —
+    that is the actual amount transferred to the driver's bank account.
+  </p>
+
+  <h3>6.4 Fee Changes</h3>
+  <p>
+    Seat Sherpa may modify these fees with at least 30 days' written notice
+    via email or in-app notification. Fees in effect at the time of booking
+    apply to that booking.
+  </p>
+
+  <h3>6.5 Taxes</h3>
+  <p>
+    Drivers are responsible for reporting and paying any applicable taxes
+    on amounts received through the Service. Seat Sherpa provides annual
+    1099-K forms to drivers who meet IRS reporting thresholds via Stripe
+    Connect. Cost-sharing contributions may have different tax treatment
+    than commercial driving income; drivers should consult a tax
+    professional for guidance on their specific situation.
+  </p>
+
+  <h3>6.6 Payment Method</h3>
+  <p>
+    Payments are processed by Stripe. By using the Service you agree to
+    Stripe's
+    <a href="https://stripe.com/legal/end-users" target="_blank" rel="noopener">terms</a>.
+    Seat Sherpa does not store full payment card details.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="cancellation">7. Cancellations &amp; Refunds</h2>
+  <p>
+    Each ride is posted with a cancellation policy chosen by the driver:
+  </p>
+  <ul>
+    <li>
+      <strong>Free cancellation</strong> — Passenger receives 100% refund
+      if cancelled at least 2 hours before departure. No refund within 2
+      hours.
+    </li>
+    <li>
+      <strong>Moderate</strong> — Passenger receives 100% refund if
+      cancelled at least 48 hours before departure; 50% refund if cancelled
+      between 2 and 48 hours before; no refund within 2 hours.
+    </li>
+  </ul>
+  <p>
+    When a driver cancels a ride, all passengers receive a
+    <strong>100% refund regardless of the policy</strong>, including the
+    passenger processing fee.
+  </p>
+  <p>
+    Refunds are issued to the original payment method via Stripe and
+    typically appear within 5-10 business days. Processing fees on
+    completed (non-cancelled) rides are non-refundable except where
+    required by law.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="insurance">8. Insurance &amp; Independent Contractor Status</h2>
+
+  <h3>8.1 Independent Contractor</h3>
+  <p>
+    <strong>Drivers are independent users of the Service, not employees or
+    contractors of Seat Sherpa.</strong> Nothing in these Terms creates a
+    partnership, joint venture, agency, fiduciary, or employment
+    relationship between any user and Seat Sherpa. Drivers receive no
+    wages, salary, benefits, workers' compensation, unemployment insurance,
+    paid time off, or other employment-related benefits from Seat Sherpa.
+  </p>
+
+  <h3>8.2 Driver Auto Insurance Requirement</h3>
+  <p>
+    Drivers must maintain valid personal automobile liability insurance
+    that meets the minimum requirements of the state in which they operate
+    at all times while offering or providing trips through the Service.
+  </p>
+  <p>
+    Seat Sherpa is structured as a cost-sharing carpool platform — drivers
+    do not profit from trips, and per-seat amounts are capped at the IRS
+    standard mileage rate divided across seats. In most cases, a driver's
+    personal auto policy will cover Seat Sherpa trips on the same terms
+    as any other personal driving. However, some personal auto policies
+    contain a <strong>"livery exclusion"</strong> that can be interpreted
+    by an insurer to void coverage when any compensation is involved —
+    even cost-sharing.
+  </p>
+  <p>
+    Because policy language varies widely, drivers are
+    <strong>strongly encouraged</strong> (but not required) to:
+  </p>
+  <ul>
+    <li>
+      Disclose their use of the Service to their insurance carrier and
+      obtain written confirmation that coverage applies, OR
+    </li>
+    <li>
+      Add a "ride-sharing endorsement" or equivalent rider to their
+      personal auto policy. Most major California and Nevada carriers
+      (Mercury, Allstate, Progressive, State Farm, USAA, and others) offer
+      this for approximately $15–$30/month. The endorsement closes any
+      ambiguity in the livery exclusion and provides peace of mind in the
+      event of a claim.
+    </li>
+  </ul>
+  <p>
+    <strong>It is the driver's sole responsibility to confirm their
+    insurance covers trips arranged through the Service.</strong> Seat
+    Sherpa does not provide automobile liability insurance to drivers and
+    is not responsible for any insurance gap, denied claim, or
+    out-of-pocket cost a driver may incur.
+  </p>
+
+  <h3>8.3 No Platform-Provided Coverage</h3>
+  <p>
+    Seat Sherpa does not currently provide platform-level liability
+    coverage to drivers or passengers. Any insurance claim arising from a
+    trip arranged through the Service should be filed with the driver's
+    personal insurance carrier in the first instance. We may, at our
+    discretion, purchase contingent commercial coverage in the future and
+    will update these Terms if we do.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="sms">9. SMS Verification Program</h2>
+  <p>
+    The following terms govern your participation in the Seat Sherpa
+    Verification SMS Program (the "SMS Program").
+  </p>
+
+  <h3>9.1 Program description</h3>
+  <p>
+    The SMS Program sends one-time SMS verification codes to confirm your
+    phone number during account signup and when you change your phone
+    number. The Program may also send transactional ride reminders for
+    rides you have booked (for example, 24 hours and 2 hours before
+    pickup). The Program is operational in the United States only.
+  </p>
+
+  <h3>9.2 How to opt in</h3>
+  <p>
+    You opt in by entering your phone number into the "Verify your phone"
+    screen in the Seat Sherpa mobile app and tapping "Send code." This
+    action is your affirmative consent to receive verification SMS at the
+    number you entered. Phone verification is required to create a Seat
+    Sherpa account.
+  </p>
+
+  <h3>9.3 Message frequency</h3>
+  <p>
+    Verification SMS are sent only when you request a code (typically once
+    at signup, and again only if you change your phone number on file).
+    Ride reminder SMS are sent up to two times per booked ride (24 hours
+    before and 2 hours before pickup). <strong>You will not receive
+    marketing or promotional messages.</strong>
+  </p>
+
+  <h3>9.4 Message and data rates</h3>
+  <p>
+    <strong>Message and data rates may apply.</strong> Costs are determined
+    by your wireless carrier and your mobile plan; Seat Sherpa does not
+    charge you for messages. Contact your carrier for information about
+    your plan.
+  </p>
+
+  <h3>9.5 Carriers and devices</h3>
+  <p>
+    The Program is available on most major US wireless carriers including
+    AT&amp;T, T-Mobile, Verizon, and their MVNOs. Carriers are not liable
+    for delayed or undelivered messages.
+  </p>
+
+  <h3>9.6 How to opt out</h3>
+  <p>
+    You can opt out of the Program at any time by replying
+    <strong class="keyword">STOP</strong> to any message we send you.
+    Other recognized opt-out keywords include
+    <span class="keyword">STOPALL</span>,
+    <span class="keyword">UNSUBSCRIBE</span>,
+    <span class="keyword">CANCEL</span>,
+    <span class="keyword">END</span>, and
+    <span class="keyword">QUIT</span>. After opting out, you will receive
+    a one-time confirmation message and no further SMS will be sent. To
+    re-opt in, reply <span class="keyword">START</span> or use the Change
+    phone number flow in the app.
+  </p>
+
+  <h3>9.7 How to get help</h3>
+  <p>
+    Reply <strong class="keyword">HELP</strong> to any message to receive
+    support information, or email
+    <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>.
+  </p>
+
+  <h3>9.8 SMS Privacy</h3>
+  <p>
+    Your phone number and information collected through the SMS Program
+    are handled in accordance with our
+    <a href="/privacy">Privacy Policy</a>.
+    <strong>We do not share phone numbers or message content with third
+    parties for marketing or promotional purposes.</strong>
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="liability">10. Disclaimers &amp; Limitations of Liability</h2>
+  <p>
+    <strong>The Service is provided "as is" and "as available" without
+    warranties of any kind</strong>, express or implied, including without
+    limitation any warranty of merchantability, fitness for a particular
+    purpose, or non-infringement. Seat Sherpa makes no warranties about
+    the conduct of drivers or passengers, the condition of vehicles, the
+    accuracy of route or arrival-time estimates, or the outcome of any
+    trip arranged through the Service.
+  </p>
+  <p>
+    <strong>Seat Sherpa is not liable for the acts or omissions of drivers
+    or passengers</strong>, the condition of vehicles, or any injury,
+    property damage, loss, or other harm arising from a trip arranged
+    through the Service. You assume all risk of using the Service.
+  </p>
+  <p>
+    <strong>To the maximum extent permitted by law, Seat Sherpa's aggregate
+    liability arising from your use of the Service is limited to the
+    greater of (a) $100, or (b) the processing fees you have paid Seat
+    Sherpa in the twelve months preceding the claim.</strong>
+  </p>
+  <p>
+    <strong>You agree to indemnify and hold Seat Sherpa harmless</strong>
+    from any claim, demand, or damage (including reasonable attorneys'
+    fees) arising from your use of the Service, your breach of these
+    Terms, or your interaction with any other user.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="disputes">11. Disputes, Arbitration &amp; Class Action Waiver</h2>
+  <p>
+    These Terms are governed by the laws of the State of California, without
+    regard to its conflict-of-laws principles.
+  </p>
+  <p>
+    <strong>PLEASE READ THIS SECTION CAREFULLY &mdash; IT AFFECTS YOUR LEGAL
+    RIGHTS, INCLUDING YOUR RIGHT TO FILE A LAWSUIT IN COURT.</strong>
+  </p>
+  <p>
+    <strong>a. Talk to us first.</strong> Before filing any claim, you agree to
+    email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
+    describing the dispute and give us 30 days to try to resolve it with you
+    informally. Most concerns are resolved this way.
+  </p>
+  <p>
+    <strong>b. Binding individual arbitration.</strong> Except as provided in
+    (c) below, any dispute arising out of or relating to these Terms or the
+    Service that is not resolved informally shall be resolved by binding
+    arbitration on an individual basis, administered by the American
+    Arbitration Association (AAA) under its Consumer Arbitration Rules (see
+    adr.org). The arbitration will be held in the county where you live, or at
+    your election conducted remotely by videoconference, telephone, or written
+    submissions. Judgment on the award may be entered in any court of
+    competent jurisdiction.
+  </p>
+  <p>
+    <strong>c. Exceptions.</strong> Either party may bring an individual claim
+    in small-claims court, and either party may seek injunctive or other
+    equitable relief in court for infringement or misuse of intellectual
+    property. Nothing in this section waives any right you may have to seek
+    public injunctive relief where that right cannot be waived under
+    California law, or limits your right to make reports to government
+    agencies.
+  </p>
+  <p>
+    <strong>d. Class action and jury waiver.</strong> ALL DISPUTES MUST BE
+    BROUGHT IN THE PARTIES&rsquo; INDIVIDUAL CAPACITY, AND NOT AS A PLAINTIFF
+    OR CLASS MEMBER IN ANY PURPORTED CLASS, COLLECTIVE, OR REPRESENTATIVE
+    PROCEEDING. BY AGREEING TO ARBITRATION, YOU AND SEAT SHERPA EACH WAIVE THE
+    RIGHT TO A TRIAL BY JURY.
+  </p>
+  <p>
+    <strong>e. 30-day opt-out.</strong> You may opt out of this arbitration
+    agreement entirely by emailing
+    <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a> within
+    30 days of first accepting these Terms (or, for existing users, within 30
+    days of this section being added), stating your name, the email on your
+    account, and that you opt out of arbitration. Opting out does not affect
+    any other part of these Terms.
+  </p>
+  <p>
+    <strong>f. If arbitration does not apply.</strong> Any dispute not subject
+    to arbitration (including where you have opted out) shall be resolved in
+    the state or federal courts located in San Francisco County, California,
+    and you consent to the exclusive jurisdiction of those courts.
+  </p>
+  <p>
+    If any provision of these Terms is held to be invalid or unenforceable,
+    the remaining provisions shall continue in full force. If the class action
+    waiver is held unenforceable as to a particular claim, that claim &mdash;
+    and only that claim &mdash; shall proceed in court rather than
+    arbitration.
+  </p>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="credits">12. Promotional Credits, Referrals &amp; Promo Codes</h2>
+  <p>
+    We may offer ride credits through referral programs, promo codes (printed
+    or digital), guarantees, and other promotions. Unless a specific promotion
+    states otherwise, all promotional credits:
+  </p>
+  <ul>
+    <li>are promotional only &mdash; they have no cash value, are
+      non-transferable, and cannot be redeemed for cash or payouts;</li>
+    <li><strong>expire 180 days after they are granted</strong>; credits are
+      applied oldest-first at checkout, and the credit balance shown in the
+      App is the authoritative record;</li>
+    <li>are limited to one redemption per person per code, require an
+      eligible account in good standing, and may not be combined with other
+      offers except as shown at checkout;</li>
+    <li>apply toward bookings in the App as shown at checkout and have no
+      effect outside the App;</li>
+    <li>may vest only after a qualifying action is completed (for example, a
+      referred user&rsquo;s first completed trip, or a guarantee&rsquo;s
+      posting conditions being met), as described in the promotion;</li>
+    <li>for referral rewards, only genuine, arms-length trips count toward
+      referral milestones: rides where the passenger and driver are connected
+      through the same referral (for example, a referrer riding with the person
+      they referred, or two people referred by the same referrer riding
+      together) do not qualify and do not advance any referral milestone;</li>
+    <li>may be modified, paused, or discontinued at any time, and individual
+      codes or credits may be revoked where we reasonably believe they were
+      obtained or used fraudulently, through duplicate accounts, or contrary
+      to the promotion&rsquo;s stated purpose.</li>
+  </ul>
+
+  <!-- ───────────────────────────────────────────────────────────────── -->
+  <h2 id="contact">13. Contact</h2>
+  <p>
+    Questions about these Terms? Email
+    <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>.
+  </p>
+
+  <p style="margin-top: 48px; color: #666; font-size: 13px;">
+    These Terms may be updated from time to time. Material changes will be
+    communicated through the app or via email. The "Last updated" date at
+    the top of this page reflects the most recent revision.
+  </p>
+
+<!-- App store buttons (ss-store-badges) -->
+<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=terms" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=terms" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+</div>
+</body>
+</html>

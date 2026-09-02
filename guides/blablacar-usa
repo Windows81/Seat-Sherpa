@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Is BlaBlaCar Available in the USA? Best US Alternatives (2026)</title>
+<meta name="description" content="BlaBlaCar doesn't operate in the United States. Here's what actually works for city-to-city carpooling in the US in 2026 — real alternatives compared, including apps, ride boards, and buses." />
+<link rel="canonical" href="https://seatsherpa.app/guides/blablacar-usa" />
+<meta property="og:title" content="Is BlaBlaCar Available in the USA? Best US Alternatives (2026)" />
+<meta property="og:description" content="BlaBlaCar doesn't operate in the US. Here's what to use instead for city-to-city carpooling." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/guides/blablacar-usa" />
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Is BlaBlaCar Available in the USA? Best US Alternatives (2026)","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-07-09","dateModified":"2026-08-01","mainEntityOfPage":"https://seatsherpa.app/guides/blablacar-usa"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Does BlaBlaCar work in the United States?","acceptedAnswer":{"@type":"Answer","text":"No. BlaBlaCar operates in Europe, Latin America, and other regions, but it has never launched in the United States. If you download the app in the US, you won't find any American rides."}},
+{"@type":"Question","name":"Is there Bla Bla Car in the USA?","acceptedAnswer":{"@type":"Answer","text":"No. Bla Bla Car operates in Europe, Latin America and parts of Asia, but not in the United States. The closest American equivalent is a city-to-city carpool marketplace like Seat Sherpa, currently covering California and Nevada."}},
+{"@type":"Question","name":"Will BlaBlaCar come to the US?","acceptedAnswer":{"@type":"Answer","text":"There is no announced launch. BlaBlaCar has focused on Europe and Latin America and has never signalled a North American rollout."}},
+{"@type":"Question","name":"What is the US equivalent of BlaBlaCar?","acceptedAnswer":{"@type":"Answer","text":"The closest US equivalent is a city-to-city carpool marketplace like Seat Sherpa, which connects passengers with verified drivers already making intercity trips (currently across California and Nevada). Drivers share their costs rather than profit, so seat prices stay low like BlaBlaCar's."}},
+{"@type":"Question","name":"Is there a carpool app for long-distance road trips in the US?","acceptedAnswer":{"@type":"Answer","text":"Yes — Seat Sherpa covers long-distance routes like San Francisco–Los Angeles, LA–Las Vegas, and LA–San Diego with ID-verified drivers, secure in-app payment held until pickup, and no surge pricing. Other options include Craigslist rideshare boards and Facebook carpool groups, though those offer no verification or payment protection."}}
+]}</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
+  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
+  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:#eaeaea}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:#00D4C8;font-weight:700}
+  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  .callout h3{font-size:18px;margin-bottom:6px}
+  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  .scroll{overflow-x:auto}
+  @media(max-width:640px){h1{font-size:27px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/routes">Routes</a> › Guide</div>
+  <h1>Is BlaBlaCar available in the USA? Here's what to use instead (2026)</h1>
+  <div class="meta">Updated August 2026</div>
+
+  <p class="lede"><strong>Short answer: no.</strong> BlaBlaCar (often typed <em>Bla Bla Car</em>) — Europe's massive city-to-city carpool platform — has never operated in the United States. Download the app here and you'll find zero American rides. But the thing BlaBlaCar does so well <em>does</em> exist in the US. Here's the landscape.</p>
+
+  <h2>Why doesn't BlaBlaCar work in the US?</h2>
+  <p>BlaBlaCar operates across Europe, Latin America, and parts of Asia, matching passengers with drivers already making long-distance trips who split their costs. It's never launched in the US — American intercity travel has historically defaulted to flights, buses, or driving alone, and no European operator has made the jump. That's left a real gap: millions of empty car seats travel between US cities every day.</p>
+
+  <h2>US alternatives compared</h2>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Option</th><th>How it works</th><th>Safety / payment</th><th>Coverage</th></tr></thead>
+    <tbody>
+      <tr><td class="win">Seat Sherpa</td><td>App marketplace: book a seat with a verified driver already making the trip; split their gas (no profit, no surge)</td><td>ID + license-verified drivers, payment held securely until a pickup code confirms the trip, two-way ratings</td><td>California &amp; Nevada (SF, LA, San Diego, Las Vegas, Sacramento + more)</td></tr>
+      <tr><td>Craigslist rideshare</td><td>Classifieds board; arrange everything yourself</td><td>None — no verification, cash between strangers</td><td>Nationwide</td></tr>
+      <tr><td>Facebook carpool groups</td><td>City/college groups; post and hope</td><td>Profile-only vetting, no payment protection</td><td>Patchy, group-by-group</td></tr>
+      <tr><td>FlixBus / Greyhound</td><td>Scheduled buses</td><td>Commercial carrier</td><td>Nationwide, fixed routes/times</td></tr>
+      <tr><td>Uber / Lyft</td><td>On-demand, priced per mile — impractical for intercity ($200–$400+ for SF–LA)</td><td>Commercial TNC</td><td>Metro areas</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <h3>🚗 The closest thing to BlaBlaCar in America</h3>
+    <p>Seat Sherpa works on the same principle BlaBlaCar proved in Europe: drivers already making a trip share their empty seats, passengers pay a fair share of the real cost (typically $15–$55 a seat depending on distance), and nobody pays a commercial markup. Verified drivers, payment held safely until your trip starts, no surge — currently live across California and Nevada.</p>
+    <p style="margin-bottom:0">It's also on iOS and Android — and, uniquely, <strong>inside Apple Maps</strong>: search any California route, open the ride tab, and Seat Sherpa carpools appear alongside Uber and Lyft, usually at a fraction of the price.</p>
+    <a class="btn" href="/routes">See routes &amp; prices</a>
+  </div>
+
+  <h2>What a seat actually costs</h2>
+  <p>Because drivers can only recover their costs (capped at the IRS mileage rate split across seats), prices look like BlaBlaCar's, not Uber's: <a href="/routes/san-francisco-to-los-angeles">San Francisco → Los Angeles</a> runs $40–$55 a seat, <a href="/routes/los-angeles-to-las-vegas">LA → Vegas</a> $35–$50, <a href="/routes/los-angeles-to-san-diego">LA → San Diego</a> $15–$28. Compare that to $60–$150 flying or $200+ in an Uber.</p>
+
+  <h2>Will BlaBlaCar ever launch in the US?</h2>
+  <p>There's no announced plan. BlaBlaCar has spent the last few years deepening in Europe and Latin America — markets with dense city pairs, expensive fuel, and a strong intercity bus and rail culture to compete against. The US is a harder sell for them: longer distances, cheaper domestic flights, and a population that already owns cars. If you're waiting for the app to appear in the US App Store, it's not a good plan.</p>
+  <p>The demand it would serve is real, though. Roughly three-quarters of American commuters drive alone, and intercity routes like San Francisco–Los Angeles carry thousands of half-empty cars every single day. That's the same inefficiency Bla Bla Car built a business on in Europe — the gap in the US isn't demand, it's that nobody filled it until recently.</p>
+
+  <h2>BlaBlaCar vs Seat Sherpa, side by side</h2>
+  <div class="scroll"><table>
+    <tr><th>&nbsp;</th><th>BlaBlaCar (Europe)</th><th>Seat Sherpa (US)</th></tr>
+    <tr><td>Model</td><td>Drivers post trips they're already taking; passengers book a seat</td><td class="win">Identical — cost-sharing, not a taxi service</td></tr>
+    <tr><td>Pricing</td><td>Capped so drivers can't profit</td><td class="win">Capped at the IRS mileage rate, split across seats</td></tr>
+    <tr><td>Verification</td><td>Profile + phone, ratings both ways</td><td class="win">Phone + government ID + driver's licence, ratings both ways</td></tr>
+    <tr><td>Payment</td><td>In-app, held until the trip</td><td class="win">In-app, released only after a 4-digit pickup code confirms you're in the car</td></tr>
+    <tr><td>Coverage</td><td>20+ countries, none in North America</td><td>California &amp; Nevada today</td></tr>
+  </table></div>
+  <p>The differences are mostly a matter of scale and market maturity. If you've used Bla Bla Car for a Paris–Lyon or Madrid–Barcelona run, the Seat Sherpa flow will feel immediately familiar: pick a trip, see the driver's rating and car, book a seat, meet at an agreed spot.</p>
+
+  <h2>Visiting the US and used to BlaBlaCar?</h2>
+  <p>A lot of people searching for Bla Bla Car in America are Europeans on a trip, or Americans who discovered it while living abroad. If that's you: the closest experience is a carpool marketplace on the routes you're likely to travel — San Francisco to Los Angeles, LA to Las Vegas, LA to San Diego. Book a seat the same way you would at home. Outside California and Nevada, your realistic options are still Amtrak, FlixBus, or Greyhound, none of which is bad — just slower and, on the popular routes, usually pricier than sharing a driver's fuel cost.</p>
+
+  <h2>FAQ</h2>
+  <div class="faq"><h3>Does BlaBlaCar work in the United States?</h3><p>No — BlaBlaCar has never launched in the US. The app won't show any American rides.</p></div>
+  <div class="faq"><h3>Is there Bla Bla Car in the USA?</h3><p>No. Bla Bla Car (however you spell it) operates in Europe, Latin America and parts of Asia, but not in the United States. The closest American equivalent is a city-to-city carpool marketplace like Seat Sherpa, currently covering California and Nevada.</p></div>
+  <div class="faq"><h3>Will BlaBlaCar come to the US?</h3><p>There's no announced launch. The company has focused on Europe and Latin America, and has never signalled a North American rollout.</p></div>
+  <div class="faq"><h3>What is the US equivalent of BlaBlaCar?</h3><p>A city-to-city carpool marketplace like Seat Sherpa: verified drivers already making the trip, cost-sharing seat prices, secure in-app payment. Currently across California &amp; Nevada.</p></div>
+  <div class="faq"><h3>Is there a carpool app for long-distance road trips in the US?</h3><p>Yes — Seat Sherpa covers routes like SF–LA, LA–Vegas, and LA–San Diego. Craigslist and Facebook groups exist too, but without verification or payment protection.</p></div>
+
+  <div class="callout" style="text-align:center">
+    <h3>Missing BlaBlaCar? This is the American version.</h3>
+    <p>Browse live rides across California &amp; Nevada and grab a seat.</p>
+    <a class="btn" href="/#get">Get the Seat Sherpa app</a>
+  </div>
+
+  <h2 id="more-guides">More guides</h2>
+  <p><a href="/guides/poparide-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Poparide in the USA?</a><a href="/guides/kangaride-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Kangaride in the USA?</a><a href="/guides/hitch-rideshare-california" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Hitch in California?</a><a href="/guides/waze-carpool-alternative" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Waze Carpool alternatives</a><a href="/guides/zimride-alternative" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Zimride alternatives</a><a href="/guides/casual-carpool-bay-area" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Bay Area casual carpool</a><a href="/guides/cheapest-way-san-francisco-to-los-angeles" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Cheapest way SF → LA</a></p>
+</article>
+
+
+<!-- App store buttons (ss-store-badges) -->
+<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_blablacar_usa" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_blablacar_usa" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+</div>
+<footer><div class="wrap"><a href="/">Home</a><a href="/routes">Routes</a><a href="/rides">Live rides</a><a href="/guides/waze-carpool-alternative">Waze Carpool alternatives</a><a href="/guides/cheapest-way-san-francisco-to-los-angeles">Cheapest SF→LA</a><br><br>© 2026 Seat Sherpa</div></footer>
+</body>
+</html>

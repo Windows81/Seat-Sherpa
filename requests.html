@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- HIDDEN LAUNCH (2026-08-25): linked from nowhere, noindex until the board
+       has enough supply-side response to be shown off. Same playbook as
+       /rides?web=1 and /post. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Ride requests — Seat Sherpa</title>
+  <!-- The CSS below asks for Outfit; without this link it silently fell back
+       to the system font for everyone who doesn't have Outfit installed. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Share preview (people paste board links into group chats even while
+       the page is unlinked/noindex). -->
+  <meta property="og:title" content="Ride request board — Seat Sherpa" />
+  <meta property="og:description" content="Post where you need to go — drivers who run that route get notified, and you get an email the moment one posts the ride." />
+  <meta property="og:image" content="https://seatsherpa.app/icon.png" />
+  <meta property="og:type" content="website" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { color-scheme: dark; }
+    body {
+      background: #0E0E10; color: #fff; min-height: 100vh;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 28px 16px 60px;
+    }
+    .wrap { max-width: 560px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; }
+    .card {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px; padding: 24px; margin-bottom: 20px;
+    }
+    .eyebrow { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #888; margin-bottom: 12px; }
+    h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
+    p.sub { font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 12px; color: #888; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    input, textarea, select {
+      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      outline: none; font-family: inherit;
+    }
+    input:focus, textarea:focus, select:focus { border-color: #00D4C8; }
+    textarea { resize: vertical; min-height: 72px; }
+    .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
+    button.primary {
+      width: 100%; background: #00D4C8; color: #06312e; border: 0; border-radius: 12px;
+      padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
+    }
+    button.primary:disabled { opacity: 0.5; cursor: default; }
+    .linkbtn { background: none; border: 0; color: #00D4C8; font-size: 14px; cursor: pointer; font-family: inherit; padding: 0; }
+    .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
+    .msg.err { color: #ff8a8a; }
+    .msg.ok { color: #4ade80; }
+    .hidden { display: none !important; }
+    .hint { font-size: 12px; color: #888; margin: -8px 0 14px; line-height: 1.5; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .chip {
+      border: 1px solid rgba(255,255,255,0.14); background: #0E0E10; color: #b9b9c6;
+      border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; font-family: inherit;
+    }
+    .chip.sel { border-color: #00D4C8; color: #00D4C8; }
+    .req {
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+      padding: 14px 16px; margin-bottom: 12px; background: #131316;
+    }
+    .req .route { font-size: 15px; font-weight: 700; }
+    .req .meta { font-size: 13px; color: #9a9aa8; margin-top: 4px; line-height: 1.5; }
+    .req .note { font-size: 13px; color: #b9b9c6; margin-top: 6px; font-style: italic; }
+    .req .actions { margin-top: 8px; display: flex; gap: 16px; }
+    .datehead { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #00D4C8; margin: 18px 0 10px; }
+    .empty { color: #9a9aa8; font-size: 14px; line-height: 1.6; padding: 8px 0; }
+    .topcta { display: flex; gap: 10px; margin-bottom: 20px; }
+    .topcta button { flex: 1; }
+    button.ghost {
+      width: 100%; background: none; color: #00D4C8; border: 1px solid rgba(0,212,200,0.5);
+      border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+    }
+    .backrow { margin-bottom: 12px; }
+    a.driverlink { color: #00D4C8; text-decoration: none; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>
+    </div>
+
+    <!-- BOARD -->
+    <div class="card" id="stBoard">
+      <div class="eyebrow">Ride requests</div>
+      <h1>Passengers looking for rides</h1>
+      <p class="sub">Real people who need a seat on these trips. Driving one of these routes? Post the ride and they'll be notified the moment it's live.</p>
+      <div class="topcta">
+        <button class="primary" id="openAskBtn">I need a ride</button>
+        <button class="ghost" onclick="location.href='/post'">I can drive</button>
+      </div>
+      <p class="hint" style="margin-top:-6px;">Or <a class="driverlink" href="/rides?web=1">browse open rides →</a> — your trip might already be posted.</p>
+      <div id="mineWrap" class="hidden">
+        <div class="datehead">Your requests</div>
+        <div id="mineList"></div>
+      </div>
+      <div id="boardList"><p class="empty">Loading…</p></div>
+      <div id="trendingWrap" class="hidden">
+        <div class="datehead">🔥 Where riders are searching this week</div>
+        <div id="trendingList"></div>
+      </div>
+    </div>
+
+    <!-- ASK FORM -->
+    <div class="card hidden" id="stAsk">
+      <div class="backrow"><button class="linkbtn" data-back="stBoard">← Back to the board</button></div>
+      <div class="eyebrow">Request a ride</div>
+      <h1>Where do you need to go?</h1>
+      <p class="sub">Your request goes on the public board (first name only). When a driver posts a matching ride, we'll email you right away.</p>
+      <div class="row2">
+        <div><label for="fromSel">From</label><select id="fromSel"></select></div>
+        <div><label for="toSel">To</label><select id="toSel"></select></div>
+      </div>
+      <label for="dateInput">Travel date</label>
+      <input type="date" id="dateInput" />
+      <label>Date flexibility</label>
+      <div class="chips" id="flexChips">
+        <button type="button" class="chip sel" data-f="0">Exact date</button>
+        <button type="button" class="chip" data-f="1">± 1 day</button>
+        <button type="button" class="chip" data-f="3">± 3 days</button>
+      </div>
+      <label>Time of day</label>
+      <div class="chips" id="timeChips">
+        <button type="button" class="chip" data-t="morning">Morning</button>
+        <button type="button" class="chip" data-t="afternoon">Afternoon</button>
+        <button type="button" class="chip" data-t="evening">Evening</button>
+        <button type="button" class="chip sel" data-t="flexible">Flexible</button>
+      </div>
+      <label for="seatsSel">Seats needed</label>
+      <select id="seatsSel"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+      <label for="noteInput">Note for drivers (optional)</label>
+      <textarea id="noteInput" maxlength="200" placeholder="e.g. Cal student heading home for the weekend, one backpack."></textarea>
+      <p class="hint">No phone numbers or emails — the board is public. Drivers reach you by posting the ride; booking and chat stay in Seat Sherpa.</p>
+      <button class="primary" id="askBtn">Post my request</button>
+      <div class="msg err hidden" id="askMsg"></div>
+    </div>
+
+    <!-- EMAIL OTP -->
+    <div class="card hidden" id="stEmail">
+      <div class="backrow"><button class="linkbtn" data-back="stAsk">← Back</button></div>
+      <div class="eyebrow">Almost there</div>
+      <h1>What's your email?</h1>
+      <p class="sub">We'll send a 6-digit code — and this is where you'll hear when a driver posts your ride.</p>
+      <label for="nameInput">First and last name</label>
+      <input type="text" id="nameInput" autocomplete="name" maxlength="60" placeholder="Jordan Lee" />
+      <p class="hint">The board shows first name and last initial only — “Jordan L.”</p>
+      <label for="emailInput">Email</label>
+      <input type="email" id="emailInput" autocomplete="email" placeholder="you@school.edu" />
+      <button class="primary" id="emailBtn">Send code</button>
+      <div class="msg err hidden" id="emailMsg"></div>
+    </div>
+
+    <div class="card hidden" id="stCode">
+      <div class="backrow"><button class="linkbtn" data-back="stEmail">← Different email</button></div>
+      <div class="eyebrow">Check your inbox</div>
+      <h1>Enter the code</h1>
+      <p class="sub" id="codeSub">We emailed a 6-digit code.</p>
+      <input inputmode="numeric" autocomplete="one-time-code" maxlength="6" class="codeinput" id="codeInput" placeholder="······" />
+      <button class="primary" id="codeBtn">Verify</button>
+      <p class="hint" style="margin-top:10px;">Didn't get it? <button class="linkbtn" id="resendBtn">Resend code</button></p>
+      <div class="msg err hidden" id="codeMsg"></div>
+    </div>
+
+    <!-- MATCHES: live rides already serve the requested trip -->
+    <div class="card hidden" id="stMatches">
+      <div class="backrow"><button class="linkbtn" data-back="stAsk">← Back</button></div>
+      <div class="eyebrow">Good news</div>
+      <h1>A ride already matches your trip</h1>
+      <p class="sub">Someone's driving this route around your date, with seats open — book it and you're done. No waiting for the board.</p>
+      <div id="matchList"></div>
+      <button class="ghost" id="forceBtn" style="margin-top:6px;">None of these work — post my request</button>
+    </div>
+
+    <!-- DONE -->
+    <div class="card hidden" id="stDone">
+      <div class="eyebrow">Request posted</div>
+      <h1>You're on the board 🎉</h1>
+      <p class="sub" id="doneSub">Drivers browsing this route can now see your request — and the moment one posts a matching ride, you'll get an email with a link to book your seat.</p>
+      <button class="primary" onclick="location.reload()">Back to the board</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPA = 'https://vmfmbntacifqoqxqxgsk.supabase.co';
+    const ANON = 'sb_publishable_TGebz9q_z0kkH0Tuivlr4w_3MPLMxF3';
+    const FN = SUPA + '/functions/v1/web-ride-requests';
+    const supabase = createClient(SUPA, ANON, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
+    });
+
+    const $ = (id) => document.getElementById(id);
+    const STATES = ['stBoard', 'stAsk', 'stMatches', 'stEmail', 'stCode', 'stDone'];
+    function show(id) { STATES.forEach((s) => $(s).classList.toggle('hidden', s !== id)); window.scrollTo(0, 0); }
+    function setMsg(id, text, kind) {
+      const el = $(id);
+      if (!text) { el.classList.add('hidden'); return; }
+      el.textContent = text; el.className = 'msg ' + (kind || 'err');
+    }
+    document.querySelectorAll('[data-back]').forEach((b) => {
+      b.addEventListener('click', () => show(b.getAttribute('data-back')));
+    });
+
+    // Keep in step with lib/destinations.ts (id + display name only — the
+    // board is deliberately city-level; no addresses, no coordinates).
+    const DESTS = [
+      { id:'sfba', name:'San Francisco Bay Area' }, { id:'sanjose', name:'San Jose' },
+      { id:'napasonoma', name:'Napa / Sonoma' }, { id:'sacramento', name:'Sacramento' },
+      { id:'tahoereno', name:'Tahoe / Reno' }, { id:'la', name:'Los Angeles' },
+      { id:'oc', name:'Orange County' }, { id:'sd', name:'San Diego' },
+      { id:'palm', name:'Palm Springs' }, { id:'vegas', name:'Las Vegas' },
+      { id:'manteca', name:'Manteca' }, { id:'fresno', name:'Fresno' },
+      { id:'santacruz', name:'Santa Cruz' }, { id:'bakersfield', name:'Bakersfield' },
+      { id:'slo', name:'San Luis Obispo' }, { id:'santabarbara', name:'Santa Barbara' },
+      { id:'burningman', name:'Burning Man' },
+    ];
+    const DEST_NAME = new Map(DESTS.map((d) => [d.id, d.name]));
+    for (const sel of [$('fromSel'), $('toSel')]) {
+      sel.innerHTML = '<option value="">Choose a city…</option>' +
+        DESTS.map((d) => `<option value="${d.id}">${d.name}</option>`).join('');
+    }
+    $('fromSel').value = 'sfba'; $('toSel').value = 'la';
+
+    // Date input: today → 6 months out.
+    const today = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const iso = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+    $('dateInput').min = iso(today);
+    const maxD = new Date(); maxD.setMonth(maxD.getMonth() + 6);
+    $('dateInput').max = iso(maxD);
+
+    let timePref = 'flexible';
+    $('timeChips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip'); if (!chip) return;
+      timePref = chip.getAttribute('data-t');
+      document.querySelectorAll('#timeChips .chip').forEach((c) => c.classList.toggle('sel', c === chip));
+    });
+    // BlaBlaCar-style date flexibility (0212): widens ride matching and the
+    // driver notify instead of burning request slots on adjacent dates.
+    let flexDays = 0;
+    $('flexChips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip'); if (!chip) return;
+      flexDays = Number(chip.getAttribute('data-f')) || 0;
+      document.querySelectorAll('#flexChips .chip').forEach((c) => c.classList.toggle('sel', c === chip));
+    });
+
+    // ── Board render ──────────────────────────────────────────────────────
+    const TIME_LABEL = { morning: 'morning', afternoon: 'afternoon', evening: 'evening', flexible: 'any time' };
+    function fmtDate(isoDate) {
+      const d = new Date(isoDate + 'T00:00:00');
+      return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    // "2h ago" freshness — recency is the board's proof of life.
+    function ago(isoTs) {
+      if (!isoTs) return '';
+      const mins = Math.max(0, Math.round((Date.now() - new Date(isoTs).getTime()) / 60000));
+      if (mins < 60) return mins <= 1 ? 'just now' : mins + 'm ago';
+      const hrs = Math.round(mins / 60);
+      if (hrs < 24) return hrs + 'h ago';
+      const days = Math.round(hrs / 24);
+      return days === 1 ? 'yesterday' : days + 'd ago';
+    }
+    function reqCard(r, mine) {
+      const route = esc(DEST_NAME.get(r.fromDest) || r.fromDest) + ' → ' + esc(DEST_NAME.get(r.toDest) || r.toDest);
+      const agoBit = ago(r.createdAt);
+      const meta = fmtDate(r.travelDate) + (r.flexDays ? ' (±' + r.flexDays + 'd)' : '')
+        + ' · ' + r.seats + (r.seats === 1 ? ' seat' : ' seats')
+        + ' · ' + (TIME_LABEL[r.timePref] || r.timePref) + ' · ' + esc(r.requesterName)
+        + (agoBit ? ' · posted ' + agoBit : '');
+      // Board rows arrive annotated with live rides that serve the ask — a
+      // "N rides match" chip converts a browsing requester into a booking.
+      const ms = Array.isArray(r.matches) ? r.matches : [];
+      const matchBit = ms.length
+        ? '<div style="margin-top:6px;"><a href="/ride?id=' + ms[0].rideId + '&web=1" '
+          + 'style="display:inline-block;border:1px solid rgba(0,212,200,0.4);color:#00D4C8;'
+          + 'border-radius:999px;padding:4px 12px;font-size:12px;text-decoration:none;">'
+          + (ms.length === 1 ? '1 ride matches' : ms.length + ' rides match')
+          + (ms[0].minPriceUsd != null ? ' · from $' + ms[0].minPriceUsd : '') + ' — view →</a></div>'
+        : '';
+      return '<div class="req" data-id="' + r.id + '">'
+        + '<div class="route">' + route + '</div>'
+        + '<div class="meta">' + meta + (mine && r.status !== 'open' ? ' · ' + esc(r.status) : '') + '</div>'
+        + (r.note ? '<div class="note">“' + esc(r.note) + '”</div>' : '')
+        + matchBit
+        + '<div class="actions">'
+        + (mine
+          ? (r.status === 'open' ? '<button class="linkbtn cancelBtn" data-id="' + r.id + '">Cancel request</button>' : '')
+          : '<a class="driverlink" href="/post">Driving this? Post the ride →</a>')
+        + '</div></div>';
+    }
+    // Trending = real searches from the last 7 days (server-aggregated, no
+    // PII). Shown only while the board is thin — a young board with two rows
+    // reads as dead; live demand data gives it a pulse. Once the board is
+    // busy, the requests ARE the proof of life and this section hides.
+    function renderTrending(list, boardCount) {
+      const wrap = $('trendingWrap');
+      if (!Array.isArray(list) || list.length === 0 || boardCount >= 5) {
+        wrap.classList.add('hidden'); return;
+      }
+      $('trendingList').innerHTML = list.map((t) =>
+        '<div class="req"><div class="route">' + esc(DEST_NAME.get(t.fromDest) || t.fromDest)
+        + ' → ' + esc(DEST_NAME.get(t.toDest) || t.toDest) + '</div>'
+        + '<div class="meta">' + t.searches + ' riders searched this route in the last 7 days</div>'
+        + '<div class="actions"><a class="driverlink" href="/post">Driving this? Post the ride →</a></div></div>'
+      ).join('');
+      wrap.classList.remove('hidden');
+    }
+    async function loadBoard() {
+      try {
+        const res = await fetch(FN);
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'load failed');
+        const rows = json.requests || [];
+        renderTrending(json.trending, rows.length);
+        if (rows.length === 0) {
+          $('boardList').innerHTML = '<p class="empty">No open requests right now. Need a ride? Be the first on the board — drivers see these when deciding what to post.</p>';
+          return;
+        }
+        // Group by date.
+        let html = ''; let lastDate = '';
+        for (const r of rows) {
+          if (r.travelDate !== lastDate) {
+            lastDate = r.travelDate;
+            html += '<div class="datehead">' + fmtDate(r.travelDate) + '</div>';
+          }
+          html += reqCard(r, false);
+        }
+        $('boardList').innerHTML = html;
+      } catch (err) {
+        $('boardList').innerHTML = '<p class="empty">Couldn’t load the board — refresh to try again.</p>';
+      }
+    }
+    async function loadMine() {
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      if (!token) return;
+      try {
+        const res = await fetch(FN + '?mine=1', { headers: { Authorization: 'Bearer ' + token } });
+        const json = await res.json();
+        if (!res.ok) return;
+        const rows = (json.requests || []).filter((r) => r.status === 'open');
+        if (rows.length === 0) { $('mineWrap').classList.add('hidden'); return; }
+        $('mineList').innerHTML = rows.map((r) => reqCard(r, true)).join('');
+        $('mineWrap').classList.remove('hidden');
+        document.querySelectorAll('.cancelBtn').forEach((b) => b.addEventListener('click', async () => {
+          b.disabled = true;
+          const { data: s } = await supabase.auth.getSession();
+          await fetch(FN, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + (s.session?.access_token || '') },
+            body: JSON.stringify({ action: 'cancel', id: Number(b.getAttribute('data-id')) }),
+          });
+          loadMine(); loadBoard();
+        }));
+      } catch { /* mine list is best-effort */ }
+    }
+
+    // ── Ask flow ──────────────────────────────────────────────────────────
+    $('openAskBtn').addEventListener('click', () => show('stAsk'));
+
+    let pendingEmail = '';
+    let pendingRequest = null;
+
+    function readForm() {
+      const fromDest = $('fromSel').value, toDest = $('toSel').value;
+      if (!fromDest || !toDest) return { err: 'Pick both cities.' };
+      if (fromDest === toDest) return { err: 'Pick two different cities.' };
+      const travelDate = $('dateInput').value;
+      if (!travelDate) return { err: 'Pick your travel date.' };
+      return {
+        req: {
+          action: 'create', fromDest, toDest, travelDate,
+          seats: Number($('seatsSel').value), timePref, flexDays,
+          note: $('noteInput').value.trim(),
+        },
+      };
+    }
+
+    // Returns the server response. `posted:false` + matches = live rides
+    // already serve this trip; nothing was posted — show them and let the
+    // user book (or re-send with force:true to post anyway).
+    async function submitRequest(token) {
+      const res = await fetch(FN, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify(pendingRequest),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.message || json.error || 'Could not post the request.');
+      return json;
+    }
+
+    // Web ride links carry web=1 so /ride shows "Book online" (the hidden
+    // web-booking funnel) instead of the app-only CTA.
+    const matchLink = (m) => '/ride?id=' + m.rideId + '&web=1';
+    function renderMatches(list) {
+      $('matchList').innerHTML = list.map((m) =>
+        '<a class="req" style="display:block;text-decoration:none;color:inherit;" href="' + matchLink(m) + '">'
+        + '<div class="route">' + esc(m.dateLabel) + (m.depTime ? ' · ' + esc(m.depTime) : '') + ' · ' + esc(m.driverName) + '</div>'
+        + '<div class="meta">' + m.seatsLeft + (m.seatsLeft === 1 ? ' seat' : ' seats') + ' left'
+        + (m.minPriceUsd != null ? ' · from $' + m.minPriceUsd : '') + '</div>'
+        + '<div class="actions"><span class="driverlink">View & book →</span></div></a>'
+      ).join('');
+      show('stMatches');
+    }
+
+    // Shared post-submit handling for both the signed-in and OTP paths.
+    async function handleSubmitResult(json) {
+      if (json && json.posted === false && Array.isArray(json.matches) && json.matches.length) {
+        renderMatches(json.matches);
+        return false;
+      }
+      // The payoff line: "we already pinged N drivers" turns a silent post
+      // into visible momentum. Zero notified → keep the generic promise.
+      const n = json && Number(json.notifiedDrivers) || 0;
+      $('doneSub').textContent = n > 0
+        ? 'We just notified ' + n + ' driver' + (n === 1 ? '' : 's') + ' who’ve driven this route before. '
+          + 'The moment one posts a matching ride, you’ll get an email with a link to book your seat. '
+          + 'We also sent a confirmation to your inbox.'
+        : 'Drivers browsing this route can now see your request — and the moment one posts a matching ride, '
+          + 'you’ll get an email with a link to book your seat. We also sent a confirmation to your inbox.';
+      show('stDone'); loadBoard(); loadMine();
+      return true;
+    }
+
+    $('askBtn').addEventListener('click', async () => {
+      setMsg('askMsg', '');
+      const parsed = readForm();
+      if (parsed.err) { setMsg('askMsg', parsed.err); return; }
+      pendingRequest = parsed.req;
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      const btn = $('askBtn');
+      if (token) {
+        btn.disabled = true; btn.textContent = 'Checking…';
+        try {
+          await handleSubmitResult(await submitRequest(token));
+        } catch (err) {
+          setMsg('askMsg', err.message);
+        } finally { btn.disabled = false; btn.textContent = 'Post my request'; }
+      } else {
+        show('stEmail');
+      }
+    });
+
+    // "None of these work" on the matches screen → post anyway (force).
+    $('forceBtn').addEventListener('click', async () => {
+      const btn = $('forceBtn');
+      btn.disabled = true; btn.textContent = 'Posting…';
+      try {
+        pendingRequest.force = true;
+        const { data } = await supabase.auth.getSession();
+        const token = data.session?.access_token;
+        if (!token) { show('stEmail'); return; }
+        await handleSubmitResult(await submitRequest(token));
+      } catch (err) {
+        alert(err.message || 'Could not post the request.');
+      } finally { btn.disabled = false; btn.textContent = 'None of these work — post my request'; }
+    });
+
+    $('emailBtn').addEventListener('click', async () => {
+      setMsg('emailMsg', '');
+      const name = $('nameInput').value.trim();
+      if (name.length < 2) { setMsg('emailMsg', 'Enter your name — the board shows just “First L.”'); return; }
+      if (pendingRequest) pendingRequest.name = name;
+      const email = $('emailInput').value.trim().toLowerCase();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { setMsg('emailMsg', 'That email doesn’t look right.'); return; }
+      const btn = $('emailBtn'); btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const { error } = await supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+        if (error) throw error;
+        pendingEmail = email;
+        $('codeSub').textContent = 'We emailed a 6-digit code to ' + email + '.';
+        show('stCode');
+      } catch (err) {
+        setMsg('emailMsg', err.message || 'Could not send the code — try again.');
+      } finally { btn.disabled = false; btn.textContent = 'Send code'; }
+    });
+
+    $('resendBtn').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const btn = $('resendBtn'); btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const { error } = await supabase.auth.signInWithOtp({ email: pendingEmail, options: { shouldCreateUser: true } });
+        if (error) throw error;
+        setMsg('codeMsg', 'New code sent — check your inbox.', 'ok');
+      } catch (err) {
+        setMsg('codeMsg', err.message || 'Could not resend — try again in a minute.');
+      } finally { btn.disabled = false; btn.textContent = 'Resend code'; }
+    });
+
+    $('codeBtn').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const code = $('codeInput').value.trim();
+      if (!/^\d{6}$/.test(code)) { setMsg('codeMsg', 'Enter the 6-digit code.'); return; }
+      const btn = $('codeBtn'); btn.disabled = true; btn.textContent = 'Verifying…';
+      try {
+        const { data, error } = await supabase.auth.verifyOtp({ email: pendingEmail, token: code, type: 'email' });
+        if (error) throw error;
+        const token = data.session?.access_token;
+        if (!token) throw new Error('Sign-in did not complete — try again.');
+        // Tag brand-new accounts as passengers (book.html does the same) so
+        // downstream role-based flows (dormant-driver nudges etc.) don't
+        // misread them. Never overwrites an existing role — a driver signing
+        // in here stays a driver (audit L5).
+        try {
+          const meta = (data.user && data.user.user_metadata) || {};
+          if (!meta.role) await supabase.auth.updateUser({ data: { role: 'passenger' } });
+        } catch (_) {}
+        btn.textContent = 'Posting…';
+        await handleSubmitResult(await submitRequest(token));
+      } catch (err) {
+        setMsg('codeMsg', err.message || 'That code didn’t work — try again.');
+      } finally { btn.disabled = false; btn.textContent = 'Verify'; }
+    });
+
+    loadBoard();
+    loadMine();
+  </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bay Area Casual Carpool in 2026 — Is It Back? What to Use Instead</title>
+<meta name="description" content="Casual carpool collapsed in March 2020 and never fully returned. Here's the state of Bay Area casual carpool in 2026, why it stopped, and the alternatives for commutes and city-to-city trips." />
+<link rel="canonical" href="https://seatsherpa.app/guides/casual-carpool-bay-area" />
+<meta property="og:title" content="Bay Area Casual Carpool in 2026 — Is It Back? What to Use Instead" />
+<meta property="og:description" content="Casual carpool collapsed in March 2020 and never fully returned. Here's the state of Bay Area casual carpool in 2026, why it stopped, and the alternatives for commutes and city-to-city trips." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/guides/casual-carpool-bay-area" />
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Bay Area Casual Carpool in 2026 — Is It Back? What to Use Instead","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-08-02","dateModified":"2026-08-02","mainEntityOfPage":"https://seatsherpa.app/guides/casual-carpool-bay-area"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is casual carpool still running in the Bay Area?","acceptedAnswer":{"@type":"Answer","text":"Not at anything like its former scale. The informal East Bay-to-San Francisco system collapsed when shelter-in-place began in March 2020, and ridership never recovered to pre-pandemic levels. Some pickup lines have seen sporadic informal activity, but the dense, reliable morning queues that defined it are gone."}},{"@type":"Question","name":"Why did casual carpool stop?","acceptedAnswer":{"@type":"Answer","text":"Two things at once. Shelter-in-place in March 2020 made sharing a car with strangers untenable overnight, and the return to offices was partial and staggered — casual carpool needed a critical mass of people driving the same route at the same hour, and hybrid work broke that density."}},{"@type":"Question","name":"What was casual carpool?","acceptedAnswer":{"@type":"Answer","text":"An informal, unorganised system that ran for decades: drivers heading into San Francisco from the East Bay would stop at known pickup points, take on two riders to meet the Bay Bridge HOV requirement, and drop them downtown. No app, no booking, often no money — riders sometimes contributed a dollar toward the toll."}},{"@type":"Question","name":"What can I use instead of casual carpool?","acceptedAnswer":{"@type":"Answer","text":"For daily commutes, 511.org still lists Bay Area vanpool and rideshare matching, and many employers run their own programs. For longer city-to-city trips — Bay Area to Los Angeles, Sacramento, or Las Vegas — cost-sharing carpool marketplaces like Seat Sherpa apply the same principle with booking and payment built in."}}]}</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
+  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
+  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:#eaeaea}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:#00D4C8;font-weight:700}
+  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  .callout h3{font-size:18px;margin-bottom:6px}
+  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  .scroll{overflow-x:auto}
+  @media(max-width:640px){h1{font-size:27px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/routes">Routes</a> › Guide</div>
+  <h1>Bay Area casual carpool: is it back in 2026?</h1>
+  <div class="meta">Updated August 2026</div>
+
+  <p class="lede">For decades, thousands of Bay Area commuters got to work by standing in a line and getting into a stranger's car. Casual carpool was one of the most quietly remarkable transport systems in America — entirely informal, free or nearly so, and it worked. Then, in March 2020, it stopped overnight. Here's where things actually stand.</p>
+
+  <h2>What casual carpool was</h2>
+  <p>No app, no company, no schedule. Drivers heading from the East Bay into San Francisco would pull up at known pickup points — Rockridge, North Berkeley, Albany, El Cerrito, Walnut Creek and a dozen others — and take on two riders. That made three people in the car, which met the Bay Bridge carpool requirement: a faster HOV lane and a discounted toll. Riders got a free or near-free ride downtown, usually offering a dollar toward the toll. Nobody organised it. It ran on convention, and it had done so since the 1970s.</p>
+  <p>The genius was that everyone was already going. The driver hadn't made a trip for the passenger's benefit; the passenger simply occupied a seat that was going to San Francisco regardless. That's cost-sharing in its purest form, and it predates every app that later tried to formalise it.</p>
+
+  <h2>Why it stopped — and why it hasn't come back</h2>
+  <p>Shelter-in-place in March 2020 ended it immediately: sharing an enclosed car with two strangers went from routine to unthinkable in a week. But the reason it didn't simply resume in 2021 or 2022 is more structural. Casual carpool depended on <em>density</em> — enough drivers and riders on the same route within the same narrow morning window that neither side had to wait. Hybrid work destroyed that. When only some people commute, and on different days, the queue never re-forms, and a rider who waits twenty minutes doesn't come back tomorrow.</p>
+  <p>There have been informal restarts at some lines, and a handful of regulars kept it alive in pockets. But as of 2026 nothing operates at the scale that made it dependable. If you're searching because you remember it, that's the honest answer.</p>
+
+  <h2>What actually exists now</h2>
+  <div class="scroll"><table>
+    <tr><th>Need</th><th>Option</th><th>Notes</th></tr>
+    <tr><td>Daily Bay Area commute</td><td>511.org rideshare &amp; vanpool matching</td><td>Regional, employer-linked; closest institutional heir</td></tr>
+    <tr><td>Daily commute (employer)</td><td>Company vanpool / shuttle</td><td>Common at larger Bay Area employers</td></tr>
+    <tr><td>Bay Area → LA, Sacramento, Vegas</td><td class="win">Cost-sharing carpool marketplace</td><td>Booked ahead, verified drivers, price capped at trip cost</td></tr>
+    <tr><td>Any distance, no planning</td><td>Uber / Lyft</td><td>Commercial pricing — $200+ for SF–LA</td></tr>
+    <tr><td>Intercity, scheduled</td><td>Amtrak, FlixBus, Greyhound</td><td>Reliable, slower, fixed departure points</td></tr>
+  </table></div>
+
+  <div class="callout">
+    <h3>🚗 The casual carpool idea, for longer trips</h3>
+    <p>Seat Sherpa runs on exactly the principle casual carpool ran on: someone is already driving, the empty seats cost them nothing, and the passenger pays a share of the real cost rather than a commercial fare. The difference is that it's booked in advance for city-to-city trips — <a href="/routes/san-francisco-to-los-angeles">SF → LA</a>, <a href="/routes/san-francisco-to-sacramento">SF → Sacramento</a>, Bay Area → Vegas — with verified drivers and payment held until pickup. Live across California and Nevada.</p>
+    <a class="btn" href="/#get">Get the Seat Sherpa app</a>
+  </div>
+
+  <h2>Will casual carpool ever return?</h2>
+  <p>It would need the one thing that hasn't come back: a predictable mass of people making the same drive at the same time. Bridge tolls and HOV incentives still exist, and the underlying maths still works — three people in one car is better for everyone than three cars. But the informal version depended on a commuting culture that's now permanently more distributed. The likelier future is that the same logic reappears in booked form, where a rider can see in advance that a seat exists rather than standing in a line hoping.</p>
+
+  <h2>FAQ</h2>
+  <div class="faq"><h3>Is casual carpool still running in the Bay Area?</h3><p>Not at anything like its former scale. The informal East Bay-to-San Francisco system collapsed when shelter-in-place began in March 2020, and ridership never recovered to pre-pandemic levels. Some pickup lines have seen sporadic informal activity, but the dense, reliable morning queues that defined it are gone.</p></div>
+  <div class="faq"><h3>Why did casual carpool stop?</h3><p>Two things at once. Shelter-in-place in March 2020 made sharing a car with strangers untenable overnight, and the return to offices was partial and staggered — casual carpool needed a critical mass of people driving the same route at the same hour, and hybrid work broke that density.</p></div>
+  <div class="faq"><h3>What was casual carpool?</h3><p>An informal, unorganised system that ran for decades: drivers heading into San Francisco from the East Bay would stop at known pickup points, take on two riders to meet the Bay Bridge HOV requirement, and drop them downtown. No app, no booking, often no money — riders sometimes contributed a dollar toward the toll.</p></div>
+  <div class="faq"><h3>What can I use instead of casual carpool?</h3><p>For daily commutes, 511.org still lists Bay Area vanpool and rideshare matching, and many employers run their own programs. For longer city-to-city trips — Bay Area to Los Angeles, Sacramento, or Las Vegas — cost-sharing carpool marketplaces like Seat Sherpa apply the same principle with booking and payment built in.</p></div>
+
+  <h2 id="more-guides">More guides</h2>
+  <p><a href="/guides/blablacar-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is BlaBlaCar in the USA?</a><a href="/guides/poparide-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Poparide in the USA?</a><a href="/guides/kangaride-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Kangaride in the USA?</a><a href="/guides/hitch-rideshare-california" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Hitch in California?</a><a href="/guides/waze-carpool-alternative" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Waze Carpool alternatives</a><a href="/guides/zimride-alternative" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Zimride alternatives</a><a href="/guides/cheapest-way-san-francisco-to-los-angeles" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Cheapest way SF → LA</a></p>
+</article>
+
+
+<!-- App store buttons (ss-store-badges) -->
+<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_casual_carpool_bay_area" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_casual_carpool_bay_area" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+</div>
+<footer><div class="wrap"><a href="/">Home</a><a href="/routes">Routes</a><a href="/rides">Live rides</a><a href="/guides/blablacar-usa">BlaBlaCar in the US?</a><a href="/guides/zimride-alternative">Zimride alternatives</a><br><br>© 2026 Seat Sherpa</div></footer>
+</body>
+</html>

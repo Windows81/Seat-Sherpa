@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Cheapest Way to Get from Los Angeles to San Diego (2026)</title>
+<meta name="description" content="Every way to get from LA to San Diego compared: train, bus, carpool, driving and flying — real cost ranges, door-to-door times, and which one actually wins. Checked August 2026." />
+<link rel="canonical" href="https://seatsherpa.app/guides/cheapest-way-los-angeles-to-san-diego" />
+<meta property="og:title" content="The Cheapest Way to Get from Los Angeles to San Diego (2026)" />
+<meta property="og:description" content="Every way to get from LA to San Diego compared: train, bus, carpool, driving and flying — real cost ranges, door-to-door times, and which one actually wins. Checked August 2026." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/guides/cheapest-way-los-angeles-to-san-diego" />
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"The Cheapest Way to Get from San Francisco to Los Angeles (2026)","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-07-09","dateModified":"2026-07-09","mainEntityOfPage":"https://seatsherpa.app/guides/cheapest-way-san-francisco-to-los-angeles"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the cheapest way to get from San Francisco to Los Angeles?","acceptedAnswer":{"@type":"Answer","text":"The bus is usually the cheapest ticket ($20–$50) but takes 8–9 hours. A carpool ($40–$55 per seat) is close on price and far faster at about 6 hours door-to-door, and drops you closer to where you're actually going. Flying is fastest in the air but $60–$150 plus airport time and bag fees. Driving solo costs $50–$70 in gas alone before wear and parking."}},{"@type":"Question","name":"Is it cheaper to fly or drive from SF to LA?","acceptedAnswer":{"@type":"Answer","text":"Driving solo (~$50–$70 gas) is often cheaper than a flight ($60–$150 all-in with bags and airport transport) if you're going alone, and much cheaper split across a carpool. Flying only wins on cost when you catch a cheap fare and value the shorter in-air time."}},{"@type":"Question","name":"How long does it take to get from San Francisco to Los Angeles?","acceptedAnswer":{"@type":"Answer","text":"Driving or carpooling is about 6 hours (roughly 380 miles via I-5). Flying is ~1.5 hours in the air but 4–5 hours door-to-door once you add airport time. The bus is 8–9 hours; Amtrak has no fast direct route and takes 11+ hours."}}]}</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  h1{font-size:36px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
+  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
+  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:#eaeaea}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:#00D4C8;font-weight:700}
+  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  .callout h3{font-size:18px;margin-bottom:6px}
+  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  .scroll{overflow-x:auto}
+  @media(max-width:640px){h1{font-size:28px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the cheapest way to get from LA to San Diego?","acceptedAnswer":{"@type":"Answer","text":"The bus usually has the lowest ticket ($10–$30) but is the least predictable in traffic. A carpool ($15–$28 per seat) is close on price, faster, and drops you at an address rather than a terminal."}},{"@type":"Question","name":"Is the train from LA to San Diego worth it?","acceptedAnswer":{"@type":"Answer","text":"Yes, more than on most California routes. The Amtrak Pacific Surfliner takes about 2 hours 45 minutes along the coast for roughly $30–$50 — comfortable and scenic, though you still need transport at both ends."}},{"@type":"Question","name":"Should I fly from LA to San Diego?","acceptedAnswer":{"@type":"Answer","text":"Almost never. The flight is about 30 minutes but door-to-door runs 3.5–4.5 hours once you add airports, and it costs more than every other option."}},{"@type":"Question","name":"How long does it take to drive from LA to San Diego?","acceptedAnswer":{"@type":"Answer","text":"About 2 to 2.5 hours for roughly 120 miles on the I-5, though traffic through Orange County can add substantially at peak times."}}]}</script>
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/routes">Routes</a> › Guide</div>
+  <h1>The cheapest way to get from Los Angeles to San Diego (2026)</h1>
+  <div class="meta">Updated August 2026 · ~120 miles · about 2 to 2.5 hours by road</div>
+
+  <p class="lede">LA to San Diego is short enough that flying makes no sense and long enough that the options genuinely differ. It's about 120 miles down the I-5, and unlike most California routes this one has a <em>good</em> train. Here's what each option really costs, all-in.</p>
+
+  <h2>Quick comparison</h2>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Option</th><th>All-in cost</th><th>Door-to-door time</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td>Carpool (Seat Sherpa)</td><td class="win">$15–$28 / seat</td><td>~2–2.5 hrs</td><td>Cheapest door-to-door, dropped where you need</td></tr>
+      <tr><td>Bus (FlixBus / Greyhound)</td><td>$10–$30</td><td>2.5–4 hrs</td><td>Lowest ticket if the schedule fits</td></tr>
+      <tr><td>Metrolink + Coaster</td><td>$15–$25</td><td>3.5–4.5 hrs</td><td>Budget rail, if you can handle a transfer</td></tr>
+      <tr><td>Amtrak Pacific Surfliner</td><td>$30–$50</td><td>~2 hr 45</td><td>The nicest ride on this route</td></tr>
+      <tr><td>Drive solo</td><td>~$19 gas + parking</td><td>~2–2.5 hrs</td><td>Flexibility — you cover the whole tank</td></tr>
+      <tr><td>Fly</td><td>$60–$150 + bags</td><td>3.5–4.5 hrs</td><td>Almost never worth it here</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="color:#71717d;font-size:13px;margin-top:10px">Third-party fares change constantly — these are ranges checked August 2026, and we link to each operator rather than quote a number we haven't verified. Seat Sherpa prices are live seat prices from our own marketplace.</p>
+
+  <h2>The train is genuinely good on this route</h2>
+  <p>This is the rare California route where rail competes. The Amtrak <a href="https://www.amtrak.com/pacific-surfliner-train" rel="nofollow noopener" target="_blank">Pacific Surfliner</a> runs LA Union Station to San Diego in about 2 hours 45 minutes along the coast, typically $30–$50 one way. If you're going downtown-to-downtown and you like the view, it's a genuinely pleasant option. The catch is the same as always: you still need to get to Union Station and out of Santa Fe Depot on the other end.</p>
+
+  <h2>The cheapest rail: Metrolink to Coaster</h2>
+  <p>Budget travellers stitch together <a href="https://metrolinktrains.com" rel="nofollow noopener" target="_blank">Metrolink</a> to Oceanside and then the <a href="https://www.gonctd.com/coaster/" rel="nofollow noopener" target="_blank">Coaster</a> into San Diego, which usually comes in under the Surfliner. It also takes noticeably longer and involves a transfer — worth it if the saving matters more than the hour.</p>
+
+  <h2>The bus: lowest ticket, least predictable</h2>
+  <p>FlixBus and Greyhound run LA–San Diego cheaply, often $10–$30 booked ahead. The published times look competitive, but I-5 traffic through Orange County means the real trip can stretch well past three hours. Cheapest ticket on the route; least reliable arrival.</p>
+
+  <h2>Flying: skip it</h2>
+  <p>LAX to SAN is about 30 minutes in the air and completely undone by everything around it — getting to LAX, security, and the ride from San Diego airport. By the time you're done you've spent more money than any other option and roughly the same time as the train. There is essentially no scenario where flying LA to San Diego is the right answer.</p>
+
+  <h2>Driving solo: fine, if the car is already going</h2>
+  <p>It's ~120 miles, about two hours without traffic and rather more with it. Fuel is roughly $19 each way before parking, which is the real expense in San Diego. Perfectly reasonable — you're just paying 100% of a cost that could be split three ways.</p>
+
+  <div class="callout">
+    <h3>🚗 The sweet spot: carpool</h3>
+    <p>This is the route where carpooling wins most clearly. Riding with someone <em>already driving down</em> costs $15–$28 a seat — under most bus tickets — takes the same two hours as driving yourself, and drops you at a real address instead of a station. On Seat Sherpa the price is capped at the IRS mileage rate, so it's a genuine cost split, not a fare.</p>
+    <a class="btn" href="/routes/los-angeles-to-san-diego">See LA → San Diego rides</a>
+  </div>
+
+  <h2>So which is cheapest?</h2>
+  <p>For pure ticket price the <strong>bus</strong> is usually lowest, but it's the least predictable. A <strong>carpool</strong> is the best all-in value: bus-level pricing at car-level speed and door-to-door convenience. The <strong>Surfliner</strong> is the nicest experience if you're travelling downtown to downtown and don't mind paying a bit more. Flying is a trap on this route.</p>
+
+  <h2>FAQ</h2>
+  <div class="faq"><h3>What is the cheapest way to get from LA to San Diego?</h3><p>The bus usually has the lowest ticket ($10–$30) but is the least predictable in traffic. A carpool ($15–$28 per seat) is close on price, faster, and drops you at an address rather than a terminal.</p></div>
+  <div class="faq"><h3>Is the train from LA to San Diego worth it?</h3><p>Yes, more than on most California routes. The Amtrak Pacific Surfliner takes about 2 hours 45 minutes along the coast for roughly $30–$50 — comfortable and scenic, though you still need transport at both ends.</p></div>
+  <div class="faq"><h3>Should I fly from LA to San Diego?</h3><p>Almost never. The flight is about 30 minutes but door-to-door runs 3.5–4.5 hours once you add airports, and it costs more than every other option.</p></div>
+  <div class="faq"><h3>How long does it take to drive from LA to San Diego?</h3><p>About 2 to 2.5 hours for roughly 120 miles on the I-5, though traffic through Orange County can add substantially at peak times.</p></div>
+
+  <div class="callout" style="text-align:center">
+    <h3>Ready to go LA → San Diego?</h3>
+    <p>Browse today's rides, pick your seat, split the gas.</p>
+    <a class="btn" href="/#get">Get the Seat Sherpa app</a>
+  </div>
+
+  <h2 id="more-guides">More guides</h2>
+  <p><a href="/guides/cheapest-way-san-francisco-to-los-angeles" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Cheapest way SF → LA</a><a href="/guides/cheapest-way-los-angeles-to-las-vegas" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Cheapest way LA → Vegas</a><a href="/guides/blablacar-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is BlaBlaCar in the USA?</a><a href="/guides/poparide-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Poparide in the USA?</a><a href="/guides/hitch-rideshare-california" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Hitch in California?</a><a href="/guides/casual-carpool-bay-area" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Bay Area casual carpool</a></p>
+</article>
+
+
+
+<!-- App store buttons (ss-store-badges) -->
+<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_cheapest_way_los_angeles_to_san_diego" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_cheapest_way_los_angeles_to_san_diego" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+</div>
+<footer><div class="wrap"><a href="/">Home</a><a href="/routes">Routes</a><a href="/drive">Drive</a><a href="/privacy">Privacy</a><br><br>© 2026 Seat Sherpa</div></footer>
+</body>
+</html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+  <meta name="facebook-domain-verification" content="dz6agmqcvn1edx76sw9dbgtr25mpel" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seat Sherpa — Gas is expensive. Carpool to share the cost.</title>
+  <meta name="description" content="Carpool between SF, LA, San Diego, and Las Vegas with real drivers already heading your way — split the gas instead of paying a markup. Faster than the bus, cheaper than the train, no airport. Available on iOS." />
+
+  <!-- Open Graph + Twitter cards so links shared on iMessage/Slack/Twitter
+       render with a preview tile. The og:image points to the in-repo icon. -->
+  <meta property="og:title" content="Seat Sherpa" />
+  <meta property="og:description" content="Gas is expensive. Carpool to share the cost." />
+  <meta property="og:image" content="https://seatsherpa.app/icon.png" />
+  <meta property="og:url" content="https://seatsherpa.app" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
+
+  <style>
+    /* Reset + base */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0E0E10;
+      color: #ffffff;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: #00D4C8; text-decoration: none; transition: opacity 0.15s; }
+    a:hover { opacity: 0.8; }
+
+    /* Layout */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Nav */
+    nav {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: #fff;
+    }
+    nav .brand img { width: 32px; height: 32px; border-radius: 8px; }
+    nav .brand .wordmark { height: 30px; width: auto; display: block; }
+    nav .links { display: flex; gap: 24px; font-size: 14px; }
+    nav .links a { color: #cccccc; }
+    @media (max-width: 600px) {
+      nav .links { display: none; }
+    }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 64px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at top, rgba(0,212,200,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(255,193,7,0.08) 0%, transparent 50%),
+        #0E0E10;
+    }
+    .hero img.icon {
+      width: 120px;
+      height: 120px;
+      border-radius: 26px;
+      margin: 0 auto 32px;
+      box-shadow: 0 20px 60px rgba(0,212,200,0.25);
+    }
+    .hero h1 {
+      font-size: 56px;
+      line-height: 1.05;
+      letter-spacing: -1.2px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #ffffff 0%, #b3b3b3 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 56px 0 48px; }
+      .hero h1 { font-size: 40px; letter-spacing: -0.6px; }
+      .hero img.icon { width: 96px; height: 96px; margin-bottom: 24px; }
+    }
+    .hero p.tagline {
+      font-size: 19px;
+      color: #cccccc;
+      max-width: 580px;
+      margin: 0 auto 28px;
+    }
+    /* Primary hero CTA — driver waitlist (the one actionable thing pre-launch) */
+    .hero-driver-cta {
+      display: inline-block;
+      margin: 0 auto 32px;
+      padding: 16px 32px;
+      background: #00d4c8;
+      color: #04201e;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 8px 28px rgba(0,212,200,0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .hero-driver-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(0,212,200,0.5);
+    }
+    @media (max-width: 600px) {
+      .hero-driver-cta { font-size: 16px; padding: 14px 24px; }
+    }
+
+    /* Two-up hero actions: Find a ride (passenger) + Offer a ride (driver) */
+    .hero-cta-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .hero-cta-row .hero-driver-cta { margin: 0; }
+    .hero-cta-secondary {
+      display: inline-block;
+      padding: 16px 32px;
+      background: transparent;
+      color: #00d4c8;
+      border: 1.5px solid rgba(0,212,200,0.5);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .hero-cta-secondary:hover { transform: translateY(-2px); border-color: #00d4c8; }
+    @media (max-width: 600px) {
+      .hero-cta-secondary { font-size: 16px; padding: 14px 24px; }
+    }
+
+    /* Smaller inline driver CTA used lower on the page */
+    .driver-cta-band {
+      text-align: center;
+      margin-top: 36px;
+    }
+    .driver-cta-inline {
+      display: inline-block;
+      padding: 12px 26px;
+      background: #00d4c8;
+      color: #04201e;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(0,212,200,0.3);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .driver-cta-inline:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0,212,200,0.45);
+    }
+
+    /* Store badges */
+    .store-badges {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .store-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #1a1a1d;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 12px 20px;
+      min-width: 200px;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+      position: relative;
+    }
+    .store-badge:hover {
+      border-color: rgba(0,212,200,0.3);
+      transform: translateY(-1px);
+    }
+    .store-badge svg {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+    .store-badge .label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      line-height: 1.15;
+    }
+    .store-badge .label .small {
+      font-size: 11px;
+      color: #888;
+      letter-spacing: 0.3px;
+    }
+    .store-badge .label .big {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .store-badge .coming-soon {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #00D4C8;
+      color: #000;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 100px;
+      text-transform: uppercase;
+    }
+
+    /* Sections */
+    section.features, section.how-it-works, section.routes, section.trust {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    @media (max-width: 600px) {
+      section.features, section.how-it-works, section.routes, section.trust {
+        padding: 56px 0;
+      }
+    }
+    section h2 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    section h2 + p.section-sub {
+      text-align: center;
+      color: #999;
+      max-width: 540px;
+      margin: 0 auto 56px;
+    }
+    @media (max-width: 600px) {
+      section h2 { font-size: 28px; }
+      section h2 + p.section-sub { margin-bottom: 40px; }
+    }
+
+    /* Feature cards */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+    .feature-card .emoji {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .feature-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      color: #999;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    /* How it works */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .step {
+      text-align: center;
+      padding: 24px;
+    }
+    .step .number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 24px;
+      background: rgba(0,212,200,0.12);
+      color: #00D4C8;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .step h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step p {
+      color: #999;
+      font-size: 14px;
+    }
+
+    /* Routes */
+    .routes-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .route-pill {
+      background: rgba(0,212,200,0.08);
+      border: 1px solid rgba(0,212,200,0.2);
+      color: #00D4C8;
+      padding: 10px 18px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Trust */
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .trust-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+    }
+    .trust-item .icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      color: #00D4C8;
+    }
+    .trust-item .body strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .trust-item .body span {
+      color: #999;
+      font-size: 13px;
+    }
+
+    /* FAQ — same collapsible <details>/<summary> pattern used on /drive.
+       Zero JS, native accessibility, mobile-friendly. */
+    section.faq {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    @media (max-width: 600px) {
+      section.faq { padding: 56px 0; }
+    }
+    .faq-list {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-item {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-item summary {
+      padding: 18px 22px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      color: #fff;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 20px;
+      color: #00D4C8;
+      transition: transform 0.2s;
+    }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item .body {
+      padding: 0 22px 18px;
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .faq-item .body p { margin: 0 0 10px; }
+    .faq-item .body p:last-child { margin-bottom: 0; }
+    .faq-item .body strong { color: #fff; font-weight: 600; }
+
+    /* Footer */
+    footer {
+      padding: 48px 0 64px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      color: #888;
+      font-size: 14px;
+    }
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    footer .links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    footer .links a { color: #cccccc; }
+    footer .copyright { color: #666; font-size: 13px; }
+
+    /* Now in Apple Maps */
+    section.applemaps { padding: 72px 0; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+    .am-eyebrow {
+      display: inline-block; background: rgba(0,212,200,0.12); color: #00D4C8;
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+      padding: 5px 14px; border-radius: 100px; margin-bottom: 16px;
+    }
+    .am-shots { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+    .am-shot { margin: 0; width: 400px; max-width: 90vw; }
+    .am-shot img {
+      width: 100%; border-radius: 18px; border: 1px solid rgba(255,255,255,0.10);
+      display: block; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .am-disclaimer {
+      margin: 36px auto 0; max-width: 660px; font-size: 12px;
+      color: #6a6a75; line-height: 1.7;
+    }
+  </style>
+
+<!-- Entity schema. Homepage had NO structured data — Google had no
+     machine-readable statement of what Seat Sherpa is, which weakens brand
+     and app-related queries. Deliberately NO aggregateRating: schema ratings
+     must reflect ratings visible on the page, and we don't show any here. -->
+<script type="application/ld+json">{
+"@context":"https://schema.org",
+"@graph":[
+{"@type":"Organization","@id":"https://seatsherpa.app/#org","name":"Seat Sherpa","url":"https://seatsherpa.app","logo":"https://seatsherpa.app/icon.png","description":"Long-distance carpool marketplace across California and Nevada. Drivers share empty seats on trips they are already making; passengers split the cost.","areaServed":[{"@type":"State","name":"California"},{"@type":"State","name":"Nevada"}],"email":"support@seatsherpa.app"},
+{"@type":"WebSite","@id":"https://seatsherpa.app/#website","url":"https://seatsherpa.app","name":"Seat Sherpa","publisher":{"@id":"https://seatsherpa.app/#org"}},
+{"@type":"SoftwareApplication","name":"Seat Sherpa","applicationCategory":"TravelApplication","operatingSystem":"iOS, Android","url":"https://seatsherpa.app","downloadUrl":"https://seatsherpa.onelink.me/cGHs?pid=web&c=home","publisher":{"@id":"https://seatsherpa.app/#org"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Book a seat in a car already making your trip across California and Nevada, or post your empty seats and split the cost of the drive."}
+]}</script>
+</head>
+<body>
+
+  <!-- ─── Nav ─────────────────────────────────────────────────── -->
+  <nav>
+    <div class="container">
+      <a class="brand" href="/" aria-label="Seat Sherpa — home">
+        <svg class="wordmark" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs>
+          <g transform="translate(-36.4 -50) scale(0.427)">
+            <path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/>
+            <path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/>
+          </g>
+          <text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text>
+          <text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text>
+        </svg>
+      </a>
+      <div class="links">
+        <a href="/rides">Find a ride</a>
+        <a href="#how">How it works</a>
+        <a href="#routes">Routes</a>
+        <a href="/faq">FAQ</a>
+        <a href="/drive">For drivers</a>
+        <a href="mailto:support@seatsherpa.app">Support</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <img class="icon" src="/icon.png" alt="Seat Sherpa" />
+      <h1>Gas is expensive.<br />Carpool to share the cost.</h1>
+      <p class="tagline">
+        Real drivers already heading your way between SF, LA, San Diego, and Vegas — split the gas instead of paying a markup. Faster than the bus, cheaper than the train, and no airport required.
+      </p>
+
+      <div class="hero-cta-row">
+        <a href="/rides" class="hero-driver-cta">🔎 Find a ride</a>
+        <a href="/drive" class="hero-cta-secondary">🚗 Offer a ride</a>
+      </div>
+
+      <!-- Drive Rewards teaser removed 2026-07-31 — program not launched
+           (migrations 0122/0123 unrun). When it returns it belongs here as ONE
+           line BELOW the CTAs: this page is rider-led, and the driver-side
+           detail lives on /drive where someone has already declared intent. -->
+
+
+      <div class="store-badges">
+        <!-- App Store badge — LIVE as of 2026-07-08. -->
+        <a class="store-badge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=home" aria-label="Download on the App Store">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.05 20.28c-.98.95-2.05.86-3.08.41-1.09-.47-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.41C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.78 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.1zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+          </svg>
+          <div class="label">
+            <span class="small">Download on the</span>
+            <span class="big">App Store</span>
+          </div>
+        </a>
+
+        <!-- Google Play badge — LIVE as of 2026-07-08. On Android, the script
+             at the bottom swaps this href for an intent: URL that opens the
+             installed app directly (Play Store fallback when not installed). -->
+        <a class="store-badge" id="playBadge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=home" aria-label="Get it on Google Play">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <defs>
+              <linearGradient id="ga" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00D4C8"/>
+                <stop offset="100%" stop-color="#0098A8"/>
+              </linearGradient>
+              <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#FFC107"/>
+                <stop offset="100%" stop-color="#FF9800"/>
+              </linearGradient>
+              <linearGradient id="gc" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#FF5252"/>
+                <stop offset="100%" stop-color="#F44336"/>
+              </linearGradient>
+              <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#4CAF50"/>
+                <stop offset="100%" stop-color="#1B5E20"/>
+              </linearGradient>
+            </defs>
+            <path d="M3 1.5v21l9-10.5z" fill="url(#ga)"/>
+            <path d="M3 1.5l13 11.6L21 9 5 .5 3 1.5z" fill="url(#gd)" opacity="0.9"/>
+            <path d="M21 9l-5 4.1 5 4.1c1.5-.9 1.5-3.2 0-4.1V9z" fill="url(#gb)"/>
+            <path d="M3 22.5l13-11.6 5 6.3-16 8.6-2-3.3z" fill="url(#gc)" opacity="0.9"/>
+          </svg>
+          <div class="label">
+            <span class="small">GET IT ON</span>
+            <span class="big">Google Play</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Now in Apple Maps ─────────────────────────────────── -->
+  <section class="applemaps" id="apple-maps">
+    <div class="container">
+      <span class="am-eyebrow">NEW</span>
+      <h2>Now in Apple Maps</h2>
+      <p class="section-sub">
+        Ask Apple Maps for directions between two California cities and tap the ride tab — Seat Sherpa now shows up right next to Uber and Lyft. Same screen, same trip, a fraction of the price.
+      </p>
+      <div class="am-shots">
+        <figure class="am-shot">
+          <img src="/applemaps-sanjose-la.png" width="1080" height="1350" loading="lazy"
+               alt="Now in Apple Maps — LA to San Jose ride tab: Lyft $789, Seat Sherpa $42" />
+        </figure>
+        <figure class="am-shot">
+          <img src="/applemaps-sanjose-sf.png" width="1080" height="1350" loading="lazy"
+               alt="Same trip in Apple Maps — San Jose to San Francisco ride tab: UberX $76.22, Lyft $89.97, Seat Sherpa $10.50" />
+        </figure>
+      </div>
+      <p class="am-disclaimer">
+        Real, unedited Apple Maps results — ride-hail prices vary by time and demand. Apple Maps is a trademark of Apple Inc. Seat Sherpa is an independent app and is not affiliated with, sponsored by, or endorsed by Apple.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Features ──────────────────────────────────────────── -->
+  <section class="features">
+    <div class="container">
+      <h2>Why Seat Sherpa</h2>
+      <p class="section-sub">
+        It's not ride-hailing — it's a real carpool. Drivers are already heading your way with empty seats, so you split the cost of a drive that's happening anyway instead of paying a markup.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <span class="emoji">🚗</span>
+          <h3>A real carpool, not a markup</h3>
+          <p>Drivers are already making the trip — you're just sharing gas and wear. Prices are capped at the IRS mileage rate split across the seats, so it's always fair and nobody's running a business off you.</p>
+        </div>
+        <div class="feature-card">
+          <span class="emoji">⚡</span>
+          <h3>Beats the bus, the train, and the airport</h3>
+          <p>Direct and point-to-point in a real car — no depots, no transfers, no TSA lines. Cheaper than a train ticket, comfier than a bus seat, and for most of these routes there isn't even a direct flight.</p>
+        </div>
+        <div class="feature-card">
+          <span class="emoji">🌱</span>
+          <h3>One car instead of two</h3>
+          <p>The drive was happening anyway — filling a seat means one less solo car making the same trip. The app counts the CO₂ each shared ride saves, so you can see the difference add up.</p>
+        </div>
+        <div class="feature-card">
+          <span class="emoji">🪪</span>
+          <h3>Verified, rated drivers</h3>
+          <p>Drivers are phone-verified with a license on file, and both sides rate each other after every trip. Trust built on real rides, not anonymous reviews.</p>
+        </div>
+        <div class="feature-card">
+          <span class="emoji">🔒</span>
+          <h3>Secure, upfront payments</h3>
+          <p>Driver-set prices shown in full before you book — no surge, no bidding. Paid securely via Stripe and only released to the driver once your trip starts.</p>
+        </div>
+        <div class="feature-card">
+          <span class="emoji">🛣️</span>
+          <h3>Carpool-lane &amp; toll perks</h3>
+          <p>A real carpool has real perks: with two or more of you, use HOV/carpool lanes to skip traffic, and with a FasTrak Flex, carpools get discounted tolls in Bay Area express lanes and on the bridges. (Most carpool lanes need 2+; a few, like the Bay Bridge, need 3+.)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── How it works ──────────────────────────────────────── -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <h2>How it works</h2>
+      <p class="section-sub">From signup to first ride in under five minutes.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="number">1</div>
+          <h3>Sign up &amp; verify</h3>
+          <p>Create an account with your phone. We send you a one-time code to confirm it's really you.</p>
+        </div>
+        <div class="step">
+          <div class="number">2</div>
+          <h3>Find or post a ride</h3>
+          <p>Passengers browse rides going your way. Drivers post their planned trips and set a seat price.</p>
+        </div>
+        <div class="step">
+          <div class="number">3</div>
+          <h3>Book and go</h3>
+          <p>Pay securely in-app, coordinate with your driver, and hit the road. The riders&apos; cost share reaches the driver about 2 days later.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Routes ────────────────────────────────────────────── -->
+  <section class="routes" id="routes">
+    <div class="container">
+      <h2>Where we operate</h2>
+      <p class="section-sub">
+        California and Nevada only, for now. Here are the most common routes.
+      </p>
+      <div class="routes-list">
+        <span class="route-pill">Bay Area ↔ Las Vegas</span>
+        <span class="route-pill">LA ↔ Las Vegas</span>
+        <span class="route-pill">Bay Area ↔ LA</span>
+        <span class="route-pill">Bay Area ↔ Sacramento</span>
+        <span class="route-pill">LA ↔ San Diego</span>
+        <span class="route-pill">LA ↔ Palm Springs</span>
+        <span class="route-pill">Anywhere else in CA / NV</span>
+      </div>
+      <div class="driver-cta-band">
+        <a href="/drive" class="driver-cta-inline">🚗 Driving one of these routes? Get the app and post it →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Trust ─────────────────────────────────────────────── -->
+  <section class="trust">
+    <div class="container">
+      <h2>Built for trust</h2>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="body">
+            <strong>Verified accounts, private coordination</strong>
+            <span>SMS verification prevents fake accounts, and in-app messaging &amp; calls mean you never share personal info beforehand.</span>
+          </div>
+        </div>
+        <div class="trust-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><path d="M18 12a2 2 0 100 4h4v-4z"/></svg>
+          <div class="body">
+            <strong>Secure payments via Stripe</strong>
+            <span>The same payment platform behind Amazon, Lyft, and Instacart — we never see or store your card details.</span>
+          </div>
+        </div>
+        <div class="trust-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="body">
+            <strong>Cancellation policy</strong>
+            <span>One clear, standard refund policy on every ride. No surprises.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ teaser (full FAQ lives on its own page: /faq) ───── -->
+  <section class="faq" id="faq">
+    <div class="container" style="text-align:center;">
+      <h2>Questions?</h2>
+      <p class="section-sub">
+        How prices are capped, how we verify drivers, the 4-digit pickup code, refunds, luggage, and more.
+      </p>
+      <a href="/faq" class="driver-cta-inline">Read the FAQ →</a>
+    </div>
+  </section>
+
+
+  <!-- ─── Footer ────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="links" style="margin-bottom:14px;flex-wrap:wrap">
+        <a href="/routes/san-francisco-to-los-angeles">SF → LA</a>
+        <a href="/routes/los-angeles-to-san-francisco">LA → SF</a>
+        <a href="/routes/los-angeles-to-san-diego">LA → San Diego</a>
+        <a href="/routes/los-angeles-to-las-vegas">LA → Vegas</a>
+        <a href="/routes/san-francisco-to-sacramento">SF → Sacramento</a>
+        <a href="/rides"><strong>Browse live rides →</strong></a>
+        <a href="/routes">All routes</a>
+      </div>
+      <div class="links" style="margin-bottom:14px;flex-wrap:wrap">
+        <a href="/guides/cheapest-way-san-francisco-to-los-angeles">Cheapest way SF→LA</a>
+        <a href="/guides/blablacar-usa">BlaBlaCar in the US?</a>
+        <a href="/guides/poparide-usa">Poparide in the US?</a>
+        <a href="/guides/kangaride-usa">Kangaride in the US?</a>
+        <a href="/guides/hitch-rideshare-california">Hitch in California?</a>
+        <a href="/guides/waze-carpool-alternative">Waze Carpool alternatives</a>
+        <a href="/guides/zimride-alternative">Zimride alternatives</a>
+        <a href="/guides/casual-carpool-bay-area">Bay Area casual carpool</a>
+      </div>
+      <div class="links">
+        <a href="/rides">Find a ride</a>
+        <a href="/faq">FAQ</a>
+        <a href="/drive">Drive with us</a>
+        <a href="/careers">Careers</a>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
+      </div>
+      <div class="copyright">© 2026 Seat Sherpa</div>
+    </div>
+  </footer>
+
+<script>
+  // Android smart open. Chrome requires a USER TAP to launch an app via an
+  // intent: URL (no auto-launch on page load — anti-hijack security), so the
+  // best no-rebuild experience is a sticky, obvious banner: one tap opens the
+  // installed app via its seatsherpa:// scheme, or falls back to the Play
+  // Store listing when it isn't installed. The Play badge gets the same href.
+  // (True zero-tap open — email link straight into the app — is Android App
+  // Links, which needs intent filters in the binary: next native build.)
+  (function () {
+    var ua = navigator.userAgent;
+    var isAndroid = /android/i.test(ua);
+    var isIOS = /iphone|ipad|ipod/i.test(ua);
+    if (!isAndroid && !isIOS) return;
+
+    var playUrl = 'https://seatsherpa.onelink.me/cGHs?pid=web&c=home';
+    var appStoreUrl = 'https://seatsherpa.onelink.me/cGHs?pid=web&c=home';
+    var intentUrl =
+      'intent://#Intent;scheme=seatsherpa;package=com.seatsherpa.app' +
+      ';S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end';
+    // Android: intent opens the installed app, else Play. iOS: the App Store
+    // page (which shows "Open" when installed).
+    var openUrl = isAndroid ? intentUrl : appStoreUrl;
+
+    var badge = document.getElementById('playBadge');
+    if (badge && isAndroid) badge.href = intentUrl;
+
+    // Sticky top banner — the "auto prompt". Dismissible; remembers dismissal
+    // for the session so it doesn't nag on every navigation.
+    if (sessionStorage.getItem('ssAppBannerDismissed')) return;
+    var bar = document.createElement('div');
+    bar.setAttribute('style',
+      'position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;gap:12px;' +
+      'padding:12px 14px;background:#0E1B1A;border-bottom:1px solid rgba(0,212,200,0.35);' +
+      'font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;');
+    bar.innerHTML =
+      '<img src="/icon.png" alt="" style="width:36px;height:36px;border-radius:9px;flex-shrink:0;">' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="color:#fff;font-weight:700;font-size:14px;">Seat Sherpa</div>' +
+        '<div style="color:#9ba6a5;font-size:12px;">Faster in the app</div>' +
+      '</div>' +
+      '<a href="' + openUrl + '" style="background:#00D4C8;color:#000;font-weight:800;font-size:14px;' +
+        'padding:10px 18px;border-radius:100px;text-decoration:none;flex-shrink:0;">Open</a>' +
+      '<button id="ssBannerX" style="background:none;border:none;color:#888;font-size:20px;line-height:1;' +
+        'padding:4px 6px;flex-shrink:0;">×</button>';
+    document.body.appendChild(bar);
+    document.body.style.paddingTop = '64px';
+    document.getElementById('ssBannerX').addEventListener('click', function () {
+      sessionStorage.setItem('ssAppBannerDismissed', '1');
+      bar.remove();
+      document.body.style.paddingTop = '';
+    });
+  })();
+</script>
+<!-- Campaign beacon — same as drive.html: any visit carrying ?c= /
+     ?utm_campaign= / ?src= logs one row to qr_scans (admin Campaigns tab +
+     daily digest). Without this, an ad pointed at the HOMEPAGE was invisible
+     to our own attribution. Untagged/organic visits log nothing. -->
+<script>
+  (function () {
+    var qs = new URLSearchParams(location.search);
+    var campaign = (qs.get('c') || qs.get('utm_campaign') || qs.get('src') || '').slice(0, 40);
+    if (!campaign) return;
+    try {
+      fetch('https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/log-qr-scan?c=' +
+        encodeURIComponent(campaign), { redirect: 'manual', keepalive: true }).catch(function () {});
+    } catch (e) {}
+  })();
+</script>
+<!-- Store-tap conversion (see app.html for rationale). -->
+<script>
+  (function () {
+    document.addEventListener("click", function (e) {
+      var a = e.target && e.target.closest && e.target.closest("a[href]");
+      if (!a) return;
+      if (!/apps.apple.com|play.google.com/.test(a.href)) return;
+      try { if (window.rdt) window.rdt("track", "ViewContent"); } catch (_) {}
+      try { if (window.fbq) window.fbq("track", "ViewContent"); } catch (_) {}
+      try { if (window.gtag && !navigator.globalPrivacyControl) window.gtag("event", "conversion", { send_to: "AW-18365966554" }); } catch (_) {}
+      // Second funnel stage into OUR OWN data (qr_scans.event, migration 0139).
+      // Without this the ad platforms know the tap happened and we do not, so
+      // "200 landed" and "200 landed, 0 tapped through" look identical to us.
+      // keepalive is load-bearing: the click navigates away immediately and an
+      // ordinary fetch would be cancelled in flight.
+      try {
+        var q = new URLSearchParams(location.search);
+        var c = (q.get("c") || q.get("utm_campaign") || q.get("src") || "").slice(0, 40);
+        if (c) {
+          fetch("https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/log-qr-scan?e=store_tap&c=" +
+            encodeURIComponent(c), { redirect: "manual", keepalive: true }).catch(function () {});
+        }
+      } catch (_) {}
+    }, true);
+  })();
+</script>
+</body>
+</html>

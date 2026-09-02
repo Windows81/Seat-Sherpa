@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drive with Seat Sherpa — Split costs and save up to $228 per trip</title>
+  <meta name="description" content="Headed to Vegas, LA, or San Diego anyway? Share the trip with passengers and save up to $228 in driving costs. Set your own seat price (up to $55), keep 95%. Available on iOS and Android." />
+
+  <!-- Open Graph + Twitter cards. Driver-specific image would be nice
+       eventually; using the same icon for now so the link preview matches
+       the main site visually. -->
+  <meta property="og:title" content="Drive with Seat Sherpa" />
+  <meta property="og:description" content="Split costs and save up to $228 per trip on routes you're already driving across California and Nevada." />
+  <meta property="og:image" content="https://seatsherpa.app/icon.png" />
+  <meta property="og:url" content="https://seatsherpa.app/drive" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Same design system as index.html — kept inline to avoid an
+       extra HTTP request and to keep this page self-contained. */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #0E0E10;
+      color: #ffffff;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: #00D4C8; text-decoration: none; transition: opacity 0.15s; }
+    a:hover { opacity: 0.8; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Nav */
+    nav {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 17px;
+      color: #fff;
+    }
+    nav .brand img { width: 32px; height: 32px; border-radius: 8px; }
+    nav .links { display: flex; gap: 24px; font-size: 14px; }
+    nav .links a { color: #cccccc; }
+    nav .links a.active { color: #00D4C8; font-weight: 600; }
+    @media (max-width: 600px) {
+      nav .links { display: none; }
+    }
+
+    /* Hero — same gradient as index but with a gold accent because this
+       page's narrative is "earnings" rather than "trust". The amber
+       suggests cash without being tacky. */
+    .hero {
+      padding: 80px 0 64px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at top, rgba(255,193,7,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(0,212,200,0.08) 0%, transparent 50%),
+        #0E0E10;
+    }
+    .hero .eyebrow {
+      display: inline-block;
+      background: rgba(0,212,200,0.12);
+      color: #00D4C8;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: 56px;
+      line-height: 1.05;
+      letter-spacing: -1.2px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #ffffff 0%, #b3b3b3 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero h1 .accent {
+      background: linear-gradient(180deg, #FFD75A 0%, #c8a84b 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 56px 0 48px; }
+      .hero h1 { font-size: 38px; letter-spacing: -0.4px; }
+    }
+    .hero p.tagline {
+      font-size: 19px;
+      color: #cccccc;
+      max-width: 620px;
+      margin: 0 auto 40px;
+    }
+
+    /* CTA buttons */
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: linear-gradient(180deg, #00D4C8 0%, #00B5AA 100%);
+      color: #000;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 15px;
+      letter-spacing: 0.2px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 8px 24px rgba(0,212,200,0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(0,212,200,0.35);
+      opacity: 1;
+    }
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-weight: 600;
+      padding: 13px 28px;
+      border-radius: 100px;
+      font-size: 15px;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(0,212,200,0.5);
+    }
+
+    /* Sections */
+    section.earnings, section.how-it-works, section.faq {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    @media (max-width: 600px) {
+      section.earnings, section.how-it-works, section.faq {
+        padding: 56px 0;
+      }
+    }
+    section h2 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    section h2 + p.section-sub {
+      text-align: center;
+      color: #999;
+      max-width: 580px;
+      margin: 0 auto 56px;
+    }
+    @media (max-width: 600px) {
+      section h2 { font-size: 28px; }
+      section h2 + p.section-sub { margin-bottom: 40px; }
+    }
+
+    /* Earnings table — driver's most important question. Gives concrete
+       numbers grounded in real CA↔NV routes. The "you keep" math = seat
+       price × seats × (1 - 5% driver fee). */
+    .earnings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .earnings-card {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .earnings-card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; right: -1px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #00D4C8 50%, transparent 100%);
+      opacity: 0.4;
+    }
+    .earnings-card .route {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+    .earnings-card .amount {
+      font-size: 36px;
+      font-weight: 800;
+      color: #FFD75A;
+      letter-spacing: -0.8px;
+      margin-bottom: 8px;
+    }
+    .earnings-card .amount-sub {
+      font-size: 13px;
+      color: #888;
+    }
+    .earnings-card .breakdown {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.7;
+    }
+    .earnings-card .breakdown strong {
+      color: #fff;
+      font-weight: 600;
+    }
+    .earnings-fineprint {
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+      margin-top: 32px;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Steps — same component as the index page, with driver-flavored copy. */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .step {
+      text-align: center;
+      padding: 24px;
+    }
+    .step .number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 24px;
+      background: rgba(0,212,200,0.12);
+      color: #00D4C8;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .step h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step p {
+      color: #999;
+      font-size: 14px;
+    }
+
+    /* FAQ — collapsible details. Native <details>/<summary> for zero JS
+       and good accessibility out of the box. */
+    .faq-list {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-item {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .faq-item summary {
+      padding: 18px 22px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      color: #fff;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 20px;
+      color: #00D4C8;
+      transition: transform 0.2s;
+    }
+    .faq-item[open] summary::after {
+      content: '−';
+    }
+    .faq-item .body {
+      padding: 0 22px 18px;
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* Final CTA section */
+    .cta-section {
+      text-align: center;
+      padding: 96px 0;
+      background: radial-gradient(ellipse at center, rgba(0,212,200,0.10) 0%, transparent 60%);
+    }
+    .cta-section h2 {
+      font-size: 40px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.8px;
+    }
+    .cta-section p {
+      color: #aaa;
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+    @media (max-width: 600px) {
+      .cta-section { padding: 64px 0; }
+      .cta-section h2 { font-size: 30px; }
+    }
+
+    /* Footer */
+    footer {
+      padding: 48px 0 64px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      color: #888;
+      font-size: 14px;
+    }
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    footer .links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    footer .links a { color: #cccccc; }
+    footer .copyright { color: #666; font-size: 13px; }
+  </style>
+  <!-- Vercel Web Analytics — this is the paid-ad landing page, so it MUST be
+       tracked (it wasn't, which made all Meta ad traffic invisible). -->
+  <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+  <!-- ─── Nav ─────────────────────────────────────────────────── -->
+  <nav>
+    <div class="container">
+      <div class="brand">
+        <a href="/" style="display: flex; align-items: center; gap: 10px; color: #fff;">
+          <svg style="height:30px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>
+        </a>
+      </div>
+      <div class="links">
+        <a href="/">For riders</a>
+        <a href="/drive" class="active">For drivers</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="mailto:support@seatsherpa.app">Support</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">For drivers</span>
+      <h1>Split costs and save up to <span class="accent">$228</span> per trip<br />on routes you're already driving</h1>
+      <p class="tagline">
+        Headed to Vegas, LA, San Francisco, or San Diego anyway? Share the trip with passengers headed the same way, contributing toward your costs.
+      </p>
+      <!-- Drive Rewards banner removed 2026-07-31 — program not launched
+           (migrations 0122/0123 unrun). Do NOT restore until both have run in
+           prod: advertising credit the DB can't grant is a promise we'd break
+           on the first drive. Copy discipline when it returns: "get ride
+           credit", never "earn money" (Meta Employment classifier + NV
+           posture), and expiry must stay disclosed per CA Civ. §1749.5. -->
+      <div class="cta-row">
+        <a href="#signup" class="btn-primary">Start driving today</a>
+        <a href="#how" class="btn-secondary">See how it works</a>
+      </div>
+      <!-- The #1 hesitation, answered before the fold instead of buried in
+           the FAQ. "Usually" is load-bearing — we can't promise every
+           insurer/state, and the FAQ below carries the full nuance. -->
+      <p style="margin:18px auto 0;max-width:620px;font-size:14px;line-height:1.6;opacity:0.85;">
+        🚘 No commercial license, permits, or special insurance usually needed — seat prices are
+        capped at the IRS mileage rate, so this is cost-sharing carpooling, not professional
+        driving.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Earnings ───────────────────────────────────────────── -->
+  <section class="earnings" id="earnings">
+    <div class="container">
+      <h2>What you'll actually save</h2>
+      <p class="section-sub">
+        Real numbers for the most common CA↔NV routes. You set the seat price; our 5% fee covers credit card processing and operating costs. Bigger vehicle, more savings — drivers with 7-seat vans save the most.
+      </p>
+      <div class="earnings-grid">
+        <div class="earnings-card">
+          <div class="route">Bay Area → LA <em style="color:#FFD75A;font-style:normal;font-size:11px;font-weight:700;letter-spacing:0.5px;">· 7-SEAT VAN</em></div>
+          <div class="amount">$228</div>
+          <div class="amount-sub">saved on a full ride (6 passengers)</div>
+          <div class="breakdown">
+            <strong>$40</strong> avg seat price<br />
+            <strong>6</strong> seats × $40 = $240 gross<br />
+            <strong>−$12</strong> (5% processing fee)<br />
+            <strong>= $228</strong> back in your pocket
+          </div>
+        </div>
+        <div class="earnings-card">
+          <div class="route">Bay Area → LA <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
+          <div class="amount">$152</div>
+          <div class="amount-sub">saved on a full ride (4 passengers)</div>
+          <div class="breakdown">
+            <strong>$40</strong> avg seat price<br />
+            <strong>4</strong> seats × $40 = $160 gross<br />
+            <strong>−$8</strong> (5% processing fee)<br />
+            <strong>= $152</strong> back in your pocket
+          </div>
+        </div>
+        <div class="earnings-card">
+          <div class="route">LA → Las Vegas <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
+          <div class="amount">$133</div>
+          <div class="amount-sub">saved on a full ride (4 passengers)</div>
+          <div class="breakdown">
+            <strong>$35</strong> avg seat price<br />
+            <strong>4</strong> seats × $35 = $140 gross<br />
+            <strong>−$7</strong> (5% processing fee)<br />
+            <strong>= $133</strong> back in your pocket
+          </div>
+        </div>
+        <div class="earnings-card">
+          <div class="route">LA → San Diego <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
+          <div class="amount">$76</div>
+          <div class="amount-sub">saved on a full ride (4 passengers)</div>
+          <div class="breakdown">
+            <strong>$20</strong> avg seat price<br />
+            <strong>4</strong> seats × $20 = $80 gross<br />
+            <strong>−$4</strong> (5% processing fee)<br />
+            <strong>= $76</strong> back in your pocket
+          </div>
+        </div>
+      </div>
+      <p class="earnings-fineprint">
+        Examples assume a full ride at typical seat prices for each route. Drivers set their per-seat price within a range that depends on the trip — minimum $10, maximum tied to the IRS standard mileage rate for the distance you're driving (capped at $55). This keeps Seat Sherpa a cost-sharing platform, not a commercial transport service. The 5% fee covers credit card processing and platform operating costs.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── How it works ──────────────────────────────────────── -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <h2>How it works</h2>
+      <p class="section-sub">From signup to first trip in under 24 hours.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="number">1</div>
+          <h3>Sign up &amp; verify</h3>
+          <p>Phone + driver's license + your vehicle. Takes 5 minutes.</p>
+        </div>
+        <div class="step">
+          <div class="number">2</div>
+          <h3>Connect a payout account</h3>
+          <p>We hand off to Stripe for bank verification. Your cost-share reimbursements are deposited directly to your bank account after each ride.</p>
+        </div>
+        <div class="step">
+          <div class="number">3</div>
+          <h3>Post your trip</h3>
+          <p>"Going to Vegas Friday at 8am, 3 seats open, $35 each." Passengers book directly.</p>
+        </div>
+        <div class="step">
+          <div class="number">4</div>
+          <h3>Pick up &amp; go</h3>
+          <p>Ask each passenger for their 4-digit pickup code at the curb. Drive your trip. Get paid.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ────────────────────────────────────────────────── -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <h2>Questions drivers ask</h2>
+      <div class="faq-list">
+
+        <details class="faq-item">
+          <summary>What about my insurance?</summary>
+          <div class="body">
+            <p>
+              Seat Sherpa is cost-sharing, not commercial driving — same legal category as splitting gas with friends. Your personal auto insurance usually covers it the same way it would cover any personal trip, because our <a href="#" onclick="document.querySelectorAll('details.faq-item').forEach(d=>{if(d.querySelector('summary').textContent.includes('max price per seat')){d.setAttribute('open','');d.scrollIntoView({behavior:'smooth',block:'center'});}});return false;" style="color:#00D4C8;">per-seat price cap</a> keeps you in true cost-sharing territory and away from anything an insurer would call "commercial."
+            </p>
+            <p>
+              The one wrinkle: many personal auto policies contain a "livery exclusion" — language that excludes coverage when the vehicle is used "for hire." A reasonable insurer reading it correctly should say "cost-sharing isn't for-hire, you're covered." An aggressive claims adjuster looking for a reason to deny might point to the app-based payment and refuse to pay. You can't predict which interpretation a specific adjuster will pick when it matters.
+            </p>
+            <p>
+              <strong>Before your first trip, take 5 minutes to do one of these:</strong>
+            </p>
+            <ol>
+              <li>Call your insurance carrier, disclose that you'll be using Seat Sherpa to share trip costs, and get a quick answer on whether your policy covers it. For most carriers and most policies, the answer will be yes.</li>
+              <li>If you want extra peace of mind, add a <strong>ride-sharing endorsement</strong> (sometimes called a "rideshare rider") to your policy. Most CA/NV carriers — Mercury, Allstate, Progressive, State Farm, USAA — offer this for $15–$30/month. It explicitly removes any ambiguity in the livery exclusion.</li>
+            </ol>
+            <p>
+              You're driving on your own insurance — Seat Sherpa doesn't currently provide platform liability coverage. Knowing your coverage situation before you drive is the single most important thing you can do.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How does payment work?</summary>
+          <div class="body">
+            Passengers pay through the app via Stripe when they book. The money is held securely until you enter the passenger's 4-digit pickup code at the curb — that confirms the trip started and releases your share (95% of each seat) to your bank account through your connected Stripe account, paid out about 2 days later. The 5% we keep covers credit card processing and the platform's operating costs. Stripe handles all card details; we never see your card or your passenger's.
+          </div>
+        </details>
+
+        <!-- Drive Rewards FAQ removed 2026-07-31 with the banner — same
+             reason: 0122/0123 unrun, so neither the credit nor the 90-day
+             expiry it described actually exists yet. -->
+        <details class="faq-item">
+          <summary>How does ride credit work? Does it expire?</summary>
+          <div class="body">
+            Ride credit (from referrals or promo codes) applies automatically to your next
+            booking — you'll see it deducted on the payment screen. It can't be transferred or
+            cashed out, and <strong>all credit expires 180 days after the day it's granted</strong>.
+            Oldest credit is always used first, so whatever you spend counts against the credit
+            closest to expiring.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Why is there a max price per seat?</summary>
+          <div class="body">
+            <p>
+              Seat Sherpa is a <strong>cost-sharing carpool platform</strong>, not a commercial transport service like Uber or Lyft. The legal difference matters: cost-sharing carpools don't need to be licensed as Transportation Network Companies (TNCs), which keeps everyone's life simpler — no commercial insurance requirements, no special permits, no $1M policies, lower fees.
+            </p>
+            <p>
+              For that to hold up, drivers <strong>can't profit</strong> from a trip — they can only recover what the trip actually costs to drive. The IRS publishes a standard mileage rate ($0.76/mile as of July 1, 2026) that's universally accepted as a proxy for the real cost of operating a personal vehicle: gas, wear, depreciation, insurance. We use that as our ceiling:
+            </p>
+            <p style="background:#1a1a1d;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 18px;font-family:ui-monospace,monospace;font-size:13px;color:#ccc;">
+              max per-seat price = (trip distance × $0.76) ÷ seats offered
+            </p>
+            <p>
+              Examples (4 passenger seats):
+            </p>
+            <ul>
+              <li>LA → San Diego (~120 mi) → max $22/seat</li>
+              <li>LA → Vegas (~270 mi) → max $51/seat (IRS cap, still under the $55 ceiling)</li>
+              <li>Bay → LA (~380 mi) → would calc to $72, capped at $55 (our hard ceiling)</li>
+              <li>Bay → Las Vegas (~570 mi) → would calc to $108, capped at $55</li>
+            </ul>
+            <p>
+              On longer routes the IRS-rate cap is generous enough that our $55 brand ceiling takes over. On shorter routes the IRS cap binds. Either way, you can't price yourself into "commercial driver" territory by accident — when you post a ride the app shows the exact max for your route (trip distance × $0.76 ÷ seats offered) and won't let you set a seat price above it.
+            </p>
+            <p>
+              <strong>This is also why a rideshare endorsement isn't strictly required</strong> (see the insurance FAQ above): you're staying squarely in cost-sharing territory, which is what your personal auto insurance is designed to cover. The endorsement is a belt-and-suspenders option if you want extra peace of mind, not a legal necessity.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What if a passenger doesn't show up?</summary>
+          <div class="body">
+            If they no-show, you don't enter their pickup code — and the booking stays in limbo until you cancel it with a reason. Per our cancellation policy, they may forfeit some or all of their fare depending on how close to departure it was. You drive your trip with the other passengers (if any) and the no-show pays the cancellation fee. You can also block a no-show passenger so you don't see them on future bookings.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What if I have to cancel?</summary>
+          <div class="body">
+            Things happen. If you cancel a confirmed booking, passengers get a 100% refund automatically. Cancelling once or twice is fine; doing it routinely will affect your driver rating and your ride visibility in the marketplace. We expect drivers to honor the commitments they post.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How much does this actually offset my driving costs?</summary>
+          <div class="body">
+            Quite a bit, on the right trips. On an LA→Vegas run in a 5-seat car at $35/seat, you'd receive $133 after our 5% fee. A round-trip fill-up for that route runs $90–$120, so passenger contributions cover all your fuel — and a 7-seat van on Bay→LA saves up to $228, more than enough for gas, wear, and a meal at the destination. The IRS standard mileage rate ($0.76/mile, which accounts for gas + wear + depreciation + insurance) is the ceiling we enforce: you can't price above that. The result is cost-sharing, not commercial driving.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do I get the carpool lane and toll discounts?</summary>
+          <div class="body">
+            Often, yes — a real carpool has real perks. With two or more people in the car you can use HOV/carpool lanes to skip traffic, and with a FasTrak Flex tag set to your headcount, carpools get discounted (sometimes free) tolls in Bay Area express lanes and on the bridges. Heads up so you don't get dinged: most carpool lanes need 2+ occupants, but some — including the San Francisco–Oakland Bay Bridge — need 3+, and the toll discounts only apply during posted carpool hours. Follow the signs for the lane you're in.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do you screen passengers?</summary>
+          <div class="body">
+            Every passenger verifies their phone via SMS at signup. They get a rating after every ride that other drivers see. You can also block passengers you don't want to see again — they'll never appear on your bookings or in your inbox. Two-way ratings build trust over time so the platform self-cleans.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What's the 4-digit pickup code thing?</summary>
+          <div class="body">
+            It's how we confirm a trip actually happened. Each passenger sees a unique 4-digit code in their app. At pickup, you ask them for it and enter it in your app — that marks the trip as started and unlocks the "Mark complete" button. Without the code, the trip doesn't count and you don't get paid. It's a low-friction safety net against fraud on both sides (drivers claiming trips that didn't happen, passengers ghosting after paying).
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>What kind of car do I need?</summary>
+          <div class="body">
+            Any safe, registered, insured passenger vehicle works — even a 2-seat coupe. You set the number of passenger seats you can offer when you post a ride (1 to 7), so the more seats you can share, the more of your trip costs get covered. Sedans, SUVs, vans, hybrids, EVs, pickups, coupes — all welcome. We verify your registration and license at signup. No specific make, model, or year requirements.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Where can I drive?</summary>
+          <div class="body">
+            Anywhere within California and Nevada, for now. The most popular routes are SF↔LA, Bay↔Vegas, LA↔Vegas, LA↔San Diego, and LA↔Palm Springs, but you can post any route — including small towns, college campuses, and so on. We'll expand to Arizona and Oregon once CA/NV is humming.
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do taxes work?</summary>
+          <div class="body">
+            Driving income is taxable. Stripe will issue you a 1099 if you earn $600+ in a calendar year. You're treated as an independent contractor — track your mileage, gas receipts, and a portion of vehicle maintenance as deductible business expenses. We're not tax advisors; consult one if your driving volume is significant.
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Signup form ────────────────────────────────────────── -->
+  <section class="cta-section" id="signup">
+    <div class="container">
+      <h2>Ready to drive?</h2>
+      <p>
+        <strong>We're live in California and Nevada</strong> — download Seat Sherpa, add your
+        vehicle, and post your first ride today.
+      </p>
+      <div class="cta-row" style="justify-content:center;margin:18px 0 28px;">
+        <a class="btn-primary" id="driveAppleBtn" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=drive" style="display:inline-flex;align-items:center;gap:9px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.86-3.08.41-1.09-.47-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.41C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.78 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.1zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+          App Store
+        </a>
+        <a class="btn-primary" id="drivePlayBtn" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=drive" style="display:inline-flex;align-items:center;gap:9px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <defs>
+              <linearGradient id="pga" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00D4C8"/><stop offset="100%" stop-color="#0098A8"/></linearGradient>
+              <linearGradient id="pgb" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFC107"/><stop offset="100%" stop-color="#FF9800"/></linearGradient>
+              <linearGradient id="pgc" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FF5252"/><stop offset="100%" stop-color="#F44336"/></linearGradient>
+              <linearGradient id="pgd" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4CAF50"/><stop offset="100%" stop-color="#1B5E20"/></linearGradient>
+            </defs>
+            <path d="M3 1.5v21l9-10.5z" fill="url(#pga)"/>
+            <path d="M3 1.5l13 11.6L21 9 5 .5 3 1.5z" fill="url(#pgd)" opacity="0.9"/>
+            <path d="M21 9l-5 4.1 5 4.1c1.5-.9 1.5-3.2 0-4.1V9z" fill="url(#pgb)"/>
+            <path d="M3 22.5l13-11.6 5 6.3-16 8.6-2-3.3z" fill="url(#pgc)" opacity="0.9"/>
+          </svg>
+          Google Play
+        </a>
+      </div>
+      <p>
+        <strong>Outside California or Nevada?</strong> We're expanding across the US soon. Join the
+        driver waitlist below and we'll reach out the moment we launch in your state.
+      </p>
+
+      <form id="driver-signup-form" class="signup-form" novalidate>
+        <div class="form-row">
+          <label class="form-field">
+            <span class="form-label">Name</span>
+            <input type="text" name="name" required autocomplete="name" maxlength="100" />
+          </label>
+          <label class="form-field">
+            <span class="form-label">Email</span>
+            <input type="email" name="email" required autocomplete="email" maxlength="200" inputmode="email" />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label class="form-field">
+            <span class="form-label">Phone <span class="form-optional">(optional)</span></span>
+            <input type="tel" name="phone" autocomplete="tel" maxlength="30" inputmode="tel" />
+          </label>
+          <label class="form-field">
+            <span class="form-label">Home base</span>
+            <input type="text" name="home_base" required placeholder="e.g. San Francisco" maxlength="200" />
+          </label>
+        </div>
+
+        <label class="form-field">
+          <span class="form-label">Your vehicle</span>
+          <input type="text" name="vehicle" required placeholder="e.g. 2019 Toyota Sienna · 6 seats" maxlength="200" />
+        </label>
+
+        <label class="form-field">
+          <span class="form-label">Routes you regularly drive</span>
+          <textarea name="routes" required rows="3" placeholder="e.g. Bay↔LA most weekends. Occasional LA→Vegas runs." maxlength="1000"></textarea>
+        </label>
+
+        <!-- Honeypot — hidden from humans, irresistible to bots.
+             aria-hidden + tabindex=-1 keep it out of accessible flow. -->
+        <div class="form-honeypot" aria-hidden="true">
+          <label>
+            Website (leave blank)
+            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="signup-submit">
+            Join the expansion waitlist
+          </button>
+          <p class="form-fineprint">
+            By submitting you agree to be contacted by the Seat Sherpa team about driving. We never share your info.
+          </p>
+        </div>
+
+        <div class="form-error" id="signup-error" hidden></div>
+      </form>
+
+      <!-- Success state — swapped in after a successful submit -->
+      <div class="signup-success" id="signup-success" hidden>
+        <div class="success-icon">✓</div>
+        <h3>You're on the list!</h3>
+        <p>We will reach out when we launch in your state. Check that inbox (and spam folder, just in case). In the meantime, you should have a confirmation email already.</p>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Form styles — kept inline alongside the form so future edits to
+       the form structure stay co-located with its styling. */
+    .signup-form {
+      max-width: 640px;
+      margin: 40px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #ddd;
+      letter-spacing: 0.2px;
+    }
+    .form-optional {
+      color: #888;
+      font-weight: 400;
+      font-size: 12px;
+    }
+    .signup-form input[type="text"],
+    .signup-form input[type="email"],
+    .signup-form input[type="tel"],
+    .signup-form textarea {
+      background: #1a1a1d;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    .signup-form input:focus,
+    .signup-form textarea:focus {
+      outline: none;
+      border-color: rgba(0,212,200,0.5);
+    }
+    .signup-form textarea {
+      resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+    .signup-form input:invalid,
+    .signup-form textarea:invalid {
+      /* No visual indicator until the user tries to submit — :invalid would
+         otherwise show a red ring on an empty form, which feels accusatory. */
+    }
+    .signup-form.show-validation input:invalid,
+    .signup-form.show-validation textarea:invalid {
+      border-color: rgba(255,107,107,0.5);
+    }
+    .form-honeypot {
+      /* Move off-screen rather than display:none so screen readers don't
+         flag it as suspicious. */
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    #signup-submit {
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      font-size: 15px;
+      /* Reuse .btn-primary base; the parent class sets the gradient + glow. */
+    }
+    #signup-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: 0 8px 24px rgba(0,212,200,0.15) !important;
+    }
+    .form-fineprint {
+      font-size: 12px;
+      color: #777;
+      max-width: 440px;
+      text-align: center;
+    }
+    .form-error {
+      background: rgba(255,107,107,0.10);
+      border: 1px solid rgba(255,107,107,0.35);
+      color: #ff8a8a;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 14px;
+      text-align: center;
+    }
+    .signup-success {
+      max-width: 540px;
+      margin: 40px auto 0;
+      padding: 32px 28px;
+      background: linear-gradient(180deg, rgba(0,212,200,0.10) 0%, rgba(0,212,200,0.04) 100%);
+      border: 1px solid rgba(0,212,200,0.3);
+      border-radius: 16px;
+      text-align: center;
+    }
+    .signup-success .success-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 28px;
+      background: rgba(0,212,200,0.18);
+      color: #00D4C8;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .signup-success h3 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .signup-success p {
+      color: #bbb;
+      line-height: 1.55;
+    }
+  </style>
+
+  <script>
+    // Form submission handler. Wires the embedded form to the
+    // submit-driver-waitlist Supabase edge function.
+    (function () {
+      const form = document.getElementById('driver-signup-form');
+      const submitBtn = document.getElementById('signup-submit');
+      const errorBox = document.getElementById('signup-error');
+      const successBox = document.getElementById('signup-success');
+      if (!form) return;
+
+      // The Supabase project's edge functions URL. Hardcoding the project
+      // ref is fine here — it's not a secret, just an HTTPS endpoint.
+      const ENDPOINT = 'https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/submit-driver-waitlist';
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        errorBox.hidden = true;
+
+        // Trigger native validation. If the form's invalid (missing
+        // required fields, bad email), bail and show browser errors.
+        if (!form.checkValidity()) {
+          form.classList.add('show-validation');
+          form.reportValidity();
+          return;
+        }
+
+        // Collect form values. FormData → plain object.
+        const data = Object.fromEntries(new FormData(form));
+
+        // Disable button + loading state. Don't change text color — just
+        // dim via :disabled style.
+        submitBtn.disabled = true;
+        const originalLabel = submitBtn.textContent;
+        submitBtn.textContent = 'Submitting…';
+
+        try {
+          const res = await fetch(ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (!res.ok) {
+            let errMsg = 'Something went wrong. Please try again.';
+            try {
+              const body = await res.json();
+              if (body && body.error) errMsg = body.error;
+            } catch (_) {
+              // Non-JSON error response — leave generic message
+            }
+            throw new Error(errMsg);
+          }
+
+          // Conversion signal for ad platforms. Fired only on a CONFIRMED
+          // server success — a validation failure or network error is not a
+          // conversion, and feeding false positives back is how ad
+          // optimisation learns to chase the wrong people.
+          //
+          // SignUp, not Lead: Lead now means "tapped through to an app store"
+          // (Justin, 2026-08-11). Reporting both as Lead would let the
+          // optimiser trade a driver application for a curious badge tap,
+          // since it cannot tell them apart.
+          // One call fires Reddit (SignUp), Meta (CompleteRegistration), and
+          // the Conversions API with a shared event_id so Meta counts it once.
+          // The email is passed for match quality — it is SHA-256 hashed
+          // server-side in the meta-capi function and never stored raw.
+          try {
+            if (window.ssTrack) window.ssTrack('CompleteRegistration', { em: data.email });
+            else if (window.rdt) window.rdt('track', 'SignUp');
+          } catch (_) {}
+          try {
+            if (window.gtag) window.gtag('event', 'conversion', { send_to: 'AW-18365966554' });
+          } catch (_) {}
+
+          // Success — hide form, show thank-you state.
+          form.hidden = true;
+          successBox.hidden = false;
+          // Scroll the success card into view in case the form was tall.
+          successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (err) {
+          errorBox.textContent = (err && err.message) || 'Something went wrong. Please try again.';
+          errorBox.hidden = false;
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalLabel;
+        }
+      });
+    })();
+  </script>
+
+  <!-- Channel attribution for driver outreach. Link drivers to
+       seatsherpa.app/drive?c=<code> (e.g. ?c=fb-calpoly). We log the visit so
+       it shows in the daily digest's QR table, and carry the code onto the
+       store links (Play &referrer, Apple ?ct) so the eventual install is
+       attributed rather than counted as organic. Untagged visits untouched. -->
+  <script>
+    (function () {
+      var qs = new URLSearchParams(location.search);
+      // Accept src= too — the Meta campaign checklist used ?src=meta, and the
+      // beacon silently ignoring it meant a whole ad's landings went unlogged.
+      var campaign = (qs.get('c') || qs.get('utm_campaign') || qs.get('src') || '').slice(0, 40); // Apple ct caps at 40
+      if (!campaign) return;
+      // Log the visit (fire-and-forget; log-qr-scan 302s, we don't follow it).
+      try {
+        fetch('https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/log-qr-scan?c=' +
+          encodeURIComponent(campaign), { redirect: 'manual', keepalive: true }).catch(function () {});
+      } catch (e) {}
+      var ref =
+        'utm_source=' + encodeURIComponent(qs.get('utm_source') || 'driver') +
+        '&utm_medium=' + encodeURIComponent(qs.get('utm_medium') || 'referral') +
+        '&utm_campaign=' + encodeURIComponent(campaign);
+      var apple = document.getElementById('driveAppleBtn');
+      var play = document.getElementById('drivePlayBtn');
+      if (apple) apple.href = 'https://seatsherpa.onelink.me/cGHs?pid=web&c=drive?ct=' + encodeURIComponent(campaign);
+      if (play) play.href = 'https://seatsherpa.onelink.me/cGHs?pid=web&c=drive&referrer=' + encodeURIComponent(ref);
+    })();
+  </script>
+
+  <!-- Store-tap conversion. This page had store buttons but no tap listener at
+       all, so a driver who skipped the waitlist form and went straight to the
+       app registered as a bounce. Lead (the form) and store_tap are different
+       intents and both worth counting. -->
+  <script>
+    (function () {
+      document.addEventListener('click', function (e) {
+        var a = e.target && e.target.closest && e.target.closest('a[href]');
+        if (!a) return;
+        if (!/apps\.apple\.com|play\.google\.com/.test(a.href)) return;
+        try { if (window.rdt) window.rdt('track', 'ViewContent'); } catch (_) {}
+        try { if (window.fbq) window.fbq('track', 'ViewContent'); } catch (_) {}
+        try {
+          if (window.gtag) window.gtag('event', 'conversion', { send_to: 'AW-18365966554' });
+        } catch (_) {}
+        try {
+          var q = new URLSearchParams(location.search);
+          var c = (q.get('c') || q.get('utm_campaign') || q.get('src') || '').slice(0, 40);
+          if (c) {
+            // keepalive: the click navigates away and would cancel a plain fetch.
+            fetch('https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/log-qr-scan?e=store_tap&c=' +
+              encodeURIComponent(c), { redirect: 'manual', keepalive: true }).catch(function () {});
+          }
+        } catch (_) {}
+      }, true);
+    })();
+  </script>
+
+  <!-- ─── Footer ────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="links">
+        <a href="/">For riders</a>
+        <a href="/drive">For drivers</a>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
+      </div>
+      <div class="copyright">© 2026 Seat Sherpa</div>
+    </div>
+  </footer>
+
+</body>
+</html>

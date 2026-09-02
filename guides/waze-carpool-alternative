@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Waze Carpool Alternatives (2026) — What to Use Now That It's Gone</title>
+<meta name="description" content="Waze Carpool shut down in 2022 and never came back. Here are the real alternatives in 2026 — for daily commutes and for city-to-city trips like SF–LA and LA–Vegas." />
+<link rel="canonical" href="https://seatsherpa.app/guides/waze-carpool-alternative" />
+<meta property="og:title" content="Waze Carpool Alternatives (2026) — What to Use Now" />
+<meta property="og:description" content="Waze Carpool is gone. Here's what actually replaces it in 2026." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/guides/waze-carpool-alternative" />
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Waze Carpool Alternatives (2026) — What to Use Now That It's Gone","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-07-09","dateModified":"2026-08-02","mainEntityOfPage":"https://seatsherpa.app/guides/waze-carpool-alternative"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Why was Waze Carpool shut down?","acceptedAnswer":{"@type":"Answer","text":"Google discontinued Waze Carpool in September 2022, citing changed commuting patterns after the pandemic. It has not returned, and Google has not announced a replacement."}},
+{"@type":"Question","name":"Is Waze Carpool discontinued?","acceptedAnswer":{"@type":"Answer","text":"Yes. Google announced the shutdown in July 2022 and closed the service that September. The Waze navigation app continues; only the carpool feature was removed."}},{"@type":"Question","name":"Is the Waze carpool app still available on Android?","acceptedAnswer":{"@type":"Answer","text":"No. The standalone Waze Carpool app was removed from Google Play and the App Store when the service closed in September 2022. The regular Waze navigation app is unaffected."}},{"@type":"Question","name":"What replaced Waze Carpool?","acceptedAnswer":{"@type":"Answer","text":"No single app replaced it. For daily commutes, options include employer vanpool programs and regional services like 511.org in the Bay Area. For city-to-city trips, cost-sharing carpool marketplaces like Seat Sherpa fill the gap — verified drivers already making the trip share their empty seats at cost-split prices."}},
+{"@type":"Question","name":"Is there still a carpool app where drivers don't profit?","acceptedAnswer":{"@type":"Answer","text":"Yes. Seat Sherpa uses the same cost-sharing model Waze Carpool did: seat prices are capped at the driver's real cost of the trip (the IRS mileage rate split across seats), so drivers share expenses instead of running a business. It currently covers city-to-city routes across California and Nevada."}}
+]}</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
+  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
+  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:#eaeaea}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:#00D4C8;font-weight:700}
+  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  .callout h3{font-size:18px;margin-bottom:6px}
+  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  .scroll{overflow-x:auto}
+  @media(max-width:640px){h1{font-size:27px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/routes">Routes</a> › Guide</div>
+  <h1>Waze Carpool is gone — here's what to use in 2026</h1>
+  <div class="meta">Updated July 2026</div>
+
+  <p class="lede">Google shut down Waze Carpool in <strong>September 2022</strong> and never brought it back. If you loved the idea — regular people sharing a ride and splitting the cost, no commercial markup — the model didn't die. Here's where it lives now, depending on the kind of trip you take.</p>
+
+  <h2>What made Waze Carpool different</h2>
+  <p>Waze Carpool wasn't Uber. Drivers weren't working a job — they were already making the drive, and riders just chipped in for gas at a price capped near the IRS mileage rate. That cost-sharing model kept rides cheap and kept it a carpool, not a taxi. When Google pulled the plug, nothing directly replaced it — but the model split into two lanes:</p>
+
+  <h2>The alternatives in 2026</h2>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Option</th><th>Best for</th><th>How it works</th></tr></thead>
+    <tbody>
+      <tr><td class="win">Seat Sherpa</td><td>City-to-city trips (SF–LA, LA–Vegas, LA–San Diego…)</td><td>Same cost-sharing DNA as Waze Carpool: verified drivers already making the trip, seat prices capped at real cost split across seats, payment held securely until pickup, no surge</td></tr>
+      <tr><td>Employer / regional vanpools (e.g. 511.org in the Bay Area)</td><td>Daily commutes</td><td>Organized commuter matching, sometimes subsidized</td></tr>
+      <tr><td>Facebook &amp; college carpool groups</td><td>Ad-hoc trips</td><td>Post and coordinate yourself — no verification or payment protection</td></tr>
+      <tr><td>Craigslist rideshare</td><td>Ad-hoc trips</td><td>Classic classifieds board; everything on trust</td></tr>
+      <tr><td>Uber / Lyft</td><td>Short on-demand hops</td><td>Commercial pricing — impractical for long trips ($200+ SF–LA)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>An honest note: Waze Carpool focused on <em>daily commutes</em>. Seat Sherpa focuses on the trips where sharing saves the most money — <strong>medium-to-long-distance, city-to-city travel</strong>. If you're looking for a daily 9-to-5 commute match, start with your employer or regional programs. If you're going SF→LA, LA→Vegas, or down to San Diego, read on.</p>
+
+  <div class="callout">
+    <h3>🚗 The same idea, alive for road trips</h3>
+    <p>Seat Sherpa keeps the part of Waze Carpool that mattered: drivers can't profit — seat prices are capped at the trip's real cost (IRS mileage rate ÷ seats), so a <a href="/routes/san-francisco-to-los-angeles">SF → LA seat runs $40–$55</a> and <a href="/routes/los-angeles-to-las-vegas">LA → Vegas $35–$50</a>. Drivers are ID- and license-verified, payment is held until a pickup code confirms the trip, and both sides rate each other. Live across California &amp; Nevada.</p>
+    <a class="btn" href="/rides">Browse live rides</a>
+  </div>
+
+  <h2>When exactly was Waze Carpool discontinued?</h2>
+  <p>Google announced the shutdown in <strong>July 2022</strong> and the service stopped operating that <strong>September</strong>. It had launched in Israel in 2015 and reached all 50 US states by 2019 — then the pandemic hollowed out the daily commute it depended on, and Google folded the team back into the main Waze navigation app. Waze itself is very much alive; only the carpool matching feature is gone, and there has been no indication it will return.</p>
+  <p>If you're searching for it because the option vanished from your Waze app, that's why. The navigation app you still have is the same one — the "Carpool" tab simply no longer exists.</p>
+
+  <h2>Why nothing directly replaced it</h2>
+  <p>Waze Carpool solved a specific problem: matching two strangers whose <em>daily commutes</em> overlapped, for a couple of dollars. That model needs enormous density in a small geography to work — thousands of people driving the same route at the same hour — and it collapses the moment offices go hybrid. No one has rebuilt it at that scale in the US, because the underlying commute pattern never came back.</p>
+  <p>What did survive is the <em>longer-distance</em> version of the same idea: someone is driving Los Angeles to San Francisco on Friday anyway, and three seats are empty. That trip is worth planning around, the cost split is meaningful ($40–55 instead of $200+), and it doesn't depend on rush-hour density. That's the niche cost-sharing marketplaces now occupy.</p>
+
+  <h2>Waze Carpool vs what exists now</h2>
+  <div class="scroll"><table>
+    <tr><th>&nbsp;</th><th>Waze Carpool (2015–2022)</th><th>Today</th></tr>
+    <tr><td>Trip type</td><td>Daily commute, same-day matching</td><td class="win">Planned intercity trips, booked ahead</td></tr>
+    <tr><td>Pricing</td><td>Capped at IRS mileage rate — drivers couldn't profit</td><td class="win">Same principle: IRS rate split across seats</td></tr>
+    <tr><td>Who drives</td><td>Anyone already making the drive</td><td class="win">Unchanged — no professional drivers</td></tr>
+    <tr><td>Payment</td><td>In-app</td><td class="win">In-app, held until a pickup code confirms the trip started</td></tr>
+    <tr><td>Coverage</td><td>All 50 states (at peak)</td><td>Regional — Seat Sherpa covers California &amp; Nevada</td></tr>
+  </table></div>
+
+  <h2>FAQ</h2>
+  <div class="faq"><h3>Why was Waze Carpool shut down?</h3><p>Google discontinued it in September 2022, citing post-pandemic commuting changes. It hasn't returned.</p></div>
+  <div class="faq"><h3>Is Waze Carpool discontinued?</h3><p>Yes. Google announced it in July 2022 and shut the service down that September. The Waze navigation app continues; only the carpool feature was removed.</p></div>
+  <div class="faq"><h3>Is the Waze carpool app still available on Android?</h3><p>No. The standalone Waze Carpool app was removed from Google Play and the App Store when the service closed in September 2022. The regular Waze navigation app is still available and unaffected.</p></div>
+  <div class="faq"><h3>What replaced Waze Carpool?</h3><p>Nothing directly. Commuters moved to employer/regional vanpools; city-to-city riders use cost-sharing marketplaces like Seat Sherpa.</p></div>
+  <div class="faq"><h3>Is there still a carpool app where drivers don't profit?</h3><p>Yes — Seat Sherpa caps seat prices at the driver's actual trip cost, exactly the cost-sharing principle Waze Carpool used.</p></div>
+
+  <div class="callout" style="text-align:center">
+    <h3>Missed Waze Carpool? You'll feel at home.</h3>
+    <p>Split the gas with a driver already headed your way.</p>
+    <a class="btn" href="/#get">Get the Seat Sherpa app</a>
+  </div>
+
+  <h2 id="more-guides">More guides</h2>
+  <p><a href="/guides/blablacar-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is BlaBlaCar in the USA?</a><a href="/guides/poparide-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Poparide in the USA?</a><a href="/guides/kangaride-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Kangaride in the USA?</a><a href="/guides/hitch-rideshare-california" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Hitch in California?</a><a href="/guides/zimride-alternative" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Zimride alternatives</a><a href="/guides/casual-carpool-bay-area" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Bay Area casual carpool</a><a href="/guides/cheapest-way-san-francisco-to-los-angeles" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Cheapest way SF → LA</a></p>
+</article>
+
+
+<!-- App store buttons (ss-store-badges) -->
+<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_waze_carpool_alternative" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_waze_carpool_alternative" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+</div>
+<footer><div class="wrap"><a href="/">Home</a><a href="/routes">Routes</a><a href="/rides">Live rides</a><a href="/guides/blablacar-usa">BlaBlaCar in the US?</a><a href="/guides/zimride-alternative">Zimride alternatives</a><br><br>© 2026 Seat Sherpa</div></footer>
+</body>
+</html>

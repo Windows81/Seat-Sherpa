@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zimride Alternatives (2026) — Campus Rideshare That Still Works</title>
+<meta name="description" content="Zimride is gone, but campus rideshare isn't. The best Zimride alternatives in 2026 for college students — going home for break, weekend trips, UCLA to the Bay, Cal Poly to LA and more." />
+<link rel="canonical" href="https://seatsherpa.app/guides/zimride-alternative" />
+<meta property="og:title" content="Zimride Alternatives (2026) — Campus Rideshare That Still Works" />
+<meta property="og:description" content="Zimride is gone. Here's how college students actually share rides home in 2026." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/guides/zimride-alternative" />
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Zimride Alternatives (2026) — Campus Rideshare That Still Works","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-07-09","dateModified":"2026-07-09","mainEntityOfPage":"https://seatsherpa.app/guides/zimride-alternative"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is Zimride still around?","acceptedAnswer":{"@type":"Answer","text":"No. Zimride — the campus rideshare platform that Lyft grew out of, later run by Enterprise — quietly wound down and is no longer available at colleges. Students searching for it today need an alternative."}},
+{"@type":"Question","name":"What do college students use instead of Zimride?","acceptedAnswer":{"@type":"Answer","text":"In 2026 the main options are cost-sharing carpool apps like Seat Sherpa (verified drivers, secure payment, seat prices that just split the trip's cost), campus Facebook/GroupMe rideshare groups, and Craigslist rideshare boards. The app route adds ID verification and payment protection the informal boards don't have."}},
+{"@type":"Question","name":"How much does a rideshare home for break cost?","acceptedAnswer":{"@type":"Answer","text":"On cost-sharing carpools, a seat is a share of the driver's real trip cost: for example roughly $40–$55 for LA to the Bay Area, $22–$36 for San Luis Obispo to LA, or $14–$26 for Santa Barbara to LA — usually far less than a flight and comparable to gas money."}}
+]}</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
+  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
+  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:#eaeaea}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:#00D4C8;font-weight:700}
+  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  .callout h3{font-size:18px;margin-bottom:6px}
+  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
+  .routes{display:flex;flex-wrap:wrap;gap:9px;margin:10px 0 6px}
+  .routes a{background:#161619;border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:8px 15px;font-size:14px;color:#eaeaea}
+  .routes a:hover{border-color:rgba(0,212,200,.4)}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  .scroll{overflow-x:auto}
+  @media(max-width:640px){h1{font-size:27px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/routes">Routes</a> › Guide</div>
+  <h1>Zimride is gone — how college students share rides in 2026</h1>
+  <div class="meta">Updated July 2026</div>
+
+  <p class="lede">Zimride was the original campus rideshare board — it's literally where Lyft came from. But the platform quietly wound down years ago, and the campus ride boards that replaced it are a patchwork of GroupMe chats and Facebook groups. If you're trying to get home for break without a car (or fill your car to cover gas), here's what actually works now.</p>
+
+  <h2>What Zimride got right</h2>
+  <p>Zimride understood two things: students take the <em>same long trips on the same dates</em> (breaks, long weekends, big games), and a car with four students splitting gas beats everyone driving — or paying for flights — alone. That demand didn't go anywhere. Only the platform did.</p>
+
+  <h2>The alternatives, honestly compared</h2>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>Option</th><th>Safety / payment</th><th>The catch</th></tr></thead>
+    <tbody>
+      <tr><td class="win">Seat Sherpa</td><td>ID + driver's-license-verified drivers, payment held until a pickup code confirms the trip, two-way ratings, 18+ only</td><td>California &amp; Nevada routes for now</td></tr>
+      <tr><td>Campus Facebook / GroupMe boards</td><td>None — you're Venmo-ing a stranger and hoping</td><td>Flaky no-shows, no recourse, boards die each graduation</td></tr>
+      <tr><td>Craigslist rideshare</td><td>None</td><td>Same, with less of a community filter</td></tr>
+      <tr><td>FlixBus / Amtrak</td><td>Commercial carriers</td><td>Fixed schedules, terminal-to-terminal, often slower door-to-door</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <h3>🎓 Built for exactly these trips</h3>
+    <p>Seat Sherpa is a cost-sharing carpool marketplace: drivers already making the drive list their empty seats, and the price can only be a fair split of the trip's real cost — think gas money, not a fare. Popular student routes are already live:</p>
+    <div class="routes">
+      <a href="/routes/los-angeles-to-san-francisco">UCLA/USC → Bay Area</a>
+      <a href="/routes/san-luis-obispo-to-los-angeles">Cal Poly SLO → LA</a>
+      <a href="/routes/santa-barbara-to-los-angeles">UCSB → LA</a>
+      <a href="/routes/san-francisco-to-sacramento">Berkeley → Sacramento/Davis</a>
+      <a href="/routes/los-angeles-to-san-diego">LA → UCSD</a>
+    </div>
+    <a class="btn" href="/rides">Browse live rides</a>
+  </div>
+
+  <h2>Driving home anyway? Fill your seats.</h2>
+  <p>The other half of Zimride was drivers. If you're a student <em>with</em> a car making the run home, three passengers at cost-split prices can cover your whole tank and then some — <a href="/drive">post your ride</a> and you keep 95% of every seat.</p>
+
+  <h2>FAQ</h2>
+  <div class="faq"><h3>Is Zimride still around?</h3><p>No — it wound down years ago and isn't available at colleges anymore.</p></div>
+  <div class="faq"><h3>What do students use instead of Zimride?</h3><p>Cost-sharing carpool apps like Seat Sherpa (verified + payment-protected), campus Facebook/GroupMe boards, and Craigslist — the informal boards work but offer no verification or recourse.</p></div>
+  <div class="faq"><h3>How much does a rideshare home for break cost?</h3><p>A fair share of the driver's costs: roughly $40–$55 LA↔Bay Area, $22–$36 SLO↔LA, $14–$26 Santa Barbara↔LA.</p></div>
+
+  <div class="callout" style="text-align:center">
+    <h3>Going home for break?</h3>
+    <p>Grab a seat with a verified driver already making the drive.</p>
+    <a class="btn" href="/#get">Get the Seat Sherpa app</a>
+  </div>
+
+  <h2 id="more-guides">More guides</h2>
+  <p><a href="/guides/blablacar-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is BlaBlaCar in the USA?</a><a href="/guides/poparide-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Poparide in the USA?</a><a href="/guides/kangaride-usa" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Is Kangaride in the USA?</a><a href="/guides/hitch-rideshare-california" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Hitch in California?</a><a href="/guides/waze-carpool-alternative" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Waze Carpool alternatives</a><a href="/guides/casual-carpool-bay-area" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Bay Area casual carpool</a><a href="/guides/cheapest-way-san-francisco-to-los-angeles" style="color:#00D4C8;margin-right:18px;display:inline-block;margin-bottom:6px">Cheapest way SF → LA</a></p>
+</article>
+
+
+<!-- App store buttons (ss-store-badges) -->
+<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_zimride_alternative" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=guides_zimride_alternative" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+</div>
+<footer><div class="wrap"><a href="/">Home</a><a href="/routes">Routes</a><a href="/rides">Live rides</a><a href="/guides/blablacar-usa">BlaBlaCar in the US?</a><a href="/guides/waze-carpool-alternative">Waze Carpool alternatives</a><br><br>© 2026 Seat Sherpa</div></footer>
+</body>
+</html>

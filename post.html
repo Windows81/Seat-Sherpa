@@ -1,0 +1,2232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Pixels: same stack as book.html (audit L8 — the driver-acquisition funnel
+     was going public with zero conversion tracking). GPC-respecting like the rest. -->
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post a ride — Seat Sherpa</title>
+  <!-- HIDDEN page (internal testing). Never index, never link from public pages. -->
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0E0E10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0E0E10;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 20px 48px;
+    }
+    a { color: #00D4C8; text-decoration: none; }
+
+    .wrap { width: 100%; max-width: 440px; }
+
+    .brand {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; margin-bottom: 28px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card .eyebrow {
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #888; margin-bottom: 12px;
+    }
+
+    h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
+    p.sub { font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 12px; color: #888; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    input, textarea, select {
+      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      outline: none; transition: border-color 0.15s; font-family: inherit;
+    }
+    input:focus, textarea:focus, select:focus { border-color: #00D4C8; }
+    input:disabled { opacity: 0.5; }
+    textarea { resize: vertical; min-height: 88px; }
+    .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
+    button.primary {
+      width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
+      padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+    }
+    button.primary:disabled { opacity: 0.5; cursor: default; }
+    .linkbtn {
+      background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
+      cursor: pointer; padding: 0; font-family: inherit;
+    }
+    .linkbtn:disabled { color: #666; cursor: default; }
+    .rowlinks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 14px; }
+    .backrow { margin-bottom: 12px; }
+    .backrow .linkbtn { color: #888; font-size: 13px; }
+    .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
+    .msg.err { color: #ff8a8a; }
+    .msg.ok { color: #4ade80; }
+    .hidden { display: none !important; }
+    .center { text-align: center; }
+    .icon { font-size: 44px; margin-bottom: 12px; }
+    .hint { font-size: 12px; color: #888; margin: -8px 0 14px; line-height: 1.5; }
+
+    /* Address autocomplete */
+    .ac-wrap { position: relative; }
+    .ac-list {
+      position: absolute; top: calc(100% - 10px); left: 0; right: 0; z-index: 20;
+      background: #1a1a1d; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
+      overflow: hidden; max-height: 280px; overflow-y: auto;
+    }
+    .ac-item {
+      display: block; width: 100%; text-align: left; background: none; border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06); padding: 12px 14px; cursor: pointer;
+      font-family: inherit; color: #fff;
+    }
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover, .ac-item:focus { background: #0d1f1e; }
+    .ac-item .p { font-size: 15px; font-weight: 600; display: block; }
+    .ac-item .s { font-size: 12px; color: #888; display: block; margin-top: 2px; }
+    .picked {
+      display: flex; align-items: center; gap: 8px; background: #0d1f1e;
+      border: 1px solid rgba(0,212,200,0.35); border-radius: 12px; padding: 12px 14px;
+      font-size: 14px; margin-bottom: 14px;
+    }
+    .picked .addr { flex: 1; line-height: 1.4; }
+    .picked .linkbtn { font-size: 13px; }
+
+    /* Choice rows (stopovers, instant, return) */
+    .choice {
+      display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left;
+      background: #0E0E10; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
+      padding: 14px 16px; color: #fff; cursor: pointer; margin-bottom: 10px;
+      transition: border-color 0.15s, background 0.15s; font-family: inherit; font-size: 15px;
+    }
+    .choice.sel { border-color: #00D4C8; background: #0d1f1e; }
+    .choice.locked { opacity: 0.45; cursor: not-allowed; }
+    .choice .t { font-weight: 700; display: block; }
+    .choice .d { font-size: 13px; color: #b9b9c6; display: block; margin-top: 3px; line-height: 1.45; }
+    .choice .tick {
+      width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid rgba(255,255,255,0.3);
+      flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #04201e; font-weight: 800;
+    }
+    .choice.sel .tick { background: #00D4C8; border-color: #00D4C8; }
+    .choice .tick.radio { border-radius: 50%; }
+
+    /* Calendar */
+    .cal { margin-bottom: 8px; }
+    .cal .mname { font-size: 14px; font-weight: 700; margin: 12px 0 8px; color: #b9b9c6; }
+    .cal .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .cal .dow { font-size: 10px; color: #666; text-align: center; padding: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
+    .cal .day {
+      aspect-ratio: 1; border-radius: 10px; border: 1px solid transparent; background: none;
+      color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cal .day:hover { border-color: rgba(0,212,200,0.4); }
+    .cal .day.off { color: #444; cursor: default; }
+    .cal .day.off:hover { border-color: transparent; }
+    .cal .day.sel { background: #00D4C8; color: #04201e; }
+
+    /* Steppers */
+    .stepper { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 10px 0 18px; }
+    .stepper button {
+      width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+      background: #0E0E10; color: #00D4C8; font-size: 26px; font-weight: 700; cursor: pointer;
+      font-family: inherit; line-height: 1;
+    }
+    .stepper button:disabled { opacity: 0.3; cursor: default; }
+    .stepper .val { font-size: 52px; font-weight: 800; letter-spacing: -1px; min-width: 110px; text-align: center; }
+    .pill {
+      display: block; text-align: center; background: rgba(74,222,128,0.12); color: #4ade80;
+      border: 1px solid rgba(74,222,128,0.35); border-radius: 999px; padding: 9px 16px;
+      font-size: 13.5px; font-weight: 600; margin: 0 0 14px; line-height: 1.4;
+    }
+    .pill.cap { background: rgba(255,193,7,0.10); color: #ffd166; border-color: rgba(255,193,7,0.35); }
+
+    /* Gate checklist */
+    .gates { margin-top: 6px; }
+    .gate {
+      display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left;
+      background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
+      padding: 13px 15px; color: #fff; cursor: pointer; margin-bottom: 8px;
+      font-family: inherit; font-size: 14px;
+    }
+    .gate:disabled { cursor: default; }
+    .gate .st {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800;
+      border: 1.5px solid rgba(255,255,255,0.3); color: #888;
+    }
+    .gate.done { border-color: rgba(0,212,200,0.35); }
+    .gate.done .st { background: #00D4C8; border-color: #00D4C8; color: #04201e; }
+    .gate .t { font-weight: 700; display: block; }
+    .gate .u { font-size: 12.5px; color: #b9b9c6; display: block; margin-top: 2px; line-height: 1.45; }
+    .gate.done .u { color: #666; }
+    .statusline {
+      background: #0d1f1e; border: 1px solid rgba(0,212,200,0.3); border-radius: 12px;
+      padding: 12px 15px; font-size: 14px; font-weight: 600; margin-bottom: 14px; line-height: 1.5;
+    }
+    .statusline.live { border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.08); color: #4ade80; }
+
+    /* Ready-screen ride card */
+    .ridecard {
+      background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px;
+      padding: 16px; margin-bottom: 12px;
+    }
+    .ridecard .route { font-size: 16px; font-weight: 800; letter-spacing: -0.2px; line-height: 1.35; }
+    .ridecard .meta { font-size: 13px; color: #b9b9c6; margin-top: 5px; line-height: 1.5; }
+
+    /* Avatar / file */
+    .avatar-prev {
+      width: 112px; height: 112px; border-radius: 50%; object-fit: cover;
+      display: block; margin: 0 auto 16px; border: 2px solid rgba(0,212,200,0.5); background: #0E0E10;
+    }
+    .doc-prev {
+      width: 100%; max-height: 220px; object-fit: contain; border-radius: 12px;
+      display: block; margin: 0 auto 16px; border: 1px solid rgba(255,255,255,0.14); background: #0E0E10;
+    }
+    .filebtn {
+      display: block; text-align: center; border: 1px dashed rgba(255,255,255,0.25); border-radius: 12px;
+      padding: 16px; font-size: 14px; color: #b9b9c6; cursor: pointer; margin-bottom: 14px;
+      transition: border-color 0.15s;
+    }
+    .filebtn:hover { border-color: rgba(0,212,200,0.5); }
+
+    .store-badge {
+      display: flex; align-items: center; gap: 12px;
+      background: #1a1a1d; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 14px 20px;
+      transition: border-color 0.2s, transform 0.2s; cursor: pointer;
+    }
+    .store-badge:hover { border-color: rgba(0,212,200,0.5); transform: translateY(-1px); }
+
+    .spinner {
+      width: 28px; height: 28px; margin: 0 auto 16px;
+      border: 3px solid rgba(255,255,255,0.15); border-top-color: #00D4C8;
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .minispin {
+      display: inline-block; width: 14px; height: 14px; vertical-align: -2px;
+      border: 2px solid rgba(255,255,255,0.2); border-top-color: #00D4C8;
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+
+    .signedin { text-align: center; font-size: 12px; color: #666; margin-top: 14px; }
+    .signedin button { font-size: 12px; }
+    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #666; line-height: 1.6; }
+    .legal a { color: #888; }
+  </style>
+  <!-- Vercel Web Analytics — same as the other funnel pages. -->
+  <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>
+    </div>
+
+    <!-- ── FLOW SCREENS ─────────────────────────────────────────────────── -->
+
+    <!-- Where from? -->
+    <div class="card hidden" id="stFrom">
+      <div class="eyebrow">Post a ride</div>
+      <h1>Where are you leaving from?</h1>
+      <p class="sub">The exact pickup spot — riders see the neighborhood, and you'll agree on details in chat.</p>
+      <div class="ac-wrap">
+        <label for="fromInput">Pickup address</label>
+        <input id="fromInput" type="text" autocomplete="off" placeholder="e.g. Caltrain Station, San Jose" />
+        <div class="ac-list hidden" id="fromList"></div>
+      </div>
+      <div class="picked hidden" id="fromPicked"><span>📍</span><span class="addr" id="fromPickedAddr"></span><button class="linkbtn" id="fromChange">Change</button></div>
+      <button class="primary" id="fromBtn" disabled>Continue</button>
+      <div class="msg err hidden" id="fromMsg"></div>
+    </div>
+
+    <!-- Where to? -->
+    <div class="card hidden" id="stTo">
+      <div class="backrow"><button class="linkbtn" data-back="stFrom">← Back</button></div>
+      <div class="eyebrow">Post a ride</div>
+      <h1>Where are you headed?</h1>
+      <p class="sub">Your dropoff. Seat Sherpa serves trips of 15 miles or more inside California and Nevada.</p>
+      <div class="ac-wrap">
+        <label for="toInput">Dropoff address</label>
+        <input id="toInput" type="text" autocomplete="off" placeholder="e.g. Union Station, Los Angeles" />
+        <div class="ac-list hidden" id="toList"></div>
+      </div>
+      <div class="picked hidden" id="toPicked"><span>🏁</span><span class="addr" id="toPickedAddr"></span><button class="linkbtn" id="toChange">Change</button></div>
+      <button class="primary" id="toBtn" disabled>Continue</button>
+      <div class="msg err hidden" id="toMsg"></div>
+    </div>
+
+    <!-- Stopovers -->
+    <div class="card hidden" id="stStops">
+      <div class="backrow"><button class="linkbtn" data-back="stTo">← Back</button></div>
+      <div class="eyebrow">Post a ride</div>
+      <h1>Pick up riders along the way?</h1>
+      <p class="sub">These cities sit on your route — a quick pull-off, a few minutes at most. Seat prices stay the same wherever someone boards, and every seat is booked for your whole trip.</p>
+      <div id="stopsLoading" class="center" style="padding: 10px 0 18px;"><div class="spinner"></div><p class="sub" style="margin:0;">Checking your route…</p></div>
+      <div id="stopsList"></div>
+      <button class="primary" id="stopsBtn">Continue</button>
+      <div class="msg err hidden" id="stopsMsg"></div>
+    </div>
+
+    <!-- Dates -->
+    <div class="card hidden" id="stDates">
+      <div class="backrow"><button class="linkbtn" id="datesBackBtn">← Back</button></div>
+      <div class="eyebrow" id="datesEyebrow">Post a ride</div>
+      <h1 id="datesTitle">When are you going?</h1>
+      <p class="sub">Pick every date you'll make this drive — up to 8. Each date becomes its own ride.</p>
+      <div class="cal" id="calendar"></div>
+      <button class="primary" id="datesBtn" disabled>Continue</button>
+      <div class="msg err hidden" id="datesMsg"></div>
+    </div>
+
+    <!-- Time -->
+    <div class="card hidden" id="stTime">
+      <div class="backrow"><button class="linkbtn" data-back="stDates">← Back</button></div>
+      <div class="eyebrow">Post a ride</div>
+      <h1>What time do you leave?</h1>
+      <p class="sub" id="timeSub">Departure time for your ride.</p>
+      <label for="timeInput">Departure time</label>
+      <input id="timeInput" type="time" step="300" />
+      <div id="perDateWrap" class="hidden">
+        <button class="linkbtn" id="perDateToggle" style="margin: 0 0 12px;">Set a different time for a specific date</button>
+        <div id="perDateList" class="hidden"></div>
+      </div>
+      <button class="primary" id="timeBtn" disabled>Continue</button>
+      <div class="msg err hidden" id="timeMsg"></div>
+    </div>
+
+    <!-- Seats + comfort -->
+    <div class="card hidden" id="stSeats">
+      <div class="backrow"><button class="linkbtn" data-back="stTime">← Back</button></div>
+      <div class="eyebrow">Post a ride</div>
+      <h1>How many passengers?</h1>
+      <p class="sub">Seats you're offering on this trip.</p>
+      <div class="stepper">
+        <button id="seatMinus" aria-label="Fewer seats">−</button>
+        <div class="val" id="seatVal">3</div>
+        <button id="seatPlus" aria-label="More seats">+</button>
+      </div>
+      <p class="hint hidden" id="seatFitNote"></p>
+      <div class="msg err hidden" id="seatsMsg"></div>
+      <button class="choice sel" id="comfortRow" type="button">
+        <span class="tick" id="comfortTick">✓</span>
+        <span><span class="t">Max 2 in the back</span>
+        <span class="d">Think comfort — keep the middle seat empty. Opening it splits the trip's cost-sharing cap across 4 seats instead of 3, so the max price per seat drops.</span></span>
+      </button>
+      <button class="primary" id="seatsBtn">Continue</button>
+    </div>
+
+    <!-- Instant book -->
+    <div class="card hidden" id="stInstant">
+      <div class="backrow"><button class="linkbtn" data-back="stSeats">← Back</button></div>
+      <div class="eyebrow">Post a ride</div>
+      <h1>How do you want to take bookings?</h1>
+      <p class="sub">You can change this later in the app.</p>
+      <button class="choice sel" id="reviewRow" type="button">
+        <span class="tick radio" id="reviewTick">✓</span>
+        <span><span class="t">Review every request</span>
+        <span class="d">Riders request a seat; you approve each one. Works right away — no payout setup needed to receive requests.</span></span>
+      </button>
+      <button class="choice" id="instantRow" type="button">
+        <span class="tick radio" id="instantTick"></span>
+        <span><span class="t">Instant Book</span>
+        <span class="d" id="instantDesc">Riders book without waiting for approval. Needs payouts (Stripe) connected — if yours aren't yet, this ride starts as review-each-request.</span></span>
+      </button>
+      <button class="primary" id="instantBtn">Continue</button>
+    </div>
+
+    <!-- Price -->
+    <div class="card hidden" id="stPrice">
+      <div class="backrow"><button class="linkbtn" data-back="stInstant">← Back</button></div>
+      <div class="eyebrow">Post a ride</div>
+      <h1>Set your price per seat</h1>
+      <p class="sub">Riders split your costs for the trip — gas, tolls, wear. You keep the seat price minus a small service fee.</p>
+      <div class="stepper">
+        <button id="priceMinus" aria-label="Lower price">−</button>
+        <div class="val" id="priceVal">$—</div>
+        <button id="pricePlus" aria-label="Raise price">+</button>
+      </div>
+      <span class="pill hidden" id="priceBand"></span>
+      <span class="pill cap hidden" id="priceCapLine">This is a max price limit to keep this cost-sharing, not a business.</span>
+      <button class="primary" id="priceBtn" disabled>Continue</button>
+      <div class="msg err hidden" id="priceMsg"></div>
+    </div>
+
+    <!-- Return trip -->
+    <div class="card hidden" id="stReturn">
+      <div class="backrow"><button class="linkbtn" data-back="stPrice">← Back</button></div>
+      <div class="eyebrow">Post a ride</div>
+      <h1>Coming back? Publish the return now</h1>
+      <p class="sub">Same route in reverse, same seats and price — you just pick the dates and time.</p>
+      <button class="choice" id="returnYes" type="button">
+        <span class="tick radio"></span>
+        <span><span class="t">Yes, sure!</span>
+        <span class="d">Pick your return dates next.</span></span>
+      </button>
+      <button class="choice" id="returnNo" type="button">
+        <span class="tick radio"></span>
+        <span><span class="t">I'll do it later</span>
+        <span class="d">Publish just this direction for now.</span></span>
+      </button>
+      <div class="msg err hidden" id="returnMsg"></div>
+    </div>
+
+    <!-- Email OTP -->
+    <div class="card hidden" id="stEmail">
+      <div class="eyebrow">Post a ride · Sign in</div>
+      <h1>What's your email?</h1>
+      <p class="sub">We'll email you a 6-digit code to sign in — no password needed. Then your ride publishes.</p>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
+      <button class="primary" id="emailBtn">Email me a code</button>
+      <div class="msg err hidden" id="emailMsg"></div>
+      <p class="hint" style="margin-top:12px;">By continuing you agree to the <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</p>
+    </div>
+
+    <!-- Email code -->
+    <div class="card hidden" id="stCode">
+      <div class="eyebrow">Post a ride · Verify email</div>
+      <h1>Enter the 6-digit code</h1>
+      <p class="sub">We sent it to <strong id="codeEmailEcho"></strong>. It can take a minute — check spam too.</p>
+      <input id="emailCode" class="codeinput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" />
+      <button class="primary" id="codeBtn">Verify</button>
+      <div class="rowlinks">
+        <button class="linkbtn" id="codeResend">Resend code</button>
+        <button class="linkbtn" id="codeChangeEmail">Use a different email</button>
+      </div>
+      <div class="msg err hidden" id="codeMsg"></div>
+    </div>
+
+    <!-- Name (only when the profile doesn't have a real one) -->
+    <div class="card hidden" id="stName">
+      <div class="eyebrow">Post a ride · Your name</div>
+      <h1>What's your name?</h1>
+      <p class="sub">Riders see your first name and last initial on the ride.</p>
+      <label for="nameInput">Your name</label>
+      <input id="nameInput" type="text" autocomplete="name" placeholder="First Last" />
+      <button class="primary" id="nameBtn">Continue</button>
+      <div class="msg err hidden" id="nameMsg"></div>
+    </div>
+
+    <!-- Publishing -->
+    <div class="card center hidden" id="stPublishing">
+      <div class="spinner"></div>
+      <h1>Publishing your ride…</h1>
+      <p class="sub" style="margin-bottom:0;">One moment.</p>
+    </div>
+
+    <!-- Ready + gates -->
+    <div class="card hidden" id="stReady">
+      <div class="eyebrow">Post a ride</div>
+      <h1 id="readyTitle">Your ride is ready</h1>
+      <p class="sub" id="readySub">Here's what you're offering.</p>
+      <div id="rideCards"></div>
+      <div class="statusline" id="statusLine">Checking status…</div>
+      <div class="gates" id="gateList"></div>
+      <div class="msg err hidden" id="readyMsg"></div>
+      <div id="liveLinks" class="hidden" style="margin-top: 14px;"></div>
+      <div class="signedin" id="readyFooter" style="margin-top:16px;">
+        <button class="linkbtn" id="postAnotherBtn">Post another ride</button>
+        <span id="signedInWrap" class="hidden"> · Signed in as <span id="signedInEmail"></span> · <button class="linkbtn" id="signOutBtn">Not you?</button></span>
+      </div>
+    </div>
+
+    <!-- ── GATE SCREENS ─────────────────────────────────────────────────── -->
+
+    <!-- Phone -->
+    <div class="card hidden" id="gPhone">
+      <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
+      <div class="eyebrow">Almost there · Confirm phone</div>
+      <h1>Confirm your phone</h1>
+      <p class="sub">Riders need to reach you at pickup. We'll text you a 6-digit code.</p>
+      <div id="phoneEntry">
+        <div style="display:flex; gap:10px;">
+          <div style="width:88px;">
+            <label for="phoneCc">Country</label>
+            <input id="phoneCc" type="tel" inputmode="numeric" value="1" maxlength="4" style="text-align:center;" />
+          </div>
+          <div style="flex:1;">
+            <label for="phoneNum">Phone number</label>
+            <input id="phoneNum" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="555 123 4567" />
+          </div>
+        </div>
+        <button class="primary" id="phoneSendBtn">Text me a code</button>
+      </div>
+      <div id="phoneCodeEntry" class="hidden" style="margin-top:14px;">
+        <label for="phoneCode">6-digit code</label>
+        <input id="phoneCode" class="codeinput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" />
+        <button class="primary" id="phoneVerifyBtn">Confirm phone</button>
+        <div class="rowlinks">
+          <button class="linkbtn" id="phoneResend">Resend code</button>
+          <button class="linkbtn" id="phoneChange">Change number</button>
+        </div>
+      </div>
+      <div class="msg err hidden" id="phoneMsg"></div>
+    </div>
+
+    <!-- Photo -->
+    <div class="card hidden" id="gPhoto">
+      <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
+      <div class="eyebrow">Almost there · Face photo</div>
+      <h1>Add a face photo</h1>
+      <p class="sub">Riders will want to see who you are. No sunglasses, look straight ahead, just you in the frame.</p>
+      <img id="photoPrev" class="avatar-prev hidden" alt="Your photo" />
+      <label class="filebtn" for="photoFile" id="photoFileLabel">📷 Choose a photo</label>
+      <input id="photoFile" type="file" accept="image/*" class="hidden" />
+      <button class="primary hidden" id="photoBtn">Use this photo</button>
+      <div class="msg err hidden" id="photoMsg"></div>
+    </div>
+
+    <!-- License -->
+    <div class="card hidden" id="gLicense">
+      <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
+      <div class="eyebrow">Almost there · Driver's license</div>
+      <h1>Snap your driver's license</h1>
+      <p class="sub">A clear photo of the front of your license. It stays private — never shown to riders — and it's the last step before your ride goes live.</p>
+      <img id="licensePrev" class="doc-prev hidden" alt="Your license" />
+      <label class="filebtn" for="licenseFile" id="licenseFileLabel">🪪 Choose a photo</label>
+      <input id="licenseFile" type="file" accept="image/*" class="hidden" />
+      <button class="primary hidden" id="licenseBtn">Submit license</button>
+      <div class="msg err hidden" id="licenseMsg"></div>
+    </div>
+
+    <!-- Bio -->
+    <div class="card hidden" id="gBio">
+      <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
+      <div class="eyebrow">Almost there · About you</div>
+      <h1>A few words about you</h1>
+      <p class="sub">Riders decide largely on the bio — where you're headed and why, what the ride's like.</p>
+      <label for="bioInput">Your intro</label>
+      <textarea id="bioInput" maxlength="500" placeholder="e.g. Engineer in San Jose, drive to LA most weekends to see family. Easy-going, music on low."></textarea>
+      <p class="hint"><span id="bioCount">0</span> / 3 words minimum</p>
+      <button class="primary" id="bioBtn">Save</button>
+      <div class="msg err hidden" id="bioMsg"></div>
+    </div>
+
+    <!-- Car -->
+    <div class="card hidden" id="gCar">
+      <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
+      <div class="eyebrow">Almost there · Your car</div>
+      <h1>What do you drive?</h1>
+      <p class="sub">Riders see the make, model and color so they can find you at pickup.</p>
+      <div style="display:flex; gap:10px;">
+        <div style="width:96px;"><label for="carYear">Year</label><input id="carYear" type="text" inputmode="numeric" maxlength="4" placeholder="2021" /></div>
+        <div style="flex:1;"><label for="carMake">Make</label><input id="carMake" type="text" placeholder="Toyota" /></div>
+      </div>
+      <label for="carModel">Model</label>
+      <input id="carModel" type="text" placeholder="Camry" />
+      <div style="display:flex; gap:10px;">
+        <div style="flex:1;"><label for="carType">Type</label><select id="carType">
+          <option>Sedan</option><option>SUV</option><option>Van</option><option>Wagon</option><option>Pickup</option><option>Electric</option><option>Hybrid</option>
+        </select></div>
+        <div style="flex:1;"><label for="carColor">Color</label><select id="carColor">
+          <option>White</option><option>Black</option><option>Silver</option><option>Gray</option><option>Red</option><option>Blue</option><option>Green</option><option>Yellow</option><option>Orange</option><option>Brown</option><option>Beige</option><option>Gold</option><option>Purple</option><option>Other</option>
+        </select></div>
+      </div>
+      <label for="carPlate">License plate (optional)</label>
+      <input id="carPlate" type="text" maxlength="10" placeholder="8ABC123" />
+      <button class="primary" id="carBtn">Save car</button>
+      <div class="msg err hidden" id="carMsg"></div>
+    </div>
+
+    <!-- Redirecting to Stripe -->
+    <div class="card center hidden" id="stStripeRedirect">
+      <div class="spinner"></div>
+      <h1>Taking you to Stripe…</h1>
+      <p class="sub" style="margin-bottom:0;">Payout setup is handled securely by Stripe.</p>
+    </div>
+
+    <!-- Not enabled yet (migration pending) -->
+    <div class="card center hidden" id="stUnavailable">
+      <div class="icon">🚧</div>
+      <h1>Web posting isn't open yet</h1>
+      <p class="sub">This page is still being wired up. Post your ride from the Seat Sherpa app instead.</p>
+      <a class="store-badge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=post" style="justify-content:center;" aria-label="Get the Seat Sherpa app">
+        <span style="font-size:16px;font-weight:600;color:#fff;">Get the Seat Sherpa app →</span>
+      </a>
+    </div>
+
+    <p class="legal">
+      Seat Sherpa is a cost-sharing carpool marketplace, not a ride-hail service.<br />
+      Seat prices are capped at your trip's shared cost.<br />
+      <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
+    </p>
+  </div>
+
+  <script type="module">
+    // post.html — v1 web posting (2026-08-21).
+    //
+    // "Post a ride from the browser": the driver-side sibling of book.html.
+    // One question per screen, back always works, and every piece of friction
+    // moves to AFTER the ride exists (publish-first-verify-second):
+    //
+    //   from → to → stopovers → dates (multi, ≤8) → time → seats+comfort →
+    //   booking mode → price → return? → email OTP → publish
+    //
+    // Publish calls web-create-ride-draft, which stores the whole submission
+    // as a web_ride_drafts row (0205) — REAL to this driver, invisible to the
+    // marketplace and the app. The "Your ride is ready" checklist then walks
+    // the gates (phone → photo → license → bio → car → payouts); after each,
+    // web-finalize-ride is asked "can this go live yet?" and mints ordinary
+    // rides rows the moment phone + license clear. Identity plumbing (email
+    // OTP, phone-change OTP, avatar upload) is copied from book.html so both
+    // web funnels share one set of behaviors — including the two session
+    // rules: never pass storageKey, always spell out autoRefreshToken.
+    //
+    // On web the server is the gate: everything this page validates is
+    // re-checked in web-create-ride-draft with machine codes (BAD_PRICE,
+    // MIN_TRIP, …) that bounce back to the right screen.
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPA = 'https://vmfmbntacifqoqxqxgsk.supabase.co';
+    // Publishable (anon) key — safe to expose in client-side code by design.
+    const ANON = 'sb_publishable_TGebz9q_z0kkH0Tuivlr4w_3MPLMxF3';
+    // Public Mapbox token (EXPO_PUBLIC in the app — already client-exposed).
+    const MAPBOX_TOKEN = 'pk.eyJ1IjoiamR0MjYyIiwiYSI6ImNtcDhnb3pvNzBkbGYyenBpN2psY3g2bGsifQ.sqsxq8sjfLaq978oqGExHg';
+
+    const supabase = createClient(SUPA, ANON, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
+    });
+
+    const LS_KEY = 'ss-post-v1';
+
+    // ── State helpers ─────────────────────────────────────────────────────
+    const STATES = ['stFrom','stTo','stStops','stDates','stTime','stSeats','stInstant','stPrice','stReturn',
+      'stEmail','stCode','stName','stPublishing','stReady','gPhone','gPhoto','gLicense','gBio','gCar',
+      'stStripeRedirect','stUnavailable'];
+    const $ = (id) => document.getElementById(id);
+    function show(id) {
+      STATES.forEach((s) => $(s).classList.toggle('hidden', s !== id));
+      window.scrollTo(0, 0);
+      // Work-in-progress autosave (audit H2): the email-OTP step actively
+      // sends the driver to their mail app, and mobile browsers routinely
+      // evict background tabs — before this, a reload dumped a 9-screen
+      // draft back to square one. Persist on every transition; init restores.
+      try { saveWip(id); } catch (_) {}
+    }
+    function setMsg(id, text, kind) {
+      const el = $(id);
+      if (!text) { el.classList.add('hidden'); return; }
+      el.textContent = text;
+      el.className = 'msg ' + (kind || 'err');
+    }
+
+    // Generic back links.
+    document.querySelectorAll('[data-back]').forEach((b) => {
+      b.addEventListener('click', () => show(b.getAttribute('data-back')));
+    });
+
+    // ── Catalog + geometry (ports of lib/destinations, lib/co2, lib/route-fill,
+    //    lib/seat-price-cap — keep in step with the app) ────────────────────
+    // IRS_RATE: $0.76 = the mid-year increase effective Jul 1 2026 (was 0.725).
+    // Keep in step with lib/seat-price-cap.ts IRS_MILEAGE_RATE_USD_PER_MILE.
+    const IRS_RATE = 0.76, HARD_CAP = 55, FLOOR = 10, MIN_TRIP_MILES = 15;
+    // 8 → 20 (2026-08-25 pre-launch; matches _shared/web-posting.ts
+    // MAX_DATES_PER_DRAFT — change both together).
+    const MAX_DATES = 20, MAX_STOPS = 3;
+
+    const DESTS = [
+      { id:'sfba', name:'San Francisco Bay Area', lat:37.6688, lng:-122.0808, anchors:[{lat:37.7749,lng:-122.4194},{lat:37.8044,lng:-122.2712}] },
+      { id:'sanjose', name:'San Jose', lat:37.3382, lng:-121.8863 },
+      { id:'napasonoma', name:'Napa / Sonoma', lat:38.2975, lng:-122.3720 },
+      { id:'sacramento', name:'Sacramento', lat:38.5816, lng:-121.4944 },
+      { id:'tahoereno', name:'Tahoe / Reno', lat:39.30, lng:-119.92 },
+      { id:'la', name:'Los Angeles', lat:34.0522, lng:-118.2437, anchors:[{lat:33.7701,lng:-118.1937},{lat:34.0195,lng:-118.4912},{lat:34.1478,lng:-118.1445}] },
+      { id:'oc', name:'Orange County', lat:33.7175, lng:-117.8311 },
+      { id:'sd', name:'San Diego', lat:32.7157, lng:-117.1611 },
+      { id:'palm', name:'Palm Springs', lat:33.8303, lng:-116.5453 },
+      { id:'vegas', name:'Las Vegas', lat:36.1699, lng:-115.1398 },
+      { id:'manteca', name:'Manteca', lat:37.7974, lng:-121.2161 },
+      { id:'fresno', name:'Fresno', lat:36.7378, lng:-119.7871 },
+      { id:'santacruz', name:'Santa Cruz', lat:36.9741, lng:-122.0308 },
+      { id:'bakersfield', name:'Bakersfield', lat:35.3733, lng:-119.0187 },
+      { id:'slo', name:'San Luis Obispo', lat:35.2828, lng:-120.6596 },
+      { id:'santabarbara', name:'Santa Barbara', lat:34.4208, lng:-119.6982 },
+      { id:'burningman', name:'Burning Man', lat:40.7864, lng:-119.2065 },
+    ];
+    const WAYPOINTS = [
+      { id:'oakland', name:'Oakland', lat:37.8044, lng:-122.2712 },
+      { id:'fremont', name:'Fremont', lat:37.5090, lng:-121.9640 },
+      { id:'pleasanton', name:'Pleasanton / Livermore', lat:37.7020, lng:-121.7710 },
+      { id:'stockton', name:'Stockton', lat:37.9577, lng:-121.2908 },
+      { id:'modesto', name:'Modesto', lat:37.6391, lng:-120.9969 },
+      { id:'pasadena', name:'Pasadena', lat:34.1478, lng:-118.1445 },
+      { id:'longbeach', name:'Long Beach', lat:33.7701, lng:-118.1937 },
+    ];
+    const STOP_BY_ID = new Map([...DESTS, ...WAYPOINTS].map((d) => [d.id, d]));
+
+    function haversineMiles(a, b) {
+      if (!a || !b || !isFinite(a.lat) || !isFinite(b.lat)) return 0;
+      const R = 3958.8, toRad = (d) => (d * Math.PI) / 180;
+      const dLat = toRad(b.lat - a.lat), dLng = toRad(b.lng - a.lng);
+      const h = Math.sin(dLat/2)**2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng/2)**2;
+      return 2 * R * Math.asin(Math.sqrt(h));
+    }
+    const inServiceArea = (c) => c.lat >= 32.0 && c.lat <= 42.0 && c.lng >= -124.5 && c.lng <= -114.0;
+    function nearestDestId(c) {
+      let best = DESTS[0], bestDist = Infinity;
+      for (const d of DESTS) {
+        let dist = haversineMiles(c, d);
+        for (const a of d.anchors || []) dist = Math.min(dist, haversineMiles(c, a));
+        if (dist < bestDist) { bestDist = dist; best = d; }
+      }
+      return best.id;
+    }
+    // Cap distance = measured drivable miles when we have them, else
+    // haversine × 1.25 — the SAME fallback the app (lib/seat-price-cap.ts
+    // capMiles) and the server (web-posting.ts maxSeatPriceUsd) use. Raw
+    // haversine here silently capped web drivers 20-35% below app drivers on
+    // the same route — the exact inconsistency the road-mileage change was
+    // approved to remove (Fable review #3, 2026-08-24). The measurement is
+    // kicked off at route-confirm (toBtn) so it's usually back before the
+    // price step; until it lands the ×1.25 estimate matches the server's
+    // fallback, so the page can never advertise a cap the server rejects.
+    function tripMilesOf(leg) {
+      if (typeof leg.roadMiles === 'number' && isFinite(leg.roadMiles) && leg.roadMiles > 0) return leg.roadMiles;
+      return haversineMiles(leg.start, leg.end) * 1.25;
+    }
+    function maxSeatPrice(leg, openSeats, apiCapCents) {
+      let cap = HARD_CAP;
+      const miles = tripMilesOf(leg);
+      if (miles > 0 && openSeats > 0) cap = Math.min(cap, Math.floor((miles * IRS_RATE) / openSeats));
+      if (typeof apiCapCents === 'number' && apiCapCents > 0) cap = Math.min(cap, Math.floor(apiCapCents / 100));
+      return Math.max(FLOOR, cap);
+    }
+
+    // ── Flow state ────────────────────────────────────────────────────────
+    function newLeg() {
+      return {
+        fromAddress: '', toAddress: '', start: null, end: null,
+        stopSuggestions: null, stops: new Set(),
+        dates: [], time: '', perDateTimes: {},
+        seatCount: 3, comfort: true, instant: false, priceUsd: null,
+        isReturn: false,
+      };
+    }
+    let cur = newLeg();
+    let savedLegs = [];        // completed legs waiting to publish
+    let publishedDrafts = [];  // [{id, from, to, nDates, status, rideIds}]
+    let pendingEmail = '';
+    let pendingPhone = null;
+    let myUid = null;
+    let suggestCache = null;   // suggest-seat-price response for current leg
+
+    function saveLocal() {
+      try {
+        localStorage.setItem(LS_KEY, JSON.stringify({
+          drafts: publishedDrafts.map((d) => ({ id: d.id, from: d.from, to: d.to, nDates: d.nDates })),
+          ts: Date.now(),
+        }));
+      } catch (_) {}
+    }
+    function loadLocal() {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (!raw) return null;
+        const v = JSON.parse(raw);
+        return Array.isArray(v.drafts) && v.drafts.length > 0 ? v : null;
+      } catch (_) { return null; }
+    }
+
+    // ── Work-in-progress autosave (audit H2) ──────────────────────────────
+    // Serialized on every screen transition; restored at boot when the tab
+    // was evicted/reloaded mid-flow (the OTP step SENDS drivers to their mail
+    // app, so this is the common case on phones, not the edge case).
+    const WIP_KEY = 'ss-post-wip-v1';
+    const WIP_TTL_MS = 24 * 60 * 60 * 1000;
+    // Screens worth resuming to. Gate/checklist states derive from the server
+    // at boot and must not be restored blindly.
+    const WIP_SCREENS = ['stTo', 'stStops', 'stDates', 'stTime', 'stSeats', 'stInstant', 'stPrice', 'stReturn', 'stEmail', 'stCode', 'stName'];
+    const legToJson = (l) => ({ ...l, stops: [...(l.stops || [])] });
+    const legFromJson = (l) => ({ ...l, stops: new Set(Array.isArray(l.stops) ? l.stops : []) });
+    function saveWip(screen) {
+      if (WIP_SCREENS.indexOf(screen) === -1 || !cur || !cur.start) {
+        // Not a resumable point (fresh stFrom, publishing, checklist) — a
+        // stale snapshot must not resurrect after the flow moved past it.
+        if (screen === 'stReady' || screen === 'stFrom') try { localStorage.removeItem(WIP_KEY); } catch (_) {}
+        return;
+      }
+      localStorage.setItem(WIP_KEY, JSON.stringify({
+        screen, cur: legToJson(cur), savedLegs: savedLegs.map(legToJson), ts: Date.now(),
+      }));
+    }
+    function restoreWip() {
+      try {
+        const raw = localStorage.getItem(WIP_KEY);
+        if (!raw) return false;
+        const v = JSON.parse(raw);
+        if (!v || !v.cur || !v.cur.start || !v.cur.end || (Date.now() - (v.ts || 0)) > WIP_TTL_MS) return false;
+        cur = legFromJson(v.cur);
+        savedLegs = Array.isArray(v.savedLegs) ? v.savedLegs.map(legFromJson) : [];
+        // Re-enter through each screen's own renderer so the DOM matches the
+        // restored state — never bare show(), which would present stale UI.
+        if (v.screen === 'stEmail' || v.screen === 'stCode' || v.screen === 'stName') { void startAuthThenPublish(); return true; }
+        if (v.screen === 'stReturn') { show('stReturn'); return true; }
+        if (v.screen === 'stPrice' && cur.time && cur.dates.length) { void enterPrice(); return true; }
+        if (v.screen === 'stInstant' && cur.time && cur.dates.length) { renderInstant(); show('stInstant'); return true; }
+        if (v.screen === 'stSeats' && cur.time && cur.dates.length) { renderSeats(); show('stSeats'); return true; }
+        if (v.screen === 'stTime' && cur.dates.length) { enterTime(); return true; }
+        if (v.screen === 'stDates' || cur.dates.length) { enterDates(); return true; }
+        void enterStops();
+        return true;
+      } catch (_) { return false; }
+    }
+    function clearLocal() { try { localStorage.removeItem(LS_KEY); } catch (_) {} }
+
+    // ── Address autocomplete (port of lib/geocoding.ts searchbox flow) ────
+    const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2));
+    function stripCountry(s) { return (s || '').replace(/,?\s*(United States|USA|US)\s*$/i, ''); }
+
+    function wireAutocomplete(inputId, listId, pickedId, pickedAddrId, changeId, btnId, assign) {
+      let session = uuid();
+      let debounceTimer = null;
+      let lastQuery = '';
+      const input = $(inputId), list = $(listId);
+
+      async function suggest(q) {
+        const bbox = '-124.5,32.0,-114.0,42.0';
+        const url = 'https://api.mapbox.com/search/searchbox/v1/suggest?q=' + encodeURIComponent(q) +
+          '&access_token=' + MAPBOX_TOKEN + '&session_token=' + session +
+          '&country=us&bbox=' + bbox + '&limit=6&types=poi,address,place,locality,neighborhood';
+        const res = await fetch(url);
+        if (!res.ok) return [];
+        const json = await res.json();
+        return (json.suggestions || []).map((s) => ({
+          id: s.mapbox_id,
+          primary: s.name,
+          secondary: stripCountry(s.place_formatted || ''),
+          full: stripCountry(s.full_address || (s.name + (s.place_formatted ? ', ' + s.place_formatted : ''))),
+        }));
+      }
+      async function retrieve(id) {
+        const url = 'https://api.mapbox.com/search/searchbox/v1/retrieve/' + encodeURIComponent(id) +
+          '?access_token=' + MAPBOX_TOKEN + '&session_token=' + session;
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const json = await res.json();
+        const f = json.features && json.features[0];
+        if (!f) return null;
+        session = uuid(); // one billable session per suggest→retrieve pairing
+        return { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+      }
+      function render(items) {
+        list.innerHTML = '';
+        if (items.length === 0) { list.classList.add('hidden'); return; }
+        for (const it of items) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'ac-item';
+          // textContent only — geocoder strings are third-party data.
+          const p = document.createElement('span'); p.className = 'p'; p.textContent = it.primary;
+          const s = document.createElement('span'); s.className = 's'; s.textContent = it.secondary;
+          b.appendChild(p); b.appendChild(s);
+          b.addEventListener('click', async () => {
+            list.classList.add('hidden');
+            input.value = it.full;
+            const coords = await retrieve(it.id);
+            if (!coords) { setMsg(inputId === 'fromInput' ? 'fromMsg' : 'toMsg', "Couldn't load that address — try another."); return; }
+            assign(it.full, coords);
+            input.classList.add('hidden');
+            $(pickedAddrId).textContent = it.full;
+            $(pickedId).classList.remove('hidden');
+            $(btnId).disabled = false;
+          });
+          list.appendChild(b);
+        }
+        list.classList.remove('hidden');
+      }
+      input.addEventListener('input', () => {
+        const q = input.value.trim();
+        assign(null, null); // typing invalidates any prior pick
+        $(btnId).disabled = true;
+        clearTimeout(debounceTimer);
+        if (q.length < 3) { list.classList.add('hidden'); return; }
+        debounceTimer = setTimeout(async () => {
+          lastQuery = q;
+          try {
+            const items = await suggest(q);
+            if (input.value.trim() === lastQuery) render(items);
+          } catch (_) { /* transient */ }
+        }, 250);
+      });
+      $(changeId).addEventListener('click', () => {
+        assign(null, null);
+        $(pickedId).classList.add('hidden');
+        input.classList.remove('hidden');
+        input.value = '';
+        $(btnId).disabled = true;
+        input.focus();
+      });
+    }
+
+    wireAutocomplete('fromInput', 'fromList', 'fromPicked', 'fromPickedAddr', 'fromChange', 'fromBtn',
+      (addr, coords) => { cur.fromAddress = addr || ''; cur.start = coords; });
+    wireAutocomplete('toInput', 'toList', 'toPicked', 'toPickedAddr', 'toChange', 'toBtn',
+      (addr, coords) => { cur.toAddress = addr || ''; cur.end = coords; });
+
+    $('fromBtn').addEventListener('click', () => {
+      setMsg('fromMsg', '');
+      if (!cur.start) { setMsg('fromMsg', 'Pick your pickup from the suggestions.'); return; }
+      show('stTo');
+    });
+
+    $('toBtn').addEventListener('click', () => {
+      setMsg('toMsg', '');
+      if (!cur.end) { setMsg('toMsg', 'Pick your dropoff from the suggestions.'); return; }
+      // Same two rules the app enforces at this moment — so a driver isn't
+      // told at the very end that the whole trip is ineligible.
+      if (!inServiceArea(cur.start) || !inServiceArea(cur.end)) {
+        setMsg('toMsg', "Seat Sherpa has only launched in California and Nevada so far — please pick addresses inside CA/NV.");
+        return;
+      }
+      // A measurement belongs to ONE pair of endpoints. If the driver went
+      // back and changed an address, the old figure must not price the new
+      // route (the server clamp would catch it, but the page would briefly
+      // advertise a wrong cap).
+      const routeKey = cur.start.lat + ',' + cur.start.lng + '|' + cur.end.lat + ',' + cur.end.lng;
+      if (cur.roadFor !== routeKey) { cur.roadMiles = null; cur.roadMinutes = null; }
+      // Same distance basis as the server's MIN_TRIP check (road ?? hav×1.25);
+      // raw haversine here rejected trips the app and server both accept.
+      const miles = tripMilesOf(cur);
+      if (miles < MIN_TRIP_MILES) {
+        setMsg('toMsg', 'Pickup and dropoff are only ~' + miles.toFixed(1) + ' mi apart — Seat Sherpa is for longer trips (' + MIN_TRIP_MILES + ' mi or more).');
+        return;
+      }
+      // Route is confirmed — measure the real drivable distance NOW (not at
+      // publish) so the price cap and seat-fit downstream use it. Best-effort:
+      // stale results for an abandoned route are guarded by the coord check.
+      const routeStart = cur.start, routeEnd = cur.end;
+      if (cur.roadMiles == null) {
+        drivingRoute(routeStart, routeEnd).then((rr) => {
+          if (rr && cur.start === routeStart && cur.end === routeEnd) {
+            cur.roadMiles = rr.miles; cur.roadMinutes = rr.minutes; cur.roadFor = routeKey;
+          }
+        }).catch(() => {});
+      }
+      enterStops();
+    });
+
+    // ── Stopovers (port of lib/route-fill.ts suggestRouteStops) ───────────
+    async function drivingMinutes(points) {
+      const coords = points.map((p) => p.lng + ',' + p.lat).join(';');
+      try {
+        const res = await fetch('https://api.mapbox.com/directions/v5/mapbox/driving/' + coords + '?overview=false&access_token=' + MAPBOX_TOKEN);
+        if (!res.ok) return null;
+        const json = await res.json();
+        const sec = json.routes && json.routes[0] && json.routes[0].duration;
+        return typeof sec === 'number' && isFinite(sec) ? sec / 60 : null;
+      } catch (_) { return null; }
+    }
+    // Full route measurement for the MAIN leg (0207): drivable miles +
+    // minutes, stamped onto the draft so the minted rides carry real road
+    // distance for the cost-share cap. Null on any failure — the server
+    // falls back to haversine math and the 0207 trigger clamps implausible
+    // values, so this is best-effort by design.
+    async function drivingRoute(start, end) {
+      try {
+        const res = await fetch('https://api.mapbox.com/directions/v5/mapbox/driving/'
+          + start.lng + ',' + start.lat + ';' + end.lng + ',' + end.lat
+          + '?overview=false&alternatives=false&access_token=' + MAPBOX_TOKEN);
+        if (!res.ok) return null;
+        const json = await res.json();
+        const r = json.routes && json.routes[0];
+        if (!r || typeof r.distance !== 'number' || r.distance <= 0) return null;
+        return {
+          miles: Math.round((r.distance / 1609.344) * 10) / 10,
+          minutes: typeof r.duration === 'number' && r.duration > 0 ? Math.round(r.duration / 60) : null,
+        };
+      } catch (_) { return null; }
+    }
+    const routeT = (start, end, p) => {
+      const dx = end.lng - start.lng, dy = end.lat - start.lat;
+      const len2 = dx * dx + dy * dy || 1;
+      return ((p.lng - start.lng) * dx + (p.lat - start.lat) * dy) / len2;
+    };
+    async function suggestStops(start, end) {
+      const direct = haversineMiles(start, end);
+      if (!isFinite(direct) || direct < 50) return [];
+      const pre = [];
+      for (const c of [...DESTS, ...WAYPOINTS]) {
+        if (c.id === 'burningman') continue;
+        if (pre.some((p) => p.id === c.id)) continue;
+        const toStart = haversineMiles(start, c), toEnd = haversineMiles(end, c);
+        if (toStart < 25 || toEnd < 25) continue;
+        if (toStart + toEnd - direct > 20) continue;
+        const t = routeT(start, end, c);
+        if (t < 0.04 || t > 0.96) continue;
+        pre.push({ id: c.id, name: c.name, lat: c.lat, lng: c.lng, t, detour: toStart + toEnd - direct });
+      }
+      if (pre.length === 0) return [];
+      let picked = [];
+      const directMin = await drivingMinutes([start, end]);
+      if (directMin !== null) {
+        const timed = await Promise.all(pre.map(async (c) => {
+          const via = await drivingMinutes([start, c, end]);
+          return via === null ? null : { ...c, cost: via - directMin };
+        }));
+        const ok = timed.filter((c) => c !== null && c.cost <= 24);
+        if (timed.some((c) => c !== null)) picked = selectSpread(ok);
+        else picked = selectSpread(pre.filter((c) => c.detour <= 12).map((c) => ({ ...c, cost: c.detour })));
+      } else {
+        picked = selectSpread(pre.filter((c) => c.detour <= 12).map((c) => ({ ...c, cost: c.detour })));
+      }
+      return picked;
+    }
+    function selectSpread(cands) {
+      const byCost = [...cands].sort((a, b) => a.cost - b.cost);
+      const picked = [];
+      const farEnough = (c) => picked.every((p) => haversineMiles(p, c) >= 15);
+      for (const [lo, hi] of [[0, 1/3], [1/3, 2/3], [2/3, 1.001]]) {
+        if (picked.length >= 5) break;
+        const seg = byCost.find((c) => c.t >= lo && c.t < hi && !picked.includes(c) && farEnough(c));
+        if (seg) picked.push(seg);
+      }
+      for (const c of byCost) {
+        if (picked.length >= 5) break;
+        if (!picked.includes(c) && farEnough(c)) picked.push(c);
+      }
+      picked.sort((a, b) => a.t - b.t);
+      return picked;
+    }
+
+    async function enterStops() {
+      show('stStops');
+      setMsg('stopsMsg', '');
+      $('stopsList').innerHTML = '';
+      $('stopsLoading').classList.remove('hidden');
+      $('stopsBtn').disabled = true;
+      let sugg = [];
+      try { sugg = await suggestStops(cur.start, cur.end); } catch (_) { sugg = []; }
+      cur.stopSuggestions = sugg;
+      $('stopsLoading').classList.add('hidden');
+      $('stopsBtn').disabled = false;
+      if (sugg.length === 0) { enterDates(); return; } // nothing on-route — skip the screen
+      // Preselect the first MAX_STOPS (route order), like the app's default.
+      cur.stops = new Set(sugg.slice(0, MAX_STOPS).map((s) => s.id));
+      renderStops();
+    }
+    function renderStops() {
+      const wrap = $('stopsList');
+      wrap.innerHTML = '';
+      for (const s of cur.stopSuggestions) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'choice' + (cur.stops.has(s.id) ? ' sel' : '');
+        const tick = document.createElement('span'); tick.className = 'tick'; tick.textContent = cur.stops.has(s.id) ? '✓' : '';
+        const txt = document.createElement('span');
+        const t = document.createElement('span'); t.className = 't'; t.textContent = s.name;
+        txt.appendChild(t);
+        b.appendChild(tick); b.appendChild(txt);
+        b.addEventListener('click', () => {
+          setMsg('stopsMsg', '');
+          if (cur.stops.has(s.id)) cur.stops.delete(s.id);
+          else {
+            if (cur.stops.size >= MAX_STOPS) { setMsg('stopsMsg', 'Max ' + MAX_STOPS + ' stops — more stops means a longer trip for every rider.'); return; }
+            cur.stops.add(s.id);
+          }
+          renderStops();
+        });
+        wrap.appendChild(b);
+      }
+    }
+    $('stopsBtn').addEventListener('click', () => enterDates());
+
+    // ── Dates (two-month multi-select calendar) ───────────────────────────
+    function pacificTodayIso() {
+      return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date());
+    }
+    function buildCalendar() {
+      const cal = $('calendar');
+      cal.innerHTML = '';
+      const todayIso = pacificTodayIso();
+      const [ty, tm] = todayIso.split('-').map(Number);
+      for (let m = 0; m < 2; m++) {
+        const year = tm + m > 12 ? ty + 1 : ty;
+        const month = ((tm - 1 + m) % 12) + 1;
+        const mname = document.createElement('div');
+        mname.className = 'mname';
+        mname.textContent = new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        cal.appendChild(mname);
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+        for (const d of ['S','M','T','W','T','F','S']) {
+          const el = document.createElement('div'); el.className = 'dow'; el.textContent = d; grid.appendChild(el);
+        }
+        const firstDow = new Date(year, month - 1, 1).getDay();
+        for (let i = 0; i < firstDow; i++) grid.appendChild(document.createElement('div'));
+        const daysInMonth = new Date(year, month, 0).getDate();
+        for (let day = 1; day <= daysInMonth; day++) {
+          const iso = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'day' + (iso < todayIso ? ' off' : '') + (cur.dates.includes(iso) ? ' sel' : '');
+          b.textContent = String(day);
+          if (iso >= todayIso) {
+            b.addEventListener('click', () => {
+              setMsg('datesMsg', '');
+              const i = cur.dates.indexOf(iso);
+              if (i >= 0) cur.dates.splice(i, 1);
+              else {
+                if (cur.dates.length >= MAX_DATES) { setMsg('datesMsg', 'Up to ' + MAX_DATES + ' dates per post.'); return; }
+                cur.dates.push(iso);
+              }
+              cur.dates.sort();
+              b.classList.toggle('sel', i < 0);
+              $('datesBtn').disabled = cur.dates.length === 0;
+              $('datesBtn').textContent = cur.dates.length <= 1 ? 'Continue'
+                : 'Continue with ' + cur.dates.length + ' dates';
+            });
+          }
+          grid.appendChild(b);
+        }
+        cal.appendChild(grid);
+      }
+    }
+    function enterDates() {
+      $('datesEyebrow').textContent = cur.isReturn ? 'Post a ride · Return trip' : 'Post a ride';
+      $('datesTitle').textContent = cur.isReturn ? 'When are you coming back?' : 'When are you going?';
+      $('datesBtn').disabled = cur.dates.length === 0;
+      $('datesBtn').textContent = cur.dates.length <= 1 ? 'Continue' : 'Continue with ' + cur.dates.length + ' dates';
+      buildCalendar();
+      show('stDates');
+    }
+    $('datesBackBtn').addEventListener('click', () => {
+      if (cur.isReturn) {
+        // Abandon the half-built return leg and restore the outbound as the
+        // current leg — otherwise "I'll do it later" would publish a return
+        // with no dates.
+        cur = savedLegs.pop() || cur;
+        show('stReturn');
+        return;
+      }
+      // Back target depends on whether the stops screen was shown at all.
+      show((cur.stopSuggestions || []).length > 0 ? 'stStops' : 'stTo');
+    });
+    $('datesBtn').addEventListener('click', () => {
+      if (cur.dates.length === 0) return;
+      enterTime();
+    });
+
+    // ── Time ──────────────────────────────────────────────────────────────
+    function fmtDateShort(iso) {
+      const [y, m, d] = iso.split('-').map(Number);
+      return new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+    function enterTime() {
+      $('timeSub').textContent = cur.dates.length === 1
+        ? 'Departure on ' + fmtDateShort(cur.dates[0]) + '.'
+        : 'One time for all ' + cur.dates.length + ' dates — or set a different time for specific dates below.';
+      $('timeInput').value = cur.time || '';
+      $('timeBtn').disabled = !$('timeInput').value;
+      $('perDateWrap').classList.toggle('hidden', cur.dates.length <= 1);
+      $('perDateList').classList.add('hidden');
+      $('perDateList').innerHTML = '';
+      show('stTime');
+    }
+    $('timeInput').addEventListener('input', () => {
+      cur.time = $('timeInput').value;
+      $('timeBtn').disabled = !cur.time;
+    });
+    $('perDateToggle').addEventListener('click', () => {
+      const list = $('perDateList');
+      if (!list.classList.contains('hidden')) { list.classList.add('hidden'); return; }
+      list.innerHTML = '';
+      for (const d of cur.dates) {
+        const lab = document.createElement('label');
+        lab.textContent = fmtDateShort(d);
+        const inp = document.createElement('input');
+        inp.type = 'time'; inp.step = 300;
+        inp.value = cur.perDateTimes[d] || cur.time || '';
+        inp.addEventListener('input', () => {
+          if (inp.value && inp.value !== cur.time) cur.perDateTimes[d] = inp.value;
+          else delete cur.perDateTimes[d];
+        });
+        list.appendChild(lab); list.appendChild(inp);
+      }
+      list.classList.remove('hidden');
+    });
+    $('timeBtn').addEventListener('click', () => {
+      setMsg('timeMsg', '');
+      if (!cur.time) return;
+      // Today-dated rides need a future time (the calendar only blocks past DAYS).
+      const todayIso = pacificTodayIso();
+      for (const d of cur.dates) {
+        const t = cur.perDateTimes[d] || cur.time;
+        if (d === todayIso) {
+          const nowPac = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date());
+          if (t <= nowPac) { setMsg('timeMsg', fmtDateShort(d) + ' at ' + t + ' has already passed — pick a later time or drop today.'); return; }
+        }
+      }
+      // Return leg: everything else (seats, comfort, price, booking mode) is
+      // carried from the outbound — dates + time were the only questions, so
+      // this leg is complete. Queue it and publish both.
+      if (cur.isReturn) { savedLegs.push(cur); startAuthThenPublish(); return; }
+      show('stSeats');
+    });
+
+    // ── Seats + comfort ───────────────────────────────────────────────────
+    // How many seats this trip's cost-share total can carry at the $10 floor.
+    // Port of the app's floorFit: on a short route, seatCount × $10 can exceed
+    // tripMiles × IRS_RATE, and without this clamp the page walks the driver
+    // to publish — price stepper pinned at $10, everything looking fine — then
+    // bounces BAD_PRICE to a screen where the price can't go lower (Fable
+    // review #4, 2026-08-24; SJ→Santa Cruz with the default 3 seats).
+    function seatsSupported() {
+      const total = tripMilesOf(cur) * IRS_RATE;
+      return Math.max(1, Math.floor(total / FLOOR));
+    }
+    function renderSeats() {
+      const supported = seatsSupported();
+      const hardMax = Math.min(cur.comfort ? 3 : 4, supported);
+      const note = $('seatFitNote');
+      if (cur.seatCount > hardMax) {
+        cur.seatCount = hardMax;
+        note.textContent = 'This ' + tripMilesOf(cur).toFixed(0) + '-mile trip has a $'
+          + (tripMilesOf(cur) * IRS_RATE).toFixed(0) + ' cost-sharing total, which supports '
+          + hardMax + (hardMax === 1 ? ' seat' : ' seats') + ' at the $' + FLOOR + ' minimum — we set it for you.';
+        note.classList.remove('hidden');
+      } else if (!(supported < (cur.comfort ? 3 : 4) && cur.seatCount === hardMax)) {
+        // Hide unless the driver is STILL pinned at a clamped ceiling — the
+        // old `supported >= max` condition let a short-route note linger
+        // after the route changed to one with no clamp at all (audit L6).
+        note.classList.add('hidden');
+      }
+      $('seatVal').textContent = String(cur.seatCount);
+      $('seatMinus').disabled = cur.seatCount <= 1;
+      $('seatPlus').disabled = cur.seatCount >= hardMax;
+      $('comfortRow').classList.toggle('sel', cur.comfort);
+      $('comfortTick').textContent = cur.comfort ? '✓' : '';
+    }
+    $('seatMinus').addEventListener('click', () => { cur.seatCount = Math.max(1, cur.seatCount - 1); renderSeats(); });
+    $('seatPlus').addEventListener('click', () => { cur.seatCount = Math.min(cur.comfort ? 3 : 4, seatsSupported(), cur.seatCount + 1); renderSeats(); });
+    $('comfortRow').addEventListener('click', () => {
+      cur.comfort = !cur.comfort;
+      if (cur.comfort && cur.seatCount > 3) cur.seatCount = 3;
+      renderSeats();
+    });
+    $('seatsBtn').addEventListener('click', () => { renderInstant(); show('stInstant'); });
+
+    // ── Instant book ──────────────────────────────────────────────────────
+    function renderInstant() {
+      const locked = cur.stops.size > 0;
+      $('instantRow').classList.toggle('locked', locked);
+      if (locked) {
+        cur.instant = false;
+        $('instantDesc').textContent = 'Unavailable on rides with pickup stops — multi-stop rides need you to confirm each rider.';
+      } else {
+        $('instantDesc').textContent = 'Riders book without waiting for approval. Needs payouts (Stripe) connected — if yours aren’t yet, this ride starts as review-each-request.';
+      }
+      $('reviewRow').classList.toggle('sel', !cur.instant);
+      $('reviewTick').textContent = !cur.instant ? '✓' : '';
+      $('instantRow').classList.toggle('sel', cur.instant);
+      $('instantTick').textContent = cur.instant ? '✓' : '';
+    }
+    $('reviewRow').addEventListener('click', () => { cur.instant = false; renderInstant(); });
+    $('instantRow').addEventListener('click', () => {
+      if (cur.stops.size > 0) return;
+      cur.instant = true; renderInstant();
+    });
+    $('instantBtn').addEventListener('click', () => enterPrice());
+
+    // ── Price ─────────────────────────────────────────────────────────────
+    let priceCap = HARD_CAP;
+    async function enterPrice() {
+      show('stPrice');
+      setMsg('priceMsg', '');
+      const fromDest = nearestDestId(cur.start), toDest = nearestDestId(cur.end);
+      // The suggestion endpoint is public + aggregate — same one the app uses.
+      if (!suggestCache || suggestCache.key !== fromDest + '|' + toDest + '|' + cur.seatCount) {
+        $('priceVal').textContent = '$—';
+        $('priceBtn').disabled = true;
+        let resp = null;
+        try {
+          const r = await fetch(SUPA + '/functions/v1/suggest-seat-price?from=' + fromDest + '&to=' + toDest + '&seats=' + cur.seatCount,
+            { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON } });
+          if (r.ok) resp = await r.json();
+        } catch (_) {}
+        suggestCache = { key: fromDest + '|' + toDest + '|' + cur.seatCount, resp };
+      }
+      const resp = suggestCache.resp;
+      priceCap = maxSeatPrice(cur, cur.seatCount, resp && resp.cap_cents);
+      // Open on suggested_cents — anchoring only works if the default IS the
+      // recommendation. Fallback: middle of the band.
+      if (cur.priceUsd == null) {
+        let sugg = resp && resp.suggested_cents ? Math.round(resp.suggested_cents / 100) : Math.round((FLOOR + priceCap) / 2);
+        cur.priceUsd = Math.min(Math.max(sugg, FLOOR), priceCap);
+      } else {
+        cur.priceUsd = Math.min(Math.max(cur.priceUsd, FLOOR), priceCap);
+      }
+      renderPrice();
+      $('priceBtn').disabled = false;
+    }
+    function renderPrice() {
+      $('priceVal').textContent = '$' + cur.priceUsd;
+      $('priceMinus').disabled = cur.priceUsd <= FLOOR;
+      $('pricePlus').disabled = cur.priceUsd >= priceCap;
+      const resp = suggestCache && suggestCache.resp;
+      const atCap = cur.priceUsd >= priceCap;
+      $('priceCapLine').classList.toggle('hidden', !atCap);
+      if (atCap) { $('priceBand').classList.add('hidden'); return; }
+      if (resp && resp.low_cents && resp.high_cents) {
+        const lo = Math.round(resp.low_cents / 100), hi = Math.min(Math.round(resp.high_cents / 100), priceCap);
+        $('priceBand').textContent = 'Recommended price: $' + lo + '–$' + hi + " · you'll get passengers in no time.";
+        $('priceBand').classList.remove('hidden');
+      } else {
+        $('priceBand').classList.add('hidden');
+      }
+    }
+    $('priceMinus').addEventListener('click', () => { cur.priceUsd = Math.max(FLOOR, cur.priceUsd - 1); renderPrice(); });
+    $('pricePlus').addEventListener('click', () => { cur.priceUsd = Math.min(priceCap, cur.priceUsd + 1); renderPrice(); });
+    $('priceBtn').addEventListener('click', () => {
+      setMsg('priceMsg', '');
+      if (cur.priceUsd < FLOOR || cur.priceUsd > priceCap) { setMsg('priceMsg', 'Price must be between $' + FLOOR + ' and $' + priceCap + ' for this route.'); return; }
+      show('stReturn');
+    });
+
+    // ── Return trip ───────────────────────────────────────────────────────
+    $('returnYes').addEventListener('click', () => {
+      savedLegs.push(cur);
+      const ret = newLeg();
+      ret.isReturn = true;
+      ret.fromAddress = cur.toAddress; ret.start = cur.end;
+      ret.toAddress = cur.fromAddress; ret.end = cur.start;
+      // Same stops are valid in reverse; carry seats/comfort/price/instant.
+      ret.stopSuggestions = cur.stopSuggestions;
+      ret.stops = new Set(cur.stops);
+      ret.seatCount = cur.seatCount; ret.comfort = cur.comfort;
+      ret.instant = cur.instant; ret.priceUsd = cur.priceUsd;
+      cur = ret;
+      suggestCache = null;
+      enterDates();
+    });
+    $('returnNo').addEventListener('click', () => {
+      savedLegs.push(cur);
+      startAuthThenPublish();
+    });
+
+    // ── Auth (email OTP — book.html pattern) ──────────────────────────────
+    let emailCooldown = 0, emailCooldownTimer = null;
+    function startEmailCooldown() {
+      emailCooldown = 60;
+      const btn = $('codeResend');
+      clearInterval(emailCooldownTimer);
+      emailCooldownTimer = setInterval(() => {
+        emailCooldown -= 1;
+        if (emailCooldown <= 0) { clearInterval(emailCooldownTimer); btn.disabled = false; btn.textContent = 'Resend code'; }
+        else { btn.disabled = true; btn.textContent = 'Resend in ' + emailCooldown + 's'; }
+      }, 1000);
+      btn.disabled = true; btn.textContent = 'Resend in 60s';
+    }
+    async function sendEmailOtp(email) {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: true, data: { role: 'driver' } },
+      });
+      if (error) {
+        const m = (error.message || '').toLowerCase();
+        if (m.includes('rate limit')) return 'Too many codes requested. Try again in an hour.';
+        return error.message || "Couldn't send the code. Try again.";
+      }
+      return null;
+    }
+    async function startAuthThenPublish() {
+      // If the return leg's dates conflict with the outbound (<4h), catch it
+      // here rather than letting the server bounce one leg.
+      if (savedLegs.length === 2) {
+        const all = [];
+        for (const leg of savedLegs) for (const d of leg.dates) all.push(new Date(d + 'T' + (leg.perDateTimes[d] || leg.time) + ':00').getTime());
+        all.sort((a, b) => a - b);
+        for (let i = 1; i < all.length; i++) {
+          if (all[i] - all[i - 1] < 4 * 3600 * 1000) {
+            cur = savedLegs.pop();
+            enterDates();
+            setMsg('datesMsg', 'Your return departs within 4 hours of an outbound date — leave yourself time to drive there.');
+            return;
+          }
+        }
+      }
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) { show('stEmail'); return; }
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData || !userData.user) { show('stEmail'); return; }
+      myUid = userData.user.id;
+      await nameCheckThenPublish(userData.user);
+    }
+    $('emailBtn').addEventListener('click', async () => {
+      setMsg('emailMsg', '');
+      const email = $('email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setMsg('emailMsg', 'Enter a valid email address.'); return; }
+      const btn = $('emailBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      const err = await sendEmailOtp(email);
+      btn.disabled = false; btn.textContent = 'Email me a code';
+      if (err) { setMsg('emailMsg', err); return; }
+      pendingEmail = email;
+      $('codeEmailEcho').textContent = email;
+      $('emailCode').value = '';
+      startEmailCooldown();
+      show('stCode');
+      $('emailCode').focus();
+    });
+    $('codeResend').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const err = await sendEmailOtp(pendingEmail);
+      if (err) { setMsg('codeMsg', err); return; }
+      startEmailCooldown();
+      setMsg('codeMsg', 'New code sent.', 'ok');
+    });
+    $('codeChangeEmail').addEventListener('click', () => { setMsg('codeMsg', ''); show('stEmail'); });
+    $('codeBtn').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const code = $('emailCode').value.replace(/\D/g, '');
+      if (code.length !== 6) { setMsg('codeMsg', 'Enter the 6-digit code.'); return; }
+      const btn = $('codeBtn');
+      btn.disabled = true; btn.textContent = 'Verifying…';
+      const { data, error } = await supabase.auth.verifyOtp({ email: pendingEmail, token: code, type: 'email' });
+      btn.disabled = false; btn.textContent = 'Verify';
+      if (error) {
+        const m = (error.message || '').toLowerCase();
+        setMsg('codeMsg', m.includes('expired') || m.includes('invalid')
+          ? 'That code is incorrect or has expired. Tap Resend for a new one.'
+          : error.message);
+        return;
+      }
+      // Keep an existing account's role; stamp 'driver' only on fresh ones.
+      try { await supabase.auth.updateUser({ data: { role: (data && data.user && data.user.user_metadata && data.user.user_metadata.role) || 'driver' } }); } catch (_) {}
+      // Fresh-account registration event — same 10-minute freshness rule as
+      // book.html (audit L8: this funnel had zero conversion tracking).
+      try {
+        const created = data && data.user && data.user.created_at ? new Date(data.user.created_at).getTime() : 0;
+        if (created && Date.now() - created < 10 * 60 * 1000 && window.ssTrack) {
+          window.ssTrack('CompleteRegistration', { em: data.user.email });
+        }
+      } catch (_) {}
+      myUid = data && data.user ? data.user.id : null;
+      await nameCheckThenPublish(data.user);
+    });
+
+    // ── Name check → publish ──────────────────────────────────────────────
+    async function nameCheckThenPublish(user) {
+      let profileName = '';
+      try {
+        const { data: p } = await supabase.from('profiles').select('name').eq('id', user.id).maybeSingle();
+        profileName = ((p && p.name) || '').trim();
+      } catch (_) {}
+      const emailLocal = (user.email || '').split('@')[0].toLowerCase();
+      if (!profileName || profileName.toLowerCase() === emailLocal) { show('stName'); return; }
+      await publishAll();
+    }
+    $('nameBtn').addEventListener('click', async () => {
+      setMsg('nameMsg', '');
+      const name = $('nameInput').value.trim();
+      if (!name || name.split(/\s+/).length < 1) { setMsg('nameMsg', 'Please enter your name.'); return; }
+      const btn = $('nameBtn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      try {
+        // The signup trigger creates the profiles row; update-with-one-retry
+        // covers the just-signed-up race (book.html pattern).
+        let { data, error } = await supabase.from('profiles').update({ name }).eq('id', myUid).select('id');
+        if (!error && (!data || data.length === 0)) {
+          await new Promise((r) => setTimeout(r, 900));
+          ({ data, error } = await supabase.from('profiles').update({ name }).eq('id', myUid).select('id'));
+        }
+        if (error || !data || data.length === 0) throw error || new Error('Profile not ready — please try again.');
+        try { await supabase.auth.updateUser({ data: { name } }); } catch (_) {}
+      } catch (e) {
+        setMsg('nameMsg', (e && e.message) || 'Could not save. Try again.');
+        btn.disabled = false; btn.textContent = 'Continue';
+        return;
+      }
+      btn.disabled = false; btn.textContent = 'Continue';
+      await publishAll();
+    });
+
+    // ── Publish ───────────────────────────────────────────────────────────
+    function legPayload(leg) {
+      return {
+        fromAddress: leg.fromAddress,
+        toAddress: leg.toAddress,
+        startLat: leg.start.lat, startLng: leg.start.lng,
+        endLat: leg.end.lat, endLng: leg.end.lng,
+        // Measured just before publish (drivingRoute); null = server fallback.
+        roadMiles: leg.roadMiles != null ? leg.roadMiles : null,
+        roadMinutes: leg.roadMinutes != null ? leg.roadMinutes : null,
+        stops: Array.from(leg.stops),
+        departures: leg.dates.map((d) => ({ date: d, time: leg.perDateTimes[d] || leg.time })),
+        seatCount: leg.seatCount,
+        comfort: leg.comfort,
+        priceCents: leg.priceUsd * 100,
+        instant: leg.instant,
+      };
+    }
+    // Server machine code → the screen that fixes it.
+    const ERR_SCREEN = { BAD_ROUTE: 'stTo', OUT_OF_AREA: 'stTo', MIN_TRIP: 'stTo', BAD_DATES: 'stDates', BAD_SEATS: 'stSeats', BAD_PRICE: 'stPrice', BAD_STOPS: 'stStops' };
+    // BAD_SEATS pointed at timeMsg (a hidden card's element) and stSeats had
+    // no message element at all — a server bounce landed the driver on the
+    // seats screen with zero explanation (audit M6).
+    const ERR_MSG = { BAD_ROUTE: 'toMsg', OUT_OF_AREA: 'toMsg', MIN_TRIP: 'toMsg', BAD_DATES: 'datesMsg', BAD_SEATS: 'seatsMsg', BAD_PRICE: 'priceMsg', BAD_STOPS: 'stopsMsg' };
+
+    async function publishAll() {
+      show('stPublishing');
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session && sessionData.session.access_token;
+      if (!token) { show('stEmail'); return; }
+
+      const failures = [];
+      for (const leg of savedLegs) {
+        // Skip a leg that already published (retry after a partial failure).
+        if (leg._published) continue;
+        // Measure the drivable route once per leg (cached on the leg so a
+        // retry doesn't re-fetch). Best-effort: null just means the server
+        // uses its haversine fallback.
+        if (leg.roadMiles == null) {
+          const rr = await drivingRoute(leg.start, leg.end);
+          if (rr) { leg.roadMiles = rr.miles; leg.roadMinutes = rr.minutes; }
+        }
+        try {
+          const res = await fetch(SUPA + '/functions/v1/web-create-ride-draft', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+            body: JSON.stringify(legPayload(leg)),
+          });
+          const body = await res.json().catch(() => ({}));
+          if (res.ok && body && typeof body.draftId === 'number') {
+            leg._published = true;
+            // A published draft = a driver lead (audit L8). Once per session.
+            try {
+              if (!window.__ssPostLead && window.ssTrack) { window.__ssPostLead = true; window.ssTrack('Lead'); }
+            } catch (_) {}
+            publishedDrafts.push({
+              id: body.draftId,
+              from: leg.fromAddress, to: leg.toAddress, nDates: leg.dates.length,
+              status: body.status === 'live' ? 'live' : 'pending',
+              rideIds: Array.isArray(body.rideIds) ? body.rideIds : [],
+              gates: body.gates || null,
+            });
+            continue;
+          }
+          if (body && body.error === 'MIGRATION_PENDING') { show('stUnavailable'); return; }
+          if (body && body.error === 'ACCOUNT_SUSPENDED') {
+            show('stReady');
+            $('readyTitle').textContent = 'We hit a problem';
+            $('rideCards').innerHTML = ''; $('gateList').innerHTML = '';
+            $('statusLine').textContent = body.message || 'Your account is suspended. Email support@seatsherpa.app.';
+            return;
+          }
+          failures.push({ leg, code: body && body.error, message: (body && (body.message || body.error)) || 'Something went wrong.' });
+        } catch (e) {
+          failures.push({ leg, code: null, message: (e && e.message) || 'Network problem — try again.' });
+        }
+      }
+
+      if (publishedDrafts.length === 0 && failures.length > 0) {
+        // Nothing published — bounce to the screen that can fix the first error.
+        const f = failures[0];
+        const scr = ERR_SCREEN[f.code];
+        cur = f.leg; // re-enter that leg for editing
+        savedLegs = savedLegs.filter((l) => l !== f.leg);
+        if (scr) {
+          if (scr === 'stDates') enterDates(); else if (scr === 'stPrice') enterPrice(); else show(scr);
+          setMsg(ERR_MSG[f.code] || 'toMsg', f.message);
+        } else {
+          enterDates();
+          setMsg('datesMsg', f.message);
+        }
+        return;
+      }
+
+      saveLocal();
+      const partialMsg = failures.length > 0
+        ? 'Your outbound published, but the other direction hit a snag: ' + failures[0].message + ' You can post it again any time.'
+        : '';
+      await enterReady(partialMsg);
+    }
+
+    // ── Ready screen + gates ──────────────────────────────────────────────
+    const GATE_DEFS = [
+      { key: 'phone', title: 'Confirm your phone', doneTitle: 'Phone confirmed',
+        unlock: 'Unlocks your ride going live — riders need a real number at pickup.', screen: 'gPhone', blocking: true },
+      { key: 'photo', title: 'Add a face photo', doneTitle: 'Face photo added',
+        unlock: 'Riders will want to see who you are.', screen: 'gPhoto', blocking: false },
+      { key: 'license', title: "Snap your driver's license", doneTitle: 'License on file',
+        unlock: 'Unlocks your ride going live. Private — riders never see it.', screen: 'gLicense', blocking: true },
+      { key: 'bio', title: 'Write a short bio', doneTitle: 'Bio written',
+        unlock: 'Riders decide largely on the bio.', screen: 'gBio', blocking: false },
+      { key: 'car', title: 'Add your car', doneTitle: 'Car added',
+        unlock: 'Shows riders what to look for at pickup.', screen: 'gCar', blocking: false },
+      { key: 'payouts', title: 'Set up payouts', doneTitle: 'Payouts connected',
+        unlock: 'Unlocks accepting bookings and Instant Book — Stripe sends riders’ cost share to your bank.', screen: null, blocking: false },
+    ];
+    let gateState = { phone: false, photo: false, license: false, bio: false, car: false, payouts: false };
+    let reviewHold = false;
+
+    async function enterReady(extraMsg) {
+      show('stReady');
+      setMsg('readyMsg', extraMsg || '');
+      renderRideCards();
+      $('statusLine').innerHTML = '<span class="minispin"></span> Checking status…';
+      const { data: userData } = await supabase.auth.getUser();
+      if (userData && userData.user) {
+        myUid = userData.user.id;
+        $('signedInEmail').textContent = userData.user.email || '';
+        $('signedInWrap').classList.remove('hidden');
+      }
+      await refreshGates();
+    }
+
+    function renderRideCards() {
+      const wrap = $('rideCards');
+      wrap.innerHTML = '';
+      for (const d of publishedDrafts) {
+        const card = document.createElement('div');
+        card.className = 'ridecard';
+        const route = document.createElement('div'); route.className = 'route';
+        route.textContent = '🚗 ' + shortPlace(d.from) + ' → ' + shortPlace(d.to);
+        const meta = document.createElement('div'); meta.className = 'meta';
+        meta.textContent = d.nDates === 1 ? '1 date' : d.nDates + ' dates';
+        if (d.status === 'live') meta.textContent += ' · LIVE to riders';
+        card.appendChild(route); card.appendChild(meta);
+        wrap.appendChild(card);
+      }
+    }
+    function shortPlace(addr) {
+      const parts = (addr || '').split(',').map((s) => s.trim()).filter(Boolean);
+      if (parts.length === 0) return addr || '';
+      // First non-numeric-ish chunk reads as the place name.
+      return parts.length >= 2 && /\d/.test(parts[0]) ? parts[1] : parts[0];
+    }
+
+    async function refreshGates() {
+      // 1. Client-side reads for instant checkmarks (all under the driver's
+      //    own RLS — the same reads the app makes).
+      try {
+        const { data: userData } = await supabase.auth.getUser();
+        if (userData && userData.user) {
+          myUid = userData.user.id;
+          gateState.phone = !!userData.user.phone_confirmed_at;
+        }
+        const { data: p } = await supabase.from('profiles')
+          .select('name, bio, photo_url, driver_license_photo_url, driver_license_expiry_date, stripe_account_id, stripe_charges_enabled')
+          .eq('id', myUid).maybeSingle();
+        if (p) {
+          gateState.photo = !!(p.photo_url || '').trim();
+          const bio = (p.bio || '').trim();
+          gateState.bio = bio.split(/\s+/).filter(Boolean).length >= 3 && bio.length >= 15;
+          const today = pacificTodayIso();
+          gateState.license = !!p.driver_license_photo_url && (!p.driver_license_expiry_date || p.driver_license_expiry_date >= today);
+          gateState.payouts = !!p.stripe_account_id && p.stripe_charges_enabled === true;
+        }
+        const { count } = await supabase.from('vehicles').select('id', { count: 'exact', head: true }).eq('owner_id', myUid);
+        gateState.car = (count || 0) > 0;
+      } catch (_) {}
+
+      // 2. Ask the server per draft: live yet? (Server truth wins on gates.)
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session && sessionData.session.access_token;
+      reviewHold = false;
+      if (token) {
+        for (const d of publishedDrafts) {
+          if (d.status === 'live' && d.rideIds.length > 0) continue;
+          try {
+            const res = await fetch(SUPA + '/functions/v1/web-finalize-ride', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+              body: JSON.stringify({ draftId: d.id }),
+            });
+            const body = await res.json().catch(() => ({}));
+            if (body && body.gates) Object.assign(gateState, body.gates);
+            if (body && body.status === 'live') {
+              const wasPending = d.status !== 'live';
+              d.status = 'live';
+              d.rideIds = Array.isArray(body.rideIds) ? body.rideIds : [];
+              d.note = body.note || (Array.isArray(body.skipped) ? body.skipped.join('; ') : null);
+              // Deliberately NO immediate notify-route-searchers call here.
+              // The cancel-protection delay (60/15 min) and quiet hours live
+              // in that function's CRON branch only — the app removed its own
+              // client-side call for exactly this reason, and the alert
+              // ledger (0136) makes an early push permanent per (ride,
+              // rider). The sweep announces minted rides on its own.
+            } else if (body && body.note === 'review') {
+              reviewHold = true;
+            } else if (body && body.error === 'MIGRATION_PENDING') {
+              show('stUnavailable'); return;
+            } else if (body && (body.error === 'DRAFT_NOT_FOUND' || body.error === 'DRAFT_CANCELLED')) {
+              // Stale local memory of a draft the server no longer has —
+              // without this, the checklist pinned "one step and this goes
+              // live" forever with no escape (audit L4). Drop it and let the
+              // page reflect reality on this same render.
+              d.status = 'gone';
+            }
+          } catch (_) { /* transient — the next refresh retries */ }
+        }
+        publishedDrafts = publishedDrafts.filter((d) => d.status !== 'gone');
+        if (publishedDrafts.length === 0) { try { localStorage.removeItem(LS_KEY); } catch (_) {} }
+      }
+      renderRideCards();
+      renderGateList();
+      saveLocal();
+    }
+
+    function renderGateList() {
+      const wrap = $('gateList');
+      wrap.innerHTML = '';
+      const allLive = publishedDrafts.length > 0 && publishedDrafts.every((d) => d.status === 'live');
+      const blockingLeft = GATE_DEFS.filter((g) => g.blocking && !gateState[g.key]).length;
+
+      const line = $('statusLine');
+      if (allLive) {
+        line.className = 'statusline live';
+        const anyRides = publishedDrafts.some((d) => d.rideIds.length > 0);
+        line.textContent = anyRides
+          ? '🎉 Your ride is live to riders!'
+          : 'Verification done — but your dates had already passed, so nothing was posted. Post a new ride below.';
+        $('readyTitle').textContent = anyRides ? 'Your ride is live' : 'Your ride is ready';
+        const notes = publishedDrafts.map((d) => d.note).filter(Boolean);
+        $('readySub').textContent = notes.length > 0 ? 'Note: ' + notes.join(' ') : (anyRides ? 'Riders can find and book it now.' : '');
+      } else if (reviewHold && blockingLeft === 0) {
+        line.className = 'statusline';
+        line.textContent = 'All set on your side — your ride is in review and will go live shortly.';
+      } else {
+        line.className = 'statusline';
+        line.textContent = blockingLeft === 0
+          ? 'Finishing up — this usually takes a moment. Refresh if it lingers.'
+          : (blockingLeft === 2 ? 'Two steps and this goes live to riders.' : 'One step and this goes live to riders.');
+      }
+
+      for (const g of GATE_DEFS) {
+        const done = !!gateState[g.key];
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'gate' + (done ? ' done' : '');
+        const st = document.createElement('span'); st.className = 'st'; st.textContent = done ? '✓' : '';
+        const txt = document.createElement('span');
+        const t = document.createElement('span'); t.className = 't'; t.textContent = done ? g.doneTitle : g.title;
+        const u = document.createElement('span'); u.className = 'u'; u.textContent = g.unlock;
+        txt.appendChild(t); txt.appendChild(u);
+        b.appendChild(st); b.appendChild(txt);
+        if (!done) {
+          if (g.key === 'payouts') b.addEventListener('click', startStripeOnboarding);
+          else b.addEventListener('click', () => show(g.screen));
+        } else {
+          b.disabled = true;
+        }
+        wrap.appendChild(b);
+      }
+
+      // Live links: view the first ride's public page.
+      const links = $('liveLinks');
+      links.innerHTML = '';
+      const firstLive = publishedDrafts.find((d) => d.status === 'live' && d.rideIds.length > 0);
+      if (firstLive) {
+        const a = document.createElement('a');
+        a.className = 'store-badge';
+        a.style.justifyContent = 'center';
+        a.href = '/ride?id=' + encodeURIComponent(firstLive.rideIds[0]);
+        const s = document.createElement('span');
+        s.style.cssText = 'font-size:15px;font-weight:600;color:#fff;';
+        s.textContent = 'See your ride page →';
+        a.appendChild(s);
+        links.appendChild(a);
+        const hint = document.createElement('p');
+        hint.className = 'hint';
+        hint.style.marginTop = '10px';
+        hint.textContent = 'Manage bookings, chat with riders and edit this ride in the Seat Sherpa app.';
+        links.appendChild(hint);
+        links.classList.remove('hidden');
+      } else {
+        links.classList.add('hidden');
+      }
+    }
+
+    $('postAnotherBtn').addEventListener('click', () => {
+      clearLocal();
+      publishedDrafts = [];
+      savedLegs = [];
+      cur = newLeg();
+      suggestCache = null;
+      // Reset the address screens' picked state.
+      $('fromPicked').classList.add('hidden'); $('fromInput').classList.remove('hidden'); $('fromInput').value = ''; $('fromBtn').disabled = true;
+      $('toPicked').classList.add('hidden'); $('toInput').classList.remove('hidden'); $('toInput').value = ''; $('toBtn').disabled = true;
+      show('stFrom');
+    });
+    $('signOutBtn').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      clearLocal();
+      location.href = '/post';
+    });
+
+    // ── Gate: phone (book.html pattern — Supabase phone-change OTP) ───────
+    function stripCC(cc, phone) {
+      cc = (cc || '').replace(/\D/g, ''); const num = (phone || '').replace(/\D/g, '');
+      if (!cc || !num) return num;
+      if (cc === '1') return num.length === 11 && num.charAt(0) === '1' ? num.slice(1) : num;
+      if (num.indexOf(cc) === 0 && num.length > cc.length + 10) return num.slice(cc.length);
+      return num;
+    }
+    const toE164 = (cc, phone) => '+' + (cc || '').replace(/\D/g, '') + stripCC(cc, phone);
+    // +1 (US/Canada) ONLY on web — see book.html: an open country field on a
+    // public page is an SMS-pumping surface (audit M3).
+    const plausibleE164 = (e) => /^\+1\d{10}$/.test(e);
+    function mapPhoneSendError(error) {
+      const msg = (error.message || '').toLowerCase();
+      if (msg.includes('rate limit')) return 'Too many requests. Try again in an hour.';
+      if (msg.includes('already') || msg.includes('exists'))
+        return 'This number is already in use. If it’s yours, sign in to that account in the app — or email support@seatsherpa.app.';
+      if (msg.includes('invalid') && (msg.includes('phone') || msg.includes('number') || msg.includes("'to'") || msg.includes('21211')))
+        return "That doesn't look like a valid phone number. Please double-check it and try again.";
+      return "We couldn't send your code. Please check your number and try again.";
+    }
+    let phoneCooldown = 0, phoneCooldownTimer = null;
+    function startPhoneCooldown() {
+      phoneCooldown = 60;
+      const btn = $('phoneResend');
+      clearInterval(phoneCooldownTimer);
+      phoneCooldownTimer = setInterval(() => {
+        phoneCooldown -= 1;
+        if (phoneCooldown <= 0) { clearInterval(phoneCooldownTimer); btn.disabled = false; btn.textContent = 'Resend code'; }
+        else { btn.disabled = true; btn.textContent = 'Resend in ' + phoneCooldown + 's'; }
+      }, 1000);
+      btn.disabled = true; btn.textContent = 'Resend in 60s';
+    }
+    async function sendPhoneOtp() {
+      const { error } = await supabase.auth.updateUser({ phone: pendingPhone.e164 });
+      return error ? mapPhoneSendError(error) : null;
+    }
+    $('phoneSendBtn').addEventListener('click', async () => {
+      setMsg('phoneMsg', '');
+      const cc = $('phoneCc').value, num = $('phoneNum').value;
+      const e164 = toE164(cc, num);
+      if (!plausibleE164(e164)) { setMsg('phoneMsg', 'Enter a valid US or Canada number (10 digits) — other countries are supported in the app.'); return; }
+      pendingPhone = { cc: cc.replace(/\D/g, ''), num, e164 };
+      const btn = $('phoneSendBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      const err = await sendPhoneOtp();
+      btn.disabled = false; btn.textContent = 'Text me a code';
+      if (err) { setMsg('phoneMsg', err); return; }
+      $('phoneCc').disabled = true; $('phoneNum').disabled = true;
+      $('phoneCodeEntry').classList.remove('hidden');
+      $('phoneCode').value = '';
+      startPhoneCooldown();
+      $('phoneCode').focus();
+    });
+    $('phoneResend').addEventListener('click', async () => {
+      setMsg('phoneMsg', '');
+      const err = await sendPhoneOtp();
+      if (err) { setMsg('phoneMsg', err); return; }
+      startPhoneCooldown();
+      setMsg('phoneMsg', 'New code sent.', 'ok');
+    });
+    $('phoneChange').addEventListener('click', () => {
+      setMsg('phoneMsg', '');
+      $('phoneCc').disabled = false; $('phoneNum').disabled = false;
+      $('phoneCodeEntry').classList.add('hidden');
+    });
+    $('phoneVerifyBtn').addEventListener('click', async () => {
+      setMsg('phoneMsg', '');
+      const code = $('phoneCode').value.replace(/\D/g, '');
+      if (code.length !== 6) { setMsg('phoneMsg', 'Enter the 6-digit code.'); return; }
+      const btn = $('phoneVerifyBtn');
+      btn.disabled = true; btn.textContent = 'Verifying…';
+      const { error } = await supabase.auth.verifyOtp({ phone: pendingPhone.e164, token: code, type: 'phone_change' });
+      btn.disabled = false; btn.textContent = 'Confirm phone';
+      if (error) {
+        const m = (error.message || '').toLowerCase();
+        setMsg('phoneMsg', m.includes('expired') || m.includes('invalid')
+          ? 'That code is incorrect or has expired. Tap Resend for a new one.'
+          : error.message);
+        return;
+      }
+      // Sync onto the profile (Stripe prefill, call feature) — best-effort.
+      try {
+        await supabase.from('profiles').update({
+          phone: stripCC(pendingPhone.cc, pendingPhone.num) || null,
+          phone_country_code: pendingPhone.cc || null,
+        }).eq('id', myUid);
+      } catch (_) {}
+      show('stReady');
+      await refreshGates();
+    });
+
+    // ── Gate: photo (book.html pattern — avatars bucket) ──────────────────
+    let photoBlob = null;
+    async function downscale(file, maxPx, quality) {
+      const url = URL.createObjectURL(file);
+      try {
+        const img = await new Promise((res, rej) => {
+          const i = new Image();
+          i.onload = () => res(i);
+          i.onerror = () => rej(new Error('decode'));
+          i.src = url;
+        });
+        const scale = Math.min(1, maxPx / Math.max(img.naturalWidth, img.naturalHeight));
+        const w = Math.max(1, Math.round(img.naturalWidth * scale));
+        const h = Math.max(1, Math.round(img.naturalHeight * scale));
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        const blob = await new Promise((res) => c.toBlob(res, 'image/jpeg', quality));
+        if (!blob) throw new Error('encode');
+        return blob;
+      } finally { URL.revokeObjectURL(url); }
+    }
+    $('photoFile').addEventListener('change', async (e) => {
+      setMsg('photoMsg', '');
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      try { photoBlob = await downscale(file, 1024, 0.85); }
+      catch (_) { setMsg('photoMsg', "That image format isn't supported — try a different photo."); return; }
+      const prev = $('photoPrev');
+      prev.src = URL.createObjectURL(photoBlob);
+      prev.classList.remove('hidden');
+      $('photoFileLabel').textContent = '📷 Choose a different photo';
+      $('photoBtn').classList.remove('hidden');
+    });
+    $('photoBtn').addEventListener('click', async () => {
+      if (!photoBlob) return;
+      setMsg('photoMsg', '');
+      const btn = $('photoBtn');
+      btn.disabled = true; btn.textContent = 'Uploading…';
+      try {
+        // Same bucket/path as the app's uploadAvatar: avatars/{uid}/avatar.jpg.
+        const path = myUid + '/avatar.jpg';
+        const { error: upErr } = await supabase.storage.from('avatars')
+          .upload(path, photoBlob, { contentType: 'image/jpeg', upsert: true });
+        if (upErr) throw upErr;
+        const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(path);
+        const publicUrl = urlData.publicUrl + '?t=' + Date.now();
+        const { error: pfErr } = await supabase.from('profiles')
+          .update({ photo_url: publicUrl }).eq('id', myUid);
+        if (pfErr) throw pfErr;
+      } catch (e2) {
+        setMsg('photoMsg', (e2 && e2.message) || 'Upload failed. Try again.');
+        btn.disabled = false; btn.textContent = 'Use this photo';
+        return;
+      }
+      btn.disabled = false; btn.textContent = 'Use this photo';
+      show('stReady');
+      await refreshGates();
+    });
+
+    // ── Gate: license (driver-licenses bucket, PRIVATE; feeds the existing
+    //    submit-license-review queue so the admin review email fires) ───────
+    let licenseBlob = null;
+    $('licenseFile').addEventListener('change', async (e) => {
+      setMsg('licenseMsg', '');
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      // 2000px like the app's document path — card text must stay legible for
+      // the human reviewer.
+      try { licenseBlob = await downscale(file, 2000, 0.9); }
+      catch (_) { setMsg('licenseMsg', "That image format isn't supported — try a different photo."); return; }
+      const prev = $('licensePrev');
+      prev.src = URL.createObjectURL(licenseBlob);
+      prev.classList.remove('hidden');
+      $('licenseFileLabel').textContent = '🪪 Choose a different photo';
+      $('licenseBtn').classList.remove('hidden');
+    });
+    $('licenseBtn').addEventListener('click', async () => {
+      if (!licenseBlob) return;
+      setMsg('licenseMsg', '');
+      const btn = $('licenseBtn');
+      btn.disabled = true; btn.textContent = 'Uploading…';
+      try {
+        // Same bucket/path convention as the app (services/profiles.ts
+        // uploadDriverLicense): driver-licenses/{uid}/license.jpg — a PRIVATE
+        // bucket with owner-only RLS (0023). Never public.
+        const path = myUid + '/license.jpg';
+        const { error: upErr } = await supabase.storage.from('driver-licenses')
+          .upload(path, licenseBlob, { contentType: 'image/jpeg', upsert: true });
+        if (upErr) throw upErr;
+        // Stamp the profile the way the app does — minus the OCR fields the
+        // web can't produce (expiry stays null → the review email says
+        // "expiration date (OCR could not read it)", which is true).
+        // driver_license_name is deliberately NOT written (0185/0195 territory).
+        const { error: pfErr } = await supabase.from('profiles').update({
+          driver_license_photo_url: path,
+          driver_license_uploaded_at: new Date().toISOString(),
+          driver_license_expiry_date: null,
+          driver_license_extraction: { source: 'web', raw_text: null },
+        }).eq('id', myUid);
+        if (pfErr) throw pfErr;
+        // Feed the founder's existing review queue — same function the app
+        // calls. Best-effort: a review-email hiccup must not block the driver
+        // (the function itself soft-fails the same way).
+        try {
+          const { data: sessionData } = await supabase.auth.getSession();
+          const token = sessionData.session && sessionData.session.access_token;
+          if (token) {
+            await fetch(SUPA + '/functions/v1/submit-license-review', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+              body: JSON.stringify({}),
+            });
+          }
+        } catch (_) {}
+      } catch (e2) {
+        setMsg('licenseMsg', (e2 && e2.message) || 'Upload failed. Try again.');
+        btn.disabled = false; btn.textContent = 'Submit license';
+        return;
+      }
+      btn.disabled = false; btn.textContent = 'Submit license';
+      show('stReady');
+      await refreshGates();
+    });
+
+    // ── Gate: bio ─────────────────────────────────────────────────────────
+    const bioWords = (b) => (b || '').trim().split(/\s+/).filter(Boolean).length;
+
+    // No phone numbers in a public bio — mirrors lib/off-platform-guard.ts
+    // containsPhoneNumber; migration 0209 is the real gate (it stops a direct
+    // PostgREST write too), this just makes the message readable. Separators
+    // between digits collapse first, so "4 0 8 7 3 9 9 3 6 8" is caught.
+    const PHONE_RE = /(^|\D)(\+?1[\s.\-·]?)?\(?\d{3}\)?[\s.\-·]?\d{3}[\s.\-·]?\d{4}(?!\d)/;
+    const collapseDigits = (t) => {
+      let out = t || '';
+      for (let i = 0; i < 24; i++) {
+        const n = out.replace(/(\d)[\s.\-·()]+(\d)/g, '$1$2');
+        if (n === out) break;
+        out = n;
+      }
+      return out;
+    };
+    const EMAIL_RE = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i;
+    // Bare " at "/" dot " decode only when BOTH appear — "at" alone is too
+    // common a word ("I work at 23andMe.com" is not an email). Bracketed
+    // forms are pure evasion and always decode. Mirrors off-platform-guard.
+    const deobEmail = (t) => {
+      const b = (t || '')
+        .replace(/\s*[([{]\s*at\s*[)\]}]\s*/gi, '@')
+        .replace(/\s*[([{]\s*dot\s*[)\]}]\s*/gi, '.');
+      if (!/\s+at\s+/i.test(t || '') || !/\s+dot\s+/i.test(t || '')) return b;
+      return b.replace(/\s+at\s+/gi, '@').replace(/\s+dot\s+/gi, '.');
+    };
+    // Returns 'phone' | 'email' | null — mirrors lib/off-platform-guard.ts
+    // detectBioContact. A bare @handle is intentionally fine.
+    const bioContact = (t) => {
+      if (!t) return null;
+      // ISO dates stripped before collapsing (a date+time collapses to a
+      // 10-digit run); the raw test still catches real phones either way.
+      if (PHONE_RE.test(t) || PHONE_RE.test(collapseDigits(t.replace(/\d{4}-\d{2}-\d{2}/g, ' ')))) return 'phone';
+      if (EMAIL_RE.test(t) || EMAIL_RE.test(deobEmail(t))) return 'email';
+      return null;
+    };
+    const BIO_CONTACT_MSG = {
+      phone: "Please take the phone number out of your bio — your profile is public to everyone browsing rides. Once a seat is booked you can call your rider from the app.",
+      email: "Please take the email address out of your bio — your profile is public to everyone browsing rides. Once a seat is booked you can message your rider in the app.",
+    };
+
+    $('bioInput').addEventListener('input', () => { $('bioCount').textContent = String(bioWords($('bioInput').value)); });
+    $('bioBtn').addEventListener('click', async () => {
+      setMsg('bioMsg', '');
+      const bio = $('bioInput').value.trim();
+      if (bioWords(bio) < 3 || bio.length < 15) { setMsg('bioMsg', 'Tell riders a little more — at least 3 words.'); return; }
+      const bioHit = bioContact(bio);
+      if (bioHit) { setMsg('bioMsg', BIO_CONTACT_MSG[bioHit]); return; }
+      const btn = $('bioBtn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      try {
+        const { error } = await supabase.from('profiles').update({ bio }).eq('id', myUid);
+        if (error) throw error;
+      } catch (e) {
+        setMsg('bioMsg', (e && e.message) || 'Could not save. Try again.');
+        btn.disabled = false; btn.textContent = 'Save';
+        return;
+      }
+      btn.disabled = false; btn.textContent = 'Save';
+      show('stReady');
+      await refreshGates();
+    });
+
+    // ── Gate: car (vehicles insert — same client-side write the app makes) ─
+    $('carBtn').addEventListener('click', async () => {
+      setMsg('carMsg', '');
+      const year = $('carYear').value.trim();
+      const make = $('carMake').value.trim();
+      const model = $('carModel').value.trim();
+      if (!/^(19|20)\d{2}$/.test(year)) { setMsg('carMsg', 'Enter a 4-digit year.'); return; }
+      if (!make || !model) { setMsg('carMsg', 'Enter the make and model.'); return; }
+      const btn = $('carBtn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      try {
+        const { error } = await supabase.from('vehicles').insert({
+          owner_id: myUid,
+          year, make, model,
+          car_type: $('carType').value,
+          color: $('carColor').value,
+          // The web seat model is the standard 5-seat car (4 passenger
+          // positions) — matches the posting flow's seat layout.
+          max_passenger_seats: 4,
+          plate: $('carPlate').value.trim() || null,
+          amenities: [],
+          is_default: true,
+        });
+        if (error) throw error;
+      } catch (e) {
+        setMsg('carMsg', (e && e.message) || 'Could not save. Try again.');
+        btn.disabled = false; btn.textContent = 'Save car';
+        return;
+      }
+      btn.disabled = false; btn.textContent = 'Save car';
+      show('stReady');
+      await refreshGates();
+    });
+
+    // ── Gate: payouts (Stripe) ────────────────────────────────────────────
+    async function startStripeOnboarding() {
+      show('stStripeRedirect');
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const token = sessionData.session && sessionData.session.access_token;
+        if (!token) { show('stReady'); return; }
+        const res = await fetch(SUPA + '/functions/v1/web-stripe-onboarding-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+          body: JSON.stringify({}),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (res.ok && body && body.url) { location.href = body.url; return; }
+        throw new Error((body && (body.message || body.error)) || 'Could not open Stripe.');
+      } catch (e) {
+        show('stReady');
+        setMsg('readyMsg', (e && e.message) || 'Could not open Stripe — try again.');
+      }
+    }
+
+    // ── Boot ──────────────────────────────────────────────────────────────
+    (async function init() {
+      const qp = new URLSearchParams(location.search);
+      const stripeReturn = qp.get('stripe'); // 'return' | 'refresh' | null
+
+      const stored = loadLocal();
+      const { data: sessionData } = await supabase.auth.getSession();
+
+      // Stripe-onboarding return: pull Connect status NOW instead of waiting
+      // on the webhook (the status-drift lesson). Hoisted OUT of the
+      // stored-drafts branch (audit L2): a driver whose LS was cleared — or
+      // whose drafts already finalized — still deserves the reconcile, or
+      // the payouts gate shows stale until the webhook lands.
+      if (sessionData.session && (stripeReturn === 'return' || stripeReturn === 'refresh')) {
+        try {
+          await fetch(SUPA + '/functions/v1/stripe-refresh-account-status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + sessionData.session.access_token },
+            body: JSON.stringify({}),
+          });
+        } catch (_) {}
+        history.replaceState(null, '', '/post');
+      }
+
+      if (stored && sessionData.session) {
+        publishedDrafts = stored.drafts.map((d) => ({ ...d, status: 'pending', rideIds: [] }));
+        await enterReady('');
+        return;
+      }
+
+      // No local memory, but the driver may still have a pending draft from
+      // another day/browser tab: the SELECT-own grant on web_ride_drafts (0205)
+      // lets us resume it. Only PUBLISHED drafts resume — finalized history
+      // shouldn't hijack a fresh visit.
+      if (sessionData.session) {
+        try {
+          const { data: rows } = await supabase
+            .from('web_ride_drafts')
+            .select('id, status, departure_area, arrival_area, departures')
+            .eq('status', 'published')
+            .order('created_at', { ascending: false })
+            .limit(3);
+          if (rows && rows.length > 0) {
+            publishedDrafts = rows.map((r) => ({
+              id: r.id,
+              from: r.departure_area, to: r.arrival_area,
+              nDates: Array.isArray(r.departures) ? r.departures.length : 1,
+              status: 'pending', rideIds: [],
+            }));
+            saveLocal();
+            await enterReady('');
+            return;
+          }
+        } catch (_) { /* table may not exist yet — fall through to the flow */ }
+      }
+
+      // Evicted-tab resume (audit H2): a work-in-progress draft beats a blank
+      // first screen. Falls through to stFrom when there's nothing to restore.
+      if (restoreWip()) return;
+
+      show('stFrom');
+    })();
+
+    // Enter-key submits on single-field steps.
+    const enterMap = [['email','emailBtn'], ['emailCode','codeBtn'], ['nameInput','nameBtn'], ['phoneNum','phoneSendBtn'], ['phoneCode','phoneVerifyBtn']];
+    for (const [inp, btn] of enterMap) {
+      $(inp).addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $(btn).click(); } });
+    }
+  </script>
+</body>
+</html>
