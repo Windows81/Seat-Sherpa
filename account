@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account &mdash; Seat Sherpa</title>
+
+  <!-- PERSONAL ACCOUNT HUB (2026-08-28) — the web's answer to the app's
+       account-security screens. Photo, name/bio, change email, blocked
+       users, delete account. Driver-business things (car, license, payouts)
+       stay in /driving. Standing rule: web users are never funneled to the
+       app for any of this. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#0E0E10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0E0E10; color: #fff; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      padding: 32px 20px 48px;
+    }
+    a { color: #00D4C8; text-decoration: none; }
+    /* Desktop is a real page, not a phone column (Justin, 2026-08-28). The
+       440px ribbon was mobile-first and left a 1500px screen mostly empty. */
+    .wrap { width: 100%; max-width: 440px; }
+    @media (min-width: 720px) { .wrap { max-width: 900px; } }
+
+    /* Identity header — who you are, above the settings that change it. */
+    .idcard {
+      display: flex; align-items: center; gap: 16px;
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 18px;
+      padding: 20px 22px; margin-bottom: 22px;
+    }
+    .idcard .who { min-width: 0; flex: 1; }
+    .idcard .nm { font-size: 19px; font-weight: 800; letter-spacing: -0.2px; }
+    .idcard .em { font-size: 14px; color: #adadb8; margin-top: 2px; word-break: break-all; }
+    .idcard img.av, .idcard .av-ph {
+      width: 60px; height: 60px; border-radius: 50%; flex: none; object-fit: cover;
+      background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
+      display: flex; align-items: center; justify-content: center; font-size: 26px;
+    }
+    /* Section label above each group of cards. */
+    .grouphead {
+      font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase;
+      color: #9b9ba6; font-weight: 700; margin: 26px 0 10px;
+    }
+    /* Two cards side by side once there's room; single column on phones. */
+    .cardgrid { display: grid; gap: 16px; }
+    @media (min-width: 720px) { .cardgrid.two { grid-template-columns: 1fr 1fr; align-items: start; } }
+    .cardgrid .card { margin-bottom: 0; }
+    /* The danger zone is marked by a hairline and a red eyebrow — not a red
+       fill. Destructive UI should be findable, not alarming on arrival. */
+    .card.danger { border-color: rgba(255,138,138,0.28); }
+    .card.danger .disc { color: #ff8a8a; }
+    /* Disclosure card: header is a button, body hidden until opened. Rarely
+       used settings (blocked list, delete) shouldn't occupy the page by
+       default (Justin, 2026-08-28). */
+    .disc {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      background: none; border: 0; padding: 0; cursor: pointer; text-align: left;
+      font-family: inherit; font-size: 11px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #a3a3ae; font-weight: 700;
+    }
+    .disc:hover { color: #fff; }
+    .disc .caret { font-size: 11px; color: #00D4C8; }
+    .disc .tally {
+      margin-left: auto; text-transform: none; letter-spacing: 0;
+      font-size: 12px; font-weight: 600; color: #a3a3ae;
+    }
+    .discbody { margin-top: 14px; }
+    .brand { display: flex; justify-content: center; margin-bottom: 18px; }
+    .consolenav { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 0 0 18px; }
+    .consolenav a {
+      font-family: inherit; font-size: 13.5px; font-weight: 600; color: #b9b9c6;
+      text-decoration: none; background: #17171d; border: 1px solid #2a2a33;
+      border-radius: 999px; padding: 8px 16px;
+    }
+    .consolenav a:hover { border-color: rgba(0,212,200,0.4); color: #fff; }
+    .rolepair { display: inline-flex; gap: 6px; }
+    .consolenav a.rolepill { border-color: rgba(0,212,200,0.4); color: #00D4C8; font-weight: 700; }
+    .consolenav a.rolepill.active { background: #00D4C8; color: #04201e; border-color: #00D4C8; }
+    .card {
+      background: #141417; border: 1px solid #232329; border-radius: 16px;
+      padding: 20px; margin-bottom: 16px;
+    }
+    .eyebrow { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #a3a3ae; margin-bottom: 12px; }
+    h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .sub { font-size: 14.5px; color: #a3a3ae; line-height: 1.5; margin-bottom: 16px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #a3a3ae; margin: 10px 0 6px 2px; }
+    input, textarea {
+      width: 100%; padding: 13px 15px; border-radius: 12px;
+      border: 1px solid #2a2a33; background: #17171d; color: #fff;
+      font-size: 15px; font-family: inherit; outline: none;
+    }
+    input:focus, textarea:focus { border-color: rgba(0,212,200,0.5); }
+    textarea { resize: vertical; min-height: 88px; }
+    .primary {
+      width: 100%; padding: 14px; border-radius: 12px; border: 0; margin-top: 12px;
+      background: #00D4C8; color: #04201e; font-size: 15px; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+    }
+    .primary:disabled { opacity: 0.4; cursor: default; }
+    /* Scoped to the BUTTON. A bare `.danger` also matched `.card.danger` and
+       painted the whole delete card solid red (Justin, 2026-08-28). */
+    .primary.danger { background: #ff5d5d; color: #2a0505; }
+    .linkbtn { background: none; border: 0; color: #00D4C8; font-family: inherit; font-size: 14px; cursor: pointer; padding: 0; }
+    .msg { font-size: 14px; margin-top: 10px; line-height: 1.5; }
+    .msg.err { color: #ff8a8a; }
+    .msg.ok { color: #00D4C8; }
+    .hidden { display: none !important; }
+    .avatar-row { display: flex; align-items: center; gap: 14px; }
+    .avatar-row img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 1px solid #2a2a33; background: #17171d; }
+    .avatar-ph { width: 64px; height: 64px; border-radius: 50%; border: 1px dashed #2a2a33; display: flex; align-items: center; justify-content: center; color: #75757f; font-size: 22px; }
+    .filebtn { display: inline-block; background: #17171d; border: 1px solid #2a2a33; border-radius: 10px; padding: 9px 14px; font-size: 14px; cursor: pointer; color: #e8e8ee; }
+    .blockrow { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1d1d22; font-size: 14.5px; }
+    .blockrow:last-child { border-bottom: 0; }
+    .foot { text-align: center; font-size: 13px; color: #a3a3ae; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <!-- Shared console app bar (ss-appbar.js), body-level for full bleed. -->
+  <div id="ssAppBar"></div>
+  <div class="wrap">
+
+    <!-- Signed out -->
+    <div id="stAuth" class="hidden">
+      <div class="card">
+        <h1>Your account</h1>
+        <p class="sub">Sign in to manage your photo, email and settings.</p>
+        <a class="primary" style="display:block;text-align:center;text-decoration:none;" href="/signin?choose=1">Sign in →</a>
+      </div>
+    </div>
+
+    <!-- Signed in -->
+    <div id="stMain" class="hidden">
+      <h1>Your account</h1>
+      <p class="sub" id="whoLine"></p>
+
+      <!-- Identity at a glance, so the page opens with who you are rather
+           than a photo-upload control. -->
+      <div class="idcard">
+        <img id="idAvatar" class="av hidden" alt="" />
+        <div id="idAvatarPh" class="av-ph">🙂</div>
+        <div class="who">
+          <div class="nm" id="idName">—</div>
+          <div class="em" id="idEmail"></div>
+        </div>
+      </div>
+
+      <div class="grouphead">Profile</div>
+      <div class="cardgrid two">
+      <div class="card">
+        <div class="eyebrow">Photo</div>
+        <div class="avatar-row">
+          <img id="avatarImg" class="hidden" alt="" />
+          <div id="avatarPh" class="avatar-ph">🙂</div>
+          <div>
+            <label class="filebtn" for="photoFile">📷 Choose a photo</label>
+            <input id="photoFile" type="file" accept="image/*" class="hidden" />
+            <button class="primary hidden" id="photoBtn" style="width:auto;padding:10px 18px;margin-top:8px;display:block;">Use this photo</button>
+          </div>
+        </div>
+        <div class="msg err hidden" id="photoMsg"></div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">Profile</div>
+        <label for="pfName">Name — riders and drivers see your first name and last initial</label>
+        <input id="pfName" type="text" placeholder="Your name" />
+        <label for="pfBio">Bio</label>
+        <p class="sub" style="margin:0 0 8px;font-size:13px;">No phone numbers or emails — riders reach you in Seat Sherpa chat once booked. That keeps payments protected for both of you.</p>
+        <textarea id="pfBio" placeholder="A short bio — people decide largely on this."></textarea>
+        <button class="primary" id="profileBtn">Save profile</button>
+        <div class="msg err hidden" id="profileMsg"></div>
+      </div>
+      </div>
+
+      <div class="grouphead">Sign-in &amp; contact</div>
+      <div class="cardgrid two">
+      <div class="card">
+        <div class="eyebrow">Email</div>
+        <p class="sub" style="margin-bottom:8px;">Signed in as <strong id="curEmail"></strong></p>
+        <label for="newEmail">New email address</label>
+        <input id="newEmail" type="email" autocomplete="email" placeholder="new@example.com" />
+        <button class="primary" id="emailBtn">Send confirmation link</button>
+        <div class="msg hidden" id="emailMsg"></div>
+      </div>
+
+      <!-- Phone (audit 8/28): web had NO way to change a number anywhere —
+           the only phone UI lived inside the post-a-ride gate. Mirrors the
+           app's change-phone screen: updateUser({phone}) → verifyOtp. -->
+      <div class="card">
+        <div class="eyebrow">Phone</div>
+        <p class="sub" style="margin-bottom:8px;">Riders and drivers reach you here at pickup. <strong id="curPhone">—</strong></p>
+        <div id="phEntry">
+          <label for="newPhone">New phone number</label>
+          <div style="display:flex;gap:10px;align-items:flex-end;">
+            <span style="padding:14px 0;color:#adadb8;font-size:16px;">+1</span>
+            <input id="newPhone" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="555 123 4567" style="flex:1;" />
+          </div>
+          <button class="primary" id="phSendBtn">Text me a code</button>
+        </div>
+        <div id="phVerify" class="hidden">
+          <label for="phCode">Enter the 6-digit code</label>
+          <input id="phCode" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="······" />
+          <button class="primary" id="phVerifyBtn">Confirm phone</button>
+          <button class="linkbtn" id="phBackBtn" style="margin-top:10px;">Use a different number</button>
+        </div>
+        <div class="msg hidden" id="phMsg"></div>
+      </div>
+      </div>
+
+      <div class="grouphead">Safety</div>
+      <div class="cardgrid">
+      <div class="card">
+        <button type="button" class="disc" data-disc="blockBody" aria-expanded="false">
+          <span class="caret">▸</span><span>Blocked users</span><span class="tally" id="blockTally"></span>
+        </button>
+        <div class="discbody hidden" id="blockBody">
+          <div id="blockList"><span class="sub">Checking…</span></div>
+        </div>
+      </div>
+      </div>
+
+      <div class="grouphead">Danger zone</div>
+      <div class="cardgrid">
+      <div class="card danger">
+        <button type="button" class="disc" data-disc="delBody" aria-expanded="false">
+          <span class="caret">▸</span><span>Delete account</span>
+        </button>
+        <div class="discbody hidden" id="delBody">
+          <p class="sub" style="margin-bottom:8px;">
+            Permanently deletes your account. Upcoming rides or bookings must be cancelled first;
+            any unused ride credit is forfeited. You can sign up again later with the same email.
+          </p>
+          <button class="linkbtn" id="delStart">Delete my account…</button>
+          <div id="delConfirm" class="hidden">
+            <label for="delType">Type DELETE to confirm</label>
+            <input id="delType" type="text" autocomplete="off" placeholder="DELETE" />
+            <label for="delReason">Anything we should know? (optional)</label>
+            <input id="delReason" type="text" placeholder="Why you're leaving" />
+            <button class="primary danger" id="delBtn" disabled>Permanently delete my account</button>
+          </div>
+          <div class="msg err hidden" id="delMsg"></div>
+        </div>
+      </div>
+      </div>
+
+      <p class="foot">Car, driver's license and payouts live in your <a href="/driving">driver console</a>.</p>
+    </div>
+  </div>
+
+  <script src="/js/ss-menu.js"></script>
+  <script src="/js/ss-appbar.js"></script>
+  <script>if (window.SS_APPBAR) SS_APPBAR.mount({ active: 'account' });</script>
+  <script type="module">
+    const S = await import('/js/ss-session.js');
+    const supabase = S.supabase;
+    const $ = (id) => document.getElementById(id);
+
+    // Disclosure cards (blocked users, delete account). Bound once at load —
+    // the bodies exist in the DOM from the start, so no re-binding is needed.
+    document.querySelectorAll('.disc[data-disc]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const body = $(btn.getAttribute('data-disc'));
+        if (!body) return;
+        const open = body.classList.contains('hidden');
+        body.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', String(open));
+        const caret = btn.querySelector('.caret');
+        if (caret) caret.textContent = open ? '▾' : '▸';
+      });
+    });
+    const setMsg = (id, text, ok) => {
+      const n = $(id);
+      n.textContent = text || '';
+      n.className = 'msg ' + (ok ? 'ok' : 'err') + (text ? '' : ' hidden');
+    };
+
+    let me = null;
+    // Fail to the sign-in card, never to a blank page. A stored token that
+    // getSession() chokes on (legacy shape, half-written entry) would
+    // otherwise throw at module top level and render nothing at all.
+    let session = null;
+    try { session = await S.getSession(); } catch (e) { console.error('[account] getSession failed:', e); }
+    if (!session || !session.user || !session.user.id) {
+      $('stAuth').classList.remove('hidden');
+    } else {
+      me = session.user.id;
+      $('curEmail').textContent = session.user.email || '';
+      $('whoLine').textContent = 'Everything here works right in the browser.';
+      $('stMain').classList.remove('hidden');
+
+      // ── Load profile ────────────────────────────────────────────────────
+      try {
+        const { data: prof } = await supabase.from('profiles')
+          .select('name, bio, photo_url').eq('id', me).maybeSingle();
+        if (prof) {
+          $('pfName').value = prof.name || '';
+          $('pfBio').value = prof.bio || '';
+          $('idName').textContent = prof.name || 'Your profile';
+          if (prof.photo_url && /^https:\/\//.test(prof.photo_url)) {
+            $('avatarImg').src = prof.photo_url;
+            $('avatarImg').classList.remove('hidden');
+            $('avatarPh').classList.add('hidden');
+            // Mirror into the identity header at the top of the page.
+            $('idAvatar').src = prof.photo_url;
+            $('idAvatar').classList.remove('hidden');
+            $('idAvatarPh').classList.add('hidden');
+          }
+        }
+      } catch (_) {}
+      $('idEmail').textContent = session.user.email || session.user.phone || '';
+
+      // ── Photo (verbatim mechanics from book.html: downscale ≤1024px JPEG,
+      //    avatars/{uid}/avatar.jpg upsert, cache-busted public URL) ───────
+      let photoBlob = null;
+      // One face warning per visit, then the gate stands down — see the soft
+      // gate note below.
+      let faceWarned = false;
+      async function downscale(file) {
+        const url = URL.createObjectURL(file);
+        try {
+          const img = await new Promise((res, rej) => {
+            const i = new Image();
+            i.onload = () => res(i);
+            i.onerror = () => rej(new Error('decode'));
+            i.src = url;
+          });
+          const MAX = 1024;
+          const scale = Math.min(1, MAX / Math.max(img.naturalWidth, img.naturalHeight));
+          const w = Math.max(1, Math.round(img.naturalWidth * scale));
+          const h = Math.max(1, Math.round(img.naturalHeight * scale));
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
+          const blob = await new Promise((res) => c.toBlob(res, 'image/jpeg', 0.85));
+          if (!blob) throw new Error('encode');
+          return blob;
+        } finally { URL.revokeObjectURL(url); }
+      }
+      $('photoFile').addEventListener('change', async (e) => {
+        setMsg('photoMsg', '');
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        let candidate;
+        try { candidate = await downscale(file); }
+        catch (_) { setMsg('photoMsg', "That image format isn't supported — try a different photo."); return; }
+        // Face gate (2026-08-28): blocks only on an affirmative zero-face
+        // detection; detector unavailable → fail open.
+        //
+        // SOFT since 2026-08-29 (Justin), matching the app: the first miss
+        // explains what we want, the next attempt goes through whatever it
+        // is. The detector is wrong in both directions — it let a bookshelf
+        // past, and it will reject real photos in poor light — so someone
+        // whose genuine photo keeps failing must never be stuck.
+        try {
+          const { checkFace } = await import('/js/ss-face.js');
+          const fr = await checkFace(candidate);
+          if (fr.ok && fr.faces === 0 && !faceWarned) {
+            faceWarned = true;
+            setMsg('photoMsg', "We couldn't spot a face in that photo — your profile photo should be a clear shot of you. Try another one.");
+            return;
+          }
+        } catch (_) { /* proceed */ }
+        photoBlob = candidate;
+        const previewUrl = URL.createObjectURL(photoBlob);
+        $('avatarImg').src = previewUrl;
+        $('avatarImg').classList.remove('hidden');
+        $('avatarPh').classList.add('hidden');
+        $('idAvatar').src = previewUrl;
+        $('idAvatar').classList.remove('hidden');
+        $('idAvatarPh').classList.add('hidden');
+        $('photoBtn').classList.remove('hidden');
+      });
+      $('photoBtn').addEventListener('click', async () => {
+        if (!photoBlob) return;
+        const btn = $('photoBtn');
+        btn.disabled = true; btn.textContent = 'Uploading…';
+        try {
+          const path = me + '/avatar.jpg';
+          const { error: upErr } = await supabase.storage.from('avatars')
+            .upload(path, photoBlob, { contentType: 'image/jpeg', upsert: true });
+          if (upErr) throw upErr;
+          const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(path);
+          const publicUrl = urlData.publicUrl + '?t=' + Date.now();
+          const { error: pfErr } = await supabase.from('profiles')
+            .update({ photo_url: publicUrl }).eq('id', me);
+          if (pfErr) throw pfErr;
+          btn.textContent = 'Saved ✓';
+          setTimeout(() => { btn.classList.add('hidden'); btn.disabled = false; btn.textContent = 'Use this photo'; }, 1500);
+        } catch (e2) {
+          setMsg('photoMsg', (e2 && e2.message) || 'Upload failed. Try again.');
+          btn.disabled = false; btn.textContent = 'Use this photo';
+        }
+      });
+
+      // ── Profile save (0209 rejects phone numbers in bios) ───────────────
+      $('profileBtn').addEventListener('click', async () => {
+        setMsg('profileMsg', '');
+        const nm = $('pfName').value.trim();
+        if (nm.length < 2) { setMsg('profileMsg', 'Enter your name.'); return; }
+        const btn = $('profileBtn');
+        const bioV = $('pfBio').value.trim();
+        // Courtesy density pre-check, mirroring migration 0216: ten digits
+        // packed into a 20-char window is a phone number however it's
+        // dressed ("661-57jdjd5-52gshsj64") — except a run of years. The DB
+        // trigger is the rule; this just says it kindly before the round-trip.
+        {
+          const digs = [];
+          for (let i = 0; i < bioV.length; i++) if (bioV[i] >= '0' && bioV[i] <= '9') digs.push(i);
+          for (let i = 0; i + 9 < digs.length; i++) {
+            const win = bioV.slice(digs[i], digs[i + 9] + 1);
+            if (win.length <= 20 && !/^((19|20)\d\d\D{0,3})+$/.test(win)) {
+              setMsg('profileMsg', 'Looks like a phone number in the bio — please take it out. Riders reach you in Seat Sherpa chat once booked.');
+              return;
+            }
+          }
+        }
+        btn.disabled = true; btn.textContent = 'Saving…';
+        const { error } = await supabase.from('profiles')
+          .update({ name: nm, bio: bioV || null }).eq('id', me);
+        btn.disabled = false;
+        if (error) {
+          btn.textContent = 'Save profile';
+          setMsg('profileMsg', /phone/i.test(error.message || '')
+            ? "Bios can't include phone numbers — people reach you in chat."
+            : (error.message || 'Could not save.'));
+          return;
+        }
+        btn.textContent = 'Saved ✓';
+        // Keep the header in step with what was just saved.
+        $('idName').textContent = $('pfName').value.trim() || 'Your profile';
+        setTimeout(() => { btn.textContent = 'Save profile'; }, 2000);
+      });
+
+      // ── Change email (mirrors app/change-email.tsx: updateUser + explicit
+      //    redirect so the confirm link lands on /email-changed, not the
+      //    homepage-with-a-token failure mode) ──────────────────────────────
+      $('emailBtn').addEventListener('click', async () => {
+        setMsg('emailMsg', '');
+        const em = $('newEmail').value.trim().toLowerCase();
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { setMsg('emailMsg', "That doesn't look like an email address."); return; }
+        if (em === (session.user.email || '').toLowerCase()) { setMsg('emailMsg', "That's already your email."); return; }
+        const btn = $('emailBtn');
+        btn.disabled = true; btn.textContent = 'Sending…';
+        const { error } = await supabase.auth.updateUser(
+          { email: em },
+          { emailRedirectTo: 'https://seatsherpa.app/email-changed' },
+        );
+        btn.disabled = false; btn.textContent = 'Send confirmation link';
+        if (error) {
+          setMsg('emailMsg', /already been registered|already registered|already exists/i.test(error.message)
+            ? 'That email is already used by another Seat Sherpa account.'
+            : error.message);
+          return;
+        }
+        setMsg('emailMsg', 'Check ' + em + ' — click the confirmation link there and the change is done. Until then you stay signed in with your current email.', true);
+      });
+
+      // ── Change phone (mirrors the app's change-phone screen) ────────────
+      $('curPhone').textContent = session.user.phone ? '+' + session.user.phone : 'No number on file yet.';
+      let phPending = '';
+      $('phSendBtn').addEventListener('click', async () => {
+        setMsg('phMsg', '');
+        const digits = ($('newPhone').value || '').replace(/\D/g, '');
+        const e164 = digits.length === 11 && digits[0] === '1' ? '+' + digits
+          : digits.length === 10 ? '+1' + digits : '';
+        if (!e164) { setMsg('phMsg', 'Enter a 10-digit US or Canada number.'); return; }
+        const btn = $('phSendBtn');
+        btn.disabled = true; btn.textContent = 'Sending…';
+        const { error } = await supabase.auth.updateUser({ phone: e164 });
+        btn.disabled = false; btn.textContent = 'Text me a code';
+        if (error) {
+          setMsg('phMsg', /already|registered|exists/i.test(error.message || '')
+            ? 'That number is already on another Seat Sherpa account.'
+            : (error.message || 'Could not send the code.'));
+          return;
+        }
+        phPending = e164;
+        $('phEntry').classList.add('hidden');
+        $('phVerify').classList.remove('hidden');
+        setMsg('phMsg', 'We texted a code to ' + e164 + '.', true);
+      });
+      $('phBackBtn').addEventListener('click', () => {
+        $('phVerify').classList.add('hidden');
+        $('phEntry').classList.remove('hidden');
+        setMsg('phMsg', '');
+      });
+      $('phVerifyBtn').addEventListener('click', async () => {
+        setMsg('phMsg', '');
+        const code = ($('phCode').value || '').replace(/\D/g, '');
+        if (code.length < 6) { setMsg('phMsg', 'Enter the code from the text.'); return; }
+        const btn = $('phVerifyBtn');
+        btn.disabled = true; btn.textContent = 'Confirming…';
+        const { error } = await supabase.auth.verifyOtp({ phone: phPending, token: code, type: 'phone_change' });
+        btn.disabled = false; btn.textContent = 'Confirm phone';
+        if (error) { setMsg('phMsg', /expired|invalid/i.test(error.message || '') ? 'That code is wrong or expired.' : (error.message || 'Could not confirm.')); return; }
+        $('curPhone').textContent = phPending;
+        $('phVerify').classList.add('hidden');
+        $('phEntry').classList.remove('hidden');
+        $('newPhone').value = ''; $('phCode').value = '';
+        setMsg('phMsg', 'Phone updated ✓', true);
+      });
+
+      // ── Blocked users (mirror services/user-blocks.ts: own rows, unblock =
+      //    delete; names via the public name_public column) ────────────────
+      (async () => {
+        const list = $('blockList');
+        try {
+          const { data: blocks, error } = await supabase.from('user_blocks')
+            .select('id, blocked_id').eq('blocker_id', me);
+          if (error) throw error;
+          list.textContent = '';
+          // The tally is what the collapsed card shows, so the count is
+          // readable without opening it.
+          const tally = $('blockTally');
+          if (tally) tally.textContent = (blocks && blocks.length) ? String(blocks.length) : 'None';
+          if (!blocks || !blocks.length) {
+            list.innerHTML = '<span class="sub">Nobody blocked. You can block someone from your chat with them in the app; blocked users can’t book your rides or message you.</span>';
+            return;
+          }
+          const ids = blocks.map((b) => b.blocked_id);
+          const { data: profs } = await supabase.from('profiles')
+            .select('id, name_public').in('id', ids);
+          const nameOf = (id) => {
+            const p = (profs || []).find((x) => x.id === id);
+            return (p && p.name_public) || 'A member';
+          };
+          for (const b of blocks) {
+            const row = document.createElement('div');
+            row.className = 'blockrow';
+            const nm = document.createElement('span');
+            nm.textContent = nameOf(b.blocked_id);
+            const un = document.createElement('button');
+            un.className = 'linkbtn';
+            un.textContent = 'Unblock';
+            un.addEventListener('click', async () => {
+              un.disabled = true; un.textContent = 'Unblocking…';
+              const { error: dErr } = await supabase.from('user_blocks').delete().eq('id', b.id);
+              if (dErr) { un.disabled = false; un.textContent = 'Unblock'; return; }
+              row.remove();
+            });
+            row.appendChild(nm); row.appendChild(un);
+            list.appendChild(row);
+          }
+        } catch (_) {
+          list.innerHTML = '<span class="sub">Couldn’t load your block list right now.</span>';
+        }
+      })();
+
+      // ── Delete account (delete-my-account fn: identity from the JWT only;
+      //    upcoming-commitment guard + credit forfeiture live server-side) ──
+      $('delStart').addEventListener('click', () => {
+        $('delConfirm').classList.remove('hidden');
+        $('delStart').classList.add('hidden');
+      });
+      $('delType').addEventListener('input', () => {
+        $('delBtn').disabled = $('delType').value.trim() !== 'DELETE';
+      });
+      $('delBtn').addEventListener('click', async () => {
+        setMsg('delMsg', '');
+        const btn = $('delBtn');
+        btn.disabled = true; btn.textContent = 'Deleting…';
+        try {
+          await S.callFn('delete-my-account', { body: { reason: $('delReason').value.trim() || undefined } });
+          try { await S.signOut(); } catch (_) {}
+          document.body.innerHTML = '<div style="max-width:440px;margin:80px auto;text-align:center;font-family:inherit;padding:0 20px;">'
+            + '<h1 style="font-size:24px;margin-bottom:10px;">Account deleted</h1>'
+            + '<p style="color:#a3a3ae;line-height:1.6;">Everything’s been removed. If you ever want back in, just sign up again — same email works. Safe travels. 🚗</p></div>';
+        } catch (e) {
+          btn.disabled = false; btn.textContent = 'Permanently delete my account';
+          setMsg('delMsg', (e && e.message) || 'Could not delete — email support@seatsherpa.app and we’ll take care of it.');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
