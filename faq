@@ -282,7 +282,7 @@ fbq('track','PageView');
               <li>Builds a public rating from every completed trip</li>
             </ul>
             <p>
-              You can also see the driver's profile (photo, name, trip count, average rating, real reviews from past passengers) before you book. And you can <strong>block</strong> anyone you don't want to ride with again — they'll never see your rides or messages.
+              You can also see the driver's profile (photo, name, trip count, average rating, real reviews from past riders) before you book. And you can <strong>block</strong> anyone you don't want to ride with again — they'll never see your rides or messages.
             </p>
           </div>
         </details>
@@ -306,7 +306,7 @@ fbq('track','PageView');
           <summary>What is your policy on alcohol and drugs?</summary>
           <div class="body">
             <p>
-              <strong>Zero tolerance, for everyone, on every trip.</strong> No one may drive under the influence of alcohol or drugs. No one may consume alcohol or drugs in the vehicle &mdash; that applies to passengers exactly as it does to drivers. And no illegal substances may be transported on a Seat Sherpa trip.
+              <strong>Zero tolerance, for everyone, on every trip.</strong> No one may drive under the influence of alcohol or drugs. No one may consume alcohol or drugs in the vehicle &mdash; that applies to riders exactly as it does to drivers. And no illegal substances may be transported on a Seat Sherpa trip.
             </p>
             <p>
               This is not a guideline we weigh case by case. Anyone found breaking it is removed from the platform, and a driver removed for this does not come back.
@@ -417,7 +417,7 @@ fbq('track','PageView');
           <summary>What if I'm late to pickup?</summary>
           <div class="body">
             <p>
-              Drivers will typically wait 10–15 minutes for a confirmed passenger — but they're not obligated to wait indefinitely (they have other passengers to pick up and a destination to reach).
+              Drivers will typically wait 10–15 minutes for a confirmed rider — but they're not obligated to wait indefinitely (they have other riders to pick up and a destination to reach).
             </p>
             <p>
               Best move: message your driver in the chat as soon as you know you'll be late. Most drivers are understanding if you communicate. If you're a true no-show with no message, you may forfeit your fare per the ride's cancellation policy.

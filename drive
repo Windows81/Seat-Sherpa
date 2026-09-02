@@ -57,14 +57,14 @@ fbq('track','PageView');
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drive with Seat Sherpa — Split costs and save up to $228 per trip</title>
-  <meta name="description" content="Headed to Vegas, LA, or San Diego anyway? Share the trip with passengers and save up to $228 in driving costs. Set your own seat price (up to $55), keep 95%. Available on iOS and Android." />
+  <title>Drive with Seat Sherpa — Split costs and save up to $209 per trip</title>
+  <meta name="description" content="Headed to Vegas, LA, or San Diego anyway? Share the trip with passengers and save up to $209 in driving costs. Set your own seat price (up to $55), keep 95%. Available on iOS and Android." />
 
   <!-- Open Graph + Twitter cards. Driver-specific image would be nice
        eventually; using the same icon for now so the link preview matches
        the main site visually. -->
   <meta property="og:title" content="Drive with Seat Sherpa" />
-  <meta property="og:description" content="Split costs and save up to $228 per trip on routes you're already driving across California and Nevada." />
+  <meta property="og:description" content="Split costs and save up to $209 per trip on routes you're already driving across California and Nevada." />
   <meta property="og:image" content="https://seatsherpa.app/icon.png" />
   <meta property="og:url" content="https://seatsherpa.app/drive" />
   <meta property="og:type" content="website" />
@@ -175,6 +175,83 @@ fbq('track','PageView');
       max-width: 620px;
       margin: 0 auto 40px;
     }
+
+    /* Hero post card (2026-08-28, BlaBlaCar-style: the From+To widget IS the
+       hero — Continue hands the picks to /post which jumps straight to the
+       route chooser). */
+    .postcard {
+      max-width: 560px;
+      margin: 0 auto;
+      background: #131316;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 22px 22px 20px;
+      text-align: left;
+      box-shadow: 0 18px 48px rgba(0,0,0,0.45);
+    }
+    .postcard label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #9a9aa4;
+      margin: 0 0 6px;
+    }
+    .pc-wrap { position: relative; margin-bottom: 16px; }
+    .pc-wrap input {
+      width: 100%;
+      background: #0E0E10;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px;
+      padding: 13px 14px;
+      font-size: 16px;
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+    }
+    .pc-wrap input:focus { border-color: #00D4C8; }
+    .pc-wrap input::placeholder { color: #6d6d76; }
+    .pc-list {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: #17171b;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: 30;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .pc-list button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding: 11px 14px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .pc-list button:last-child { border-bottom: none; }
+    .pc-list button:hover { background: rgba(0,212,200,0.08); }
+    .pc-list .p { display: block; font-size: 14.5px; font-weight: 600; color: #fff; }
+    .pc-list .s { display: block; font-size: 12.5px; color: #9a9aa4; margin-top: 1px; }
+    .pc-save { font-size: 15px; color: #ccc; margin: 2px 0 14px; }
+    .pc-save strong { color: #FFD75A; }
+    .pc-go {
+      display: block;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: center;
+      font-size: 16px;
+    }
+    .pc-err { font-size: 14px; color: #ff8a8a; margin: 12px 0 0; }
+    .hidden { display: none !important; }
 
     /* CTA buttons */
     .cta-row {
@@ -441,6 +518,8 @@ fbq('track','PageView');
       <div class="links">
         <a href="/">For riders</a>
         <a href="/drive" class="active">For drivers</a>
+        <a href="/colleges">For organizations</a>
+        <a href="/post" style="color:#00D4C8;font-weight:700;">Post a ride</a>
         <a href="/terms.html">Terms</a>
         <a href="/privacy.html">Privacy</a>
         <a href="mailto:support@seatsherpa.app">Support</a>
@@ -452,28 +531,40 @@ fbq('track','PageView');
   <section class="hero">
     <div class="container">
       <span class="eyebrow">For drivers</span>
-      <h1>Split costs and save up to <span class="accent">$228</span> per trip<br />on routes you're already driving</h1>
-      <p class="tagline">
-        Headed to Vegas, LA, San Francisco, or San Diego anyway? Share the trip with passengers headed the same way, contributing toward your costs.
-      </p>
+      <h1>Split costs and save up to <span class="accent" id="hSaveAmt">$209</span><br /><span id="hSaveWord">on routes you're already driving</span></h1>
       <!-- Drive Rewards banner removed 2026-07-31 — program not launched
            (migrations 0122/0123 unrun). Do NOT restore until both have run in
            prod: advertising credit the DB can't grant is a promise we'd break
            on the first drive. Copy discipline when it returns: "get ride
            credit", never "earn money" (Meta Employment classifier + NV
            posture), and expiry must stay disclosed per CA Civ. §1749.5. -->
-      <div class="cta-row">
-        <a href="#signup" class="btn-primary">Start driving today</a>
-        <a href="#how" class="btn-secondary">See how it works</a>
+      <!-- BlaBlaCar-style hero widget (Justin, 2026-08-28): from + to + what
+           you'd save, right at the top. Continue hands off to /post, which
+           validates again and opens on the route chooser. -->
+      <div class="postcard">
+        <label for="pcFrom">Leaving from</label>
+        <div class="pc-wrap">
+          <input id="pcFrom" placeholder="e.g. Caltrain Station, San Jose" autocomplete="off" />
+          <div class="pc-list hidden" id="pcFromList"></div>
+        </div>
+        <label for="pcTo">Going to</label>
+        <div class="pc-wrap">
+          <input id="pcTo" placeholder="e.g. Union Station, Los Angeles" autocomplete="off" />
+          <div class="pc-list hidden" id="pcToList"></div>
+        </div>
+        <p class="pc-save hidden" id="pcSaveLine">You'd save about <strong id="pcSaveAmt">$—</strong> on this trip — riders chip in for the seats you're driving anyway.</p>
+        <a id="pcGo" href="/post" class="btn-primary pc-go">Post your ride →</a>
+        <p class="pc-err hidden" id="pcErr"></p>
       </div>
       <!-- The #1 hesitation, answered before the fold instead of buried in
            the FAQ. "Usually" is load-bearing — we can't promise every
            insurer/state, and the FAQ below carries the full nuance. -->
-      <p style="margin:18px auto 0;max-width:620px;font-size:14px;line-height:1.6;opacity:0.85;">
+      <p style="margin:22px auto 0;max-width:620px;font-size:14px;line-height:1.6;opacity:0.85;">
         🚘 No commercial license, permits, or special insurance usually needed — seat prices are
         capped at the IRS mileage rate, so this is cost-sharing carpooling, not professional
         driving.
       </p>
+      <p style="margin:10px auto 0;"><a href="#how" style="font-size:14.5px;">See how it works ↓</a></p>
     </div>
   </section>
 
@@ -488,7 +579,7 @@ fbq('track','PageView');
         <div class="earnings-card">
           <div class="route">Bay Area → LA <em style="color:#FFD75A;font-style:normal;font-size:11px;font-weight:700;letter-spacing:0.5px;">· 7-SEAT VAN</em></div>
           <div class="amount">$228</div>
-          <div class="amount-sub">saved on a full ride (6 passengers)</div>
+          <div class="amount-sub">saved on a full ride (6 riders)</div>
           <div class="breakdown">
             <strong>$40</strong> avg seat price<br />
             <strong>6</strong> seats × $40 = $240 gross<br />
@@ -499,7 +590,7 @@ fbq('track','PageView');
         <div class="earnings-card">
           <div class="route">Bay Area → LA <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
           <div class="amount">$152</div>
-          <div class="amount-sub">saved on a full ride (4 passengers)</div>
+          <div class="amount-sub">saved on a full ride (4 riders)</div>
           <div class="breakdown">
             <strong>$40</strong> avg seat price<br />
             <strong>4</strong> seats × $40 = $160 gross<br />
@@ -510,7 +601,7 @@ fbq('track','PageView');
         <div class="earnings-card">
           <div class="route">LA → Las Vegas <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
           <div class="amount">$133</div>
-          <div class="amount-sub">saved on a full ride (4 passengers)</div>
+          <div class="amount-sub">saved on a full ride (4 riders)</div>
           <div class="breakdown">
             <strong>$35</strong> avg seat price<br />
             <strong>4</strong> seats × $35 = $140 gross<br />
@@ -521,7 +612,7 @@ fbq('track','PageView');
         <div class="earnings-card">
           <div class="route">LA → San Diego <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
           <div class="amount">$76</div>
-          <div class="amount-sub">saved on a full ride (4 passengers)</div>
+          <div class="amount-sub">saved on a full ride (4 riders)</div>
           <div class="breakdown">
             <strong>$20</strong> avg seat price<br />
             <strong>4</strong> seats × $20 = $80 gross<br />
@@ -555,12 +646,12 @@ fbq('track','PageView');
         <div class="step">
           <div class="number">3</div>
           <h3>Post your trip</h3>
-          <p>"Going to Vegas Friday at 8am, 3 seats open, $35 each." Passengers book directly.</p>
+          <p>"Going to Vegas Friday at 8am, 3 seats open, $35 each." Riders book directly.</p>
         </div>
         <div class="step">
           <div class="number">4</div>
           <h3>Pick up &amp; go</h3>
-          <p>Ask each passenger for their 4-digit pickup code at the curb. Drive your trip. Get paid.</p>
+          <p>Ask each rider for their 4-digit pickup code at the curb. Drive your trip. Get paid.</p>
         </div>
       </div>
     </div>
@@ -597,7 +688,7 @@ fbq('track','PageView');
         <details class="faq-item">
           <summary>How does payment work?</summary>
           <div class="body">
-            Passengers pay through the app via Stripe when they book. The money is held securely until you enter the passenger's 4-digit pickup code at the curb — that confirms the trip started and releases your share (95% of each seat) to your bank account through your connected Stripe account, paid out about 2 days later. The 5% we keep covers credit card processing and the platform's operating costs. Stripe handles all card details; we never see your card or your passenger's.
+            Riders pay through the app via Stripe when they book. The money is held securely until you enter the rider's 4-digit pickup code at the curb — that confirms the trip started and releases your share (95% of each seat) to your bank account through your connected Stripe account, paid out about 2 days later. The 5% we keep covers credit card processing and the platform's operating costs. Stripe handles all card details; we never see your card or your rider's.
           </div>
         </details>
 
@@ -646,23 +737,23 @@ fbq('track','PageView');
         </details>
 
         <details class="faq-item">
-          <summary>What if a passenger doesn't show up?</summary>
+          <summary>What if a rider doesn't show up?</summary>
           <div class="body">
-            If they no-show, you don't enter their pickup code — and the booking stays in limbo until you cancel it with a reason. Per our cancellation policy, they may forfeit some or all of their fare depending on how close to departure it was. You drive your trip with the other passengers (if any) and the no-show pays the cancellation fee. You can also block a no-show passenger so you don't see them on future bookings.
+            If they no-show, you don't enter their pickup code — and the booking stays in limbo until you cancel it with a reason. Per our cancellation policy, they may forfeit some or all of their fare depending on how close to departure it was. You drive your trip with the other riders (if any) and the no-show pays the cancellation fee. You can also block a no-show rider so you don't see them on future bookings.
           </div>
         </details>
 
         <details class="faq-item">
           <summary>What if I have to cancel?</summary>
           <div class="body">
-            Things happen. If you cancel a confirmed booking, passengers get a 100% refund automatically. Cancelling once or twice is fine; doing it routinely will affect your driver rating and your ride visibility in the marketplace. We expect drivers to honor the commitments they post.
+            Things happen. If you cancel a confirmed booking, riders get a 100% refund automatically. Cancelling once or twice is fine; doing it routinely will affect your driver rating and your ride visibility in the marketplace. We expect drivers to honor the commitments they post.
           </div>
         </details>
 
         <details class="faq-item">
           <summary>How much does this actually offset my driving costs?</summary>
           <div class="body">
-            Quite a bit, on the right trips. On an LA→Vegas run in a 5-seat car at $35/seat, you'd receive $133 after our 5% fee. A round-trip fill-up for that route runs $90–$120, so passenger contributions cover all your fuel — and a 7-seat van on Bay→LA saves up to $228, more than enough for gas, wear, and a meal at the destination. The IRS standard mileage rate ($0.76/mile, which accounts for gas + wear + depreciation + insurance) is the ceiling we enforce: you can't price above that. The result is cost-sharing, not commercial driving.
+            Quite a bit, on the right trips. On an LA→Vegas run in a 5-seat car at $35/seat, you'd receive $133 after our 5% fee. A round-trip fill-up for that route runs $90–$120, so rider contributions cover all your fuel — and a 7-seat van on Bay→LA saves up to $228, more than enough for gas, wear, and a meal at the destination. The IRS standard mileage rate ($0.76/mile, which accounts for gas + wear + depreciation + insurance) is the ceiling we enforce: you can't price above that. The result is cost-sharing, not commercial driving.
           </div>
         </details>
 
@@ -674,16 +765,16 @@ fbq('track','PageView');
         </details>
 
         <details class="faq-item">
-          <summary>How do you screen passengers?</summary>
+          <summary>How do you screen riders?</summary>
           <div class="body">
-            Every passenger verifies their phone via SMS at signup. They get a rating after every ride that other drivers see. You can also block passengers you don't want to see again — they'll never appear on your bookings or in your inbox. Two-way ratings build trust over time so the platform self-cleans.
+            Every rider verifies their phone via SMS at signup. They get a rating after every ride that other drivers see. You can also block riders you don't want to see again — they'll never appear on your bookings or in your inbox. Two-way ratings build trust over time so the platform self-cleans.
           </div>
         </details>
 
         <details class="faq-item">
           <summary>What's the 4-digit pickup code thing?</summary>
           <div class="body">
-            It's how we confirm a trip actually happened. Each passenger sees a unique 4-digit code in their app. At pickup, you ask them for it and enter it in your app — that marks the trip as started and unlocks the "Mark complete" button. Without the code, the trip doesn't count and you don't get paid. It's a low-friction safety net against fraud on both sides (drivers claiming trips that didn't happen, passengers ghosting after paying).
+            It's how we confirm a trip actually happened. Each rider sees a unique 4-digit code in their app. At pickup, you ask them for it and enter it in your app — that marks the trip as started and unlocks the "Mark complete" button. Without the code, the trip doesn't count and you don't get paid. It's a low-friction safety net against fraud on both sides (drivers claiming trips that didn't happen, riders ghosting after paying).
           </div>
         </details>
 
@@ -717,10 +808,13 @@ fbq('track','PageView');
     <div class="container">
       <h2>Ready to drive?</h2>
       <p>
-        <strong>We're live in California and Nevada</strong> — download Seat Sherpa, add your
-        vehicle, and post your first ride today.
+        <strong>We're live in California and Nevada</strong> — post your first ride right from
+        your browser, or grab the app.
       </p>
-      <div class="cta-row" style="justify-content:center;margin:18px 0 28px;">
+      <div class="cta-row" style="justify-content:center;margin:18px 0 14px;">
+        <a class="btn-primary" href="/post" style="display:inline-flex;align-items:center;gap:9px;font-size:17px;">🚗 Post a ride online →</a>
+      </div>
+      <div class="cta-row" style="justify-content:center;margin:0 0 28px;">
         <a class="btn-primary" id="driveAppleBtn" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=drive" style="display:inline-flex;align-items:center;gap:9px;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.86-3.08.41-1.09-.47-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.41C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.78 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.1zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
           App Store
@@ -1066,7 +1160,7 @@ fbq('track','PageView');
         '&utm_campaign=' + encodeURIComponent(campaign);
       var apple = document.getElementById('driveAppleBtn');
       var play = document.getElementById('drivePlayBtn');
-      if (apple) apple.href = 'https://seatsherpa.onelink.me/cGHs?pid=web&c=drive?ct=' + encodeURIComponent(campaign);
+      if (apple) apple.href = 'https://seatsherpa.onelink.me/cGHs?pid=web&c=drive&ct=' + encodeURIComponent(campaign);
       if (play) play.href = 'https://seatsherpa.onelink.me/cGHs?pid=web&c=drive&referrer=' + encodeURIComponent(ref);
     })();
   </script>
@@ -1097,6 +1191,124 @@ fbq('track','PageView');
         } catch (_) {}
       }, true);
     })();
+  </script>
+
+  <!-- Hero post-widget: Mapbox Searchbox autocomplete + savings calc +
+       hand-off to /post via localStorage ss-post-prefill-v1 (post.html boot
+       validates again and opens on the route chooser). Public pk token —
+       the same one post.html ships inline. -->
+  <script>
+  (function () {
+    var TOKEN = 'pk.eyJ1IjoiamR0MjYyIiwiYSI6ImNtcDhnb3pvNzBkbGYyenBpN2psY3g2bGsifQ.sqsxq8sjfLaq978oqGExHg';
+    var $ = function (id) { return document.getElementById(id); };
+    if (!$('pcFrom')) return;
+    var picks = { from: null, to: null };
+    function uuid() { try { return crypto.randomUUID(); } catch (_) { return String(Date.now()) + '-' + Math.random().toString(16).slice(2); } }
+    function stripCountry(s) { return String(s || '').replace(/,\s*United States$/, ''); }
+    function hav(a, b) {
+      var R = 3958.8, toR = Math.PI / 180;
+      var dLat = (b.lat - a.lat) * toR, dLng = (b.lng - a.lng) * toR;
+      var s = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(a.lat * toR) * Math.cos(b.lat * toR) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      return 2 * R * Math.asin(Math.sqrt(s));
+    }
+    var inCANV = function (c) { return c.lat >= 32.0 && c.lat <= 42.0 && c.lng >= -124.5 && c.lng <= -114.0; };
+    function updateSave() {
+      var line = $('pcSaveLine');
+      if (picks.from && picks.to) {
+        // Same math as /post's savings hook: 4 open seats (standard car;
+        // Justin 2026-08-30) × cost-share cap (hav ×1.25 mi × $0.76/4,
+        // $10 floor, $55 ceiling) minus the 5% fee.
+        var miles = hav(picks.from.coords, picks.to.coords) * 1.25;
+        if (isFinite(miles) && miles > 0) {
+          var perSeat = Math.min(55, Math.max(10, (miles * 0.76) / 4));
+          // Never advertise more than the trip's actual shareable cost —
+          // the $10 floor × seats overstates short trips (Fable E2).
+          var net = Math.round(Math.min(4 * perSeat, miles * 0.76) * 0.95);
+          $('pcSaveAmt').textContent = '$' + net;
+          line.classList.remove('hidden');
+          $('hSaveAmt').textContent = '$' + net;
+          $('hSaveWord').textContent = 'on this trip';
+          return;
+        }
+      }
+      line.classList.add('hidden');
+      $('hSaveAmt').textContent = '$209';
+      $('hSaveWord').textContent = "on routes you're already driving";
+    }
+    function wire(inputId, listId, key) {
+      var input = $(inputId), list = $(listId);
+      var session = uuid(), timer = null, pickSeq = 0;
+      function render(items) {
+        list.innerHTML = '';
+        if (!items.length) { list.classList.add('hidden'); return; }
+        items.forEach(function (it) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          var p = document.createElement('span'); p.className = 'p'; p.textContent = it.primary;
+          var s = document.createElement('span'); s.className = 's'; s.textContent = it.secondary;
+          b.appendChild(p); b.appendChild(s);
+          b.addEventListener('click', function () {
+            var seq = ++pickSeq;
+            list.classList.add('hidden');
+            input.value = it.full;
+            fetch('https://api.mapbox.com/search/searchbox/v1/retrieve/' + encodeURIComponent(it.id) + '?access_token=' + TOKEN + '&session_token=' + session)
+              .then(function (r) { return r.ok ? r.json() : null; })
+              .then(function (j) {
+                var f = j && j.features && j.features[0];
+                session = uuid();
+                if (seq !== pickSeq) return; // a newer pick superseded this one
+                if (!f) return;
+                picks[key] = { addr: it.full, coords: { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] } };
+                updateSave();
+              }).catch(function () {});
+          });
+          list.appendChild(b);
+        });
+        list.classList.remove('hidden');
+      }
+      input.addEventListener('input', function () {
+        picks[key] = null; updateSave();
+        var q = input.value.trim();
+        clearTimeout(timer);
+        if (q.length < 3) { list.classList.add('hidden'); return; }
+        timer = setTimeout(function () {
+          fetch('https://api.mapbox.com/search/searchbox/v1/suggest?q=' + encodeURIComponent(q)
+            + '&access_token=' + TOKEN + '&session_token=' + session
+            + '&country=us&bbox=-124.5,32.0,-114.0,42.0&limit=6&types=poi,address,place,locality,neighborhood')
+            .then(function (r) { return r.ok ? r.json() : { suggestions: [] }; })
+            .then(function (j) {
+              if (input.value.trim() !== q) return; // out-of-order response guard
+              render((j.suggestions || []).map(function (s) {
+                return { id: s.mapbox_id, primary: s.name, secondary: stripCountry(s.place_formatted || ''), full: stripCountry(s.full_address || (s.name + (s.place_formatted ? ', ' + s.place_formatted : ''))) };
+              }));
+            }).catch(function () {});
+        }, 250);
+      });
+      document.addEventListener('click', function (e) {
+        if (!list.contains(e.target) && e.target !== input) list.classList.add('hidden');
+      });
+    }
+    wire('pcFrom', 'pcFromList', 'from');
+    wire('pcTo', 'pcToList', 'to');
+    function err(m) { var e = $('pcErr'); e.textContent = m; e.classList.remove('hidden'); }
+    $('pcGo').addEventListener('click', function (ev) {
+      // The CTA is a real <a href="/post"> so it still works if this script
+      // fails to load; JS takes over to validate + carry the picks across.
+      if (ev && ev.preventDefault) ev.preventDefault();
+      $('pcErr').classList.add('hidden');
+      if (!picks.from) { err('Pick your starting point from the suggestions.'); return; }
+      if (!picks.to) { err('Pick your destination from the suggestions.'); return; }
+      if (!inCANV(picks.from.coords) || !inCANV(picks.to.coords)) { err('Seat Sherpa has only launched in California and Nevada so far — pick addresses inside CA/NV.'); return; }
+      if (hav(picks.from.coords, picks.to.coords) * 1.25 < 15) { err('Seat Sherpa is for longer trips — 15 miles or more.'); return; }
+      try {
+        localStorage.setItem('ss-post-prefill-v1', JSON.stringify({
+          fromAddress: picks.from.addr, toAddress: picks.to.addr,
+          start: picks.from.coords, end: picks.to.coords, ts: Date.now(),
+        }));
+      } catch (_) {}
+      location.href = '/post';
+    });
+  })();
   </script>
 
   <!-- ─── Footer ────────────────────────────────────────────── -->

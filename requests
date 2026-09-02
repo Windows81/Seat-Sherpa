@@ -93,13 +93,15 @@
     <!-- BOARD -->
     <div class="card" id="stBoard">
       <div class="eyebrow">Ride requests</div>
-      <h1>Passengers looking for rides</h1>
+      <h1>Riders looking for rides</h1>
       <p class="sub">Real people who need a seat on these trips. Driving one of these routes? Post the ride and they'll be notified the moment it's live.</p>
       <div class="topcta">
         <button class="primary" id="openAskBtn">I need a ride</button>
         <button class="ghost" onclick="location.href='/post'">I can drive</button>
       </div>
       <p class="hint" style="margin-top:-6px;">Or <a class="driverlink" href="/rides?web=1">browse open rides →</a> — your trip might already be posted.</p>
+      <div id="boardStats" class="hidden" style="font-size:13px;color:#9a9aa8;margin:0 0 12px;"></div>
+      <div class="chips" id="corridorChips"></div>
       <div id="mineWrap" class="hidden">
         <div class="datehead">Your requests</div>
         <div id="mineList"></div>
@@ -150,13 +152,14 @@
       <div class="backrow"><button class="linkbtn" data-back="stAsk">← Back</button></div>
       <div class="eyebrow">Almost there</div>
       <h1>What's your email?</h1>
-      <p class="sub">We'll send a 6-digit code — and this is where you'll hear when a driver posts your ride.</p>
+      <p class="sub">We'll email you a sign-in code — and this is where you'll hear when a driver posts your ride.</p>
       <label for="nameInput">First and last name</label>
       <input type="text" id="nameInput" autocomplete="name" maxlength="60" placeholder="Jordan Lee" />
       <p class="hint">The board shows first name and last initial only — “Jordan L.”</p>
       <label for="emailInput">Email</label>
       <input type="email" id="emailInput" autocomplete="email" placeholder="you@school.edu" />
       <button class="primary" id="emailBtn">Send code</button>
+      <p data-tos-notice style="color:#8a8a92;font-size:12px;margin:10px 0 0;">By continuing you agree to the <a href="/terms" style="color:#00D4C8;text-decoration:none;">Terms of Service</a> and <a href="/privacy" style="color:#00D4C8;text-decoration:none;">Privacy Policy</a>.</p>
       <div class="msg err hidden" id="emailMsg"></div>
     </div>
 
@@ -164,8 +167,8 @@
       <div class="backrow"><button class="linkbtn" data-back="stEmail">← Different email</button></div>
       <div class="eyebrow">Check your inbox</div>
       <h1>Enter the code</h1>
-      <p class="sub" id="codeSub">We emailed a 6-digit code.</p>
-      <input inputmode="numeric" autocomplete="one-time-code" maxlength="6" class="codeinput" id="codeInput" placeholder="······" />
+      <p class="sub" id="codeSub">We emailed you a code.</p>
+      <input inputmode="numeric" autocomplete="one-time-code" maxlength="8" class="codeinput" id="codeInput" placeholder="······" />
       <button class="primary" id="codeBtn">Verify</button>
       <p class="hint" style="margin-top:10px;">Didn't get it? <button class="linkbtn" id="resendBtn">Resend code</button></p>
       <div class="msg err hidden" id="codeMsg"></div>
@@ -199,6 +202,16 @@
     const supabase = createClient(SUPA, ANON, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
     });
+    // 0220 stamp (2026-09-01): /requests never loaded ss-session.js, so
+    // web-only users who lived here stayed "Unknown surface" in admin and
+    // got APP-flavored recovery email copy (hope_jessli). Positive web
+    // evidence, fire-and-forget, once per load.
+    supabase.auth.getSession().then(({ data }) => {
+      const uid = data.session?.user?.id;
+      if (!uid) return;
+      supabase.from('profiles').update({ web_seen_at: new Date().toISOString() }).eq('id', uid).then(() => {}, () => {});
+      try { if (!localStorage.getItem('ss-tos-web-v1')) { supabase.from('terms_acceptances').insert({ user_id: uid, terms_version: '2026-05-26', privacy_version: '2026-07-08', platform: 'web' }).then((r) => { if (!r || !r.error) { try { localStorage.setItem('ss-tos-web-v1', '1'); } catch (_) {} } }, () => {}); } } catch (_) {}
+    }).catch(() => {});
 
     const $ = (id) => document.getElementById(id);
     const STATES = ['stBoard', 'stAsk', 'stMatches', 'stEmail', 'stCode', 'stDone'];
@@ -232,6 +245,11 @@
     }
     $('fromSel').value = 'sfba'; $('toSel').value = 'la';
 
+    // Prefill from a link (2026-08-28): /ride offers this board when a ride
+    // can't be booked, carrying that ride's corridor + date so the rider
+    // doesn't re-enter the trip they just tried to take. Opens the form
+    // straight away — they arrived with intent, not to browse.
+
     // Date input: today → 6 months out.
     const today = new Date();
     const pad = (n) => String(n).padStart(2, '0');
@@ -239,6 +257,22 @@
     $('dateInput').min = iso(today);
     const maxD = new Date(); maxD.setMonth(maxD.getMonth() + 6);
     $('dateInput').max = iso(maxD);
+
+    // Prefill from /ride ("Tell drivers you still need this trip") — MUST run
+    // after today/iso above: it used to sit before them and hit the const
+    // temporal dead zone, so the date never prefilled and the form never
+    // auto-opened (web audit 2026-09-02).
+    (function () {
+      try {
+        const qp = new URLSearchParams(location.search);
+        const pf = qp.get('from'), pt = qp.get('to'), pd = qp.get('date');
+        let any = false;
+        if (pf && DEST_NAME.has(pf)) { $('fromSel').value = pf; any = true; }
+        if (pt && DEST_NAME.has(pt)) { $('toSel').value = pt; any = true; }
+        if (pd && /^\d{4}-\d{2}-\d{2}$/.test(pd) && pd >= iso(today)) { $('dateInput').value = pd; any = true; }
+        if (any) window.__ssPrefilled = true;
+      } catch (_) { /* prefill is best-effort */ }
+    })();
 
     let timePref = 'flexible';
     $('timeChips').addEventListener('click', (e) => {
@@ -275,6 +309,17 @@
       const days = Math.round(hrs / 24);
       return days === 1 ? 'yesterday' : days + 'd ago';
     }
+    // Departing soon is the strongest reason for a driver to act now.
+    function urgencyBadge(travelDate) {
+      if (!travelDate) return '';
+      const days = Math.round((new Date(travelDate + 'T00:00:00') - new Date(new Date().toDateString())) / 86400000);
+      if (days < 0 || days > 7) return '';
+      const txt = days <= 0 ? 'today' : days === 1 ? 'tomorrow' : 'in ' + days + ' days';
+      const hot = days <= 2;
+      return '<span style="margin-left:8px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;vertical-align:middle;'
+        + (hot ? 'background:rgba(255,138,138,0.14);color:#ff8a8a;' : 'background:rgba(0,212,200,0.12);color:#00D4C8;')
+        + '">' + txt + '</span>';
+    }
     function reqCard(r, mine) {
       const route = esc(DEST_NAME.get(r.fromDest) || r.fromDest) + ' → ' + esc(DEST_NAME.get(r.toDest) || r.toDest);
       const agoBit = ago(r.createdAt);
@@ -292,15 +337,21 @@
           + (ms.length === 1 ? '1 ride matches' : ms.length + ' rides match')
           + (ms[0].minPriceUsd != null ? ' · from $' + ms[0].minPriceUsd : '') + ' — view →</a></div>'
         : '';
+      // Carry the route + date into /post so a driver who taps this lands on a
+      // pre-filled form instead of a blank one (audit 8/28).
+      const postHref = '/post?from=' + encodeURIComponent(r.fromDest)
+        + '&to=' + encodeURIComponent(r.toDest)
+        + '&date=' + encodeURIComponent(r.travelDate)
+        + '&req=' + encodeURIComponent(r.id);
       return '<div class="req" data-id="' + r.id + '">'
-        + '<div class="route">' + route + '</div>'
+        + '<div class="route">' + route + urgencyBadge(r.travelDate) + '</div>'
         + '<div class="meta">' + meta + (mine && r.status !== 'open' ? ' · ' + esc(r.status) : '') + '</div>'
         + (r.note ? '<div class="note">“' + esc(r.note) + '”</div>' : '')
         + matchBit
         + '<div class="actions">'
         + (mine
           ? (r.status === 'open' ? '<button class="linkbtn cancelBtn" data-id="' + r.id + '">Cancel request</button>' : '')
-          : '<a class="driverlink" href="/post">Driving this? Post the ride →</a>')
+          : '<a class="driverlink" href="' + postHref + '">Driving this? Post the ride →</a>')
         + '</div></div>';
     }
     // Trending = real searches from the last 7 days (server-aggregated, no
@@ -320,29 +371,87 @@
       ).join('');
       wrap.classList.remove('hidden');
     }
+    // Corridor filter (audit 8/28): one flat list stops being scannable the
+    // moment the board has more than a handful of rows. Chips are built from
+    // live data, so they only ever offer routes that actually have requests.
+    let boardRows = [];
+    let corridorFilter = '';
+    function renderCorridorChips() {
+      const wrap = $('corridorChips');
+      const counts = new Map();
+      for (const r of boardRows) {
+        const key = r.fromDest + '>' + r.toDest;
+        counts.set(key, (counts.get(key) || 0) + 1);
+      }
+      // Only worth showing once there's something to narrow down.
+      if (counts.size < 2) { wrap.innerHTML = ''; return; }
+      const top = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
+      let html = '<button type="button" class="chip' + (corridorFilter ? '' : ' sel') + '" data-c="">All ' + boardRows.length + '</button>';
+      for (const [key, n] of top) {
+        const [f, t] = key.split('>');
+        html += '<button type="button" class="chip' + (corridorFilter === key ? ' sel' : '') + '" data-c="' + esc(key) + '">'
+          + esc(DEST_NAME.get(f) || f) + ' → ' + esc(DEST_NAME.get(t) || t) + ' ' + n + '</button>';
+      }
+      wrap.innerHTML = html;
+    }
+    $('corridorChips').addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip'); if (!chip) return;
+      corridorFilter = chip.getAttribute('data-c') || '';
+      renderCorridorChips();
+      paintBoard();
+    });
+    function paintBoard() {
+      const rows = corridorFilter
+        ? boardRows.filter((r) => r.fromDest + '>' + r.toDest === corridorFilter)
+        : boardRows;
+      // Live pulse: riders waiting + how many the board could fill right now.
+      const soon = rows.filter((r) => {
+        const d = Math.round((new Date(r.travelDate + 'T00:00:00') - new Date(new Date().toDateString())) / 86400000);
+        return d >= 0 && d <= 7;
+      }).length;
+      const stats = $('boardStats');
+      const seatTotal = rows.reduce((n, r) => n + (Number(r.seats) || 1), 0);
+      stats.textContent = rows.length
+        ? rows.length + ' open request' + (rows.length === 1 ? '' : 's')
+          + ' · ' + seatTotal + ' seat' + (seatTotal === 1 ? '' : 's') + ' wanted'
+          + (soon ? ' · ' + soon + ' in the next 7 days' : '')
+        : '';
+      stats.classList.toggle('hidden', !rows.length);
+      if (!rows.length) {
+        $('boardList').innerHTML = '<p class="empty">No requests on that route yet.</p>';
+        return;
+      }
+      let html = ''; let lastDate = '';
+      for (const r of rows) {
+        if (r.travelDate !== lastDate) {
+          lastDate = r.travelDate;
+          html += '<div class="datehead">' + fmtDate(r.travelDate) + '</div>';
+        }
+        html += reqCard(r, false);
+      }
+      $('boardList').innerHTML = html;
+    }
     async function loadBoard() {
       try {
         const res = await fetch(FN);
         const json = await res.json();
         if (!res.ok) throw new Error(json.error || 'load failed');
-        const rows = json.requests || [];
-        renderTrending(json.trending, rows.length);
-        if (rows.length === 0) {
-          $('boardList').innerHTML = '<p class="empty">No open requests right now. Need a ride? Be the first on the board — drivers see these when deciding what to post.</p>';
+        boardRows = json.requests || [];
+        renderTrending(json.trending, boardRows.length);
+        if (boardRows.length === 0) {
+          $('boardStats').classList.add('hidden');
+          $('corridorChips').innerHTML = '';
+          $('boardList').innerHTML = '<p class="empty">No open requests right now — the board is new.<br><br>'
+            + 'Need a ride? <strong>Be the first</strong>: drivers check this before deciding what to post, and you\'ll get an email the moment someone posts your route.<br><br>'
+            + 'Driving somewhere? <a class="driverlink" href="/post">Post your ride →</a> — riders searching your corridor get notified.</p>';
           return;
         }
-        // Group by date.
-        let html = ''; let lastDate = '';
-        for (const r of rows) {
-          if (r.travelDate !== lastDate) {
-            lastDate = r.travelDate;
-            html += '<div class="datehead">' + fmtDate(r.travelDate) + '</div>';
-          }
-          html += reqCard(r, false);
-        }
-        $('boardList').innerHTML = html;
+        renderCorridorChips();
+        paintBoard();
       } catch (err) {
-        $('boardList').innerHTML = '<p class="empty">Couldn’t load the board — refresh to try again.</p>';
+        $('boardList').innerHTML = '<p class="empty">Couldn’t load the board — <a href="#" id="boardRetry" style="color:#00D4C8;">try again</a>.</p>';
+        const br = document.getElementById('boardRetry');
+        if (br) br.addEventListener('click', (e) => { e.preventDefault(); loadBoard(); });
       }
     }
     async function loadMine() {
@@ -507,7 +616,8 @@
     $('codeBtn').addEventListener('click', async () => {
       setMsg('codeMsg', '');
       const code = $('codeInput').value.trim();
-      if (!/^\d{6}$/.test(code)) { setMsg('codeMsg', 'Enter the 6-digit code.'); return; }
+      // 6–8: Supabase's OTP length is a dashboard setting — never stricter here.
+      if (!/^\d{6,8}$/.test(code)) { setMsg('codeMsg', 'Enter the code from the email.'); return; }
       const btn = $('codeBtn'); btn.disabled = true; btn.textContent = 'Verifying…';
       try {
         const { data, error } = await supabase.auth.verifyOtp({ email: pendingEmail, token: code, type: 'email' });
@@ -528,6 +638,10 @@
         setMsg('codeMsg', err.message || 'That code didn’t work — try again.');
       } finally { btn.disabled = false; btn.textContent = 'Verify'; }
     });
+
+    // Arrived from a ride that couldn't be booked: open the form on the
+    // prefilled trip rather than making them find "I need a ride".
+    if (window.__ssPrefilled) show('stAsk');
 
     loadBoard();
     loadMine();

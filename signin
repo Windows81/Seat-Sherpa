@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in &mdash; Seat Sherpa</title>
+
+  <!-- SIGN-IN (2026-08-27, reworked same day). One email-code sign-in for the
+       ONE account — anyone landing here already has one (they booked or
+       posted, web or app). The Supabase session is shared across every page
+       on this origin (ss-session.js documents the no-storageKey rule), so
+       signing in HERE signs them into /driving AND /trips. After sign-in we
+       offer both dashboards; roles were never separate accounts. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#0E0E10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0E0E10;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px 48px;
+    }
+    .wrap { width: 100%; max-width: 430px; text-align: center; }
+    @media (min-width: 720px) { .wrap { max-width: 500px; } }
+    .wordmark { height: 34px; width: auto; margin: 0 auto 28px; display: block; }
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+    .sub { font-size: 15px; color: #8a8a92; margin-bottom: 24px; line-height: 1.5; }
+    .hidden { display: none !important; }
+    label { display: block; text-align: left; font-size: 13px; font-weight: 600; color: #8a8a92; margin: 0 0 6px 2px; }
+    input {
+      width: 100%; padding: 14px 16px; border-radius: 12px;
+      border: 1px solid #2a2a33; background: #17171d; color: #fff;
+      font-size: 16px; font-family: inherit; outline: none; margin-bottom: 14px;
+    }
+    input:focus { border-color: rgba(0,212,200,0.5); }
+    .primary {
+      width: 100%; padding: 15px; border-radius: 12px; border: 0;
+      background: #00D4C8; color: #04201e; font-size: 16px; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+    }
+    .primary:disabled { opacity: 0.4; cursor: default; }
+    .linkbtn { background: none; border: 0; color: #00D4C8; font-family: inherit; font-size: 14px; cursor: pointer; margin-top: 14px; }
+    .msg { font-size: 14px; margin-top: 12px; line-height: 1.5; }
+    .msg.err { color: #ff8a8a; }
+    .msg.ok { color: #00D4C8; }
+    .choice {
+      display: block;
+      background: #17171d;
+      border: 1px solid #2a2a33;
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      text-align: left;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s ease;
+    }
+    .choice:hover { border-color: rgba(0,212,200,0.5); }
+    .choice .t { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .choice .d { font-size: 13.5px; color: #8a8a92; line-height: 1.5; }
+    .choice .t .arrow { color: #00D4C8; }
+    .whoami { font-size: 13.5px; color: #8a8a92; margin-bottom: 20px; }
+    .whoami button { background: none; border: 0; color: #00D4C8; font-family: inherit; font-size: 13.5px; cursor: pointer; }
+    .foot { margin-top: 26px; font-size: 13.5px; color: #8a8a92; line-height: 1.7; }
+    .foot a { color: #00D4C8; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="/" aria-label="Seat Sherpa — home">
+      <svg class="wordmark" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs>
+        <g transform="translate(-36.4 -50) scale(0.427)">
+          <path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/>
+          <path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/>
+        </g>
+        <text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text>
+        <text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text>
+      </svg>
+    </a>
+
+    <!-- Step 1: email (+ Google/Apple via js/ss-oauth.js) -->
+    <div id="stEmail">
+      <h1>Sign in</h1>
+      <p class="sub">No passwords — use Google or Apple, or get a code by email.</p>
+      <div id="oauthMount"></div>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" placeholder="you@example.com" />
+      <button class="primary" id="sendBtn">Email me a code</button>
+      <p data-tos-notice style="color:#8a8a92;font-size:12px;margin:10px 0 0;">By continuing you agree to the <a href="/terms" style="color:#00D4C8;text-decoration:none;">Terms of Service</a> and <a href="/privacy" style="color:#00D4C8;text-decoration:none;">Privacy Policy</a>.</p>
+      <div class="msg err hidden" id="emailMsg"></div>
+    </div>
+
+    <!-- Step 2: code -->
+    <div id="stCode" class="hidden">
+      <h1>Enter the code we emailed you</h1>
+      <p class="sub" id="codeSub">Check your inbox.</p>
+      <input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••••" />
+      <button class="primary" id="verifyBtn">Sign in</button>
+      <button class="linkbtn" id="resendBtn">Resend code</button>
+      <div class="msg err hidden" id="codeMsg"></div>
+    </div>
+
+    <!-- Step 3: one account, both dashboards -->
+    <div id="stIn" class="hidden">
+      <h1>You're in</h1>
+      <p class="whoami"><span id="who"></span> · <button id="outBtn">Sign out</button></p>
+
+      <a class="choice" href="/driving">
+        <div class="t">Driver console <span class="arrow">&rarr;</span></div>
+        <div class="d">Your posted rides, booking requests, rider chat, and payouts.</div>
+      </a>
+
+      <a class="choice" href="/trips">
+        <div class="t">My trips <span class="arrow">&rarr;</span></div>
+        <div class="d">Seats you've booked, trip details, driver chat, and ride alerts.</div>
+      </a>
+
+      <p class="foot"><a href="/rides?web=1">Find a ride</a> &middot; <a href="/post">Post a ride</a></p>
+    </div>
+
+    <p class="foot" id="newFoot">
+      New here? <a href="/rides?web=1">Find a ride</a> &middot; <a href="/post">Post a ride</a><br />
+      Prefer the app? It's on the <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=signin">App Store and Google Play</a>.
+    </p>
+  </div>
+
+  <script src="/js/ss-oauth.js"></script>
+  <script type="module">
+    // Session plumbing shared with /driving, /trips, /post, /book — same
+    // client, same storage, so a sign-in here signs in every page.
+    const S = await import('/js/ss-session.js');
+    const $ = (id) => document.getElementById(id);
+    const show = (id) => {
+      for (const s of ['stEmail', 'stCode', 'stIn']) $(s).classList.toggle('hidden', s !== id);
+      $('newFoot').classList.toggle('hidden', id === 'stIn');
+    };
+    const setMsg = (id, text) => {
+      const el = $(id);
+      el.textContent = text || '';
+      el.classList.toggle('hidden', !text);
+    };
+
+    let pendingEmail = '';
+
+    // Last-role routing (Justin, 2026-08-28): a returning driver wants their
+    // dashboard, a returning rider wants the marketplace — not a chooser.
+    // /driving, /trips, /post and /book stamp this key; the chooser only
+    // shows when we genuinely don't know (or with ?choose=1 to force it).
+    const ROLE_KEY = 'ss_last_role';
+    const lastRole = () => { try { return localStorage.getItem(ROLE_KEY); } catch (_) { return null; } };
+    const setRole = (r) => { try { localStorage.setItem(ROLE_KEY, r); } catch (_) {} };
+    const forceChooser = new URLSearchParams(location.search).get('choose') === '1';
+
+    async function enterSignedIn() {
+      const session = await S.getSession();
+      if (!session) return false;
+      if (!forceChooser) {
+        const r = lastRole();
+        if (r === 'driver') { location.replace('/driving'); return true; }
+        if (r === 'rider') { location.replace('/rides?web=1'); return true; }
+        // New browser, no local memory (Justin hit this on his laptop,
+        // 2026-08-28): detect the role from the DATA instead of asking —
+        // someone with posted rides is a driver, someone with bookings is a
+        // rider. The chooser only remains for genuinely blank accounts.
+        try {
+          const uid = session.user.id;
+          const [rides, bookings] = await Promise.all([
+            S.supabase.from('rides').select('id', { count: 'exact', head: true }).eq('driver_id', uid),
+            S.supabase.from('bookings').select('id', { count: 'exact', head: true }).eq('passenger_id', uid),
+          ]);
+          if ((rides.count || 0) > 0) { setRole('driver'); location.replace('/driving'); return true; }
+          if ((bookings.count || 0) > 0) { setRole('rider'); location.replace('/rides?web=1'); return true; }
+        } catch (_) { /* fall through to the chooser */ }
+      }
+      $('who').textContent = 'Signed in as ' + (session.user?.email || 'your account');
+      show('stIn');
+      return true;
+    }
+
+    // Chooser cards teach the router for next time.
+    document.querySelector('a.choice[href="/driving"]').addEventListener('click', () => setRole('driver'));
+    document.querySelector('a.choice[href="/trips"]').addEventListener('click', () => setRole('rider'));
+
+    // Google / Apple popup sign-in — the popup writes the shared session,
+    // then the normal signed-in routing takes over. Hidden in in-app
+    // webviews (ss-oauth.js), where the email code remains the only path.
+    if (window.SS_OAUTH) {
+      window.SS_OAUTH.mount($('oauthMount'), { onSignedIn: () => { void enterSignedIn(); } });
+    }
+
+    $('sendBtn').addEventListener('click', async () => {
+      setMsg('emailMsg', '');
+      const email = $('email').value.trim().toLowerCase();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { setMsg('emailMsg', "That doesn't look like an email address."); return; }
+      const btn = $('sendBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      const err = await S.sendEmailOtp(email);
+      btn.disabled = false; btn.textContent = 'Email me a code';
+      if (err) { setMsg('emailMsg', err); return; }
+      pendingEmail = email;
+      $('codeSub').textContent = 'We emailed a code to ' + email + '.';
+      $('code').value = '';
+      show('stCode');
+      $('code').focus();
+    });
+
+    // Resend with the same 60s cooldown every other OTP surface enforces —
+    // mashing it walks straight into Supabase's hourly rate limit, which
+    // then bricks the whole sign-in attempt.
+    let resendReadyAt = 0;
+    $('resendBtn').addEventListener('click', async () => {
+      const btn = $('resendBtn');
+      if (btn.disabled) return;
+      const waitLeft = Math.ceil((resendReadyAt - Date.now()) / 1000);
+      if (waitLeft > 0) { setMsg('codeMsg', 'You can resend in ' + waitLeft + 's.'); return; }
+      setMsg('codeMsg', '');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      const err = await S.sendEmailOtp(pendingEmail);
+      btn.disabled = false; btn.textContent = 'Resend code';
+      setMsg('codeMsg', err || '');
+      if (!err) {
+        resendReadyAt = Date.now() + (S.OTP_RESEND_COOLDOWN_SEC || 60) * 1000;
+        $('codeSub').textContent = 'New code sent to ' + pendingEmail + '.';
+      }
+    });
+
+    $('verifyBtn').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const btn = $('verifyBtn');
+      btn.disabled = true; btn.textContent = 'Verifying…';
+      const err = await S.verifyEmailOtp(pendingEmail, $('code').value);
+      btn.disabled = false; btn.textContent = 'Sign in';
+      if (err) { setMsg('codeMsg', err); return; }
+      // Web welcome fires on EMAIL verification — the web has no phone step at
+      // signup, so waiting for one (as the app does) meant web signups got no
+      // welcome at all. Not awaited: never hold the redirect on an email.
+      void S.sendWebWelcomeIfNew();
+      await enterSignedIn();
+    });
+
+    $('outBtn').addEventListener('click', async () => {
+      await S.signOut();
+      $('email').value = '';
+      show('stEmail');
+    });
+
+    // Enter-key affordances.
+    $('email').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('sendBtn').click(); });
+    $('code').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('verifyBtn').click(); });
+
+    // Already signed in (came back later, or signed in on another page) →
+    // straight to the dashboards.
+    if (!(await enterSignedIn())) show('stEmail');
+  </script>
+</body>
+</html>

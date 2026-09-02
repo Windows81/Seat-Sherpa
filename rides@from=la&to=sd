@@ -75,6 +75,11 @@ fbq('track','PageView');
   nav .wrap{display:flex;justify-content:space-between;align-items:center}
   .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
   .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  /* Signed-in nav extras (2026-08-28): outlined pills beside My trips + the
+     avatar. Hidden on narrow screens — the avatar dropdown carries them. */
+  .navghost{color:#00D4C8;border:1px solid rgba(0,212,200,.4);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;margin-right:10px;white-space:nowrap}
+  .navghost:hover{border-color:#00D4C8}
+  @media (max-width:680px){.navghost{display:none}}
   h1{font-size:32px;font-weight:800;letter-spacing:-.5px;margin:30px 0 6px}
   .sub{color:#bbb;margin-bottom:20px}
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
@@ -98,17 +103,44 @@ fbq('track','PageView');
   footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:30px;color:#666;font-size:13px}
   footer a{color:#999;margin-right:16px}
   @media(max-width:520px){.ride .top{flex-direction:column;gap:2px}}
+  /* Desktop: use the width — two-up ride grid instead of a lonely column. */
+  @media(min-width:900px){
+    .wrap{max-width:960px}
+    /* stretch (the grid default) keeps every card in a row the same height */
+    #list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    #list .ride{margin-bottom:0}
+    #list .loading,#list .empty{grid-column:1/-1}
+  }
 </style>
 </head>
 <body>
-<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><span style="display:flex;align-items:center;"><a class="navcta" id="navCta" href="/signin">Sign in</a><span id="ssMenuMount"></span></span></div></nav>
 <div class="wrap">
   <h1>Browse rides</h1>
-  <p class="sub" id="subLine">Live carpools across California &amp; Nevada. Find yours, then grab a seat in the app.</p>
+  <p class="sub" id="subLine">Live carpools across California &amp; Nevada. Find yours and book right from your browser.</p>
   <div class="filters">
     <select id="from"></select>
     <button class="swap" id="swap" title="Swap" aria-label="Swap origin and destination">⇄</button>
     <select id="to"></select>
+  </div>
+  <!-- Refinements (2026-08-28, parity with the app's search tab): date,
+       sort, hide-sold-out — all client-side over the fetched list. -->
+  <div class="filters" style="margin-top:-10px">
+    <input type="date" id="dateF" style="background:#161619;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;flex:1;min-width:140px" aria-label="Filter by date" />
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:#bbb;cursor:pointer;padding:0 4px" title="Include rides up to 3 days either side">
+      <input type="checkbox" id="flexF" checked style="accent-color:#00D4C8;width:16px;height:16px" /> ±3 days
+    </label>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:#bbb;cursor:pointer;padding:0 4px">
+      <input type="checkbox" id="availF" style="accent-color:#00D4C8;width:16px;height:16px" /> Open seats only
+    </label>
+  </div>
+  <!-- Address search (2026-08-28, app parity: 60-mile radius on both ends).
+       Optional refinement over the metro dropdowns. -->
+  <div class="filters" style="margin-top:-10px;position:relative">
+    <input type="text" id="addrF" placeholder="Near address… (e.g. Caltrain Station, San Jose)" autocomplete="off"
+      style="background:#161619;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;flex:1;min-width:220px" />
+    <button type="button" id="addrClear" class="swap hidden" title="Clear address">✕</button>
+    <div id="addrSugg" class="hidden" style="position:absolute;top:100%;left:0;right:0;z-index:30;background:#161619;border:1px solid rgba(255,255,255,.18);border-radius:10px;margin-top:4px;overflow:hidden"></div>
   </div>
   <div class="count" id="count"></div>
   <div id="list"><div class="loading">Loading rides…</div></div>
@@ -138,7 +170,11 @@ fbq('track','PageView');
   var qp=new URLSearchParams(location.search);
   // Hidden web-booking funnel: /rides?web=1 keeps the rider in the browser —
   // ride links carry web=1 so /ride shows "Book online" instead of app-only.
-  var webMode=qp.get('web')==='1';
+  // Web-first standing rule (2026-08-27): /rides is the canonical indexed URL,
+  // so organic visitors must get the same browser-native funnel (request board,
+  // post-a-ride) as ?web=1 — not an "install the app" dead end. ride.html
+  // already hard-codes this; rides.html was still gating on the param.
+  var webMode=true;
   if(qp.get('from')&&M[qp.get('from')])fromS.value=qp.get('from');
   if(qp.get('to')&&M[qp.get('to')])toS.value=qp.get('to');
   // Web mode is the BOOKABLE surface — "grab a seat in the app" was the
@@ -155,17 +191,23 @@ fbq('track','PageView');
   // fee-waived drivers, from public-rides). Omitting the booking fee left the
   // label 99¢ under checkout on waived rides — the SB 478 drip-pricing
   // pattern this label exists to avoid (audit M1).
-  function allIn(r){var b=(typeof r.serviceFeeBps==='number')?r.serviceFeeBps:500;var bk=(typeof r.bookingFeeCents==='number'?r.bookingFeeCents:0)/100;return (r.minPrice+Math.ceil(r.minPrice*100*b/10000)/100+bk).toFixed(2);}
+  // Math.floor — matches the server and book.html exactly. Ceil advertised a
+  // price 1c higher than checkout actually charges (audit 8/28).
+  function allIn(r){var b=(typeof r.serviceFeeBps==='number')?r.serviceFeeBps:500;var bk=(typeof r.bookingFeeCents==='number'?r.bookingFeeCents:0)/100;return (r.minPrice+Math.floor(r.minPrice*100*b/10000)/100+bk).toFixed(2);}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function card(r){
     var f=M[r.fromDest]||{n:r.fromDest,e:''}, t=M[r.toDest]||{n:r.toDest,e:''};
     var fromLabel=r.fromArea||f.n, toLabel=r.toArea||t.n;
-    var link='/ride?id='+r.id+'&from='+encodeURIComponent(fromLabel)+'&to='+encodeURIComponent(toLabel)+'&date='+encodeURIComponent(fmt(r.depDate,'').split(' · ')[0])+'&time='+encodeURIComponent(r.depTime||'')+'&price='+r.minPrice+(webMode?'&web=1':'');
+    // Just the id. from/to/date/time/price/web were painted-before-fetch
+    // hints that ride.html stopped reading long ago, and they turned every
+    // copied address into a 180-character wall that wrapped to three lines
+    // in WhatsApp (Justin, 2026-08-29). ride.html fetches all of it by id.
+    var link='/ride?id='+encodeURIComponent(r.id);
     // Driver line with FACE (benchmark 8/26): avatar + name + rating with
     // review count + trip count. Riders book people; a faceless card was our
     // single biggest trust gap vs BlaBlaCar.
     var dAvatar=(r.driverPhotoUrl&&/^https:\/\//.test(r.driverPhotoUrl))
-      ?'<img src="'+esc(r.driverPhotoUrl)+'" alt="" style="width:22px;height:22px;border-radius:50%;object-fit:cover;vertical-align:-5px;margin-right:5px;border:1px solid rgba(0,212,200,0.45);" loading="lazy" />'
+      ?'<img src="'+esc(r.driverPhotoUrl)+'" alt="" style="width:22px;height:22px;border-radius:50%;object-fit:cover;object-position:50% 25%;vertical-align:-5px;margin-right:5px;border:1px solid rgba(0,212,200,0.45);" loading="lazy" />'
       :'';
     var dRating=r.driverRating
       ?(' <span class="star">★</span> '+Number(r.driverRating).toFixed(1)+(r.driverRatingCount?' ('+r.driverRatingCount+')':''))
@@ -186,35 +228,169 @@ fbq('track','PageView');
         :'<span class="pill seats">'+r.seatsLeft+' seat'+(r.seatsLeft===1?'':'s')+' left</span>')
       +'<span>'+driver+'</span></div></a>';
   }
+  // Client-side refinements over the fetched list (parity with the app's
+  // search tab, 2026-08-28). allRides keeps the raw payload so changing a
+  // refinement never refetches.
+  var allRides=[];
+  var addrCoords=null; // {lat,lng} from the autocomplete pick
+  var ADDR_MILES=60;   // app's ADDRESS_FILTER_MILES
+  function havMi(a,c){
+    if(!a||!c||!isFinite(a.lat))return 1e9;
+    var R=3958.8,tr=function(d){return d*Math.PI/180;};
+    var dLat=tr(c.lat-a.lat),dLng=tr(c.lng-a.lng);
+    var h=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(tr(a.lat))*Math.cos(tr(c.lat))*Math.sin(dLng/2)*Math.sin(dLng/2);
+    return 2*R*Math.asin(Math.sqrt(h));
+  }
+  function dateDelta(a,b){ // whole days between two YYYY-MM-DD
+    return Math.abs(Date.UTC(+a.slice(0,4),+a.slice(5,7)-1,+a.slice(8,10))
+                  - Date.UTC(+b.slice(0,4),+b.slice(5,7)-1,+b.slice(8,10)))/864e5;
+  }
+  function applyRefinements(rides){
+    var out=rides.slice();
+    var dv=document.getElementById('dateF').value;
+    if(dv){
+      var flex=document.getElementById('flexF').checked?3:0; // app's DATE_FLEX_DAYS
+      out=out.filter(function(r){ return r.depDate && dateDelta(r.depDate,dv)<=flex; });
+    }
+    if(addrCoords){
+      out=out.filter(function(r){
+        // Ride START within 60 mi of the typed address, matching the app's
+        // pickup-side filter (endpoints only — stop-radius later).
+        return r.approxStart && havMi(addrCoords,r.approxStart)<=ADDR_MILES;
+      });
+    }
+    if(document.getElementById('availF').checked) out=out.filter(function(r){ return !r.soldOut; });
+    // Sort control removed (Justin, 2026-08-28) — the list keeps the
+    // server's soonest-first order.
+    return out;
+  }
+  function renderRides(){
+    var rides=applyRefinements(allRides);
+    if(!rides.length){
+      var refined=document.getElementById('dateF').value||document.getElementById('availF').checked||addrCoords;
+      if(allRides.length&&refined){
+        // BlaBlaCar-style nearby-dates hint: exact date empty, but ±3 has rides.
+        var dv2=document.getElementById('dateF').value;
+        var hint='';
+        if(dv2&&!document.getElementById('flexF').checked){
+          var nearby=allRides.filter(function(r){return r.depDate&&dateDelta(r.depDate,dv2)<=3;}).length;
+          if(nearby>0) hint=nearby+' ride'+(nearby===1?'':'s')+' on nearby dates — tick ±3 days. Or ';
+        }
+        list.innerHTML='<div class="empty">No rides match those refinements. '+hint+'<a href="#" id="clearF">clear the refinements</a> to see all '+allRides.length+'.</div>';
+        var cf=document.getElementById('clearF');
+        if(cf) cf.addEventListener('click',function(e){e.preventDefault();document.getElementById('dateF').value='';document.getElementById('availF').checked=false;addrCoords=null;document.getElementById('addrF').value='';document.getElementById('addrClear').classList.add('hidden');renderRides();});
+        return;
+      }
+      list.innerHTML = webMode
+        ? '<div class="empty">No rides match that yet.<br><br>'
+          + '<a href="/requests">Tell drivers you need this ride →</a><br>'
+          + 'Drivers who’ve driven the route get notified, and you’ll get an email the moment one posts it.<br><br>'
+          + 'Driving this route yourself? <a href="/post">Post the ride</a>.</div>'
+        : '<div class="empty">No rides match that yet.<br><br>Be the first — <a href="/#get">post or request one in the app</a>, or try different cities.</div>';
+      countEl.textContent='';
+      return;
+    }
+    var exactN=rides.filter(function(r){return !r.adjacent;}).length;
+    var nearN=rides.length-exactN;
+    countEl.textContent=exactN+' upcoming ride'+(exactN===1?'':'s')+(nearN?' · '+nearN+' nearby':'');
+    if(webMode){
+      countEl.innerHTML=esc(countEl.textContent)
+        +' &nbsp;·&nbsp; <a href="/post" style="color:#00D4C8;text-decoration:none;">Driving one of these routes? Post your ride →</a>'
+        +' &nbsp;·&nbsp; <a href="/requests" style="color:#7dd3fc;text-decoration:none;">Need a ride nobody posted? Request it →</a>';
+    }
+    // Adjacent-region rides render under a divider so nobody mistakes a
+    // Santa Barbara ride for the Orange County ride they searched.
+    var exact=rides.filter(function(r){return !r.adjacent;});
+    var near=rides.filter(function(r){return r.adjacent;});
+    var html=exact.map(card).join('');
+    if(near.length){
+      html+='<div style="grid-column:1/-1;color:#8a8a92;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin:14px 0 2px;">Nearby routes &mdash; close to what you searched</div>';
+      html+=near.map(card).join('');
+    }
+    list.innerHTML=html;
+  }
+  ['dateF','availF','flexF'].forEach(function(id){
+    document.getElementById(id).addEventListener('change',renderRides);
+  });
+  // ── Address autocomplete (Mapbox forward geocode, CA/NV bbox) ──────────
+  (function(){
+    var MB='pk.eyJ1IjoiamR0MjYyIiwiYSI6ImNtcDhnb3pvNzBkbGYyenBpN2psY3g2bGsifQ.sqsxq8sjfLaq978oqGExHg';
+    var inp=document.getElementById('addrF'),sg=document.getElementById('addrSugg'),clr=document.getElementById('addrClear');
+    var t=null;
+    function hide(){sg.classList.add('hidden');sg.innerHTML='';}
+    inp.addEventListener('input',function(){
+      addrCoords=null;clr.classList.toggle('hidden',!inp.value);
+      clearTimeout(t);
+      var q=inp.value.trim();
+      if(q.length<3){hide();renderRides();return;}
+      t=setTimeout(function(){
+        fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/'+encodeURIComponent(q)+'.json?limit=5&bbox=-124.5,32,-114,42&access_token='+MB)
+          .then(function(r){return r.json();})
+          .then(function(j){
+            if(inp.value.trim()!==q)return; // stale response — input changed or was cleared
+            sg.innerHTML='';
+            var fs=(j&&j.features)||[];
+            if(!fs.length){hide();return;}
+            fs.forEach(function(f){
+              var b=document.createElement('button');
+              b.type='button';
+              b.textContent=f.place_name;
+              b.style.cssText='display:block;width:100%;text-align:left;background:none;border:0;color:#e8e8ee;font-family:inherit;font-size:14px;padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06)';
+              b.addEventListener('click',function(){
+                inp.value=f.place_name;
+                addrCoords={lat:f.center[1],lng:f.center[0]};
+                clr.classList.remove('hidden');
+                hide();renderRides();
+              });
+              sg.appendChild(b);
+            });
+            sg.classList.remove('hidden');
+          }).catch(hide);
+      },300);
+    });
+    clr.addEventListener('click',function(){inp.value='';addrCoords=null;clr.classList.add('hidden');hide();renderRides();});
+    document.addEventListener('click',function(e){if(!sg.contains(e.target)&&e.target!==inp)hide();});
+  })();
+  // Signed-in searches log client-side (search_log RLS is authenticated-only
+  // — anon inserts were silently dropped for weeks; public-rides now logs
+  // anonymous searches server-side with source=web, 0227). Route alerts
+  // email these searchers when a driver posts; drivers see the demand tiles.
+  var SRC_WEB_OK=true; // 0228 ran 9/1: search_log source CHECK admits 'web'
+  function logSearch(resultsCount){
+    try{
+      var tok=null;
+      try{var raw=localStorage.getItem('sb-vmfmbntacifqoqxqxgsk-auth-token');if(raw)tok=(JSON.parse(raw)||{}).access_token||null;}catch(_){}
+      var uid=null;
+      if(tok){try{uid=JSON.parse(atob(tok.split('.')[1])).sub||null;}catch(_){}}
+      if(!tok||!uid)return; // anon searches are logged server-side by public-rides
+      // 0220 stamp: /rides never loaded ss-session.js — signed-in searchers
+      // here looked "Unknown surface" in admin. Once per page load.
+      if(!window.__wseen){window.__wseen=1;fetch(SUPA+'/rest/v1/profiles?id=eq.'+uid,{method:'PATCH',headers:{apikey:ANON,Authorization:'Bearer '+tok,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({web_seen_at:new Date().toISOString()})}).catch(function(){});}
+      // (ToS acceptance is logged only on pages that show the notice — audit 2026-09-02.)
+      fetch(SUPA+'/rest/v1/search_log',{method:'POST',headers:{apikey:ANON,Authorization:'Bearer '+(tok||ANON),'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({user_id:uid,from_dest:fromS.value,to_dest:toS.value,search_date:document.getElementById('dateF').value||null,results_count:resultsCount,source:SRC_WEB_OK?'web':undefined})}).catch(function(){});
+    }catch(_){}
+  }
   function load(){
     list.innerHTML='<div class="loading">Loading rides…</div>'; countEl.textContent='';
     var u=SUPA+'/functions/v1/public-rides?from='+encodeURIComponent(fromS.value)+'&to='+encodeURIComponent(toS.value);
-    fetch(u,{headers:{apikey:ANON,Authorization:'Bearer '+ANON}}).then(function(r){return r.json();}).then(function(d){
+    // 0227 attribution: date filter + landing referrer + campaign tag ride
+    // along so the server can log what anonymous visitors wanted and how
+    // they found us.
+    try{
+      var dF=document.getElementById('dateF');
+      if(dF&&dF.value)u+='&date='+encodeURIComponent(dF.value);
+      var qp=new URLSearchParams(location.search);
+      var camp=qp.get('c')||qp.get('utm_source')||'';
+      if(camp)u+='&c='+encodeURIComponent(camp.slice(0,80));
+      if(document.referrer)u+='&ref='+encodeURIComponent(document.referrer.slice(0,300));
+    }catch(_){}
+    var utok=null;try{var raw0=localStorage.getItem('sb-vmfmbntacifqoqxqxgsk-auth-token');if(raw0)utok=(JSON.parse(raw0)||{}).access_token||null;}catch(_){}
+    fetch(u,{headers:{apikey:ANON,Authorization:'Bearer '+(utok||ANON)}}).then(function(r){return r.json();}).then(function(d){
       var rides=(d&&d.rides)||[];
-      if(!rides.length){
-        // The zero-result state is THE conversion leak (acquisition memo:
-        // in-market riders searched, found nothing, evaporated). In web mode,
-        // capture the demand right here: request board for riders, /post for
-        // drivers. Without the flag, keep funneling to the app.
-        list.innerHTML = webMode
-          ? '<div class="empty">No rides match that yet.<br><br>'
-            + '<a href="/requests">Tell drivers you need this ride →</a><br>'
-            + 'Drivers who’ve driven the route get notified, and you’ll get an email the moment one posts it.<br><br>'
-            + 'Driving this route yourself? <a href="/post">Post the ride</a>.</div>'
-          : '<div class="empty">No rides match that yet.<br><br>Be the first — <a href="/#get">post or request one in the app</a>, or try different cities.</div>';
-        return;
-      }
-      countEl.textContent=rides.length+' upcoming ride'+(rides.length===1?'':'s');
-      // Persistent supply-side CTA in web mode (benchmark 8/26): BlaBlaCar
-      // puts "Offer a ride" on every results page; ours only appeared on the
-      // ZERO-results state — a populated marketplace never recruited drivers.
-      if(webMode){
-        countEl.innerHTML=esc(countEl.textContent)
-          +' &nbsp;·&nbsp; <a href="/post" style="color:#00D4C8;text-decoration:none;">Driving one of these routes? Post your ride →</a>'
-          +' &nbsp;·&nbsp; <a href="/requests" style="color:#7dd3fc;text-decoration:none;">Need a ride nobody posted? Request it →</a>';
-      }
-      list.innerHTML=rides.map(card).join('');
-    }).catch(function(){ list.innerHTML='<div class="empty">Could not load rides right now. <a href="/#get">Open the app</a> to browse.</div>'; });
+      allRides=rides;
+      logSearch(rides.filter(function(r){return !r.adjacent;}).length); // exact matches only - nearby top-ups are not met demand
+      renderRides();
+    }).catch(function(){ list.innerHTML='<div class="empty">Could not load rides right now — refresh to try again.</div>'; });
   }
   // Booking-intent signal: fires when someone taps a ride to open it. Filter
   // this event by Desktop in Vercel Analytics to size web-checkout demand.
@@ -223,6 +399,28 @@ fbq('track','PageView');
   document.getElementById('swap').onclick=function(){var a=fromS.value;fromS.value=toS.value;toS.value=a;load();};
   load();
 })();
+</script>
+<script src="/js/ss-menu.js"></script>
+<script src="/js/ss-appbar.js"></script>
+<script>
+// /rides is BOTH a public marketing page and the signed-in marketplace, so
+// the header depends on who's looking:
+//   signed out — keep the marketing nav (wordmark + "Sign in")
+//   signed in  — swap in the shared console app bar, so browsing rides sits
+//                in the same chrome as Trips/Driving/Messages instead of
+//                dropping you out of the console (Justin, 2026-08-28).
+try {
+  if (window.SS_APPBAR && SS_APPBAR.signedIn()) {
+    SS_APPBAR.mount({
+      active: 'rides',
+      // Replaces the marketing <nav> outright.
+      mountTo: document.querySelector('nav'),
+      // Align to the CONTENT column, not the nav's own .wrap — that one is
+      // being replaced and would measure wrong.
+      alignTo: document.querySelector('body > .wrap'),
+    });
+  }
+} catch (_) { /* the marketing nav is a fine fallback */ }
 </script>
 </body>
 </html>
