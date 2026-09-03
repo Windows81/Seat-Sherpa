@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages &mdash; Seat Sherpa</title>
+
+  <!-- UNIFIED MESSAGES (2026-08-28, Justin: "when I hit messages I only see
+       one side" + "two columns, or very distinct colors"). BOTH roles' chat
+       threads on one page: riding (my bookings, purple) and driving (riders
+       on my rides, teal). Two columns on desktop, color-coded stack on
+       mobile. Rows deep-link into the console that owns the thread. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#0E0E10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0E0E10; color: #fff; -webkit-font-smoothing: antialiased;
+      min-height: 100vh; padding: 26px 16px 60px;
+    }
+    .wrap { max-width: 440px; margin: 0 auto; }
+    @media (min-width: 720px) { .wrap { max-width: 560px; } }
+    @media (min-width: 980px) { .wrap { max-width: 940px; } }
+    .brand { display: flex; justify-content: center; margin-bottom: 18px; }
+    .wordmark { height: 34px; width: auto; display: block; }
+    .consolenav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 22px; }
+    .consolenav a {
+      color: #cfcfd6; text-decoration: none; font-size: 14px; font-weight: 600;
+      border: 1px solid #2a2a33; border-radius: 999px; padding: 8px 14px; white-space: nowrap;
+    }
+    .consolenav a:hover { border-color: rgba(0,212,200,0.5); }
+    .consolenav a.here { border-color: #00D4C8; color: #00D4C8; }
+    .rolepair { display: inline-flex; gap: 6px; }
+    .rolepill {
+      border: 1px solid rgba(0,212,200,0.4); color: #00D4C8; border-radius: 999px;
+      padding: 8px 14px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap;
+    }
+    .rolepill.active { background: #00D4C8; color: #04201e; border-color: #00D4C8; }
+    h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 18px; }
+    .cols { display: grid; grid-template-columns: 1fr; gap: 22px; }
+    @media (min-width: 980px) { .cols { grid-template-columns: 1fr 1fr; align-items: start; } }
+    .colhead {
+      font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 700;
+      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .colhead.riding { color: #B48CFF; }
+    .colhead.driving { color: #00D4C8; }
+    .thread {
+      display: block; text-decoration: none; color: inherit;
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 14px;
+      padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.15s, transform 0.1s;
+    }
+    .thread:hover { transform: translateY(-1px); }
+    .thread.riding { border-left: 4px solid #B48CFF; }
+    .thread.riding:hover { border-color: rgba(180,140,255,0.6); }
+    .thread.driving { border-left: 4px solid #00D4C8; }
+    .thread.driving:hover { border-color: rgba(0,212,200,0.6); }
+    .throw { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+    .who { font-size: 16px; font-weight: 700; }
+    .when { font-size: 12.5px; color: #a3a3ae; white-space: nowrap; }
+    .route { font-size: 13.5px; color: #adadb8; margin-top: 2px; }
+    .preview {
+      font-size: 14px; color: #b9b9c6; margin-top: 8px; line-height: 1.45;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .preview.none { color: #8e8e99; font-style: italic; }
+    .empty {
+      background: #141416; border: 1px dashed #2a2a33; border-radius: 14px;
+      padding: 22px 18px; color: #a3a3ae; font-size: 14.5px; line-height: 1.6; text-align: center;
+      margin-bottom: 10px;
+    }
+    .empty a { color: #00D4C8; text-decoration: none; font-weight: 700; }
+    .dim { color: #a3a3ae; }
+    .center { text-align: center; }
+    .hidden { display: none !important; }
+    .spinner {
+      width: 26px; height: 26px; margin: 40px auto; border: 3px solid #2a2a33;
+      border-top-color: #00D4C8; border-radius: 50%; animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .foot { margin-top: 30px; font-size: 13px; color: #a3a3ae; text-align: center; line-height: 1.7; }
+    .foot a { color: #00D4C8; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <!-- Shared console app bar (ss-appbar.js). Body-level so it goes full
+       bleed; the page's own column starts below it. -->
+  <div id="ssAppBar"></div>
+  <div class="wrap">
+    <h1>Messages</h1>
+
+    <div id="loading" class="spinner"></div>
+    <div id="signedOut" class="empty hidden">
+      You're signed out. <a href="/signin">Sign in</a> to see your messages.
+    </div>
+
+    <div id="cols" class="cols hidden">
+      <div>
+        <div class="colhead riding">🎒 Riding <span class="dim" style="letter-spacing:0;text-transform:none;font-weight:600;">— trips you booked</span></div>
+        <div id="ridingList"></div>
+      </div>
+      <div>
+        <div class="colhead driving">🚗 Driving <span class="dim" style="letter-spacing:0;text-transform:none;font-weight:600;">— riders on your rides</span></div>
+        <div id="drivingList"></div>
+      </div>
+    </div>
+
+    <p class="foot">Chats live with each trip — tapping a thread opens it in the right console.</p>
+  </div>
+
+  <script src="/js/ss-menu.js"></script>
+  <script src="/js/ss-appbar.js"></script>
+  <script>if (window.SS_APPBAR) SS_APPBAR.mount({ active: 'messages' });</script>
+  <script type="module">
+    const S = await import('/js/ss-session.js');
+    const $ = (id) => document.getElementById(id);
+
+    // Same reasoning as account.html: a token getUserFresh() can't parse must
+    // land on the signed-out card, not on a blank page.
+    let user = null;
+    try { user = await S.getUserFresh(); } catch (e) { console.error('[messages] getUserFresh failed:', e); }
+    if (!user) {
+      $('loading').classList.add('hidden');
+      $('signedOut').classList.remove('hidden');
+    } else {
+      try { await load(user.id); } catch (e) {
+        // Log it. A silent catch here hid a hard ReferenceError for days —
+        // the page just said "refresh to try again" forever.
+        console.error('[messages] load failed:', e);
+        $('loading').classList.add('hidden');
+        $('signedOut').classList.remove('hidden');
+        $('signedOut').textContent = 'Could not load your messages — refresh to try again.';
+      }
+    }
+
+    function cityOf(area) {
+      if (!area) return '';
+      const parts = String(area).split(',').map((s) => s.trim()).filter(Boolean);
+      if (!parts.length) return String(area);
+      const STATE = /^(california|ca|nevada|nv|arizona|az|oregon|or|usa|united states|us)( +\d{5}(-\d{4})?)?$/i;
+      const ZIP = /^\d{5}(-\d{4})?$/;
+      const cleaned = parts.filter((p) => !/^\d/.test(p) && !STATE.test(p) && !ZIP.test(p));
+      if (!cleaned.length) return parts[0];
+      return cleaned[cleaned.length - 1];
+    }
+    function routeOf(r) {
+      return (cityOf(r.departure_area) || r.from_dest || 'Origin') + ' → ' + (cityOf(r.arrival_area) || r.to_dest || 'Destination');
+    }
+    function ago(iso) {
+      const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+      if (s < 60) return 'now';
+      if (s < 3600) return Math.floor(s / 60) + 'm';
+      if (s < 86400) return Math.floor(s / 3600) + 'h';
+      if (s < 7 * 86400) return Math.floor(s / 86400) + 'd';
+      return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+    function dateOf(d) {
+      const [y, m, dd] = String(d || '').split('-').map(Number);
+      if (!y) return '';
+      return new Date(Date.UTC(y, m - 1, dd)).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+    }
+    // Declaration, not a const arrow. load() is invoked above via top-level
+    // await, which blocks module evaluation before a const on this line would
+    // initialise — so an arrow here sat in the temporal dead zone and every
+    // load() threw "Cannot access 'el' before initialization" (fixed 8/28).
+    function el(tag, cls, text) {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    }
+
+    async function load(me) {
+      // Riding: my non-cancelled bookings (Cancelled threads still exist but
+      // the console screens for them do too — keep the list focused).
+      const ridingQ = S.supabase.from('bookings')
+        .select('id, ref_code, status, created_at, ride:rides!inner(id, driver_name, from_dest, to_dest, departure_area, arrival_area, dep_date, driver:profiles!rides_driver_profile_fkey(name:name_public))')
+        .eq('passenger_id', me)
+        .neq('status', 'Cancelled')
+        .order('created_at', { ascending: false })
+        .limit(40);
+      // Driving: bookings on my rides.
+      const ridesQ = S.supabase.from('rides')
+        .select('id, from_dest, to_dest, departure_area, arrival_area, dep_date')
+        .eq('driver_id', me)
+        .is('cancelled_at', null)
+        .order('dep_date', { ascending: false })
+        .limit(40);
+      const [rRes, dRes] = await Promise.all([ridingQ, ridesQ]);
+      const riding = rRes.data || [];
+      const myRides = dRes.data || [];
+      let driving = [];
+      if (myRides.length) {
+        const { data: db2 } = await S.supabase.from('bookings')
+          .select('id, ref_code, status, created_at, passenger_name, ride_id')
+          .in('ride_id', myRides.map((r) => r.id))
+          .neq('status', 'Cancelled')
+          .order('created_at', { ascending: false })
+          .limit(80);
+        driving = db2 || [];
+      }
+      const rideById = new Map(myRides.map((r) => [r.id, r]));
+
+      // Last message per thread, one query across both roles.
+      const ids = [...new Set([...riding.map((b) => b.id), ...driving.map((b) => b.id)])];
+      const lastBy = new Map();
+      if (ids.length) {
+        const { data: msgs } = await S.supabase.from('messages')
+          .select('booking_id, sender_id, body, is_system, created_at')
+          .in('booking_id', ids)
+          .order('created_at', { ascending: false })
+          .limit(400);
+        for (const m of msgs || []) if (!lastBy.has(m.booking_id)) lastBy.set(m.booking_id, m);
+      }
+
+      const sortKey = (b) => {
+        const m = lastBy.get(b.id);
+        return m ? m.created_at : b.created_at;
+      };
+      riding.sort((a, b) => String(sortKey(b)).localeCompare(String(sortKey(a))));
+      driving.sort((a, b) => String(sortKey(b)).localeCompare(String(sortKey(a))));
+
+      const renderThread = (kind, href, who, route, when, b) => {
+        const a = el('a', 'thread ' + kind);
+        a.href = href;
+        const row = el('div', 'throw');
+        row.appendChild(el('span', 'who', who));
+        const m = lastBy.get(b.id);
+        row.appendChild(el('span', 'when', m ? ago(m.created_at) : ''));
+        a.appendChild(row);
+        a.appendChild(el('div', 'route', route + (when ? ' · ' + when : '')));
+        if (m) {
+          const mine = m.sender_id === me && !m.is_system;
+          a.appendChild(el('div', 'preview', (m.is_system ? '📋 ' : mine ? 'You: ' : '') + String(m.body || '').slice(0, 90)));
+        } else {
+          a.appendChild(el('div', 'preview none', 'No messages yet — say hi!'));
+        }
+        return a;
+      };
+
+      const rl = $('ridingList');
+      if (!riding.length) {
+        const e = el('div', 'empty');
+        e.innerHTML = 'No trips booked yet — <a href="/rides?web=1">find a ride</a> and the chat with your driver lives here.';
+        rl.appendChild(e);
+      } else {
+        for (const b of riding) {
+          const drvName = (b.ride && ((b.ride.driver && b.ride.driver.name) || b.ride.driver_name)) || 'Your driver';
+          // &chat=1 opens the conversation itself — tapping a message preview
+          // should land in the chat, not on the booking detail (audit 8/28).
+          rl.appendChild(renderThread('riding', '/trips?ref=' + encodeURIComponent(b.ref_code || '') + '&chat=1', drvName, routeOf(b.ride || {}), dateOf(b.ride && b.ride.dep_date), b));
+        }
+      }
+      const dl = $('drivingList');
+      if (!driving.length) {
+        const e = el('div', 'empty');
+        e.innerHTML = 'No riders yet — <a href="/post">post a ride</a> and every booking chat shows up here.';
+        dl.appendChild(e);
+      } else {
+        for (const b of driving) {
+          const ride = rideById.get(b.ride_id) || {};
+          dl.appendChild(renderThread('driving', '/driving?bookingId=' + encodeURIComponent(b.id), b.passenger_name || 'A rider', routeOf(ride), dateOf(ride.dep_date), b));
+        }
+      }
+
+      $('loading').classList.add('hidden');
+      $('cols').classList.remove('hidden');
+      try { localStorage.setItem('ss_last_role', localStorage.getItem('ss_last_role') || (driving.length > riding.length ? 'driver' : 'rider')); } catch (_) {}
+    }
+  </script>
+</body>
+</html>

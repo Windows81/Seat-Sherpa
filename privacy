@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seat Sherpa — Privacy Policy</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 24px;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    h1 { font-size: 28px; margin-bottom: 8px; }
+    h2 { font-size: 18px; margin-top: 32px; }
+    .updated { color: #666; font-size: 14px; margin-bottom: 32px; }
+    a { color: #00a8a0; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: August 8, 2026</p>
+
+  <p>
+    Seat Sherpa ("we", "us", or "our") operates the Seat Sherpa mobile application
+    (the "App"), a peer-to-peer carpooling service available in California and Nevada.
+    This Privacy Policy explains what information we collect, how we use it, and
+    your rights regarding that information.
+  </p>
+
+  <h2>1. Information we collect</h2>
+  <ul>
+    <li><strong>Account information</strong> — name, email address, date of birth, profile photo.</li>
+    <li><strong>Phone number</strong> — collected during signup and verified via SMS one-time code. Used to enable in-app voice communication between matched drivers and passengers.</li>
+    <li><strong>Driver-only information</strong> — driver's license image and extracted name/date of birth, vehicle details (make, model, year, color, license plate, VIN), insurance card image, vehicle photos.</li>
+    <li><strong>Ride information</strong> — origin and destination addresses, departure date/time, seat selection, messages exchanged in ride chats.</li>
+    <li><strong>Payment information</strong> — collected and processed by Stripe Inc.; we do not store full card details on our servers.</li>
+    <li><strong>Device information</strong> — push notification token, app version, operating system, anonymized usage events.</li>
+    <li><strong>Location information</strong> — with your permission, we collect device location to help set pickup and drop-off points, find nearby rides, and understand where our service is used (aggregate demand analytics). You can grant or revoke location access at any time in your device settings.</li>
+  </ul>
+
+  <h2>2. How we use your information</h2>
+  <ul>
+    <li>To create and manage your account.</li>
+    <li>To verify your identity and prevent fraud (SMS phone verification, driver's license review).</li>
+    <li>To match drivers with passengers, coordinate rides, and process payments.</li>
+    <li>To send transactional notifications (booking confirmations, ride reminders, message alerts).</li>
+    <li>To respond to support inquiries.</li>
+    <li>
+      <strong>To keep the community safe</strong> — authorized Seat Sherpa personnel may review
+      in-app messages, reviews, and profile content in response to user reports, or where we
+      reasonably suspect a violation of our Terms of Service (for example harassment, threats,
+      fraud, or other safety concerns). Message content is never used for marketing or shared
+      with third parties, and access is limited to trained staff acting on a safety or
+      enforcement need.
+    </li>
+    <li>To comply with applicable legal obligations (e.g., 1099 reporting for drivers via Stripe Connect, identity-verification record-keeping).</li>
+  </ul>
+  <p><strong>We do not use your information for marketing purposes.</strong> We do not sell your data to third parties.</p>
+
+  <h2>3. SMS messaging consent</h2>
+  <p>
+    During account creation, you provide your phone number and affirmatively consent
+    to receive a one-time verification code via SMS by tapping "Send code." You may
+    also receive transactional SMS reminders for upcoming rides. Standard SMS rates
+    from your carrier may apply. You can opt out of further SMS at any time by
+    replying STOP to any message. To re-opt-in, reply START. For help, reply HELP
+    or email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>.
+  </p>
+  <p>
+    <strong>We do not share SMS-related consent, phone numbers, or message content
+    with third parties for marketing or promotional purposes.</strong>
+  </p>
+
+  <h2>4. Service providers</h2>
+  <p>We use the following service providers to operate the App:</p>
+  <ul>
+    <li><strong>Supabase</strong> — account database, authentication, file storage.</li>
+    <li><strong>Stripe</strong> — payment processing and driver payouts (Stripe Connect).</li>
+    <li><strong>Twilio</strong> — SMS verification code delivery.</li>
+    <li><strong>Apple</strong> and <strong>Google</strong> — optional sign-in providers, push notification delivery.</li>
+    <li><strong>Resend</strong> — transactional email delivery.</li>
+    <li><strong>Sentry</strong> — crash and error reporting. Crash reports include your account id and email address so we can identify and fix problems you actually hit.</li>
+  </ul>
+  <p>
+    Each provider processes data only as required to deliver their service to us
+    and is bound by their own privacy policies and data-processing agreements.
+  </p>
+
+  <h2>5. Cookies, advertising &amp; analytics</h2>
+  <p>
+    Our website (seatsherpa.app) uses advertising pixels and analytics tags: the
+    Meta Pixel, the Reddit Pixel, and the Google Ads tag, plus Vercel Analytics
+    for aggregate page statistics. These tools set cookies or similar
+    identifiers and receive information about your visit &mdash; pages viewed,
+    device information, approximate location, and ad-click identifiers (such as
+    <code>fbclid</code> or <code>rdt_cid</code>) &mdash; so we can measure our
+    advertising and reach people who may be interested in Seat Sherpa. We also
+    record ad-click identifiers in our own campaign statistics.
+  </p>
+  <p>
+    Under the California Consumer Privacy Act (as amended by the CPRA), sending
+    this information to advertising platforms may be considered
+    &ldquo;sharing&rdquo; personal information for cross-context behavioral
+    advertising. We do not sell personal information for money, and we do not
+    knowingly share personal information of consumers under 16.
+  </p>
+  <p>
+    <strong>Your opt-out choices.</strong> Our website honors the
+    <a href="https://globalprivacycontrol.org" rel="noopener">Global Privacy
+    Control</a> (GPC) browser signal: when your browser sends GPC, our
+    advertising pixels are not loaded during your visit. You can also opt out
+    with the platforms directly (Meta Ad Preferences, Reddit ad settings,
+    Google My Ad Center), or email
+    <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a> with the
+    subject &ldquo;Do not share&rdquo; and we will honor your request. The App
+    itself does not currently include third-party advertising SDKs.
+  </p>
+
+  <h2>6. Information sharing between users</h2>
+  <p>
+    To coordinate rides, your name, profile photo, ratings, and (after booking
+    confirmation) phone number are shared with the matched driver or passenger.
+    Phone calls placed through the App use your device's native dialer and the
+    other party's phone number is visible to you. Drivers' vehicle details
+    (make, model, color) are visible to passengers who book a seat; the license
+    plate is revealed 2 hours before pickup. We do not share your information
+    with users you have not been matched with.
+  </p>
+  <p>
+    <strong>Public ride listings.</strong> Posting a ride publishes limited
+    listing information beyond the App so riders can find it: your first name,
+    driver rating, route (departure and arrival areas and any listed stops),
+    date and time, seat availability, and price. These fields appear on our
+    public website (including seatsherpa.app/rides and route pages) and in
+    third-party surfaces that list available rides, such as Apple Maps. Your
+    contact details, exact addresses, license plate, and profile photo are not
+    included in public listings.
+  </p>
+
+  <h2>7. Data retention and deletion</h2>
+  <p>
+    We retain your account information for as long as your account is active.
+    You can delete your account at any time from within the app
+    (Profile &rarr; Delete account) or by emailing
+    <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>.
+  </p>
+  <p>
+    When you delete your account, we erase your personal information &mdash;
+    such as your name, profile photo, email address, phone number, and driver's
+    license details &mdash; and permanently disable your login. Booking and trip
+    records you created with other users are retained in an
+    <strong>anonymized</strong> form (your name is replaced with
+    &ldquo;Former member&rdquo;) so the other party keeps their own records and
+    to meet tax, accounting, safety, and other legal obligations &mdash;
+    generally for up to seven years.
+  </p>
+  <p>
+    After deletion we retain a minimal deletion record &mdash; your account id,
+    the email address on the account, and any reason you chose to give &mdash;
+    for fraud prevention, audit, and legal-compliance purposes.
+  </p>
+  <p>
+    Your in-app message threads are handled differently: when you delete your
+    account, the other party is notified that you have left, and the
+    conversation is removed within a few days.
+  </p>
+
+  <h2>8. Your rights</h2>
+  <p>
+    Depending on where you live, you may have rights to access, correct, delete,
+    or port your personal information. California residents have specific rights
+    under the CCPA, including the right to know what we collect and the right to
+    request deletion. California residents may also opt out of the
+    &ldquo;sharing&rdquo; of personal information for cross-context behavioral
+    advertising as described in Section 5 &mdash; via the GPC browser signal or
+    by emailing us. To exercise any of these rights, email
+    <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>.
+  </p>
+
+  <h2>9. Security</h2>
+  <p>
+    We use industry-standard security practices including encryption in transit
+    (TLS), encryption at rest, role-based access controls, and regular security
+    review. No system is perfectly secure; if you believe your account has been
+    compromised, contact support immediately.
+  </p>
+
+  <h2>10. Children</h2>
+  <p>
+    Seat Sherpa is not directed to children under 18. All users must be 18 or
+    older; drivers must also hold a current, valid driver's license. We do not
+    knowingly collect personal information from children.
+  </p>
+
+  <h2>11. Changes to this Policy</h2>
+  <p>
+    We may update this Policy as the App evolves or as regulations change. Material
+    changes will be communicated through the App or via email. The "Last updated"
+    date at the top of this page reflects the most recent revision.
+  </p>
+
+  <h2>12. Contact</h2>
+  <p>
+    Questions or concerns? Email
+    <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>.
+  </p>
+
+<!-- App store buttons (ss-store-badges) -->
+<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=privacy" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=privacy" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+</div>
+</body>
+</html>

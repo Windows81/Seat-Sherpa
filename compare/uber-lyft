@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seat Sherpa vs Uber and Lyft for long-distance trips in California (2026)</title>
+<meta name="description" content="Uber and Lyft are built for trips inside a city. For San Francisco to Los Angeles or LA to Las Vegas they cost $250 to $500 or more. A Seat Sherpa carpool seat on the same routes is capped at $55. Here is the full comparison." />
+<link rel="canonical" href="https://seatsherpa.app/compare/uber-lyft" />
+<meta property="og:title" content="Seat Sherpa vs Uber and Lyft for long-distance trips in California (2026)" />
+<meta property="og:description" content="Uber and Lyft are built for trips inside a city. For San Francisco to Los Angeles or LA to Las Vegas they cost $250 to $500 or more. A Seat Sherpa carpool seat on the same routes is capped at $55. Here is the full comparison." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/compare/uber-lyft" />
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Seat Sherpa vs Uber and Lyft for long-distance trips in California (2026)","description":"Uber and Lyft are built for trips inside a city. For San Francisco to Los Angeles or LA to Las Vegas they cost $250 to $500 or more. A Seat Sherpa carpool seat on the same routes is capped at $55. Here is the full comparison.","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa","url":"https://seatsherpa.app"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-09-02","dateModified":"2026-09-02","mainEntityOfPage":"https://seatsherpa.app/compare/uber-lyft","about":{"@type":"Organization","name":"Seat Sherpa","url":"https://seatsherpa.app","sameAs":["https://apps.apple.com/us/app/seat-sherpa-carpool/id6773077112"]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much is an Uber from San Francisco to Los Angeles?","acceptedAnswer":{"@type":"Answer","text":"Typically $300 to $500 or more one way, before tip, and higher during surge. Many drivers decline a request that long. A Seat Sherpa carpool seat on the same route is capped at $55 plus a 5% service fee."}},{"@type":"Question","name":"Can you take an Uber from LA to Las Vegas?","acceptedAnswer":{"@type":"Answer","text":"Yes, if a driver accepts it, and it usually costs $250 to $400 or more one way. A carpool seat with Seat Sherpa on the LA to Las Vegas route is typically $25 to $55 plus a 5% fee."}},{"@type":"Question","name":"Is Seat Sherpa a rideshare company like Uber?","acceptedAnswer":{"@type":"Answer","text":"No. Seat Sherpa is a carpool marketplace: drivers post trips they are already taking and passengers share the cost, capped at the IRS mileage rate. Drivers do not profit and there is no dispatch. Uber and Lyft are transportation network companies with commercial per-mile pricing."}},{"@type":"Question","name":"How much does a Seat Sherpa seat cost?","acceptedAnswer":{"@type":"Answer","text":"It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat. Riders pay the seat price plus a 5% service fee, shown before you pay. Live prices for each corridor are on the route pages and in the ride browser."}},{"@type":"Question","name":"Is Seat Sherpa safe?","acceptedAnswer":{"@type":"Answer","text":"Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment."}},{"@type":"Question","name":"What is the cancellation policy?","acceptedAnswer":{"@type":"Answer","text":"One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The 5% service fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seatsherpa.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://seatsherpa.app/compare"},{"@type":"ListItem","position":3,"name":"Seat Sherpa vs Uber and Lyft for long-distance trips","item":"https://seatsherpa.app/compare/uber-lyft"}]}</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
+  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
+  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:#eaeaea}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:#00D4C8;font-weight:700}
+  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  .callout h3{font-size:18px;margin-bottom:6px}
+  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  .scroll{overflow-x:auto}
+  @media(max-width:640px){h1{font-size:27px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/compare">Compare</a> › Seat Sherpa vs Uber and Lyft for long-distance trips</div>
+  <h1>Seat Sherpa vs Uber and Lyft for long-distance trips</h1>
+  <div class="meta">Updated September 2026 · Prices are typical ranges; live seat prices are on each route page</div>
+
+  <p class="lede"><strong>Short answer:</strong> Uber and Lyft are ride-hailing: a commercial driver is dispatched to you and paid per mile and per minute, which is why San Francisco to Los Angeles runs $300 to $500 or more, if a driver accepts it at all. Seat Sherpa is carpooling: a driver who is already making the trip posts it ahead of time and you share their cost, capped at the IRS mileage rate split across seats and never more than $55 a seat.</p>
+
+  <h2>Side by side</h2>
+  <div class="scroll"><table>
+    <thead><tr><th></th><th>Seat Sherpa</th><th>Uber / Lyft</th></tr></thead>
+    <tbody>
+      <tr><td>What it is</td><td class="win">Scheduled carpool: book a seat on a trip the driver is taking anyway</td><td>On-demand ride-hailing inside metro areas</td></tr>
+      <tr><td>SF to LA, one person</td><td class="win">$30 to $55 + 5% fee</td><td>$300 to $500+</td></tr>
+      <tr><td>LA to Las Vegas, one person</td><td class="win">$25 to $55 + 5% fee</td><td>$250 to $400+</td></tr>
+      <tr><td>Pricing</td><td class="win">Capped at the IRS mileage rate divided across seats; no surge</td><td>Per mile + per minute, surge at peak times</td></tr>
+      <tr><td>Booking</td><td>Book ahead, usually a day to a week out; instant-book or request</td><td class="win">Minutes away, any time</td></tr>
+      <tr><td>Driver</td><td>Everyday driver: phone, license, vehicle and Stripe identity verified; public rating</td><td>Commercial TNC driver with background check</td></tr>
+      <tr><td>Route</td><td>Fixed intercity route, exact pickup arranged in chat; some rides add stops along the way</td><td class="win">Anywhere the app operates</td></tr>
+      <tr><td>Payment</td><td class="win">Held by Stripe until your pickup code is entered; refunded if the ride does not happen</td><td>Charged at trip end</td></tr>
+      <tr><td>Insurance</td><td>Cost-sharing carpool, the driver’s personal policy applies</td><td class="win">Commercial policy while on trip</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Why the price gap is so large</h2>
+  <p>An Uber driver has to be paid for the 380 miles to Los Angeles and, in practice, for the empty 380 miles home. Uber’s per-mile intercity pricing reflects that, and drivers frequently cancel long requests because the deadhead return is not worth it. A Seat Sherpa driver was going to Los Angeles regardless. The passenger is not paying for a driver’s time; they are covering a share of gas and wear, and the app enforces the cap on every listing.</p>
+
+  <h2>When Uber or Lyft is still the better choice</h2>
+  <p>Inside a city, for a trip under about 30 miles, or when you need a car in the next 10 minutes. Seat Sherpa does not do on-demand pickups and does not operate within a single metro. Many riders combine the two: Uber to the pickup point, carpool for the 300 miles, Uber the last few miles at the other end.</p>
+
+  <div class="callout" style="text-align:center">
+    <h3>See live seat prices on your route</h3>
+    <p style="margin-bottom:6px">Drivers post trips they are already taking. Book in the browser or the app; no account needed to look.</p>
+    <a class="btn" href="/rides?c=compare">Browse rides →</a>
+    <p style="font-size:14px;color:#8a8a92;margin-top:10px">Driving somewhere yourself? <a href="/post">Post the ride</a> and split the cost.</p>
+  </div>
+
+  <h2>FAQ</h2>
+  <div class="faq"><h3>How much is an Uber from San Francisco to Los Angeles?</h3><p>Typically $300 to $500 or more one way, before tip, and higher during surge. Many drivers decline a request that long. A Seat Sherpa carpool seat on the same route is capped at $55 plus a 5% service fee.</p></div>
+  <div class="faq"><h3>Can you take an Uber from LA to Las Vegas?</h3><p>Yes, if a driver accepts it, and it usually costs $250 to $400 or more one way. A carpool seat with Seat Sherpa on the LA to Las Vegas route is typically $25 to $55 plus a 5% fee.</p></div>
+  <div class="faq"><h3>Is Seat Sherpa a rideshare company like Uber?</h3><p>No. Seat Sherpa is a carpool marketplace: drivers post trips they are already taking and passengers share the cost, capped at the IRS mileage rate. Drivers do not profit and there is no dispatch. Uber and Lyft are transportation network companies with commercial per-mile pricing.</p></div>
+  <div class="faq"><h3>How much does a Seat Sherpa seat cost?</h3><p>It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat. Riders pay the seat price plus a 5% service fee, shown before you pay. Live prices for each corridor are on the route pages and in the ride browser.</p></div>
+  <div class="faq"><h3>Is Seat Sherpa safe?</h3><p>Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment.</p></div>
+  <div class="faq"><h3>What is the cancellation policy?</h3><p>One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The 5% service fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee.</p></div>
+
+  <h2>More comparisons</h2>
+  <div style="font-size:16px">
+      <a href="/compare" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">All comparisons →</a>
+      <a href="/compare/flixbus-greyhound" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Seat Sherpa vs FlixBus &amp; Greyhound →</a>
+      <a href="/compare/flying" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Seat Sherpa vs flying →</a>
+      <a href="/guides/cheapest-way-san-francisco-to-los-angeles" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Cheapest Way: San Francisco To Los Angeles →</a>
+  </div>
+</article>
+
+<footer><div class="wrap"><a href="/">Home</a><a href="/rides">Live rides</a><a href="/routes">Routes</a><a href="/compare">Compare</a><a href="/faq">FAQ</a><a href="/drive">Drive</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><div style="margin-top:10px">© 2026 Seat Sherpa · California &amp; Nevada carpool marketplace</div></div></footer>
+</body>
+</html>

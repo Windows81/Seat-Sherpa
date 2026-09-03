@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your trips — Seat Sherpa</title>
+
+  <!-- Transactional, signed-in-only, and DELIBERATELY UNLINKED (2026-08-20).
+       Nothing on index/rides/ride/book, the sitemap, robots.txt, or any app
+       screen points here — Justin reaches it by typing the URL. noindex is the
+       belt to that suspenders: a page that renders a rider's pickup code and
+       their chat with a driver must never land in a search index even if
+       someone pastes the link somewhere public. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#0E0E10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- NO marketing pixels here, unlike book.html. Meta/Reddit/Google tags exist
+       to measure a conversion funnel; /trips is post-purchase account plumbing.
+       Firing a third-party PageView on the screen that displays a pickup code
+       and a private chat thread buys us nothing and leaks the visit. -->
+
+  <style>
+    /* Styling is lifted wholesale from book.html so the post-booking surface
+       feels like the same product as the funnel that created the booking. */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0E0E10;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 20px 48px;
+    }
+    a { color: #00D4C8; text-decoration: none; }
+
+    .wrap { width: 100%; max-width: 440px; }
+    /* Desktop: the 440px mobile column reads cramped on a laptop. */
+    /* Desktop is a console, not a phone column — matches /driving. */
+    @media (min-width: 720px) { .wrap { max-width: 700px; } }
+    @media (min-width: 1100px) { .wrap { max-width: 980px; } }
+    @media (min-width: 1100px) {
+      .tripgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+      .tripgrid > .trip { margin-bottom: 0; }
+    }
+    /* Dashboard header + stat strip, same system as /driving. */
+    .dashhead { margin-bottom: 20px; }
+    .dashhead h1 { font-size: 27px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 4px; }
+    .dashhead .said { font-size: 14.5px; color: #adadb8; }
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 22px; }
+    @media (min-width: 720px) { .stats { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
+    .stat { background: #141417; border: 1px solid #232329; border-radius: 14px; padding: 14px 16px; }
+    .stat .n { font-size: 25px; font-weight: 800; letter-spacing: -0.6px; line-height: 1.1;
+      font-variant-numeric: tabular-nums; }
+    .stat .k { font-size: 12px; color: #a3a3ae; margin-top: 4px; font-weight: 600; }
+    .stat.act { border-color: rgba(255,184,77,0.45); background: #191509; }
+    .stat.act .n { color: #FFB84D; }
+    .stat.act .k { color: #e8c88c; }
+    /* Collapsible past-trips header, same control as /driving. */
+    .pasthead {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      color: #a3a3ae; font-size: 13px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; padding: 20px 2px 10px; text-align: left;
+    }
+    .pasthead:hover { color: #cfcfd6; }
+    .pasthead .caret { color: #00D4C8; font-size: 12px; }
+    .pasthead .pastcount {
+      background: rgba(255,255,255,0.08); color: #a3a3ae; border-radius: 999px;
+      padding: 1px 8px; font-size: 11px; letter-spacing: 0;
+    }
+
+    .brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 28px; }
+
+    .card {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card .eyebrow {
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #adadb8; margin-bottom: 12px;
+    }
+    .route { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
+    .meta { font-size: 14px; color: #b9b9c6; margin-top: 6px; }
+
+    /* Rating stars. Big tap targets - this is used one-handed, often on a
+       phone, right after getting out of a car. */
+    .starrow { display: flex; gap: 6px; margin: 14px 0 4px; }
+    button.star {
+      background: none; border: none; padding: 4px 6px; cursor: pointer;
+      font-size: 34px; line-height: 1; color: #55555f; transition: color .12s;
+    }
+    button.star:hover { color: #8a8a95; }
+    button.star.on { color: #00D4C8; }
+
+    h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
+    h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #adadb8; margin: 26px 0 12px; }
+    p.sub { font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 12px; color: #adadb8; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    input, textarea {
+      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      outline: none; transition: border-color 0.15s; font-family: inherit;
+    }
+    input:focus, textarea:focus { border-color: #00D4C8; }
+    input:disabled, textarea:disabled { opacity: 0.5; }
+    textarea { resize: vertical; min-height: 88px; }
+    .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
+    button.primary {
+      width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
+      padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+      font-family: inherit;
+    }
+    button.primary:disabled { opacity: 0.5; cursor: default; }
+    button.outline {
+      width: 100%; background: none; color: #fff; border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: inherit;
+    }
+    button.outline:disabled { opacity: 0.5; cursor: default; }
+    .linkbtn {
+      background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
+      cursor: pointer; padding: 0; font-family: inherit;
+    }
+    .linkbtn:disabled { color: #8f8f98; cursor: default; }
+    .linkbtn.danger { color: #ff8a8a; }
+    .rowlinks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 14px; }
+    .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
+    .msg.err { color: #ff8a8a; }
+    .msg.ok { color: #4ade80; }
+    .hidden { display: none !important; }
+    .center { text-align: center; }
+    .icon { font-size: 44px; margin-bottom: 12px; }
+    .hint { font-size: 12px; color: #adadb8; margin: -8px 0 14px; line-height: 1.5; }
+
+    .refcode {
+      display: inline-block; background: #0d1f1e; border: 1px solid rgba(0,212,200,0.35);
+      color: #00D4C8; font-weight: 800; letter-spacing: 1.5px; border-radius: 10px;
+      padding: 8px 16px; margin: 6px 0 0; font-size: 15px;
+    }
+
+    .spinner {
+      width: 28px; height: 28px; margin: 0 auto 16px;
+      border: 3px solid rgba(255,255,255,0.15); border-top-color: #00D4C8;
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .signedin { text-align: center; font-size: 12px; color: #8f8f98; margin-top: 14px; }
+    .signedin button { font-size: 12px; }
+    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #8f8f98; line-height: 1.6; }
+    .legal a { color: #adadb8; }
+
+    /* ── Trips-specific ──────────────────────────────────────────────────── */
+
+    .backrow { margin-bottom: 14px; }
+
+    /* Status pill. Colours map to the four booking states so a rider can scan
+       the list without reading. */
+    .pill {
+      display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
+      text-transform: uppercase; border-radius: 100px; padding: 5px 11px;
+      border: 1px solid transparent;
+    }
+    .pill.pending   { background: #24200d; border-color: rgba(255,193,7,0.35);  color: #ffc94a; }
+    .pill.confirmed { background: #0d1f1e; border-color: rgba(0,212,200,0.35);  color: #00D4C8; }
+    .pill.cancelled { background: #241416; border-color: rgba(255,138,138,0.3); color: #ff8a8a; }
+    .pill.completed { background: #16181c; border-color: rgba(255,255,255,0.15);color: #b9b9c6; }
+
+    /* List rows are buttons, not anchors — the whole page is one document and
+       navigation is pushState, so an <a href> would be a lie. */
+    .trip {
+      display: block; width: 100%; text-align: left; font-family: inherit;
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 16px;
+      padding: 16px 18px; margin-bottom: 12px; cursor: pointer; color: #fff;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .trip:hover { border-color: rgba(0,212,200,0.4); transform: translateY(-1px); }
+    .trip .triptop { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .trip .triproute { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; line-height: 1.3; }
+    .trip .tripmeta { font-size: 13px; color: #b9b9c6; margin-top: 5px; }
+    .trip .tripfoot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 13px; color: #adadb8; }
+
+    .driverrow { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; }
+    .avatar.ph { display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #00D4C8; }
+    .drivername { font-size: 15px; font-weight: 700; }
+    .driversub { font-size: 12px; color: #adadb8; margin-top: 2px; }
+
+    .sumline { display: flex; justify-content: space-between; font-size: 14px; color: #b9b9c6; margin-top: 8px; }
+    .sumline.total { font-size: 16px; color: #fff; font-weight: 800; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; margin-top: 12px; }
+
+    /* Pickup code — the single most important thing on this page. It is what
+       lets the driver get reimbursed at all (0043 escrow gate). */
+    .pickup { text-align: center; border-color: rgba(0,212,200,0.35); }
+    .pickuplabel { font-size: 14px; color: #b9b9c6; line-height: 1.5; }
+    .pickupval {
+      font-size: 46px; font-weight: 800; letter-spacing: 6px; color: #00D4C8;
+      margin: 14px 0 12px; font-variant-numeric: tabular-nums;
+    }
+    .pickuphint { font-size: 12px; color: #adadb8; line-height: 1.6; }
+
+    .banner { border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; font-size: 14px; line-height: 1.55; }
+    .banner.warn { background: #241416; border: 1px solid rgba(255,138,138,0.3); color: #ffb3b3; }
+    .banner.info { background: #141d1c; border: 1px solid rgba(0,212,200,0.3); color: #cfe9e7; }
+    .banner.neutral { background: #16181c; border: 1px solid rgba(255,255,255,0.12); color: #b9b9c6; }
+    .banner strong { color: #fff; }
+
+    .policy { list-style: none; margin: 8px 0 14px; padding: 0; }
+    .policy li { font-size: 13px; color: #b9b9c6; line-height: 1.6; margin-bottom: 4px; }
+
+    /* ── Chat ─────────────────────────────────────────────────────────────── */
+    .thread {
+      max-height: 58vh; overflow-y: auto; padding: 4px 2px 6px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .brow { display: flex; }
+    .brow.me { justify-content: flex-end; }
+    .brow.them { justify-content: flex-start; }
+    .brow.sys { justify-content: center; }
+    .bubble {
+      max-width: 78%; border-radius: 16px; padding: 10px 14px; font-size: 15px; line-height: 1.45;
+      white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .brow.me .bubble { background: #00D4C8; color: #04201e; border-bottom-right-radius: 5px; }
+    .brow.them .bubble { background: #1f1f23; color: #fff; border-bottom-left-radius: 5px; }
+    .brow.sys .bubble { background: none; color: #adadb8; font-size: 13px; text-align: center; max-width: 92%; }
+    .bubble.sending { opacity: 0.55; }
+    .bubble.failed { background: #3a1c1f; color: #ffb3b3; }
+    .btime { font-size: 10px; color: #8f8f98; margin: 2px 4px 0; text-align: right; }
+    .brow.them + .btime { text-align: left; }
+    .composer { display: flex; gap: 10px; align-items: flex-end; margin-top: 14px; }
+    .composer textarea { min-height: 46px; max-height: 140px; margin-bottom: 0; padding: 12px 14px; font-size: 15px; }
+    .composer button { width: auto; flex-shrink: 0; padding: 13px 18px; }
+    .emptythread { text-align: center; color: #adadb8; font-size: 13px; line-height: 1.6; padding: 22px 8px; }
+    .consolenav {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      margin: 14px 0 4px;
+    }
+    .consolenav a {
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      color: #b9b9c6; text-decoration: none; background: #17171d;
+      border: 1px solid #2a2a33; border-radius: 999px; padding: 8px 16px;
+    }
+    .consolenav a:hover { border-color: rgba(0,212,200,0.4); color: #fff; }
+    .rolepair { display: inline-flex; gap: 6px; }
+    .consolenav a.rolepill { border-color: rgba(0,212,200,0.4); color: #00D4C8; font-weight: 700; }
+    .consolenav a.rolepill.active { background: #00D4C8; color: #04201e; border-color: #00D4C8; }
+    .consolenav a.rolepill.active:hover { color: #04201e; }
+  </style>
+</head>
+<body>
+  <!-- Shared console app bar (ss-appbar.js), body-level for full bleed. -->
+  <div id="ssAppBar"></div>
+  <div class="wrap">
+
+    <!-- ── STATES ─────────────────────────────────────────────────────────── -->
+
+    <div class="card center" id="stLoading">
+      <div class="spinner"></div>
+      <h1>Loading…</h1>
+      <p class="sub" style="margin-bottom:0;">One moment.</p>
+    </div>
+
+    <!-- Boot failure: the shared session module didn't load. Honest, not blank. -->
+    <div class="card center hidden" id="stBoot">
+      <div class="icon">⚠️</div>
+      <h1>This page didn't finish loading</h1>
+      <p class="sub" style="margin-bottom:0;">Refresh to try again. If it keeps happening, email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a> and we'll sort out your trip.</p>
+    </div>
+
+    <!-- Signed out — first-class, not a dead end. A rider who booked on a
+         laptop and is standing at the curb with a phone lands HERE. -->
+    <div class="card hidden" id="stEmail">
+      <div class="eyebrow">Your trips</div>
+      <h1>Sign in to see your trips</h1>
+      <p class="sub">Enter the email you booked with and we'll send a sign-in code — no password needed.</p>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
+      <button class="primary" id="emailBtn">Email me a code</button>
+      <div class="msg err hidden" id="emailMsg"></div>
+    </div>
+
+    <div class="card hidden" id="stCode">
+      <div class="eyebrow">Your trips · Verify email</div>
+      <h1>Enter the code we emailed you</h1>
+      <p class="sub">We sent it to <strong id="codeEmailEcho"></strong>. It can take a minute — check spam too.</p>
+      <input id="emailCode" class="codeinput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••••" />
+      <button class="primary" id="codeBtn">Verify</button>
+      <div class="rowlinks">
+        <button class="linkbtn" id="codeResend">Resend code</button>
+        <button class="linkbtn" id="codeChangeEmail">Use a different email</button>
+      </div>
+      <div class="msg err hidden" id="codeMsg"></div>
+    </div>
+
+    <!-- List / detail / chat are JS-built so every string from the database
+         goes through textContent. See the DOM helpers in the module below. -->
+    <div class="hidden" id="stList"><div id="listBody"></div></div>
+    <div class="hidden" id="stDetail"><div id="detailBody"></div></div>
+    <div class="hidden" id="stChat"><div id="chatBody"></div></div>
+
+    <div class="card center hidden" id="stNotFound">
+      <div class="icon">🔍</div>
+      <h1>We couldn't find that booking</h1>
+      <!-- Deliberately identical copy for "no such ref code" and "that ref
+           belongs to someone else". Distinguishing them would turn this page
+           into an oracle for enumerating other riders' booking references. -->
+      <p class="sub">That reference doesn't match a booking on this account. Double-check the code, or sign in with the email you booked with.</p>
+      <button class="outline" id="nfAllTrips">See all my trips</button>
+      <div class="signedin" id="nfSignedIn">Signed in as <span id="nfEmail"></span> · <button class="linkbtn" id="nfSignOut">Not you?</button></div>
+    </div>
+
+    <div class="card center hidden" id="stError">
+      <div class="icon">📡</div>
+      <h1>Couldn't load your trips</h1>
+      <p class="sub" id="errSub">Something went wrong on our end. Check your connection and try again.</p>
+      <button class="primary" id="errRetry">Try again</button>
+    </div>
+
+    <p class="legal">
+      Seat Sherpa is a cost-sharing carpool marketplace, not a ride-hail service.<br />
+      <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
+    </p>
+  </div>
+
+  <script src="/js/ss-stops.js"></script>
+  <script src="/js/ss-menu.js"></script>
+  <script src="/js/ss-appbar.js"></script>
+  <script>
+    // id 'consoleNav' + startHidden: show() already owns when the nav is
+    // visible, and it must not appear over the loading or sign-in screens.
+    if (window.SS_APPBAR) SS_APPBAR.mount({ active: 'trips', id: 'consoleNav', startHidden: true });
+  </script>
+  <script type="module">
+    // trips.html — rider web surface, everything AFTER "you're booked" (2026-08-20).
+    //
+    // /trips                      → the rider's bookings
+    // /trips?ref=SS-XXXX          → one booking: status, driver, PICKUP CODE, cancel
+    // /trips?ref=SS-XXXX&chat=1   → the chat thread with that driver
+    //
+    // WHY this page exists at all: a web rider has no app. The app displays a
+    // 4-digit pickup code which the DRIVER types into their app; that stamps
+    // bookings.pickup_code_entered_at, and stripe-release-to-driver gates the
+    // escrow release on exactly that column (migration 0043). Without a surface
+    // that shows a web rider their code, the code is never spoken, never
+    // entered, and THE DRIVER IS NEVER PAID. Web booking without this page is a
+    // trap for drivers. Everything else here (list, chat, cancel) is table
+    // stakes around that one obligation.
+    //
+    // Almost none of this needed new server code: get_my_pickup_code is
+    // SECURITY DEFINER + gated on passenger_id = auth.uid() + granted to
+    // `authenticated` (0043:149-162), so a browser holding an email-OTP session
+    // can fetch the code directly. The driver still enters it via
+    // submit_pickup_code, which is driver-gated — no driver surface on web.
+    //
+    // ONE hard rule throughout: every value that came out of the database
+    // reaches the DOM via textContent, never innerHTML. Seat labels, driver
+    // names, chat bodies and stop names are all user-authored (the last web
+    // build shipped a stored XSS through driver-controlled seat labels). The
+    // el()/clear() helpers below make textContent the path of least resistance
+    // so nobody has to remember.
+
+    // ── Session plumbing (owned by /js/ss-session.js) ──────────────────────
+    // Dynamic import inside try/catch: a static import that 404s renders a
+    // blank white page with a console error nobody sees. This page has a job
+    // at a curb — it must fail out loud.
+    let S = null;
+    try {
+      S = await import('/js/ss-session.js');
+    } catch (_) {
+      document.getElementById('stLoading').classList.add('hidden');
+      document.getElementById('stBoot').classList.remove('hidden');
+      throw new Error('ss-session.js failed to load');
+    }
+    const supabase = S.supabase;
+    const SUPA = S.SUPA;
+    const ANON = S.ANON;
+
+    // ── DOM helpers — the XSS fence ───────────────────────────────────────
+    const $ = (id) => document.getElementById(id);
+    /** Build an element. `text` always lands as textContent. */
+    function el(tag, cls, text) {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text !== undefined && text !== null) n.textContent = String(text);
+      return n;
+    }
+    /** Empty a node. Explicit removeChild rather than innerHTML = '' so this
+     *  file contains no innerHTML at all and a grep stays honest. */
+    function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+    const STATES = ['stLoading','stBoot','stEmail','stCode','stList','stDetail','stChat','stNotFound','stError'];
+    // Console nav shows only once signed in (mirrors driving.html).
+    const NAV_STATES = new Set(['stList','stDetail','stChat']);
+    function show(id) {
+      STATES.forEach((s) => $(s).classList.toggle('hidden', s !== id));
+      // Sign-in happens in-page, so the bar may not exist yet on first paint.
+      if (window.SS_APPBAR) SS_APPBAR.ensure();
+      const nav = $('consoleNav');
+      if (nav) nav.classList.toggle('hidden', !NAV_STATES.has(id));
+    }
+    function setMsg(id, text, kind) {
+      const n = $(id);
+      if (!text) { n.classList.add('hidden'); return; }
+      n.textContent = text;
+      n.className = 'msg ' + (kind || 'err');
+    }
+
+    // Timers are per-render. Every render() call tears the previous set down —
+    // otherwise navigating list → detail → chat leaves three pollers running.
+    let timers = [];
+    function every(ms, fn) { timers.push(setInterval(fn, ms)); }
+    function clearTimers() { timers.forEach(clearInterval); timers = []; }
+
+    // ── Time: ported verbatim from lib/booking-time.ts ─────────────────────
+    // Two-pass DST solve. Do NOT approximate this — a single-pass version is an
+    // hour wrong on transition days, which on this page means a rider's pickup
+    // code unlocking an hour late.
+    function zonedWallClockToUtc(year, month, day, hour, minute, timezone) {
+      const desiredWallUtc = Date.UTC(year, month - 1, day, hour, minute);
+      const offsetAt = (instant) => {
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+        }).formatToParts(new Date(instant));
+        const f = {};
+        for (const p of parts) f[p.type] = p.value;
+        const asUtc = Date.UTC(
+          Number(f.year), Number(f.month) - 1, Number(f.day),
+          f.hour === '24' ? 0 : Number(f.hour), Number(f.minute), Number(f.second),
+        );
+        return asUtc - instant;
+      };
+      try {
+        let offset = offsetAt(desiredWallUtc);
+        offset = offsetAt(desiredWallUtc - offset);
+        return desiredWallUtc - offset;
+      } catch (_) {
+        return desiredWallUtc;
+      }
+    }
+
+    const DEFAULT_TZ = 'America/Los_Angeles';
+    /** Absolute departure instant (ms). Used ONLY for math (2h window, hours
+     *  until departure, past/future) — never for display. */
+    function departureMs(ride) {
+      if (!ride || !ride.dep_date) return 0;
+      // The app's regex is anchored (`$`); this one isn't, so a dep_time that
+      // ever comes back as "HH:MM:SS" still parses instead of silently
+      // collapsing to midnight. Strictly more permissive, never less.
+      const m = /^(\d{1,2}):(\d{2})/.exec(String(ride.dep_time || '').trim());
+      const hour = m ? parseInt(m[1], 10) : 0;
+      const minute = m ? parseInt(m[2], 10) : 0;
+      const p = String(ride.dep_date).split('-').map(Number);
+      if (!p[0] || !p[1] || !p[2]) return 0;
+      return zonedWallClockToUtc(p[0], p[1], p[2], hour, minute, ride.dep_timezone || DEFAULT_TZ);
+    }
+
+    /** Wall-clock date label. Built from a LOCAL-midnight Date so the weekday
+     *  never drifts a day for a viewer east/west of the ride. */
+    function dateLabel(depDate) {
+      const p = String(depDate || '').split('-').map(Number);
+      if (!p[0] || !p[1] || !p[2]) return String(depDate || '');
+      return new Date(p[0], p[1] - 1, p[2])
+        .toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+
+    /** Literal wall clock — NOT new Date(depDate+'T'+depTime), which is
+     *  browser-local and shows a travelling rider the wrong hour. */
+    function timeLabel(depTime) {
+      const m = /^(\d{1,2}):(\d{2})/.exec(String(depTime || '').trim());
+      if (!m) return String(depTime || '');
+      let h = parseInt(m[1], 10);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12; if (h === 0) h = 12;
+      return h + ':' + m[2] + ' ' + ampm;
+    }
+
+    /** "PDT" / "MST" for the RIDE's zone, so the wall clock above is unambiguous. */
+    function tzLabel(ride) {
+      try {
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: ride.dep_timezone || DEFAULT_TZ, timeZoneName: 'short',
+        }).formatToParts(new Date(departureMs(ride) || Date.now()));
+        const p = parts.find((x) => x.type === 'timeZoneName');
+        return p ? p.value : '';
+      } catch (_) { return ''; }
+    }
+
+    function whenLabel(ride) {
+      const tz = tzLabel(ride);
+      return dateLabel(ride.dep_date) + ' · ' + timeLabel(ride.dep_time) + (tz ? ' ' + tz : '');
+    }
+
+    const PICKUP_CODE_OPENS_BEFORE_MS = 2 * 60 * 60 * 1000; // lib/booking-time.ts:45
+
+    /** UI-level status, mirroring lib/booking-time.ts effectiveStatus() (which
+     *  itself mirrors the SQL complete_past_bookings cron). Display + which
+     *  actions to offer; the SERVER is always the authority on what's allowed. */
+    function effectiveStatus(b) {
+      if (b.status === 'Cancelled' || b.status === 'Completed') return b.status;
+      const dep = departureMs(b.ride);
+      if (dep && Date.now() > dep + 12 * 60 * 60 * 1000) {
+        if (b.status === 'Pending') return 'Cancelled';
+        return b.pickup_code_entered_at ? 'Completed' : b.status;
+      }
+      return b.status;
+    }
+
+    // ── Formatting ────────────────────────────────────────────────────────
+    const fmt$ = (n) => '$' + Number(n || 0).toFixed(2);
+    const fmtCents = (c) => '$' + (Number(c || 0) / 100).toFixed(2);
+
+    /** lib/format-name.ts abbreviateName. send-push and send-booking-email both
+     *  abbreviate server-side; web must not be the one surface that leaks a
+     *  driver's full last name. */
+    function abbreviateName(name) {
+      if (!name) return '';
+      const parts = String(name).trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return '';
+      if (parts.length === 1) return parts[0];
+      const initial = (parts[parts.length - 1][0] || '').toUpperCase();
+      return initial ? parts[0] + ' ' + initial + '.' : parts[0];
+    }
+    function firstName(name) {
+      const p = String(name || '').trim().split(/\s+/).filter(Boolean);
+      return p[0] || 'your driver';
+    }
+
+    function driverOf(b) { return (b.ride && b.ride.driver) || null; }
+    function driverRawName(b) {
+      const d = driverOf(b);
+      return (d && d.name) || (b.ride && b.ride.driver_name) || '';
+    }
+    function driverDisplay(b) { return abbreviateName(driverRawName(b)) || 'Your driver'; }
+    function driverFirst(b) { return firstName(driverRawName(b)); }
+
+    // City out of a full geocoded address (Justin, 2026-08-28: headers are
+    // "city to city — when you click in it will say the address"). Port of
+    // notify-waitlist's cityFromAddress.
+    function cityOf(area) {
+      if (!area) return '';
+      const parts = String(area).split(',').map((s) => s.trim()).filter(Boolean);
+      if (!parts.length) return String(area);
+      const STATE = /^(california|ca|nevada|nv|arizona|az|oregon|or|usa|united states|us)( +\d{5}(-\d{4})?)?$/i;
+      const ZIP = /^\d{5}(-\d{4})?$/;
+      const cleaned = parts.filter((p) => !/^\d/.test(p) && !STATE.test(p) && !ZIP.test(p));
+      if (!cleaned.length) return parts[0];
+      return cleaned[cleaned.length - 1];
+    }
+
+    function routeLabel(ride) {
+      const from = cityOf(ride.departure_area) || ((window.SS_STOPS && SS_STOPS.STOP_BY_ID[ride.from_dest] && SS_STOPS.STOP_BY_ID[ride.from_dest].name) || 'Origin');
+      const to = cityOf(ride.arrival_area) || ((window.SS_STOPS && SS_STOPS.STOP_BY_ID[ride.to_dest] && SS_STOPS.STOP_BY_ID[ride.to_dest].name) || 'Destination');
+      return from + ' → ' + to;
+    }
+
+    // Rider's ALL-IN total (Justin, 2026-08-28: "the total should be what me
+    // as a passenger is paying"). Fee columns are null on older rows → falls
+    // back to the bare seat total.
+    function allInTotal(b) {
+      const fees = (Number(b.service_fee_cents) || 0) + (Number(b.booking_fee_cents) || 0);
+      return (Number(b.total_price) || 0) + fees / 100;
+    }
+
+    /** Map seat_ids onto the driver-authored labels in rides.seats. Everything
+     *  here is driver-controlled text — it only ever reaches the DOM through
+     *  el()/textContent. */
+    function seatLabels(b) {
+      const ids = Array.isArray(b.seat_ids) ? b.seat_ids : [];
+      const seats = (b.ride && Array.isArray(b.ride.seats)) ? b.ride.seats : [];
+      return ids.map((id) => {
+        const s = seats.find((x) => x && x.id === id);
+        return (s && (s.label || s.id)) || id;
+      });
+    }
+
+    function stopName(stop) {
+      if (!stop) return '';
+      if (typeof stop === 'string') return stop;
+      return stop.name || '';
+    }
+
+    /** Only ever assign an https image URL. <img src="javascript:..."> doesn't
+     *  execute in any current browser, but photo_url is user-writable and we
+     *  don't hand user data to a URL-parsing sink on trust. */
+    function safePhoto(url) {
+      const u = String(url || '');
+      return /^https:\/\//i.test(u) ? u : '';
+    }
+
+    // ── Cancellation policy copy — lifted VERBATIM from lib/cancellation-policy.ts
+    // Copy only, deliberately: no tier math on this page. lib/cancellation-policy.ts
+    // and stripe-refund-booking already carry a documented "KEEP IN SYNC" pair;
+    // a third copy of the percentages on a static HTML file is how they drift.
+    // The rider sees qualitative policy before, and the SERVER-RETURNED refund
+    // amount after.
+    const POLICY_DETAILS = {
+      standard: [
+        '✓ Cancel 24+ hours before departure → 100% of the seat price back',
+        '~ Cancel 2 – 24 hours before → 50% of the seat price back',
+        '✗ Cancel within 2 hours of departure → no refund',
+        'ⓘ The 5% service fee is non-refundable when you cancel',
+        '✓ If the DRIVER cancels: 100% refund including the service fee',
+      ],
+      free: [
+        '✓ Cancel 2+ hours before departure → 100% refund',
+        '✗ Cancel within 2 hours of departure → no refund',
+      ],
+      moderate: [
+        '✓ Cancel 48+ hours before departure → 100% refund',
+        '~ Cancel 2 – 48 hours before departure → 50% refund',
+        '✗ Cancel within 2 hours of departure → no refund',
+      ],
+      strict: [
+        '~ Cancel 7+ days before departure → 50% refund',
+        '✗ Cancel within 7 days of departure → no refund',
+      ],
+    };
+    function policyDetails(id) { return POLICY_DETAILS[id] || POLICY_DETAILS.free; }
+
+    // ── Data ──────────────────────────────────────────────────────────────
+    // EXPLICIT column list, never select('*') — pickup_code is column-REVOKEd
+    // from `authenticated` (0043:144), so a select('*') here would 403 the whole
+    // query. The RPC is the only way in, by design.
+    const BOOKING_SELECT = [
+      'id, ref_code, status, seat_ids, total_price, service_fee_cents, booking_fee_cents, created_at, source',
+      'payment_verified_at, refund_amount_cents, cancel_reason',
+      'pickup_code_entered_at, no_show_reported_at, no_show_disputed_at',
+      'boarding_stop, alighting_stop',
+      'ride:rides!inner(id, driver_id, driver_name, from_dest, to_dest, departure_area, arrival_area,'
+        + ' dep_date, dep_time, dep_timezone, cancellation_policy, cancelled_at, seats, start_lat, start_lng, end_lat, end_lng,'
+        // name:name_public (0203/0204) — the surname never leaves the database.
+        + ' driver:profiles!rides_driver_profile_fkey(name:name_public, photo_url, driver_rating, driver_trips))',
+    ].join(', ');
+
+    let me = null;         // auth uid
+    let myEmail = '';
+    let myRawName = '';    // raw profile name — send-push re-abbreviates it server-side
+    let pendingEmail = '';
+
+    async function loadMyBookings() {
+      const { data, error } = await supabase
+        .from('bookings')
+        .select(BOOKING_SELECT)
+        .eq('passenger_id', me)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return data || [];
+    }
+
+    async function loadBooking(ref) {
+      // RLS (bookings_select_own) turns another rider's ref into null, not a
+      // 403 — so "wrong code" and "not yours" are literally the same result
+      // here, which is what keeps this page from being an enumeration oracle.
+      const { data, error } = await supabase
+        .from('bookings')
+        .select(BOOKING_SELECT)
+        .eq('ref_code', ref)
+        .maybeSingle();
+      if (error) throw error;
+      return data || null;
+    }
+
+    // ── Routing ───────────────────────────────────────────────────────────
+    function normRef(raw) {
+      const s = String(raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (!s) return '';
+      return s.indexOf('SS') === 0 ? 'SS-' + s.slice(2) : 'SS-' + s;
+    }
+    function go(search) {
+      history.pushState({}, '', search || '/trips');
+      render();
+    }
+    window.addEventListener('popstate', () => { render(); });
+
+    // ── Sign-in ───────────────────────────────────────────────────────────
+    let emailCooldownTimer = null;
+    function startEmailCooldown() {
+      let left = 60;
+      const btn = $('codeResend');
+      clearInterval(emailCooldownTimer);
+      btn.disabled = true; btn.textContent = 'Resend in 60s';
+      emailCooldownTimer = setInterval(() => {
+        left -= 1;
+        if (left <= 0) { clearInterval(emailCooldownTimer); btn.disabled = false; btn.textContent = 'Resend code'; }
+        else { btn.textContent = 'Resend in ' + left + 's'; }
+      }, 1000);
+    }
+
+    // shouldCreateUser:false is the ONE deliberate divergence from book.html.
+    // On /trips there is nothing to create: a typo must say "no account for
+    // that email", not silently mint an empty account that then shows zero
+    // trips forever. Called on supabase.auth directly (rather than the module's
+    // sendEmailOtp helper) precisely because that flag has to be false here —
+    // the module's helper is shaped for book.html's signup funnel.
+    async function sendOtp(email) {
+      const { error } = await supabase.auth.signInWithOtp({
+        email, options: { shouldCreateUser: false },
+      });
+      if (!error) return null;
+      const m = (error.message || '').toLowerCase();
+      if (m.includes('signups not allowed') || m.includes('not allowed for otp') || m.includes('user not found')) {
+        return "We don't have an account for that email. Use the address you booked with — or if you booked with a different one, email support@seatsherpa.app.";
+      }
+      if (m.includes('rate limit')) return 'Too many codes requested. Try again in an hour.';
+      return error.message || "Couldn't send the code. Try again.";
+    }
+
+    $('emailBtn').addEventListener('click', async () => {
+      setMsg('emailMsg', '');
+      const email = $('email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setMsg('emailMsg', 'Enter a valid email address.'); return; }
+      const btn = $('emailBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      const err = await sendOtp(email);
+      btn.disabled = false; btn.textContent = 'Email me a code';
+      if (err) { setMsg('emailMsg', err); return; }
+      pendingEmail = email;
+      $('codeEmailEcho').textContent = email;
+      $('emailCode').value = '';
+      setMsg('codeMsg', '');
+      startEmailCooldown();
+      show('stCode');
+      $('emailCode').focus();
+    });
+
+    $('codeResend').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const err = await sendOtp(pendingEmail);
+      if (err) { setMsg('codeMsg', err); return; }
+      startEmailCooldown();
+      setMsg('codeMsg', 'New code sent.', 'ok');
+    });
+
+    $('codeChangeEmail').addEventListener('click', () => { setMsg('codeMsg', ''); show('stEmail'); });
+
+    $('codeBtn').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const code = $('emailCode').value.replace(/\D/g, '');
+      // 6–8: Supabase's OTP length is a dashboard setting — never stricter here.
+      if (code.length < 6) { setMsg('codeMsg', 'Enter the code from the email.'); return; }
+      const btn = $('codeBtn');
+      btn.disabled = true; btn.textContent = 'Verifying…';
+      const { error } = await supabase.auth.verifyOtp({ email: pendingEmail, token: code, type: 'email' });
+      btn.disabled = false; btn.textContent = 'Verify';
+      if (error) {
+        const m = (error.message || '').toLowerCase();
+        setMsg('codeMsg', (m.includes('expired') || m.includes('invalid'))
+          ? 'That code is incorrect or has expired. Tap Resend for a new one.'
+          : (error.message || 'Could not verify that code.'));
+        return;
+      }
+      // ?ref= survives the sign-in — the rider lands back on the booking they
+      // opened, not a generic list.
+      render();
+    });
+
+    for (const [inp, btn] of [['email','emailBtn'], ['emailCode','codeBtn']]) {
+      $(inp).addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $(btn).click(); } });
+    }
+
+    async function doSignOut() {
+      // S.signOut() is scope:'local' — the raw client defaults to 'global',
+      // which revokes EVERY refresh token and would silently sign the rider
+      // out of the Seat Sherpa app on their phone too (fixed 2026-08-20).
+      try { await S.signOut(); } catch (_) {}
+      me = null; myEmail = ''; myRawName = '';
+      go('/trips');
+    }
+    $('nfSignOut').addEventListener('click', doSignOut);
+    $('nfAllTrips').addEventListener('click', () => go('/trips'));
+    $('errRetry').addEventListener('click', () => render());
+
+    // ── Shared bits ───────────────────────────────────────────────────────
+    function pill(status) {
+      const map = { Pending: 'pending', Confirmed: 'confirmed', Cancelled: 'cancelled', Completed: 'completed' };
+      const label = status === 'Pending' ? 'Awaiting driver' : status;
+      return el('span', 'pill ' + (map[status] || 'completed'), label);
+    }
+
+    function backRow(label, onClick) {
+      const row = el('div', 'backrow');
+      const b = el('button', 'linkbtn', '‹ ' + label);
+      b.type = 'button';
+      b.addEventListener('click', onClick);
+      row.appendChild(b);
+      return row;
+    }
+
+    function signedInFooter() {
+      const d = el('div', 'signedin');
+      d.appendChild(document.createTextNode('Signed in as '));
+      d.appendChild(el('span', null, myEmail));
+      d.appendChild(document.createTextNode(' · '));
+      const b = el('button', 'linkbtn', 'Sign out');
+      b.type = 'button';
+      b.addEventListener('click', doSignOut);
+      d.appendChild(b);
+      return d;
+    }
+
+    function driverRow(b) {
+      const row = el('div', 'driverrow');
+      const d = driverOf(b);
+      const initial = el('div', 'avatar ph', (driverDisplay(b)[0] || '?').toUpperCase());
+      const photo = safePhoto(d && d.photo_url);
+      if (photo) {
+        const img = document.createElement('img');
+        img.className = 'avatar';
+        img.alt = '';
+        img.src = photo;
+        // A dead avatar URL must not leave a browser's broken-image glyph on
+        // the one screen a rider opens at a curb — fall back to the initial.
+        img.addEventListener('error', () => {
+          if (img.parentNode) img.parentNode.replaceChild(initial, img);
+        });
+        row.appendChild(img);
+      } else {
+        row.appendChild(initial);
+      }
+      const col = el('div');
+      col.appendChild(el('div', 'drivername', driverDisplay(b)));
+      const rating = d && typeof d.driver_rating === 'number' && d.driver_rating > 0
+        ? '★ ' + Number(d.driver_rating).toFixed(1) + (d.driver_trips ? ' · ' + d.driver_trips + ' trips' : '')
+        : 'New driver';
+      col.appendChild(el('div', 'driversub', 'Your driver · ' + rating));
+      row.appendChild(col);
+      return row;
+    }
+
+    // ── LIST ──────────────────────────────────────────────────────────────
+    function tripRow(b) {
+      const btn = el('button', 'trip');
+      btn.type = 'button';
+      const st = effectiveStatus(b);
+
+      const top = el('div', 'triptop');
+      top.appendChild(el('div', 'triproute', routeLabel(b.ride)));
+      top.appendChild(pill(st));
+      btn.appendChild(top);
+
+      btn.appendChild(el('div', 'tripmeta', whenLabel(b.ride)));
+
+      const foot = el('div', 'tripfoot');
+      const n = (b.seat_ids || []).length;
+      foot.appendChild(el('span', null, n + ' seat' + (n === 1 ? '' : 's') + ' · ' + fmt$(allInTotal(b))));
+      foot.appendChild(el('span', null, b.ref_code || ''));
+      btn.appendChild(foot);
+
+      btn.addEventListener('click', () => go('/trips?ref=' + encodeURIComponent(b.ref_code)));
+      return btn;
+    }
+
+    function renderList(rows) {
+      const body = $('listBody');
+      clear(body);
+
+      if (rows.length === 0) {
+        // Zero rows is an EMPTY STATE, never an error. A rider who cancelled
+        // their only trip should not be told something broke.
+        const c = el('div', 'card center');
+        c.appendChild(el('div', 'icon', '🧭'));
+        c.appendChild(el('h1', null, 'No trips yet'));
+        c.appendChild(el('p', 'sub', "When you book a seat, it shows up here with your driver's details and your pickup code."));
+        const a = document.createElement('a');
+        a.href = '/rides';
+        a.textContent = 'Browse rides →';
+        a.style.fontWeight = '700';
+        c.appendChild(a);
+        body.appendChild(c);
+        body.appendChild(signedInFooter());
+        show('stList');
+        return;
+      }
+
+      const now = Date.now();
+      const upcoming = [];
+      const past = [];
+      for (const b of rows) {
+        const st = effectiveStatus(b);
+        const dep = departureMs(b.ride);
+        // "Upcoming" holds anything still live: a Confirmed trip stays here
+        // through the 12h completion horizon so a rider mid-trip (or one whose
+        // driver hasn't entered the PIN yet) still finds their code up top.
+        if ((st === 'Pending' || st === 'Confirmed') && dep + 12 * 60 * 60 * 1000 > now) upcoming.push(b);
+        else past.push(b);
+      }
+      // Upcoming reads soonest-first; past reads most-recent-first.
+      upcoming.sort((a, z) => departureMs(a.ride) - departureMs(z.ride));
+      past.sort((a, z) => departureMs(z.ride) - departureMs(a.ride));
+
+      const awaiting = upcoming.filter((b) => effectiveStatus(b) === 'Pending').length;
+      const completed = rows.filter((b) => b.status === 'Completed');
+      const spent = completed.reduce((s, b) => s + (allInTotal(b) || 0), 0);
+
+      const head = el('div', 'dashhead');
+      head.appendChild(el('h1', null, 'Your trips'));
+      head.appendChild(el('div', 'said',
+        awaiting > 0
+          ? awaiting + ' request' + (awaiting === 1 ? '' : 's') + ' waiting on a driver to confirm.'
+          : upcoming.length
+            ? 'Next up: ' + routeLabel(upcoming[0].ride) + ' · ' + whenLabel(upcoming[0].ride) + '.'
+            : 'No upcoming trips — book a seat and it shows up here.'));
+      body.appendChild(head);
+
+      // Same stat system as the driver console. Spend is the rider-side
+      // number that's actually theirs: what completed trips cost, all in.
+      const stats = el('div', 'stats');
+      const statTile = (n, k, cls) => {
+        const t = el('div', 'stat' + (cls ? ' ' + cls : ''));
+        t.appendChild(el('div', 'n', String(n)));
+        t.appendChild(el('div', 'k', k));
+        return t;
+      };
+      stats.appendChild(statTile(upcoming.length, upcoming.length === 1 ? 'Upcoming trip' : 'Upcoming trips'));
+      stats.appendChild(statTile(awaiting, 'Awaiting driver', awaiting > 0 ? 'act' : ''));
+      stats.appendChild(statTile(completed.length, completed.length === 1 ? 'Trip taken' : 'Trips taken'));
+      stats.appendChild(statTile(completed.length ? fmt$(spent) : '—', 'Spent, all in'));
+      body.appendChild(stats);
+
+      if (upcoming.length) {
+        body.appendChild(el('h2', null, 'Upcoming'));
+        const upGrid = el('div', 'tripgrid');
+        upcoming.forEach((b) => upGrid.appendChild(tripRow(b)));
+        body.appendChild(upGrid);
+      }
+      if (past.length) {
+        // Collapsed by default — finished trips are reference, not work.
+        const openPast = sessionStorage.getItem('ss_past_open') === '1';
+        const phead = el('button', 'pasthead');
+        phead.type = 'button';
+        phead.setAttribute('aria-expanded', String(openPast));
+        const caret = el('span', 'caret', openPast ? '▾' : '▸');
+        phead.appendChild(caret);
+        phead.appendChild(el('span', null, 'Past trips'));
+        phead.appendChild(el('span', 'pastcount', String(past.length)));
+        const pastWrap = el('div', 'tripgrid');
+        if (!openPast) pastWrap.classList.add('hidden');
+        past.forEach((b) => pastWrap.appendChild(tripRow(b)));
+        phead.addEventListener('click', () => {
+          const nowOpen = pastWrap.classList.contains('hidden');
+          pastWrap.classList.toggle('hidden', !nowOpen);
+          caret.textContent = nowOpen ? '▾' : '▸';
+          phead.setAttribute('aria-expanded', String(nowOpen));
+          try { sessionStorage.setItem('ss_past_open', nowOpen ? '1' : '0'); } catch (_) {}
+        });
+        body.appendChild(phead);
+        body.appendChild(pastWrap);
+      }
+      // Your impact (2026-08-28, app parity — lib/co2.computePassengerImpact):
+      // completed trips only, same 0.88 lbs/mi + $0.76/mi constants.
+      {
+        const done = rows.filter((b) => b.status === 'Completed' && b.pickup_code_entered_at);
+        if (done.length > 0) {
+          const hav = (a, c) => {
+            if (!a || !c || !isFinite(a.lat)) return 0;
+            const R = 3958.8, toRad = (d) => (d * Math.PI) / 180;
+            const dLat = toRad(c.lat - a.lat), dLng = toRad(c.lng - a.lng);
+            const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(c.lat)) * Math.sin(dLng / 2) ** 2;
+            return 2 * R * Math.asin(Math.sqrt(h));
+          };
+          let miles = 0, perSeatPaid = 0;
+          for (const b of done) {
+            const r = b.ride || {};
+            const s = r.start_lat != null ? { lat: Number(r.start_lat), lng: Number(r.start_lng) } : null;
+            const e2 = r.end_lat != null ? { lat: Number(r.end_lat), lng: Number(r.end_lng) } : null;
+            miles += hav(s, e2);
+            const seats = Array.isArray(b.seat_ids) && b.seat_ids.length ? b.seat_ids.length : 1;
+            perSeatPaid += (Number(b.total_price) || 0) / seats;
+          }
+          const co2 = Math.round(miles * 0.88);
+          const saved = Math.max(0, Math.round(miles * 0.76 - perSeatPaid));
+          if (miles > 0) {
+            const ic = el('div', 'card');
+            ic.appendChild(el('div', 'eyebrow', 'Your impact'));
+            ic.appendChild(el('div', 'meta',
+              done.length + ' trip' + (done.length === 1 ? '' : 's') + ' · ' + Math.round(miles)
+              + ' miles shared · ~' + co2 + ' lbs CO₂ saved'
+              + (saved > 0 ? ' · ~$' + saved + ' saved vs driving alone' : '')));
+            body.appendChild(ic);
+          }
+        }
+      }
+      // Ride credit (app-parity, 2026-08-27). credit_balance_cents (0082) is
+      // built for exactly this caller — a user session. Shown only when >0 so
+      // the common zero case adds no noise.
+      {
+        const credLine = el('div', 'meta hidden');
+        credLine.style.textAlign = 'center';
+        credLine.style.marginTop = '6px';
+        body.appendChild(credLine);
+        supabase.rpc('credit_balance_cents', { p_user: me }).then(({ data, error }) => {
+          const cents = !error && typeof data === 'number' ? data : 0;
+          if (cents > 0) {
+            credLine.textContent = 'Ride credit: $' + (cents / 100).toFixed(2) + ' — applies automatically at booking.';
+            credLine.classList.remove('hidden');
+          }
+        }, () => {});
+      }
+      body.appendChild(signedInFooter());
+      show('stList');
+      document.title = 'Your trips — Seat Sherpa';
+    }
+
+    // ── PICKUP CODE ───────────────────────────────────────────────────────
+    // The payout unblock. Ported from app/booking-detail.tsx (~line 699).
+    let pickupCode = null;
+
+    async function fetchPickupCode(bookingId) {
+      try {
+        const { data, error } = await supabase.rpc('get_my_pickup_code', { p_booking_id: bookingId });
+        if (error) return null;
+        return data || null;
+      } catch (_) { return null; }
+    }
+
+    /** "1234" → "12 34" — the app's read-aloud grouping, so a rider reading off
+     *  a phone and a driver typing into theirs are looking at the same shape. */
+    function groupCode(code) {
+      return String(code).split('').reduce((acc, ch, i) => acc + (i === 2 ? ' ' : '') + ch, '');
+    }
+
+    function pickupCard(b) {
+      const wrap = el('div', 'card pickup');
+      const dep = departureMs(b.ride);
+      const windowOpen = Date.now() >= dep - PICKUP_CODE_OPENS_BEFORE_MS;
+
+      wrap.appendChild(el('div', 'eyebrow', 'Your pickup code'));
+
+      if (!windowOpen) {
+        wrap.appendChild(el('div', 'pickuplabel', 'Your code unlocks 2 hours before departure'));
+        wrap.appendChild(el('div', 'pickupval', '••••'));
+        wrap.appendChild(el('div', 'pickuphint',
+          'For safety, your pickup code stays hidden until 2 hours before the ride ('
+          + dateLabel(b.ride.dep_date) + ' · ' + timeLabel(b.ride.dep_time)
+          + "). It'll be right here when it's time to head out."));
+        return wrap;
+      }
+
+      const who = driverFirst(b);
+      wrap.appendChild(el('div', 'pickuplabel', 'Read this to ' + who + ' at pickup'));
+      wrap.appendChild(el('div', 'pickupval', pickupCode ? groupCode(pickupCode) : '••••'));
+      // Verbatim from the app. "reimbursed", never "earn" — NRS 706A.
+      wrap.appendChild(el('div', 'pickuphint',
+        'Only give this code to ' + who + " once you're physically in their car. "
+        + "It's how they confirm the trip started and get reimbursed — never share it "
+        + 'beforehand or with anyone else.'));
+      return wrap;
+    }
+
+    // ── RATING ────────────────────────────────────────────────────────────
+    //
+    // WHY (Justin, 2026-08-22): web riders had no way to rate at all. The
+    // trip-complete email asked them to REPLY with "a rating out of 5 and a
+    // sentence" and promised "we'll post your review for you" — i.e. the
+    // founder hand-entering ratings from his inbox, which doesn't scale past
+    // about ten trips and loses every rider who can't be bothered to compose
+    // an email. App riders rate at 50% (drivers 83%, because the driver's
+    // modal auto-opens); web riders were structurally at ~0%.
+    //
+    // Writes straight to public.ratings under the rider's own session — the
+    // same path services/ratings.ts submitRating uses. RLS policy
+    // ratings_insert_party enforces rater_id = auth.uid() AND
+    // user_can_rate_booking(booking_id), and migration 0093's trigger rejects
+    // any booking with no pickup on record. So the browser needs no privileged
+    // endpoint: the database is the gate, exactly as it is for the app.
+    let myRatingByBooking = {};   // booking_id -> { stars } already submitted
+
+    /** One rating row for each booking on screen, so the card can show
+     *  "you rated 5 stars" instead of re-offering the form. */
+    async function loadMyRatings(rows) {
+      if (!me || !rows.length) return;
+      try {
+        const { data, error } = await supabase
+          .from('ratings')
+          .select('booking_id, stars')
+          .eq('rater_id', me)
+          .in('booking_id', rows.map((r) => r.id));
+        if (error) return;                       // non-fatal: card just offers the form
+        myRatingByBooking = {};
+        (data || []).forEach((r) => { myRatingByBooking[r.booking_id] = r; });
+      } catch (_) { /* non-fatal */ }
+    }
+
+    function ratingCard(b) {
+      const wrap = el('div', 'card');
+      const who = driverFirst(b);
+      const mine = myRatingByBooking[b.id];
+
+      if (mine) {
+        wrap.appendChild(el('div', 'eyebrow', 'Your rating'));
+        wrap.appendChild(el('div', 'pickuplabel',
+          '★'.repeat(mine.stars) + '☆'.repeat(5 - mine.stars) + '  ·  Thanks!'));
+        wrap.appendChild(el('div', 'pickuphint',
+          'You rated ' + who + ' ' + mine.stars + ' out of 5. Ratings help other riders '
+          + 'choose who to ride with.'));
+        return wrap;
+      }
+
+      wrap.appendChild(el('div', 'eyebrow', 'Rate your trip'));
+      wrap.appendChild(el('div', 'pickuplabel', 'How was the ride with ' + who + '?'));
+
+      // Pre-filled 5 (Justin, 2026-08-22) — matches components/rating-modal.tsx
+      // so a rider sees the same starting point whichever surface they use.
+      // Submit is enabled from the start; tapping a star still overrides it.
+      let chosen = 5;
+      const starRow = el('div', 'starrow');
+      const starBtns = [];
+      for (let i = 1; i <= 5; i++) {
+        const btn = el('button', 'star', '★');
+        btn.classList.add('on');
+        btn.type = 'button';
+        btn.setAttribute('aria-label', i + ' star' + (i === 1 ? '' : 's'));
+        btn.addEventListener('click', () => {
+          chosen = i;
+          starBtns.forEach((s, idx) => {
+            s.textContent = idx < chosen ? '★' : '☆';
+            s.classList.toggle('on', idx < chosen);
+          });
+          submit.disabled = false;
+          msg.textContent = '';
+        });
+        starBtns.push(btn);
+        starRow.appendChild(btn);
+      }
+      wrap.appendChild(starRow);
+
+      const note = el('textarea');
+      note.placeholder = 'Anything worth telling other riders? (optional)';
+      note.maxLength = 500;
+      wrap.appendChild(note);
+
+      const msg = el('div', 'pickuphint');
+      const submit = el('button', 'primary', 'Submit rating');
+      submit.type = 'button';
+      submit.style.marginTop = '12px';
+      submit.addEventListener('click', async () => {
+        if (!chosen) return;
+        submit.disabled = true;
+        submit.textContent = 'Submitting…';
+        msg.textContent = '';
+        try {
+          // ratee is the DRIVER: this page is rider-side only, so the role is
+          // never ambiguous the way it is in the app's shared submitRating.
+          const { error } = await supabase.from('ratings').insert({
+            booking_id: b.id,
+            rater_id: me,
+            ratee_id: b.ride.driver_id,
+            rater_role: 'passenger',
+            stars: chosen,
+            comment: note.value.trim() || null,
+          });
+          if (error) throw error;
+          myRatingByBooking[b.id] = { booking_id: b.id, stars: chosen };
+          renderDetail(b);                      // swap to the "you rated" state
+        } catch (e) {
+          const raw = (e && e.message) || '';
+          msg.textContent =
+            raw.includes('ratings_one_per_rater') ? 'You already rated this trip.'
+            : raw.includes('user_can_rate_booking') ? 'The rating window has closed for this trip.'
+            : raw.includes('no pickup on record') ? "This trip has no pickup on record, so it can't be rated."
+            : 'Could not submit that just now. Try again in a moment.';
+          submit.disabled = false;
+          submit.textContent = 'Submit rating';
+        }
+      });
+      wrap.appendChild(submit);
+      wrap.appendChild(msg);
+      return wrap;
+    }
+
+    // ── DETAIL ────────────────────────────────────────────────────────────
+    function renderDetail(b) {
+      // renderDetail re-enters itself from its own timers (the 30s wall-clock
+      // tick, the pickup-code poll). Without this it would stack a fresh pair
+      // of intervals on every tick — after ten minutes the page is polling the
+      // RPC twenty times a cycle. Clearing first makes re-entry idempotent.
+      clearTimers();
+      const body = $('detailBody');
+      clear(body);
+      const st = effectiveStatus(b);
+      const ride = b.ride;
+      const dep = departureMs(ride);
+      const departed = dep > 0 && Date.now() >= dep;
+
+      body.appendChild(backRow('All trips', () => go('/trips')));
+
+      // ── Summary card
+      const card = el('div', 'card');
+      const top = el('div');
+      top.style.marginBottom = '12px';
+      top.appendChild(pill(st));
+      card.appendChild(top);
+      card.appendChild(el('div', 'route', routeLabel(ride)));
+      card.appendChild(el('div', 'meta', whenLabel(ride)));
+      // Full pickup/drop-off addresses live HERE, not in the header (Justin,
+      // 2026-08-28: "city to city — click in and it says the address").
+      if (ride.departure_area || ride.arrival_area) {
+        const addr = el('div', 'meta');
+        addr.style.cssText = 'font-size:13.5px;color:#adadb8;margin-top:4px;line-height:1.5;';
+        addr.textContent = '📍 ' + (ride.departure_area || 'Pickup TBD') + '  →  ' + (ride.arrival_area || 'Drop-off TBD');
+        card.appendChild(addr);
+      }
+
+      const boarding = stopName(b.boarding_stop);
+      const alighting = stopName(b.alighting_stop);
+      if (boarding) card.appendChild(el('div', 'meta', 'Pickup: ' + boarding));
+      if (alighting) card.appendChild(el('div', 'meta', 'Drop-off: ' + alighting));
+
+      card.appendChild(driverRow(b));
+
+      const seats = seatLabels(b);
+      const seatLine = el('div', 'sumline');
+      seatLine.appendChild(el('span', null, seats.length + ' seat' + (seats.length === 1 ? '' : 's')));
+      seatLine.appendChild(el('span', null, seats.join(', ')));
+      card.appendChild(seatLine);
+
+      const totalLine = el('div', 'sumline total');
+      totalLine.appendChild(el('span', null, st === 'Cancelled' ? 'Booking total' : 'Total'));
+      totalLine.appendChild(el('span', null, fmt$(allInTotal(b))));
+      card.appendChild(totalLine);
+
+      const refWrap = el('div');
+      refWrap.style.marginTop = '10px';
+      refWrap.appendChild(el('div', 'refcode', b.ref_code || ''));
+      card.appendChild(refWrap);
+      body.appendChild(card);
+
+      // ── Status banners
+      if (st === 'Pending') {
+        body.appendChild(el('div', 'banner info',
+          'Waiting on the driver — your card is authorized, not charged. '
+          + "We'll email you the moment " + driverFirst(b) + ' responds.'));
+      }
+
+      if (ride.cancelled_at) {
+        body.appendChild(el('div', 'banner warn',
+          'The driver cancelled this ride. Any payment is refunded in full, including the service fee — '
+          + "it can take 5–10 business days to appear on your statement."));
+      } else if (st === 'Cancelled') {
+        const bn = el('div', 'banner warn');
+        bn.appendChild(document.createTextNode('This booking is cancelled. '));
+        if (typeof b.refund_amount_cents === 'number' && b.refund_amount_cents > 0) {
+          bn.appendChild(document.createTextNode(
+            fmtCents(b.refund_amount_cents) + ' was refunded to your original payment method — it can take 5–10 business days to appear.'));
+        } else if (b.refund_amount_cents === 0) {
+          bn.appendChild(document.createTextNode(
+            'No refund was due under the ride’s cancellation policy. Questions? Email support@seatsherpa.app.'));
+        } else {
+          bn.appendChild(document.createTextNode(
+            'If a refund is due, it goes back to your original payment method within 5–10 business days.'));
+        }
+        body.appendChild(bn);
+      }
+
+      // ── PICKUP CODE — the whole reason this page exists.
+      if (st === 'Confirmed' && !b.pickup_code_entered_at) {
+        body.appendChild(pickupCard(b));
+      }
+
+      // Trip started
+      if (b.pickup_code_entered_at && (st === 'Confirmed' || st === 'Completed')) {
+        const started = new Date(b.pickup_code_entered_at)
+          .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        body.appendChild(el('div', 'banner info',
+          (st === 'Completed' ? 'Trip completed' : 'Trip in progress') + ' · Started ' + started));
+      }
+
+      // ── RATE THE TRIP ──
+      // Completed WITH a pickup on record — the same pair of conditions
+      // migration 0093 enforces on the insert, checked here so the form is
+      // never offered for a trip the database will refuse.
+      if (st === 'Completed' && b.pickup_code_entered_at) {
+        body.appendChild(ratingCard(b));
+      }
+
+      // Confirmed, departure passed, no PIN — the driver never entered the
+      // code. Say what to do rather than showing a cancel button the server
+      // will 409 (stripe-refund-booking's post-departure gate).
+      if (st === 'Confirmed' && departed && !b.pickup_code_entered_at && !b.no_show_reported_at) {
+        const bn = el('div', 'banner neutral');
+        bn.appendChild(document.createTextNode(
+          'Departure has passed. If you rode, ' + driverFirst(b) + ' still needs to enter your pickup code above to close out the trip — '
+          + "it's right there, just read it to them. If the driver never showed up: "));
+        // Report-driver-no-show (2026-08-28, app parity — booking-detail.tsx:245):
+        // the report-driver-noshow fn runs the 24h dispute window and the
+        // automatic full refund including fees; email-support was the only
+        // web path before this.
+        const rBtn = el('button', 'linkbtn', 'Report driver no-show');
+        rBtn.type = 'button';
+        rBtn.addEventListener('click', async () => {
+          if (rBtn.dataset.armed !== '1') {
+            rBtn.dataset.armed = '1';
+            rBtn.textContent = 'Confirm — the driver never showed';
+            // report-driver-noshow requires a short reason (>= 5 chars); the
+            // web path sent none, so every report 400'd (comms audit
+            // 2026-09-01). Ask, with a sensible default if left blank.
+            const ta = document.createElement('textarea');
+            ta.placeholder = 'What happened? e.g. waited 30 min at the pickup, no reply';
+            ta.rows = 2; ta.style.width = '100%'; ta.style.margin = '6px 0';
+            rBtn.parentNode.insertBefore(ta, rBtn);
+            rBtn._reason = ta;
+            return;
+          }
+          const reason = ((rBtn._reason && rBtn._reason.value) || '').trim()
+            || 'Driver did not show at the pickup (reported from the web console).';
+          rBtn.disabled = true; rBtn.textContent = 'Reporting…';
+          try {
+            await callFn('report-driver-noshow', { bookingId: b.id, reason });
+            bn.textContent = 'Report received. ' + driverFirst(b) + ' has 24 hours to respond; if they don’t, you’re automatically refunded in full — including all fees, and we’ll email you when that happens.';
+          } catch (e) {
+            rBtn.disabled = false; rBtn.dataset.armed = ''; rBtn.textContent = 'Report driver no-show';
+            bn.appendChild(el('div', 'rowhint', (e && e.message) || 'Could not report just now — email support@seatsherpa.app.'));
+          }
+        });
+        bn.appendChild(rBtn);
+        body.appendChild(bn);
+      }
+
+      // No-show reported against this rider — the dispute is ACTIONABLE now
+      // (2026-08-28, app parity — services/bookings.ts disputeNoShow: the
+      // conditional update freezes the payout for admin review; guards mirror
+      // the app's exactly, incl. the not-yet-transferred check).
+      if (b.no_show_reported_at && !b.pickup_code_entered_at && st === 'Confirmed') {
+        const bn = el('div', 'banner warn');
+        if (b.no_show_disputed_at) {
+          bn.textContent = 'Dispute received. The reimbursement is frozen while our team reviews — '
+            + "we'll reach out at your account email if we need more detail (support@seatsherpa.app).";
+        } else {
+          bn.appendChild(document.createTextNode(
+            'Your driver reported you as a no-show for this trip. If that’s not right: '));
+          const dBtn = el('button', 'linkbtn', 'Dispute this report');
+          dBtn.type = 'button';
+          dBtn.addEventListener('click', async () => {
+            dBtn.disabled = true; dBtn.textContent = 'Disputing…';
+            try {
+              const { data, error } = await supabase
+                .from('bookings')
+                .update({ no_show_disputed_at: new Date().toISOString() })
+                .eq('id', b.id)
+                .not('no_show_reported_at', 'is', null)
+                .is('no_show_disputed_at', null)
+                .is('stripe_transfer_id', null)
+                .select('id');
+              if (error) throw error;
+              if (!data || data.length === 0) throw new Error('This report can no longer be disputed — the deposit already released. Email support@seatsherpa.app.');
+              bn.textContent = 'Dispute received. The reimbursement is frozen while our team reviews — '
+                + "we'll reach out at your account email if we need more detail.";
+            } catch (e) {
+              dBtn.disabled = false; dBtn.textContent = 'Dispute this report';
+              bn.appendChild(el('div', 'rowhint', (e && e.message) || 'Could not dispute just now — email support@seatsherpa.app.'));
+            }
+          });
+          bn.appendChild(dBtn);
+          bn.appendChild(document.createTextNode(
+            ' You have 48 hours from the report — after that the fare releases to the driver per the cancellation policy.'));
+        }
+        body.appendChild(bn);
+      }
+
+      // ── Chat entry
+      const chatBtn = el('button', 'outline', 'Message ' + driverFirst(b));
+      chatBtn.type = 'button';
+      chatBtn.style.marginBottom = '12px';
+      chatBtn.addEventListener('click', () => go('/trips?ref=' + encodeURIComponent(b.ref_code) + '&chat=1'));
+      body.appendChild(chatBtn);
+
+      // ── Cancel
+      body.appendChild(cancelSection(b, st, departed));
+
+      body.appendChild(signedInFooter());
+      show('stDetail');
+      document.title = routeLabel(ride) + ' — Seat Sherpa';
+
+      // Pickup-code timers. Both of these are bugs the app already paid for:
+      //   • poll every 15s until the code is non-null, then STOP. Never cache a
+      //     null — a fetch racing the 2h boundary comes back empty, and a
+      //     blanket cache pinned that empty result ("four dots at pickup time",
+      //     booking 213, 2026-07-31).
+      //   • re-render every 30s while awaiting, so a page left open actually
+      //     CROSSES the 2h boundary instead of sitting on "unlocks in 2 hours".
+      //
+      // The periodic pass REFETCHES rather than repainting the row we already
+      // have: the driver entering the PIN, or accepting a Pending request, both
+      // change this screen, and a rider watching it should see that happen.
+      if (st === 'Confirmed' && !b.pickup_code_entered_at) {
+        const dueSoon = Date.now() >= dep - PICKUP_CODE_OPENS_BEFORE_MS;
+        if (dueSoon && !pickupCode) {
+          const takeCode = (code) => {
+            if (!code || pickupCode) return;
+            pickupCode = code;
+            if (detailIsLive()) renderDetail(b);
+          };
+          fetchPickupCode(b.id).then(takeCode);
+          every(15000, async () => {
+            if (pickupCode) return;
+            takeCode(await fetchPickupCode(b.id));
+          });
+        }
+        every(30000, () => { void refreshDetail(b); });
+      } else if (st === 'Pending') {
+        // Slower cadence — nothing here is time-critical until the driver
+        // accepts, at which point the pickup-code card needs to appear.
+        every(60000, () => { void refreshDetail(b); });
+      }
+    }
+
+    /** True when the detail state is on screen AND safe to repaint. The cancel
+     *  panel holds a half-typed reason; a background refresh that blew it away
+     *  mid-sentence would be its own small betrayal. */
+    function detailIsLive() {
+      return !$('stDetail').classList.contains('hidden') && !cancelPanelOpen;
+    }
+
+    async function refreshDetail(prev) {
+      if (!detailIsLive()) return;
+      try {
+        const fresh = await loadBooking(prev.ref_code);
+        if (!detailIsLive()) return;
+        renderDetail(fresh || prev);
+      } catch (_) {
+        // Offline / transient — repaint what we have so the wall-clock gates
+        // (the 2h window) still advance.
+        if (detailIsLive()) renderDetail(prev);
+      }
+    }
+
+    // ── CANCEL ────────────────────────────────────────────────────────────
+    // A proxy call, not a refund path. web-cancel-booking forwards the rider's
+    // own JWT to stripe-refund-booking, which owns every gate, the tier math,
+    // the timezone handling and the idempotency. Nothing about refunds is
+    // reimplemented here.
+    let cancelPanelOpen = false;
+
+    function cancelSection(b, st, departed) {
+      const wrap = el('div');
+
+      // Once the PIN is in, the server 409s (stripe-refund-booking's
+      // pickup_code_entered_at gate) — don't offer a button that can't work.
+      if (b.pickup_code_entered_at) return wrap;
+      if (st !== 'Pending' && st !== 'Confirmed') return wrap;
+      if (st === 'Confirmed' && departed) return wrap;
+
+      const isPending = st === 'Pending';
+      const openBtn = el('button', 'linkbtn danger', isPending ? 'Withdraw my request' : 'Cancel this booking');
+      openBtn.type = 'button';
+      openBtn.style.display = 'block';
+      openBtn.style.margin = '4px auto 0';
+
+      const panel = el('div', 'card hidden');
+      panel.style.borderColor = 'rgba(255,138,138,0.3)';
+
+      panel.appendChild(el('div', 'eyebrow', isPending ? 'Withdraw request' : 'Cancel booking'));
+      panel.appendChild(el('h1', null, isPending ? 'Withdraw this request?' : 'Cancel this booking?'));
+
+      const hrs = (departureMs(b.ride) - Date.now()) / 3600000;
+      if (isPending) {
+        panel.appendChild(el('p', 'sub',
+          "The driver hasn't accepted yet, so nothing has been charged — withdrawing releases the authorization on your card in full."));
+      } else {
+        panel.appendChild(el('p', 'sub',
+          'Departure is about ' + Math.max(0, Math.round(hrs)) + ' hour' + (Math.round(hrs) === 1 ? '' : 's')
+          + " away. Here's this ride's cancellation policy:"));
+        const ul = el('ul', 'policy');
+        policyDetails(b.ride.cancellation_policy).forEach((line) => ul.appendChild(el('li', null, line)));
+        panel.appendChild(ul);
+        panel.appendChild(el('p', 'hint', "We'll show you the exact refund amount as soon as it's processed."));
+      }
+
+      const ta = document.createElement('textarea');
+      ta.id = 'cancelReason';
+      ta.maxLength = 500;
+      ta.placeholder = isPending
+        ? 'e.g. My plans changed and I no longer need this ride'
+        : 'e.g. My plans changed and I can no longer make this trip';
+      const lbl = el('label', null, 'Reason (required)');
+      lbl.setAttribute('for', 'cancelReason');
+      panel.appendChild(lbl);
+      panel.appendChild(ta);
+      const counter = el('p', 'hint', '0 / 10 characters minimum');
+      panel.appendChild(counter);
+
+      const confirm = el('button', 'primary', isPending ? 'Withdraw request' : 'Cancel booking');
+      confirm.type = 'button';
+      confirm.disabled = true;
+      panel.appendChild(confirm);
+
+      const keep = el('button', 'linkbtn', isPending ? 'Never mind, keep my request' : 'Never mind, keep my booking');
+      keep.type = 'button';
+      keep.style.display = 'block';
+      keep.style.margin = '14px auto 0';
+      panel.appendChild(keep);
+
+      const msg = el('div', 'msg err hidden');
+      panel.appendChild(msg);
+
+      // The server rejects reasons shorter than 10 chars — mirror the bar here
+      // so the rider learns it while typing, not after a round trip.
+      ta.addEventListener('input', () => {
+        const n = ta.value.trim().length;
+        counter.textContent = n + ' / 10 characters minimum';
+        confirm.disabled = n < 10;
+      });
+
+      openBtn.addEventListener('click', () => {
+        cancelPanelOpen = true;   // freezes the background refresh — see detailIsLive()
+        panel.classList.remove('hidden');
+        openBtn.classList.add('hidden');
+        ta.focus();
+      });
+      keep.addEventListener('click', () => {
+        cancelPanelOpen = false;
+        panel.classList.add('hidden');
+        openBtn.classList.remove('hidden');
+        msg.classList.add('hidden');
+      });
+
+      confirm.addEventListener('click', async () => {
+        const reason = ta.value.trim();
+        if (reason.length < 10) return;
+        confirm.disabled = true; confirm.textContent = 'Cancelling…';
+        keep.disabled = true; ta.disabled = true;
+        msg.classList.add('hidden');
+        try {
+          const out = await callFn('web-cancel-booking', { bookingId: b.id, reason });
+          // Done — swap the whole panel for the outcome. alreadyRefunded is a
+          // success, not an error: the rider double-tapped or came back to a
+          // stale tab. cancelPanelOpen stays TRUE on purpose so the background
+          // refresh can't repaint this confirmation out from under them; the
+          // next real navigation resets it in render().
+          clear(panel);
+          panel.style.borderColor = 'rgba(0,212,200,0.35)';
+          panel.appendChild(el('div', 'icon center', '✓'));
+          panel.appendChild(el('h1', 'center', isPending ? 'Request withdrawn' : 'Booking cancelled'));
+          let line;
+          if (typeof out.refundAmountCents === 'number' && out.refundAmountCents > 0) {
+            line = fmtCents(out.refundAmountCents) + ' is on its way back to your original payment method — '
+              + 'it can take 5–10 business days to appear on your statement.';
+          } else if (isPending) {
+            line = 'Your card was never charged — the authorization is released and the seat is open again.';
+          } else {
+            line = "No refund was due under this ride's cancellation policy. If you think that's wrong, "
+              + 'email support@seatsherpa.app with your booking reference.';
+          }
+          panel.appendChild(el('p', 'sub center', line));
+          const backBtn = el('button', 'outline', 'Back to my trips');
+          backBtn.type = 'button';
+          backBtn.addEventListener('click', () => go('/trips'));
+          panel.appendChild(backBtn);
+        } catch (e) {
+          msg.textContent = cancelErrorCopy(e);
+          msg.classList.remove('hidden');
+          confirm.disabled = false; confirm.textContent = isPending ? 'Withdraw request' : 'Cancel booking';
+          keep.disabled = false; ta.disabled = false;
+        }
+      });
+
+      wrap.appendChild(openBtn);
+      wrap.appendChild(panel);
+      return wrap;
+    }
+
+    /** stripe-refund-booking's error strings are already written for riders
+     *  (they name support@seatsherpa.app and explain why), so pass them through
+     *  VERBATIM rather than paraphrasing support copy into a second dialect.
+     *  The one exception is the raw status string, which leaks internals. */
+    function cancelErrorCopy(e) {
+      const raw = String((e && (e.error || e.message)) || '');
+      if (/cannot refund booking in status/i.test(raw)) {
+        return 'This booking can no longer be cancelled here. Refresh to see its current status, '
+          + 'or email support@seatsherpa.app with your booking reference.';
+      }
+      if (e && e.status === 401) {
+        return 'Your sign-in expired. Refresh the page and sign in again.';
+      }
+      if (e && e.status === 403 && !raw) {
+        return 'You can’t cancel this booking from here. Email support@seatsherpa.app with your booking reference.';
+      }
+      if (raw) return raw;
+      return "We couldn't cancel that just now. Try again, or email support@seatsherpa.app with your booking reference.";
+    }
+
+    // ── Edge-function call ────────────────────────────────────────────────
+    // Prefer the shared helper (it owns the two header shapes — `apikey` AND a
+    // user `Authorization`, which is the classic 401 when mixed up). Local
+    // fallback keeps this page working if the module ships without it.
+    async function callFn(name, body) {
+      if (typeof S.callFn === 'function') {
+        return await S.callFn(name, { body, auth: 'user' });
+      }
+      const { data: sd } = await supabase.auth.getSession();
+      const token = sd && sd.session && sd.session.access_token;
+      if (!token) { const err = new Error('not signed in'); err.status = 401; throw err; }
+      const res = await fetch(SUPA + '/functions/v1/' + name, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+        body: JSON.stringify(body),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const err = new Error((out && (out.error || out.message)) || ('HTTP ' + res.status));
+        err.status = res.status;
+        err.error = out && out.error;
+        throw err;
+      }
+      return out;
+    }
+
+    // ── CHAT ──────────────────────────────────────────────────────────────
+    // POLLING, not realtime — and I'd rather say so than pretend. The messages
+    // table's policies aren't in any migration and there is no
+    // supabase_realtime publication anywhere in the repo, so I can't verify
+    // from source that a browser `authenticated` session can subscribe. On top
+    // of that a WebSocket needs realtime.setAuth re-applied on token refresh
+    // and silently fails to reconnect after mobile-Safari backgrounding — the
+    // wrong failure mode for a page whose whole job is to work at a curb.
+    //
+    // The honest cost: up to ~6s of latency, and a web rider gets NO
+    // notification when the driver messages them (no push token, and chat
+    // messages don't email). That's a real downgrade versus the app.
+    const MSG_SELECT = 'id, booking_id, sender_id, body, created_at, read_at, is_system';
+    let chatMsgs = new Map();   // id → row (dedupes optimistic vs polled)
+    let chatSince = null;       // max created_at seen
+    let composerFocused = false;
+
+    function uuid() {
+      try { return crypto.randomUUID(); } catch (_) {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+          const r = (Math.random() * 16) | 0;
+          return (c === 'x' ? r : ((r & 0x3) | 0x8)).toString(16);
+        });
+      }
+    }
+
+    function orderedMsgs() {
+      return Array.from(chatMsgs.values()).sort((a, z) => {
+        const d = String(a.created_at).localeCompare(String(z.created_at));
+        return d !== 0 ? d : String(a.id).localeCompare(String(z.id));
+      });
+    }
+
+    function absorb(rows) {
+      let changed = false;
+      for (const r of rows || []) {
+        const prev = chatMsgs.get(r.id);
+        // Never let a polled row clobber the local _state flag on a row we're
+        // still sending — but a confirmed row does clear it.
+        chatMsgs.set(r.id, Object.assign({}, prev || {}, r, { _state: null }));
+        if (!prev) changed = true;
+        if (!chatSince || String(r.created_at) > chatSince) chatSince = String(r.created_at);
+      }
+      return changed;
+    }
+
+    function paintThread() {
+      const box = $('chatThread');
+      if (!box) return;
+      const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
+      clear(box);
+      const rows = orderedMsgs();
+      if (rows.length === 0) {
+        box.appendChild(el('div', 'emptythread',
+          'No messages yet. Say hi — most drivers answer within a few minutes.'));
+      }
+      for (const m of rows) {
+        const mine = m.sender_id === me;
+        const sys = m.is_system === true;
+        const row = el('div', 'brow ' + (sys ? 'sys' : mine ? 'me' : 'them'));
+        const bub = el('div', 'bubble' + (m._state === 'sending' ? ' sending' : m._state === 'failed' ? ' failed' : ''));
+        // textContent: chat bodies are typed by the other party.
+        bub.textContent = m.body || '';
+        row.appendChild(bub);
+        box.appendChild(row);
+        if (!sys) {
+          const t = el('div', 'btime', m._state === 'sending' ? 'Sending…'
+            : m._state === 'failed' ? 'Not sent — tap send to retry'
+            : new Date(m.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
+          if (!mine) t.style.textAlign = 'left';
+          box.appendChild(t);
+        }
+      }
+      if (atBottom) box.scrollTop = box.scrollHeight;
+    }
+
+    async function pollMessages(bookingId, initial) {
+      let q = supabase.from('messages').select(MSG_SELECT).eq('booking_id', bookingId).order('created_at', { ascending: true });
+      // gte, not gt: equal timestamps at the boundary would drop a message, and
+      // the id-keyed Map makes the one-row overlap free.
+      if (!initial && chatSince) q = q.gte('created_at', chatSince);
+      const { data, error } = await q;
+      if (error) throw error;
+      const changed = absorb(data);
+      if (changed || initial) paintThread();
+      if (changed) void markRead(bookingId);
+      return data || [];
+    }
+
+    async function markRead(bookingId) {
+      try {
+        await supabase.from('messages')
+          .update({ read_at: new Date().toISOString() })
+          .eq('booking_id', bookingId)
+          .neq('sender_id', me)
+          .is('read_at', null);
+      } catch (_) { /* read receipts are cosmetic — never block the thread */ }
+    }
+
+    function threadIsHot() {
+      if (composerFocused) return true;
+      const rows = orderedMsgs();
+      if (rows.length === 0) return false;
+      const last = rows[rows.length - 1];
+      return Date.now() - new Date(last.created_at).getTime() < 5 * 60 * 1000;
+    }
+
+    function renderChat(b) {
+      const body = $('chatBody');
+      clear(body);
+      chatMsgs = new Map();
+      chatSince = null;
+      composerFocused = false;
+
+      body.appendChild(backRow('Back to trip', () => go('/trips?ref=' + encodeURIComponent(b.ref_code))));
+
+      const card = el('div', 'card');
+      card.appendChild(el('div', 'eyebrow', routeLabel(b.ride) + ' · ' + dateLabel(b.ride.dep_date)));
+      card.appendChild(el('h1', null, driverDisplay(b)));
+      card.appendChild(el('p', 'sub',
+        'Messages here reach ' + driverFirst(b) + ' in the Seat Sherpa app. '
+        + 'This page checks for replies every few seconds while it’s open.'));
+
+      const thread = el('div', 'thread');
+      thread.id = 'chatThread';
+      card.appendChild(thread);
+
+      const composer = el('div', 'composer');
+      const ta = document.createElement('textarea');
+      ta.placeholder = 'Message ' + driverFirst(b) + '…';
+      ta.maxLength = 2000; // same cap as sendMessage() and web-create-booking's driverMessage
+      ta.rows = 1;
+      const sendBtn = el('button', 'primary', 'Send');
+      sendBtn.type = 'button';
+      composer.appendChild(ta);
+      composer.appendChild(sendBtn);
+      card.appendChild(composer);
+
+      const cmsg = el('div', 'msg err hidden');
+      card.appendChild(cmsg);
+      body.appendChild(card);
+      body.appendChild(signedInFooter());
+
+      ta.addEventListener('focus', () => { composerFocused = true; });
+      ta.addEventListener('blur', () => { composerFocused = false; });
+      ta.addEventListener('keydown', (e) => {
+        // Enter sends on a desktop keyboard; Shift+Enter and mobile keyboards
+        // keep the newline.
+        if (e.key === 'Enter' && !e.shiftKey && !/Mobi|Android/i.test(navigator.userAgent)) {
+          e.preventDefault(); sendBtn.click();
+        }
+      });
+
+      async function doSend() {
+        cmsg.classList.add('hidden');
+        // Retry path: a previously failed bubble re-sends when the composer is
+        // empty and the user taps Send again.
+        const failed = orderedMsgs().filter((m) => m._state === 'failed');
+        let text = ta.value.trim();
+        let retryRow = null;
+        if (!text && failed.length) { retryRow = failed[failed.length - 1]; text = retryRow.body; }
+        if (!text) return;
+        if (text.length > 2000) { cmsg.textContent = 'That message is too long (2000 characters max).'; cmsg.classList.remove('hidden'); return; }
+        // Off-platform contact WARNING — never a block (app parity; covers
+        // plain numbers and the letter-interleaved evasion, 0216).
+        if (!retryRow && sendBtn.dataset.warned !== text) {
+          let hit = /(^|\D)(\+?1[\s.\-·]?)?\(?\d{3}\)?[\s.\-·]?\d{3}[\s.\-·]?\d{4}(?!\d)/.test(text);
+          if (!hit) {
+            const digs = [];
+            for (let i2 = 0; i2 < text.length; i2++) if (text[i2] >= '0' && text[i2] <= '9') digs.push(i2);
+            for (let i2 = 0; i2 + 9 < digs.length; i2++) {
+              const win = text.slice(digs[i2], digs[i2 + 9] + 1);
+              if (win.length <= 20 && !/^((19|20)\d\d\D{0,3})+$/.test(win)) { hit = true; break; }
+            }
+          }
+          if (hit) {
+            sendBtn.dataset.warned = text;
+            cmsg.textContent = 'Sharing phone numbers moves you off Seat Sherpa — payment and no-show protection only work here. Tap Send again to share anyway.';
+            cmsg.classList.remove('hidden');
+            return;
+          }
+        }
+        sendBtn.dataset.warned = '';
+        cmsg.classList.add('hidden');
+
+        const id = retryRow ? retryRow.id : uuid();
+        const now = new Date().toISOString();
+        // Optimistic append keyed on the uuid we're about to insert, so the
+        // composer feels instant regardless of where we are in the poll cycle
+        // and the polled copy dedupes onto the same row.
+        chatMsgs.set(id, { id, booking_id: b.id, sender_id: me, body: text, created_at: retryRow ? retryRow.created_at : now, read_at: null, is_system: false, _state: 'sending' });
+        ta.value = '';
+        sendBtn.disabled = true;
+        paintThread();
+
+        try {
+          const { data, error } = await supabase
+            .from('messages')
+            .insert({ id, booking_id: b.id, sender_id: me, body: text })
+            .select(MSG_SELECT)
+            .single();
+          if (error) throw error;
+          absorb([data]);
+          paintThread();
+          // Push the driver. send-push accepts a USER token: it applies a
+          // 30/min cap plus a relationship gate scoped to people you share a
+          // booking with, and rider → their own driver passes both. Pass the
+          // RAW profile name — send-push re-abbreviates server-side for
+          // type:'new_message'. Fire-and-forget; the message is already
+          // committed and a failed push must never look like a failed send.
+          const driverId = b.ride && b.ride.driver_id;
+          if (driverId && driverId !== me) {
+            void callFn('send-push', {
+              recipientIds: [driverId],
+              title: 'Seat Sherpa',
+              body: myRawName
+                ? 'You have a new message from rider ' + myRawName
+                : 'You have a new message',
+              data: { type: 'new_message', bookingId: b.id, messageId: id },
+            }).catch(() => {});
+          }
+        } catch (e) {
+          const row = chatMsgs.get(id);
+          if (row) { row._state = 'failed'; chatMsgs.set(id, row); }
+          paintThread();
+          cmsg.textContent = (e && e.message)
+            ? 'Message not sent: ' + e.message
+            : "Message not sent. Check your connection and tap Send to retry.";
+          cmsg.classList.remove('hidden');
+        } finally {
+          sendBtn.disabled = false;
+        }
+      }
+      sendBtn.addEventListener('click', doSend);
+
+      show('stChat');
+      document.title = 'Chat with ' + driverDisplay(b) + ' — Seat Sherpa';
+
+      // Initial load. A hard failure here is honest — an empty thread that's
+      // actually a permissions error would have the rider believe the driver
+      // never replied.
+      pollMessages(b.id, true)
+        .then(() => markRead(b.id))
+        .catch(() => {
+          cmsg.textContent = "We couldn't load this conversation. Refresh, or email support@seatsherpa.app.";
+          cmsg.classList.remove('hidden');
+        });
+
+      // Incremental polling: 6s while visible and hot (recent message or the
+      // composer has focus), 20s while visible and idle, PAUSED while hidden.
+      let sinceLastTick = 0;
+      every(2000, () => {
+        if (document.hidden) return;
+        sinceLastTick += 2000;
+        const interval = threadIsHot() ? 6000 : 20000;
+        if (sinceLastTick < interval) return;
+        sinceLastTick = 0;
+        pollMessages(b.id, false).catch(() => {});
+      });
+
+      const catchUp = () => {
+        if (document.hidden) return;
+        sinceLastTick = 0;
+        pollMessages(b.id, false).catch(() => {});
+      };
+      document.addEventListener('visibilitychange', catchUp);
+      window.addEventListener('focus', catchUp);
+      // Listeners aren't intervals, so clearTimers() can't reach them. render()
+      // calls this cleanup before it draws anything else — otherwise every trip
+      // to the chat and back would leave another catch-up handler bound.
+      chatListenerCleanup = () => {
+        document.removeEventListener('visibilitychange', catchUp);
+        window.removeEventListener('focus', catchUp);
+      };
+    }
+
+    let chatListenerCleanup = null;
+
+    // ── Render ────────────────────────────────────────────────────────────
+    async function render() {
+      // Every entry point funnels through here, so this is the single place
+      // timers and listeners get torn down.
+      clearTimers();
+      if (chatListenerCleanup) { chatListenerCleanup(); chatListenerCleanup = null; }
+      cancelPanelOpen = false;
+
+      const qp = new URLSearchParams(location.search);
+      const ref = normRef(qp.get('ref'));
+      const wantChat = qp.get('chat') === '1';
+
+      let session = null;
+      try {
+        const { data } = await supabase.auth.getSession();
+        session = data ? data.session : null;
+      } catch (_) { session = null; }
+
+      if (!session) {
+        setMsg('emailMsg', '');
+        show('stEmail');
+        document.title = 'Your trips — Seat Sherpa';
+        return;
+      }
+
+      show('stLoading');
+      try {
+        // getUser() = a fresh /auth/v1/user round trip, so a revoked/expired
+        // session surfaces as a sign-in prompt rather than an empty list.
+        const { data: ud, error: uerr } = await supabase.auth.getUser();
+        if (uerr || !ud || !ud.user) { show('stEmail'); return; }
+        me = ud.user.id; try { localStorage.setItem('ss_last_role', 'rider'); } catch (_) {} // /signin routes by last role
+        myEmail = ud.user.email || '';
+        $('nfEmail').textContent = myEmail;
+
+        if (!myRawName) {
+          const { data: prof } = await supabase.from('profiles').select('name').eq('id', me).maybeSingle();
+          myRawName = (prof && prof.name) || '';
+        }
+
+        if (!ref) {
+          const rows = await loadMyBookings();
+          await loadMyRatings(rows);
+          renderList(rows);
+          return;
+        }
+
+        const b = await loadBooking(ref);
+        if (!b) { show('stNotFound'); document.title = 'Booking not found — Seat Sherpa'; return; }
+        // The code belongs to one booking; a new ref means a new code.
+        if (!render._lastRef || render._lastRef !== ref) { pickupCode = null; render._lastRef = ref; }
+
+        await loadMyRatings([b]);
+
+        if (wantChat) renderChat(b);
+        else renderDetail(b);
+      } catch (e) {
+        $('errSub').textContent = (e && e.message)
+          ? "We couldn't load that: " + e.message
+          : 'Something went wrong on our end. Check your connection and try again.';
+        show('stError');
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>

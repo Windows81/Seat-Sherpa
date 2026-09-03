@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Best carpool apps in California and Nevada for long-distance trips (2026)</title>
+<meta name="description" content="Every real option for a city-to-city carpool in California and Nevada in 2026: Seat Sherpa, Craigslist rideshare, Facebook groups, casual carpool, and why BlaBlaCar, Waze Carpool, Zimride and Hitch do not cover the state." />
+<link rel="canonical" href="https://seatsherpa.app/compare/carpool-apps-california" />
+<meta property="og:title" content="Best carpool apps in California and Nevada for long-distance trips (2026)" />
+<meta property="og:description" content="Every real option for a city-to-city carpool in California and Nevada in 2026: Seat Sherpa, Craigslist rideshare, Facebook groups, casual carpool, and why BlaBlaCar, Waze Carpool, Zimride and Hitch do not cover the state." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/compare/carpool-apps-california" />
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Best carpool apps in California and Nevada for long-distance trips (2026)","description":"Every real option for a city-to-city carpool in California and Nevada in 2026: Seat Sherpa, Craigslist rideshare, Facebook groups, casual carpool, and why BlaBlaCar, Waze Carpool, Zimride and Hitch do not cover the state.","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa","url":"https://seatsherpa.app"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-09-02","dateModified":"2026-09-02","mainEntityOfPage":"https://seatsherpa.app/compare/carpool-apps-california","about":{"@type":"Organization","name":"Seat Sherpa","url":"https://seatsherpa.app","sameAs":["https://apps.apple.com/us/app/seat-sherpa-carpool/id6773077112"]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the best carpool app for San Francisco to Los Angeles?","acceptedAnswer":{"@type":"Answer","text":"Seat Sherpa is the booked-ahead carpool marketplace for California and Nevada, with verified drivers, payment held until pickup and seats capped at $55. Craigslist rideshare and Facebook groups also list the route but have no verification or payment protection."}},{"@type":"Question","name":"Is there a BlaBlaCar in California?","acceptedAnswer":{"@type":"Answer","text":"No. BlaBlaCar has never operated in the United States. Seat Sherpa fills the same role in California and Nevada: drivers post intercity trips they are already taking and passengers share the cost."}},{"@type":"Question","name":"Is Waze Carpool still available?","acceptedAnswer":{"@type":"Answer","text":"No. Google shut down Waze Carpool in 2022. For daily commutes, employer or agency commute programs remain; for city-to-city trips in California and Nevada, Seat Sherpa is the booked-ahead option."}},{"@type":"Question","name":"Does Hitch work in California?","acceptedAnswer":{"@type":"Answer","text":"No. Hitch operates in Texas and neighbouring states. Seat Sherpa covers the California and Nevada corridors."}},{"@type":"Question","name":"How much does a Seat Sherpa seat cost?","acceptedAnswer":{"@type":"Answer","text":"It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat. Riders pay the seat price plus a 5% service fee, shown before you pay. Live prices for each corridor are on the route pages and in the ride browser."}},{"@type":"Question","name":"Is Seat Sherpa safe?","acceptedAnswer":{"@type":"Answer","text":"Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment."}},{"@type":"Question","name":"What is the cancellation policy?","acceptedAnswer":{"@type":"Answer","text":"One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The 5% service fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seatsherpa.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://seatsherpa.app/compare"},{"@type":"ListItem","position":3,"name":"Best carpool apps in California and Nevada for long-distance trips","item":"https://seatsherpa.app/compare/carpool-apps-california"}]}</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
+  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
+  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:#eaeaea}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:#00D4C8;font-weight:700}
+  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  .callout h3{font-size:18px;margin-bottom:6px}
+  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  .scroll{overflow-x:auto}
+  @media(max-width:640px){h1{font-size:27px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/compare">Compare</a> › Best carpool apps in California and Nevada for long-distance trips</div>
+  <h1>Best carpool apps in California and Nevada for long-distance trips</h1>
+  <div class="meta">Updated September 2026 · Prices are typical ranges; live seat prices are on each route page</div>
+
+  <p class="lede"><strong>Short answer:</strong> for a booked-ahead seat between California and Nevada cities, Seat Sherpa is the only marketplace that verifies drivers, holds payment until pickup and caps prices at the IRS mileage rate. The other options that still exist in 2026 are unverified boards: Craigslist rideshare and Facebook groups. BlaBlaCar has never launched in the US, Waze Carpool shut down in 2022, Zimride is campus-only, and Hitch serves Texas and neighbouring states.</p>
+
+  <h2>What actually works here in 2026</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Option</th><th>Covers CA / NV intercity?</th><th>Driver verification</th><th>Payment</th><th>Price</th></tr></thead>
+    <tbody>
+      <tr><td class="win">Seat Sherpa</td><td>Yes: SF Bay Area, LA, San Diego, Sacramento, Fresno, Santa Barbara, San Luis Obispo, Palm Springs, Napa, Reno/Tahoe, Las Vegas</td><td>Phone, license, vehicle, Stripe identity, ratings</td><td>In app or browser, held until the pickup code</td><td>Capped at the IRS rate split across seats, max $55 + 5% fee</td></tr>
+      <tr><td>Craigslist rideshare</td><td>Yes, nationwide board</td><td>None</td><td>Cash or Venmo between strangers</td><td>Whatever is posted</td></tr>
+      <tr><td>Facebook carpool groups</td><td>Patchy, group by group</td><td>Profile only</td><td>None built in</td><td>Whatever is posted</td></tr>
+      <tr><td>Bay Area casual carpool</td><td>Commute only, East Bay to SF</td><td>None</td><td>Small cash contribution by custom</td><td>A few dollars</td></tr>
+      <tr><td>Scoop / commute apps</td><td>Daily commute matching, not intercity</td><td>Varies</td><td>In app</td><td>Commute rates</td></tr>
+      <tr><td>BlaBlaCar</td><td>No, never launched in the US</td><td colspan="3">See <a href="/guides/blablacar-usa">BlaBlaCar in the USA</a></td></tr>
+      <tr><td>Waze Carpool</td><td>No, shut down in 2022</td><td colspan="3">See <a href="/guides/waze-carpool-alternative">Waze Carpool alternatives</a></td></tr>
+      <tr><td>Zimride</td><td>Campus and employer networks only</td><td colspan="3">See <a href="/guides/zimride-alternative">Zimride alternatives</a></td></tr>
+      <tr><td>Hitch</td><td>No, Texas and nearby states</td><td colspan="3">See <a href="/guides/hitch-rideshare-california">Hitch in California</a></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>How to pick</h2>
+  <p>If you want a seat you can book, pay for safely and get refunded on if the ride falls through, use a marketplace with verification and payment protection. If you are comfortable arranging cash with a stranger and vetting them yourself, the boards are free to use and cover routes no app does yet. On Seat Sherpa you can also post a request on the <a href="/requests">ride request board</a> when nothing is listed; drivers check it before deciding what to post.</p>
+
+  <div class="callout" style="text-align:center">
+    <h3>See live seat prices on your route</h3>
+    <p style="margin-bottom:6px">Drivers post trips they are already taking. Book in the browser or the app; no account needed to look.</p>
+    <a class="btn" href="/rides?c=compare">Browse rides →</a>
+    <p style="font-size:14px;color:#8a8a92;margin-top:10px">Driving somewhere yourself? <a href="/post">Post the ride</a> and split the cost.</p>
+  </div>
+
+  <h2>FAQ</h2>
+  <div class="faq"><h3>What is the best carpool app for San Francisco to Los Angeles?</h3><p>Seat Sherpa is the booked-ahead carpool marketplace for California and Nevada, with verified drivers, payment held until pickup and seats capped at $55. Craigslist rideshare and Facebook groups also list the route but have no verification or payment protection.</p></div>
+  <div class="faq"><h3>Is there a BlaBlaCar in California?</h3><p>No. BlaBlaCar has never operated in the United States. Seat Sherpa fills the same role in California and Nevada: drivers post intercity trips they are already taking and passengers share the cost.</p></div>
+  <div class="faq"><h3>Is Waze Carpool still available?</h3><p>No. Google shut down Waze Carpool in 2022. For daily commutes, employer or agency commute programs remain; for city-to-city trips in California and Nevada, Seat Sherpa is the booked-ahead option.</p></div>
+  <div class="faq"><h3>Does Hitch work in California?</h3><p>No. Hitch operates in Texas and neighbouring states. Seat Sherpa covers the California and Nevada corridors.</p></div>
+  <div class="faq"><h3>How much does a Seat Sherpa seat cost?</h3><p>It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat. Riders pay the seat price plus a 5% service fee, shown before you pay. Live prices for each corridor are on the route pages and in the ride browser.</p></div>
+  <div class="faq"><h3>Is Seat Sherpa safe?</h3><p>Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment.</p></div>
+  <div class="faq"><h3>What is the cancellation policy?</h3><p>One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The 5% service fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee.</p></div>
+
+  <h2>More comparisons</h2>
+  <div style="font-size:16px">
+      <a href="/compare" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">All comparisons →</a>
+      <a href="/guides/blablacar-usa" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Blablacar Usa →</a>
+      <a href="/guides/casual-carpool-bay-area" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Casual Carpool Bay Area →</a>
+      <a href="/guides/waze-carpool-alternative" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Waze Carpool Alternative →</a>
+  </div>
+</article>
+
+<footer><div class="wrap"><a href="/">Home</a><a href="/rides">Live rides</a><a href="/routes">Routes</a><a href="/compare">Compare</a><a href="/faq">FAQ</a><a href="/drive">Drive</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><div style="margin-top:10px">© 2026 Seat Sherpa · California &amp; Nevada carpool marketplace</div></div></footer>
+</body>
+</html>

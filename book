@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book a seat — Seat Sherpa</title>
+  <!-- Transactional per-ride page — never index. -->
+  <meta name="robots" content="noindex" />
+  <meta property="og:title" content="Book a seat on Seat Sherpa" />
+  <meta property="og:description" content="Request a seat on this carpool right from your browser — no app needed. You're only charged if the driver accepts." />
+  <meta property="og:image" content="https://seatsherpa.app/icon.png" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0E0E10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0E0E10;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 20px 48px;
+    }
+    a { color: #00D4C8; text-decoration: none; }
+
+    .wrap { width: 100%; max-width: 440px; }
+    /* Desktop: the 440px mobile column reads cramped on a laptop. */
+    @media (min-width: 720px) { .wrap { max-width: 560px; } }
+
+    .brand {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 28px;
+    }
+    .navghost{color:#00D4C8;border:1px solid rgba(0,212,200,.4);padding:7px 13px;border-radius:999px;font-size:13px;font-weight:700;text-decoration:none;margin-left:8px;white-space:nowrap}
+    .navghost:hover{border-color:#00D4C8}
+    @media (max-width:560px){.navghost{padding:6px 10px;font-size:12px;margin-left:6px}}
+
+    /* Ride summary card (persistent above the step card) */
+    .card {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card .eyebrow {
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #888; margin-bottom: 12px;
+    }
+    .route { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
+    .meta { font-size: 14.5px; color: #b9b9c6; margin-top: 6px; }
+
+    /* Step card */
+    h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
+    p.sub { font-size: 15px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 12.5px; color: #9a9aa4; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    input, textarea, select {
+      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      outline: none; transition: border-color 0.15s; font-family: inherit;
+    }
+    input:focus, textarea:focus, select:focus { border-color: #00D4C8; }
+    select { cursor: pointer; }
+    input:disabled { opacity: 0.5; }
+    textarea { resize: vertical; min-height: 88px; }
+    .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
+    button.primary {
+      width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
+      padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+    }
+    button.primary:disabled { opacity: 0.5; cursor: default; }
+    .linkbtn {
+      background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
+      cursor: pointer; padding: 0; font-family: inherit;
+    }
+    .linkbtn:disabled { color: #666; cursor: default; }
+    .linkbtn.danger { color: #ff8a8a; }
+    .rowlinks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 14px; }
+    .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
+    .msg.err { color: #ff8a8a; }
+    .msg.ok { color: #4ade80; }
+    .hidden { display: none !important; }
+    .center { text-align: center; }
+    .icon { font-size: 44px; margin-bottom: 12px; }
+    .hint { font-size: 13px; color: #9a9aa4; margin: -8px 0 14px; line-height: 1.5; }
+
+    /* Seat picker */
+    .seatgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    /* Overhead-cabin layout v2 (2026-08-28 — Justin: "a car is longer than
+       it is wide"): portrait body, wheels at the corners, side mirrors up
+       front. The chrome is decorative; the seat buttons are the UI. */
+    /* .carwrap lives inside #seatGrid (a 2-column grid) — without the span it
+       gets squeezed into column 1 and sits off-center (Justin's screenshot).
+       Body is a LONG ROUNDED RECTANGLE (v3 — the big ellipse radius pushed the
+       front seats outside the outline): modest corners, portrait proportions,
+       wheels flush against straight sides. */
+    .carwrap { position: relative; width: 230px; margin: 8px auto 20px; grid-column: 1 / -1; justify-self: center; }
+    .carwheel {
+      position: absolute; width: 13px; height: 48px; border-radius: 7px;
+      background: #26262e; z-index: 0;
+    }
+    .carwheel.wfl { left: -7px; top: 48px; }
+    .carwheel.wfr { right: -7px; top: 48px; }
+    .carwheel.wrl { left: -7px; bottom: 48px; }
+    .carwheel.wrr { right: -7px; bottom: 48px; }
+    .carmirror {
+      position: absolute; width: 17px; height: 8px; border-radius: 4px 4px 2px 2px;
+      background: #2f2f38; z-index: 2; top: 30px;
+    }
+    .carmirror.mml { left: -15px; transform: rotate(-14deg); }
+    .carmirror.mmr { right: -15px; transform: rotate(14deg); }
+    .carshell {
+      position: relative; z-index: 1;
+      border: 2px solid #2a2a33;
+      border-radius: 34px 34px 26px 26px;
+      background: #101014;
+      padding: 24px 12px 20px;
+    }
+    .carshell .windshield { border-top: 2px dashed #26262e; margin: 16px 4px; }
+    .carrow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .carrow.three { grid-template-columns: 1fr 1fr 1fr; }
+    .carrow + .carrow { margin-top: 12px; }
+    .carshell .seat { margin: 0; text-align: center; padding: 18px 4px; }
+    .carshell .seat .sp { font-size: 15px; }
+    .dseat {
+      border: 1px dashed #2a2a33; border-radius: 12px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; color: #55555e; font-size: 12px; font-weight: 600; padding: 12px 6px;
+    }
+    .dseat svg { width: 22px; height: 22px; opacity: 0.5; }
+    .seat {
+      background: #0E0E10; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
+      padding: 13px 14px; cursor: pointer; text-align: left; color: #fff; font-size: 14.5px;
+      transition: border-color 0.15s, background 0.15s; font-family: inherit;
+    }
+    .seat .sp { display: block; font-weight: 800; font-size: 16px; margin-top: 3px; }
+    .seat.sel { border-color: #00D4C8; background: #0d1f1e; }
+    .seat.taken { opacity: 0.35; cursor: not-allowed; }
+    .sumline { display: flex; justify-content: space-between; font-size: 14.5px; color: #b9b9c6; margin-bottom: 6px; }
+    .sumline.total { font-size: 16px; color: #fff; font-weight: 800; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; margin-top: 10px; }
+
+    /* Avatar preview */
+    .avatar-prev {
+      width: 112px; height: 112px; border-radius: 50%; object-fit: cover; object-position: 50% 25%;
+      display: block; margin: 0 auto 16px; border: 2px solid rgba(0,212,200,0.5); background: #0E0E10;
+    }
+    .filebtn {
+      display: block; text-align: center; border: 1px dashed rgba(255,255,255,0.25); border-radius: 12px;
+      padding: 16px; font-size: 14px; color: #b9b9c6; cursor: pointer; margin-bottom: 14px;
+      transition: border-color 0.15s;
+    }
+    .filebtn:hover { border-color: rgba(0,212,200,0.5); }
+    .photo-row { margin: 4px 0 18px; }
+    .photo-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .photo-btns .filebtn { margin: 0; }
+    .google-offer { display: flex; gap: 14px; align-items: center; padding: 12px; border: 1px solid rgba(0,212,200,0.45); border-radius: 12px; background: rgba(0,212,200,0.06); margin-bottom: 10px; }
+    .google-offer img { width: 64px; height: 64px; border-radius: 32px; object-fit: cover; flex: none; }
+    .google-offer-title { font-weight: 700; margin-bottom: 2px; }
+    .google-offer-sub { font-size: 13px; color: #9aa3ad; margin-bottom: 8px; }
+    .profsec { border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 16px 16px 14px; margin: 14px 0; }
+    .profhead { display: flex; align-items: center; gap: 10px; font-size: 17px; margin-bottom: 4px; }
+    .profst { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,.25); font-size: 13px; color: #9aa; }
+    .msg.ok { color: #00D4C8; }
+    .primary.small { padding: 8px 14px; font-size: 14px; width: auto; }
+    .gate-pick { font-size: 13px; color: #9aa3ad; margin: -4px 0 14px; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .gate-pick b { color: #e5e7eb; }
+    .gate-pick .step { float: right; color: #00d4c8; font-weight: 700; }
+
+    .refcode {
+      display: inline-block; background: #0d1f1e; border: 1px solid rgba(0,212,200,0.35);
+      color: #00D4C8; font-weight: 800; letter-spacing: 1.5px; border-radius: 10px;
+      padding: 8px 16px; margin: 6px 0 14px; font-size: 17px;
+    }
+
+    /* Store badges (success-state "get the app" CTA — same look as ride.html) */
+    .store-badges { display: flex; flex-direction: column; gap: 12px; align-items: stretch; margin-top: 18px; }
+    .store-badge {
+      display: flex; align-items: center; gap: 12px;
+      background: #1a1a1d; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 14px 20px;
+      transition: border-color 0.2s, transform 0.2s; cursor: pointer;
+    }
+    .store-badge:hover { border-color: rgba(0,212,200,0.5); transform: translateY(-1px); }
+    .store-badge svg { width: 28px; height: 28px; flex-shrink: 0; }
+    .store-badge .label { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+    .store-badge .label .small { font-size: 11px; color: #888; letter-spacing: 0.3px; }
+    .store-badge .label .big { font-size: 16px; font-weight: 600; color: #fff; }
+
+    .spinner {
+      width: 28px; height: 28px; margin: 0 auto 16px;
+      border: 3px solid rgba(255,255,255,0.15); border-top-color: #00D4C8;
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .signedin { text-align: center; font-size: 12px; color: #666; margin-top: 14px; }
+    .signedin button { font-size: 12px; }
+    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #666; line-height: 1.6; }
+    .legal a { color: #888; }
+  </style>
+  <!-- Vercel Web Analytics — the whole point of this page is conversion; keep
+       every visit tracked like the other landing pages. -->
+  <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a>
+      <span id="bookNav" style="display:none;align-items:center;"></span>
+    </div>
+
+    <!-- Persistent ride summary — stays visible above every booking step so
+         the visitor never loses sight of what they're booking. -->
+    <div class="card hidden" id="rideCard">
+      <div class="eyebrow">You're requesting a seat on</div>
+      <div class="route" id="rideRoute"></div>
+      <div class="meta" id="rideMeta"></div>
+      <div class="meta" id="rideDriver"></div>
+    </div>
+
+    <!-- ── STATES ─────────────────────────────────────────────────────── -->
+
+    <!-- Loading -->
+    <div id="backRow" class="hidden" style="margin:0 0 10px;">
+      <button type="button" class="linkbtn" id="backBtn">&larr; Back</button>
+    </div>
+
+    <div class="card center" id="stLoading">
+      <div class="spinner"></div>
+      <h1>Loading ride…</h1>
+      <p class="sub" style="margin-bottom:0;">One moment while we fetch the details.</p>
+    </div>
+
+    <!-- Ride gone / full / departs too soon -->
+    <div class="card center hidden" id="stGone">
+      <div class="icon">🚗</div>
+      <h1 id="goneTitle">That ride is no longer available</h1>
+      <p class="sub" id="goneSub">It was cancelled or has already left — but drivers post new rides every day.</p>
+      <a class="store-badge" href="/rides?web=1" style="justify-content:center;" aria-label="Browse current rides">
+        <div class="label"><span class="big">See current rides →</span></div>
+      </a>
+      <p class="sub" style="margin:14px 0 0;">or <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=book">get the app</a></p>
+    </div>
+
+    <!-- Online booking not available for this ride (public-ride predates the
+         seats payload — should clear itself on the next deploy). -->
+    <div class="card center hidden" id="stAppOnly">
+      <div class="icon">📱</div>
+      <h1>Book this ride in the app</h1>
+      <p class="sub">Online booking isn't available for this ride yet — grab the app to request this seat in a couple of taps.</p>
+      <a class="store-badge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=book" style="justify-content:center;" aria-label="Get the Seat Sherpa app">
+        <div class="label"><span class="big">Get the Seat Sherpa app →</span></div>
+      </a>
+    </div>
+
+    <!-- STEP: email (+ Google/Apple via js/ss-oauth.js) -->
+    <div class="card hidden" id="stEmail">
+      <div class="eyebrow">Book online · Sign in</div>
+      <h1>Sign in to book your seat</h1>
+      <div id="oauthMount" style="margin-top:14px;"></div>
+      <p class="sub">We'll email you a sign-in code — no password needed.</p>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
+      <button class="primary" id="emailBtn">Email me a code</button>
+      <div class="msg err hidden" id="emailMsg"></div>
+      <p data-tos-notice class="hint" style="margin-top:12px;">By continuing you agree to the <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</p>
+    </div>
+
+    <!-- STEP: email code -->
+    <div class="card hidden" id="stCode">
+      <div class="eyebrow">Book online · Verify email</div>
+      <h1>Enter the code we emailed you</h1>
+      <p class="sub">We sent it to <strong id="codeEmailEcho"></strong>. It can take a minute — check spam too.</p>
+      <input id="emailCode" class="codeinput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••••" />
+      <button class="primary" id="codeBtn">Verify</button>
+      <div class="rowlinks">
+        <button class="linkbtn" id="codeResend">Resend code</button>
+        <button class="linkbtn" id="codeChangeEmail">Use a different email</button>
+      </div>
+      <div class="msg err hidden" id="codeMsg"></div>
+    </div>
+
+    <!-- STEP: profile — name + bio + face photo on ONE screen (2026-09-02).
+         Google sign-ins get their name prefilled and a one-tap "Use my Google
+         photo" (face-checked like any upload); phones get a direct selfie
+         button next to the file picker. -->
+    <div class="card hidden" id="stProfile">
+      <div class="eyebrow">Book online · Your profile</div>
+      <div class="gate-pick hidden" id="gatePickProfile"></div>
+      <h1>Tell the driver who you are</h1>
+      <p class="sub">Your name, a few words, and a face photo are what the driver sees when deciding on your request.</p>
+
+      <div class="photo-row">
+        <img id="photoPrev" class="avatar-prev hidden" alt="Your photo" />
+        <div id="googlePhotoOffer" class="google-offer hidden">
+          <img id="googlePhotoImg" alt="Your Google photo" />
+          <div>
+            <div class="google-offer-title">Use your Google photo?</div>
+            <div class="google-offer-sub">Saves a step — your driver just needs to recognize you.</div>
+            <button type="button" class="primary small" id="googlePhotoUse">Use this photo</button>
+          </div>
+        </div>
+        <div class="photo-btns">
+          <label class="filebtn" for="photoSelfie" id="photoSelfieLabel">🤳 Take a selfie</label>
+          <input id="photoSelfie" type="file" accept="image/*" capture="user" class="hidden" />
+          <label class="filebtn" for="photoFile" id="photoFileLabel">📷 Choose a photo</label>
+          <input id="photoFile" type="file" accept="image/*" class="hidden" />
+        </div>
+        <div class="msg err hidden" id="photoMsg"></div>
+      </div>
+
+      <label for="pfName">Your name</label>
+      <input id="pfName" type="text" autocomplete="name" placeholder="First Last" />
+      <label for="pfBio">A few words about you</label>
+      <p class="sub" style="margin:0 0 8px;font-size:13px;">No phone numbers or emails — you and your driver chat and call right in Seat Sherpa once booked.</p>
+      <textarea id="pfBio" maxlength="500" placeholder="e.g. Grad student heading home for the weekend. Quiet rider, one small bag."></textarea>
+      <p class="hint"><span id="bioCount">0</span> / 3 words minimum</p>
+      <div class="profsec hidden" id="secEmail">
+        <div class="profhead"><span class="profst" id="stEmailOk">○</span><strong>Email for confirmations</strong></div>
+        <p class="hint">This account signed in without an email address, so receipts, confirmations and pickup details have nowhere to go. Add one and we'll send a link to confirm it.</p>
+        <input id="acctEmail" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
+        <button class="primary" id="acctEmailBtn">Save email</button>
+        <div class="msg err hidden" id="acctEmailMsg"></div>
+      </div>
+      <button class="primary" id="profileBtn">Continue</button>
+      <div class="msg err hidden" id="profileMsg"></div>
+    </div>
+
+    <!-- STEP: phone -->
+    <div class="card hidden" id="stPhone">
+      <div class="eyebrow">Book online · Verify phone</div>
+      <div class="gate-pick hidden" id="gatePickPhone"></div>
+      <h1>Verify your phone</h1>
+      <p class="sub">So your driver can reach you about pickup. Your number stays private until ride day &mdash; it's only shared starting 24 hours before departure, and never used for marketing. We'll text you a 6-digit code.</p>
+      <div id="phoneEntry">
+        <div style="display:flex; gap:10px;">
+          <div style="width:88px;">
+            <label for="phoneCc">Country</label>
+            <input id="phoneCc" type="tel" inputmode="numeric" value="1" maxlength="4" style="text-align:center;" />
+          </div>
+          <div style="flex:1;">
+            <label for="phoneNum">Phone number</label>
+            <input id="phoneNum" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="555 123 4567" />
+          </div>
+        </div>
+        <button class="primary" id="phoneSendBtn">Text me a code</button>
+      </div>
+      <div id="phoneCodeEntry" class="hidden" style="margin-top:14px;">
+        <label for="phoneCode">6-digit code</label>
+        <input id="phoneCode" class="codeinput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" />
+        <button class="primary" id="phoneVerifyBtn">Verify phone</button>
+        <div class="rowlinks">
+          <button class="linkbtn" id="phoneResend">Resend code</button>
+          <button class="linkbtn" id="phoneChange">Change number</button>
+        </div>
+      </div>
+      <div class="msg err hidden" id="phoneMsg"></div>
+    </div>
+
+
+    <!-- STEP: seat pick -->
+    <div class="card hidden" id="stSeats">
+      <div class="eyebrow">Book online · Pick your seat</div>
+      <h1>Pick your seat</h1>
+      <p class="sub">Tap one or more open seats.</p>
+      <!-- Segment booking (2026-08-28): board/alight at a route-fill stop —
+           the price prorates to the share of the trip you ride. Hidden unless
+           the ride has stops. -->
+      <div id="segWrap" class="hidden" style="margin-bottom:14px;">
+        <label for="segBoard">Where are you riding?</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <select id="segBoard" style="flex:1;min-width:140px;"></select>
+          <select id="segAlight" style="flex:1;min-width:140px;"></select>
+        </div>
+        <div class="sub hidden" id="segNote" style="margin:8px 0 0;font-size:13px;"></div>
+      </div>
+      <div class="seatgrid" id="seatGrid"></div>
+      <label for="drvMsg" id="drvMsgLabel">Message to the driver (optional)</label>
+      <textarea id="drvMsg" maxlength="300" style="min-height:64px;" placeholder="e.g. Hi! I can meet anywhere near downtown."></textarea>
+      <div id="priceSummary" class="hidden">
+        <div class="sumline"><span id="sumSeatsLabel">Seats</span><span id="sumSeats"></span></div>
+        <div class="sumline"><span id="sumFeeLabel">Service fee</span><span id="sumFee"></span></div>
+        <div class="sumline hidden" id="sumBookingFeeRow"><span>Booking fee</span><span id="sumBookingFee"></span></div>
+        <div class="sumline hidden" id="sumCreditRow" style="color:#4ade80;"><span>Ride credit</span><span id="sumCredit"></span></div>
+        <div class="sumline total"><span>Estimated total</span><span id="sumTotal"></span></div>
+        <p class="hint" style="margin:8px 0 14px;">Exact total shown at secure checkout.</p>
+        <!-- Cancellation terms BEFORE money (benchmark 8/26) — copy matches
+             trips.html's POLICY_DETAILS so pre- and post-booking never
+             disagree. Populated from public-ride's cancellationPolicy. -->
+        <details id="policyBox" style="margin:0 0 14px;">
+          <summary style="cursor:pointer;font-size:13px;color:#7dd3fc;">Cancellation policy</summary>
+          <ul id="policyList" style="margin:8px 0 0 18px;font-size:13px;color:#9a9aa8;line-height:1.6;"></ul>
+        </details>
+      </div>
+      <button class="primary" id="bookBtn" disabled>Request seat</button>
+      <p class="hint" style="margin-top:10px; text-align:center;">You're only charged if the driver accepts. Payments handled by Stripe.</p>
+      <div class="msg err hidden" id="bookMsg"></div>
+      <div class="signedin hidden" id="signedIn">Signed in as <span id="signedInEmail"></span> · <button class="linkbtn" id="signOutBtn">Not you?</button></div>
+    </div>
+
+    <!-- Redirecting to Stripe -->
+    <div class="card center hidden" id="stRedirect">
+      <div class="spinner"></div>
+      <h1>Taking you to secure checkout…</h1>
+      <p class="sub" style="margin-bottom:0;">Payment is handled by Stripe. Your card is only charged if the driver accepts.</p>
+    </div>
+
+    <!-- Returned from Stripe: finalizing → request sent -->
+    <div class="card center hidden" id="stFinalizing">
+      <div class="spinner"></div>
+      <h1>Finalizing your payment…</h1>
+      <p class="sub" style="margin-bottom:0;">Hang tight — this usually takes a few seconds.</p>
+    </div>
+
+    <div class="card center hidden" id="stSuccess">
+      <div class="icon">✅</div>
+      <h1 id="successTitle">Your request is in</h1>
+      <div class="refcode hidden" id="successRef"></div>
+      <p class="sub" id="successSub">The driver has been notified. Your card is authorized but only charged when they accept — we'll email you as soon as they respond.</p>
+      <!-- Web-first (2026-08-28): a web booker's home is the browser console,
+           not the app stores. Soft app line only. -->
+      <a class="primary" id="successMsgBtn" href="/messages" style="display:block;text-align:center;text-decoration:none;padding:14px;border-radius:12px;background:transparent;border:1px solid rgba(0,212,200,0.55);color:#00D4C8;font-weight:700;font-size:16px;margin-bottom:12px;">💬 Message the driver</a>
+      <a class="primary" href="/trips" style="display:block;text-align:center;text-decoration:none;padding:15px;border-radius:12px;background:#00D4C8;color:#04201e;font-weight:700;font-size:16px;">🎒 Track it in My trips</a>
+      <p class="hint" style="margin-top:14px;text-align:center;">
+        Prefer the app on ride day? It's on the
+        <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=book">App Store and Google Play</a>.
+      </p>
+    </div>
+
+    <!-- Returned from Stripe via cancel_url -->
+    <div class="card center hidden" id="stCancelled">
+      <div class="icon">💳</div>
+      <h1>Checkout cancelled</h1>
+      <p class="sub">Your card wasn't charged. Your seat request is held open for a little while if you'd like to finish paying.</p>
+      <a class="primary" id="retryLink" href="#" style="display:block; background:#00D4C8; color:#04201e; border-radius:12px; padding:15px; font-size:16px; font-weight:700; margin-bottom:12px;">Finish booking</a>
+      <button class="linkbtn danger" id="withdrawBtn">Withdraw my request</button>
+      <div class="msg hidden" id="cancelMsg"></div>
+    </div>
+
+    <p class="legal">
+      Seat Sherpa is a cost-sharing carpool marketplace, not a ride-hail service.<br />
+      <a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
+    </p>
+  </div>
+
+  <script src="/js/ss-oauth.js"></script>
+  <script type="module">
+    // book.html — v1 web booking (2026-08-20).
+    //
+    // "Book one ride from a link": /book?id=N renders the ride via the extended
+    // public-ride endpoint, walks a brand-new visitor through email OTP →
+    // name+bio → phone verify → photo → seat pick, then calls the
+    // web-create-booking edge fn which inserts a Pending booking and returns a
+    // Stripe Checkout url. Web bookings are ALWAYS request-to-book (manual
+    // capture) — the card is only authorized until the driver accepts in the
+    // app — so every piece of copy on this page says "charged only if the
+    // driver accepts".
+    //
+    // The step order mirrors the app's gates (server enforces them all again in
+    // web-create-booking): the server is the gate; this page just routes the
+    // visitor to whichever step the server would bounce them to anyway.
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPA = 'https://vmfmbntacifqoqxqxgsk.supabase.co';
+    // Publishable (anon) key — safe to expose in client-side code by design.
+    const ANON = 'sb_publishable_TGebz9q_z0kkH0Tuivlr4w_3MPLMxF3';
+
+    // persistSession (localStorage) is REQUIRED here — the session must survive
+    // the round-trip to Stripe Checkout so the success page can poll the
+    // booking row under the rider's own RLS. (reset-password.html's
+    // persistSession:false is deliberately NOT copied.)
+    //
+    // 2026-08-20 — this stored session is now a HANDOFF, not just a scratchpad
+    // for the length of one checkout. The hidden rider surface (/trips, via
+    // /js/ss-session.js) reads the exact same localStorage entry, so a rider who
+    // books here is still signed in days later when they need their pickup code
+    // at the curb — and that code is the only thing that releases the driver's
+    // reimbursement (0043 + stripe-release-to-driver). Two rules keep the
+    // handoff working:
+    //   1. NEVER pass `storageKey` — here or in ss-session.js. Both clients are
+    //      built from the same project URL, so both inherit the library default
+    //      `sb-vmfmbntacifqoqxqxgsk-auth-token`. Setting a "tidier" namespaced
+    //      key on either side silently orphans the other, and the rider gets
+    //      bounced to a sign-in screen at pickup time.
+    //   2. autoRefreshToken is spelled out rather than left implicit. A rider
+    //      can sit on Stripe Checkout longer than the ~1h access token lives,
+    //      and the refresh-on-return is what keeps the stored session alive to
+    //      be handed off at all.
+    const supabase = createClient(SUPA, ANON, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false },
+    });
+
+    // ── URL params ────────────────────────────────────────────────────────
+    const qp = new URLSearchParams(location.search);
+    const rideId = Number(qp.get('id'));
+    const bookingParam = Number(qp.get('booking'));
+    const returnState = qp.get('state'); // 'success' | 'cancelled' | null
+
+    // ── State helpers ─────────────────────────────────────────────────────
+    const STATES = ['stLoading','stGone','stAppOnly','stEmail','stCode','stProfile','stPhone','stSeats','stRedirect','stFinalizing','stSuccess','stCancelled'];
+    const $ = (id) => document.getElementById(id);
+
+    // ── Back affordance (2026-08-28, Justin: "a back button on any booking
+    // page"). Interactive steps keep a trail; ← pops it. On the first step
+    // there's nothing to pop, so ← returns to the ride's landing page. Non-
+    // interactive states (loading, Stripe redirect, success…) hide the row.
+    const BACKABLE = { stEmail: 1, stCode: 1, stProfile: 1, stPhone: 1, stSeats: 1 };
+    let stepTrail = [];
+    let currentStep = null;
+    let backNav = false;
+    // Once the rider is signed in, the auth steps must never come back via
+    // browser Back (audit 2026-09-02: Back from the seat picker showed the
+    // email form to a signed-in rider). popstate unwinds past them instead.
+    let ssAuthDone = false;
+    function show(id) {
+      currentStep = id;
+      STATES.forEach((s) => $(s).classList.toggle('hidden', s !== id));
+      // Reveal the nav banner only on terminal screens (booking done/cancelled)
+      // so the active funnel stays distraction-free (Justin, 2026-08-28).
+      var _bn = $('bookNav');
+      if (_bn) _bn.style.display = (id === 'stSuccess' || id === 'stCancelled' || id === 'stGone') && _bn.childElementCount > 0 ? 'flex' : 'none';
+      if (BACKABLE[id]) {
+        if (backNav) backNav = false;
+        else {
+          // Returning to a step already on the trail truncates the loop —
+          // "Use a different email" cycles must not stack stale entries.
+          const seen = stepTrail.indexOf(id);
+          if (seen >= 0 && seen < stepTrail.length - 1) {
+            // In-page return to an EARLIER step ("Use a different email"):
+            // unwind real history to that entry instead of stacking a new
+            // one on top, so browser Back keeps matching the trail
+            // (audit 2026-09-02). popstate re-renders the step.
+            const delta = seen - (stepTrail.length - 1);
+            stepTrail.length = seen + 1;
+            try { history.go(delta); return; } catch (_) {}
+          }
+          if (seen >= 0) stepTrail.length = seen;
+          stepTrail.push(id);
+          // Browser back == the in-page Back button (Justin, 2026-09-01):
+          // each wizard step gets a history entry, and popstate below
+          // replays the same step-back logic. First step replaces so
+          // back from there still leaves the page normally.
+          try {
+            if (stepTrail.length === 1) history.replaceState({ ss: id }, '');
+            else history.pushState({ ss: id }, '');
+          } catch (_) {}
+        }
+        $('backRow').classList.remove('hidden');
+      } else {
+        $('backRow').classList.add('hidden');
+      }
+    }
+    function goBack() {
+      if (stepTrail.length > 1) { try { history.back(); return; } catch (_) {} }
+      location.href = '/ride?id=' + encodeURIComponent(String(rideId || ''));
+    }
+    window.addEventListener('pageshow', (ev) => {
+      // Safari restores this document from bfcache when the rider backs out
+      // of Stripe Checkout — frozen on the redirect spinner forever (audit
+      // P2). Put them back on their seats.
+      if (ev.persisted && currentStep === 'stRedirect') {
+        backNav = true;
+        show('stSeats');
+        try { renderSeats(); } catch (_) {}
+      }
+    });
+    window.addEventListener('popstate', (ev) => {
+      const ss = ev.state && ev.state.ss;
+      if (!ss || !BACKABLE[ss]) return;
+      // Terminal screens never step back into the funnel - a booked ride
+      // must not reopen its own seat picker; re-assert the current entry.
+      if (currentStep === 'stSuccess' || currentStep === 'stFinalizing' || currentStep === 'stRedirect' || currentStep === 'stCancelled' || currentStep === 'stGone') {
+        try { history.back(); } catch (_) {} // unwind the wizard entries so Back LEAVES from a terminal screen instead of trapping (audit P2)
+        return;
+      }
+      if (ssAuthDone && (ss === 'stEmail' || ss === 'stCode')) {
+        try { history.back(); } catch (_) {} // signed in: keep unwinding past the auth steps
+        return;
+      }
+      const i = stepTrail.indexOf(ss);
+      if (i >= 0) stepTrail.length = i + 1; else stepTrail.push(ss);
+      backNav = true;
+      show(ss);
+    });
+    $('backBtn').addEventListener('click', goBack);
+    function setMsg(id, text, kind) {
+      const el = $(id);
+      if (!text) { el.classList.add('hidden'); return; }
+      el.textContent = text;
+      el.className = 'msg ' + (kind || 'err');
+    }
+
+    let rideData = null;      // extended public-ride payload
+    let selectedSeats = [];   // seat ids picked on the seat step
+    let pendingEmail = '';    // email awaiting OTP
+    let pendingPhone = null;  // { cc, num, e164 } awaiting SMS OTP
+    let myUid = null;
+    // Rider's referral/ride credit — fetched post-sign-in (the 0082 guard
+    // permits reading your OWN balance under your own session). Drives the
+    // fee trigger + the credit preview in updateSummary, mirroring the app.
+    let myCreditCents = 0;
+    async function fetchMyCredit() {
+      if (!myUid) return;
+      try {
+        const { data: bal } = await supabase.rpc('credit_balance_cents', { p_user: myUid });
+        const v = typeof bal === 'number' ? bal : 0;
+        if (v !== myCreditCents) { myCreditCents = v; try { updateSummary(); } catch (_) {} }
+      } catch (_) { /* preview only — checkout is authoritative */ }
+    }
+
+    // ── Shared validation (cloned from the app so web + app enforce the same
+    //     bars — services/profiles.ts hasSufficientBio, services/phone-verify) ──
+    const BIO_MIN_WORDS = 3, BIO_MIN_CHARS = 15;
+    const bioWords = (b) => (b || '').trim().split(/\s+/).filter(Boolean).length;
+    const bioOk = (b) => bioWords(b) >= BIO_MIN_WORDS && (b || '').trim().length >= BIO_MIN_CHARS;
+
+    // No phone numbers in a public bio — lib/off-platform-guard.ts
+    // containsPhoneNumber, and migration 0209 enforces the same rule in the
+    // database (which is what actually stops a direct PostgREST write). This
+    // copy just turns a raw trigger exception into a readable message.
+    // Collapses separators between digits first, so "4 0 8 7 3 9 9 3 6 8"
+    // and "408.739.9368" are caught alongside the plain form.
+    const PHONE_RE = /(^|\D)(\+?1[\s.\-·]?)?\(?\d{3}\)?[\s.\-·]?\d{3}[\s.\-·]?\d{4}(?!\d)/;
+    const collapseDigits = (t) => {
+      let out = t || '';
+      for (let i = 0; i < 24; i++) {
+        const n = out.replace(/(\d)[\s.\-·()]+(\d)/g, '$1$2');
+        if (n === out) break;
+        out = n;
+      }
+      return out;
+    };
+    const EMAIL_RE = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i;
+    // Bare " at "/" dot " decode only when BOTH appear — "at" alone is too
+    // common a word ("I work at 23andMe.com" is not an email). Bracketed
+    // forms are pure evasion and always decode. Mirrors off-platform-guard.
+    const deobEmail = (t) => {
+      const b = (t || '')
+        .replace(/\s*[([{]\s*at\s*[)\]}]\s*/gi, '@')
+        .replace(/\s*[([{]\s*dot\s*[)\]}]\s*/gi, '.');
+      if (!/\s+at\s+/i.test(t || '') || !/\s+dot\s+/i.test(t || '')) return b;
+      return b.replace(/\s+at\s+/gi, '@').replace(/\s+dot\s+/gi, '.');
+    };
+    // Returns 'phone' | 'email' | null — mirrors lib/off-platform-guard.ts
+    // detectBioContact. A bare @handle is intentionally fine.
+    const bioContact = (t) => {
+      if (!t) return null;
+      // ISO dates stripped before collapsing (a date+time collapses to a
+      // 10-digit run); the raw test still catches real phones either way.
+      if (PHONE_RE.test(t) || PHONE_RE.test(collapseDigits(t.replace(/\d{4}-\d{2}-\d{2}/g, ' ')))) return 'phone';
+      // Density check (0216 mirror): 10 digits packed into a ≤20-char window
+      // is a phone however dressed ("661-57jdjd5-52gshsj64"), bar year runs.
+      {
+        const digs = [];
+        for (let i = 0; i < t.length; i++) if (t[i] >= '0' && t[i] <= '9') digs.push(i);
+        for (let i = 0; i + 9 < digs.length; i++) {
+          const win = t.slice(digs[i], digs[i + 9] + 1);
+          if (win.length <= 20 && !/^((19|20)\d\d\D{0,3})+$/.test(win)) return 'phone';
+        }
+      }
+      if (EMAIL_RE.test(t) || EMAIL_RE.test(deobEmail(t))) return 'email';
+      return null;
+    };
+    const BIO_CONTACT_MSG = {
+      phone: "Please take the phone number out of your bio — your profile is public to everyone browsing rides. Once your booking is confirmed you can call your driver from the app.",
+      email: "Please take the email address out of your bio — your profile is public to everyone browsing rides. Once your booking is confirmed you can message your driver in the app.",
+    };
+
+    // lib/phone.ts stripLeadingCountryCode — drop a doubled country code so we
+    // never send Twilio "+1 1505..." (unroutable).
+    function stripCC(cc, phone) {
+      cc = (cc || '').replace(/\D/g, ''); const num = (phone || '').replace(/\D/g, '');
+      if (!cc || !num) return num;
+      if (cc === '1') return num.length === 11 && num.charAt(0) === '1' ? num.slice(1) : num;
+      if (num.indexOf(cc) === 0 && num.length > cc.length + 10) return num.slice(cc.length);
+      return num;
+    }
+    const toE164 = (cc, phone) => '+' + (cc || '').replace(/\D/g, '') + stripCC(cc, phone);
+    // +1 (US/Canada) ONLY on web — the service area is CA/NV and the app has
+    // the full country picker for edge cases. An open country field on a
+    // public page is an SMS-pumping surface: bots request OTP codes to
+    // premium international numbers on our Twilio bill (audit M3).
+    const plausibleE164 = (e) => /^\+1\d{10}$/.test(e);
+
+    // services/phone-verify.ts error mapping, verbatim — same friendly copy as
+    // the app so support only ever sees one set of phone-error strings.
+    function mapPhoneSendError(error) {
+      const msg = (error.message || '').toLowerCase();
+      if (msg.includes('rate limit')) return 'Too many requests. Try again in an hour.';
+      if (msg.includes('already') || msg.includes('exists'))
+        return 'This number already has a Seat Sherpa account. Sign out, then sign back in with the email or Apple/Google you used before — your history is there.';
+      if (msg.includes('invalid') && (msg.includes('phone') || msg.includes('number') || msg.includes("'to'") || msg.includes('21211')))
+        return "That doesn't look like a valid phone number. Please double-check it and try again.";
+      return "We couldn't send your code. Please check your number and try again.";
+    }
+
+    const fmt$ = (n) => '$' + Number(n).toFixed(2);
+    // What the rider actually pays for one seat: seat price + the service fee,
+    // same integer math as the summary (Justin, 2026-08-28 — the seat tile
+    // should show $10.50, not the $10 base). The flat booking fee is per-
+    // booking, not per-seat, so it stays out of the tile and on its own line.
+    function seatAllIn(dollars) {
+      var bps = typeof rideData !== 'undefined' && typeof rideData.serviceFeeBps === 'number' ? rideData.serviceFeeBps : 500;
+      var c = Math.round(Number(dollars) * 100);
+      return (c + Math.floor((c * bps) / 10000)) / 100;
+    }
+
+    // ── Ride card render ──────────────────────────────────────────────────
+    function renderRideCard(d) {
+      $('rideRoute').textContent = '🚗 ' + (d.fromArea || 'A city') + ' → ' + (d.toArea || 'destination');
+      const parts = [];
+      if (d.depDate) {
+        const dt = new Date(d.depDate + 'T' + (d.depTime || '12:00'));
+        parts.push(dt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
+        if (d.depTime) parts.push(dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
+      }
+      $('rideMeta').textContent = parts.join(' · ');
+      if (d.driverFirst) {
+        $('rideDriver').textContent = 'Driven by ' + d.driverFirst +
+          (d.driverRating ? ' · ★ ' + Number(d.driverRating).toFixed(1) + (d.driverRatingCount ? ' (' + d.driverRatingCount + ')' : '') : ' · New driver') +
+          (typeof d.driverTrips === 'number' && d.driverTrips > 0 ? ' · ' + d.driverTrips + ' trip' + (d.driverTrips === 1 ? '' : 's') : '');
+        // Preference chips (2026-08-28) — folded into the driver line where
+        // the booking decision happens.
+        if (d.driverPrefs) {
+          var pc = [];
+          var pp = d.driverPrefs;
+          if (pp.conversation === 'chatty') pc.push('💬 Chatty');
+          else if (pp.conversation === 'depends') pc.push('💬 Happy either way');
+          else if (pp.conversation === 'quiet') pc.push('🤫 Quiet ride');
+          if (pp.musicOk === true) pc.push('🎵 Music');
+          if (pp.smokingOk === false) pc.push('🚭 No smoking');
+          if (pp.petsOk === true) pc.push('🐾 Pets ok');
+          if (pc.length) $('rideDriver').textContent += ' · ' + pc.join(' · ');
+        }
+        // Trust badges (benchmark 8/26): we enforce phone OTP + license on
+        // file before any ride goes live — now we finally SAY so, exactly
+        // where the booking decision happens.
+        var trustBits = [];
+        if (d.driverPhoneVerified) trustBits.push('✓ Phone verified');
+        if (d.driverLicenseOnFile) trustBits.push("✓ Driver's license on file");
+        if (trustBits.length) {
+          var tb = document.createElement('div');
+          tb.style.cssText = 'font-size:12px;color:#4ade80;margin-top:3px;';
+          tb.textContent = trustBits.join(' · ');
+          $('rideDriver').insertAdjacentElement('afterend', tb);
+        }
+      }
+      $('rideCard').classList.remove('hidden');
+      // Cancellation terms, verbatim from the same table trips.html shows
+      // after booking (POLICY_DETAILS) — terms belong before money.
+      var POLICY_DETAILS = {
+        standard: [
+          '✓ Cancel 24+ hours before departure → 100% of the seat price back',
+          '~ Cancel 2 – 24 hours before → 50% of the seat price back',
+          '✗ Cancel within 2 hours of departure → no refund',
+          'ⓘ The 5% service fee is non-refundable when you cancel',
+          '✓ If the DRIVER cancels: 100% refund including the service fee',
+        ],
+        free: [
+          '✓ Cancel 2+ hours before departure → 100% refund',
+          '✗ Cancel within 2 hours of departure → no refund',
+        ],
+        moderate: [
+          '✓ Cancel 48+ hours before departure → 100% refund',
+          '~ Cancel 2 – 48 hours before departure → 50% refund',
+          '✗ Cancel within 2 hours of departure → no refund',
+        ],
+        strict: [
+          '~ Cancel 7+ days before departure → 50% refund',
+          '✗ Cancel within 7 days of departure → no refund',
+        ],
+      };
+      var polLines = POLICY_DETAILS[d.cancellationPolicy];
+      if (polLines) {
+        var pList = $('policyList');
+        pList.innerHTML = '';
+        for (var pi = 0; pi < polLines.length; pi++) {
+          var li = document.createElement('li');
+          li.textContent = polLines[pi];
+          pList.appendChild(li);
+        }
+      } else {
+        $('policyBox').style.display = 'none';
+      }
+      document.title = (d.fromArea || 'Ride') + ' → ' + (d.toArea || '') + ' — Book a seat — Seat Sherpa';
+    }
+
+    // ── Funnel routing: jump to the first incomplete step ─────────────────
+    // Mirrors web-create-booking's server-side gates (GATE_NAME/BIO/PHONE/
+    // PHOTO) so a visitor almost never gets bounced by the server; if they do
+    // anyway (e.g. stale tab), handleBookingError routes them back here.
+    async function route() {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) { show('stEmail'); return; }
+
+      // getUser() = fresh /auth/v1/user fetch → authoritative
+      // phone_confirmed_at (auth.users is the source of truth for the phone
+      // gate, per services/phone-verify.ts).
+      const { data: userData, error: userErr } = await supabase.auth.getUser();
+      if (userErr || !userData.user) { show('stEmail'); return; }
+      const user = userData.user;
+      myUid = user.id; try { localStorage.setItem('ss_last_role','rider'); } catch (_) {}
+      ssAuthDone = true;
+      void fetchMyCredit();
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('name, bio, photo_url')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      // The signup trigger seeds profiles.name from the email prefix — a
+      // non-blank name that still isn't a real name. Treat it as unset so the
+      // driver never sees "justin.des.tang" on a request.
+      ssLogTos(user.id);
+      const emailLocal = (user.email || '').split('@')[0].toLowerCase();
+      const name = (profile?.name || '').trim();
+      const nameNeeded = !name || name.toLowerCase() === emailLocal || name.includes('@') || nameLooksLikeHandle(name); // '@' mirrors the server's GATE_NAME — without it a handle-name loops silently (audit P0)
+
+      // Prune COMPLETED gates from the back trail (scan #4): Back must never
+      // resurrect a consumed code screen or an already-verified phone step.
+      stepTrail = stepTrail.filter((s) => {
+        if (s === 'stEmail' || s === 'stCode') return false;            // signed in now
+        if (s === 'stPhone' && user.phone_confirmed_at) return false;
+        if (s === 'stProfile' && !nameNeeded && bioOk(profile?.bio) && profile?.photo_url) return false;
+        return true;
+      });
+
+      // ONE profile gate (2026-09-02): name + bio + face photo together, then
+      // phone, then seats. Google sign-ins arrive with a display name and a
+      // picture in user_metadata — prefill the name, offer the photo.
+      const meta = user.user_metadata || {};
+      const profileNeeded = nameNeeded || !bioOk(profile?.bio) || !profile?.photo_url;
+      const phoneNeeded = !user.phone_confirmed_at;
+      currentPhotoUrl = profile?.photo_url || null;
+      renderGatePick(profileNeeded, phoneNeeded);
+
+      if (profileNeeded) {
+        const metaName = String(meta.full_name || meta.name || '').trim();
+        const metaLooksReal = metaName && metaName.includes(' ') && !metaName.includes('@');
+        $('pfName').value = nameNeeded ? (metaLooksReal ? metaName : '') : name;
+        $('pfBio').value = profile?.bio || '';
+        updateBioCount();
+        // Existing photo → show it; none → offer the Google one if there is one.
+        const prev = $('photoPrev');
+        if (currentPhotoUrl && !photoBlob) { prev.src = currentPhotoUrl; prev.classList.remove('hidden'); }
+        const gUrl = !currentPhotoUrl && !photoBlob ? String(meta.avatar_url || meta.picture || '') : '';
+        if (gUrl) {
+          googlePhotoUrl = gUrl.replace(/=s\d+(-c)?$/, '=s512-c');
+          $('googlePhotoImg').src = googlePhotoUrl;
+          $('googlePhotoOffer').classList.remove('hidden');
+        } else {
+          $('googlePhotoOffer').classList.add('hidden');
+        }
+        show('stProfile');
+        void renderEmailSection();
+      } else if (phoneNeeded) {
+        show('stPhone');
+      } else {
+        // Phone-only accounts have no email — never render "Signed in as ·".
+        $('signedInEmail').textContent = user.email || user.phone || 'your account';
+        $('signedIn').classList.remove('hidden');
+        show('stSeats');
+      }
+    }
+
+    // "Your pick · step N of M" on the gate screens: keep what they're buying
+    // in view while they finish the profile (2026-09-02).
+    let currentPhotoUrl = null, googlePhotoUrl = '';
+    const escGate = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]));
+    function renderGatePick(profileNeeded, phoneNeeded) {
+      const total = (profileNeeded ? 1 : 0) + (phoneNeeded ? 1 : 0);
+      let pick = '';
+      try {
+        if (selectedSeats.length > 0) {
+          const labels = selectedSeats.map((id) => { const st = seatById(id); return st ? (st.label || st.id) : id; });
+          // Full price including fees (and any credit) — the same number the
+          // seat summary and the Request button show (Justin, 2026-09-02).
+          const t = computeTotals();
+          pick = 'Your pick: <b>' + labels.map(escGate).join(', ') + '</b> · ' + (t ? fmt$(t.charge / 100) + ' total' : '');
+        }
+      } catch (_) { pick = ''; }
+      const put = (id, stepNo) => {
+        const el = $(id); if (!el) return;
+        if (!pick && total < 2) { el.classList.add('hidden'); return; }
+        el.innerHTML = (pick || 'Almost there') + (total > 1 ? '<span class="step">Step ' + stepNo + ' of ' + total + '</span>' : '');
+        el.classList.remove('hidden');
+      };
+      put('gatePickProfile', 1);
+      put('gatePickPhone', profileNeeded ? 2 : 1);
+    }
+
+    // ── Load ride ─────────────────────────────────────────────────────────
+    // fresh:true bypasses the browser's HTTP cache (public-ride is cached
+    // ~120s) — used after SEATS_TAKEN, where re-reading the cached response
+    // would keep showing the just-taken seat as open.
+    async function loadRide(fresh) {
+      const r = await fetch(SUPA + '/functions/v1/public-ride?id=' + encodeURIComponent(rideId)
+          + (fresh ? '&fresh=' + Date.now() : ''),
+        { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON },
+          cache: fresh ? 'reload' : 'default' });
+      return r.json();
+    }
+
+    // Waitlist (2026-08-28, app parity): ?waitlist=1 turns the full-ride dead
+    // end into demand capture. Mirrors services/waitlist.ts joinWaitlist —
+    // dupe insert = already on the list = success. notify-waitlist already
+    // emails web users when a seat frees; only this join was missing.
+    let waitlistMode = false;
+    async function waitlistFlow() {
+      $('rideCard').classList.add('hidden');
+      const { data: sd } = await supabase.auth.getSession();
+      const uid = sd && sd.session && sd.session.user ? sd.session.user.id : null;
+      if (!uid) {
+        $('goneTitle').textContent = 'This ride is full — get first dibs';
+        $('goneSub').innerHTML = 'We’ll email you the moment a seat opens. ' +
+          '<a href="#" id="wlSignIn" style="font-weight:700;">Sign in with your email to join the waitlist →</a>';
+        show('stGone');
+        const a = document.getElementById('wlSignIn');
+        // waitlistMode: after sign-in the continuations must come BACK here
+        // (scan #1 — route() knows nothing about waitlists and dumped the
+        // signed-in visitor on an empty seat grid; the join never happened).
+        if (a) a.addEventListener('click', (e) => { e.preventDefault(); waitlistMode = true; show('stEmail'); });
+        return;
+      }
+      const { error } = await supabase.from('ride_waitlist').insert({ ride_id: rideId, user_id: uid });
+      if (error && !/duplicate|unique/i.test(error.message || '')) {
+        $('goneTitle').textContent = 'This ride is full';
+        $('goneSub').textContent = 'Every seat has been taken — and the waitlist hiccuped. Refresh to try again.';
+        show('stGone');
+        return;
+      }
+      $('goneTitle').textContent = "You're on the list 🔔";
+      $('goneSub').textContent = "We'll email you the moment a seat opens on this ride. No need to keep checking.";
+      show('stGone');
+    }
+
+    function showGone(kind) {
+      $('rideCard').classList.add('hidden');
+      if (kind === 'full') {
+        if (qp.get('waitlist') === '1' && rideId) { void waitlistFlow(); return; }
+        $('goneTitle').textContent = 'This ride is full';
+        $('goneSub').innerHTML = 'Every seat has been taken — <a href="?id=' + encodeURIComponent(rideId) + '&waitlist=1" style="font-weight:700;">join the waitlist</a> and we’ll email you if one opens.';
+      } else if (kind === 'soon') {
+        // Reachable only if the ride departs mid-session now that booking runs
+        // right up to departure (2026-08-28) — so say what actually happened.
+        $('goneTitle').textContent = 'This ride has just departed';
+        $('goneSub').innerHTML = 'It left while you were booking — but drivers post new rides every day. <a href="/rides?web=1" style="font-weight:700;">See what’s live now</a>.';
+      } else if (kind === 'offline') {
+        // A failed fetch is NOT a cancelled ride (audit 8/28): telling a rider
+        // on a flaky phone connection that the ride is gone kills a live sale.
+        $('goneTitle').textContent = "Couldn't load this ride";
+        $('goneSub').innerHTML = 'Check your connection and <a href="#" id="goneRetry" style="font-weight:700;">try again</a>.';
+        show('stGone');
+        var _gr = $('goneRetry');
+        if (_gr) _gr.addEventListener('click', function (e) { e.preventDefault(); location.reload(); });
+        return;
+      } else {
+        $('goneTitle').textContent = 'That ride is no longer available';
+        $('goneSub').textContent = 'It was cancelled or has already left — but drivers post new rides every day.';
+      }
+      show('stGone');
+    }
+
+    // ── Seat picker ───────────────────────────────────────────────────────
+    // ── Segment state (2026-08-28) — mirrors _shared/web-posting.ts
+    //    segmentFactor/segmentSeatPriceUsd EXACTLY; the server recomputes the
+    //    charge, this is display. ─────────────────────────────────────────
+    let segBoardingId = null, segAlightingId = null, segLegUsd = null;
+    function segHav(a, c) {
+      if (!a || !c || !isFinite(a.lat)) return 0;
+      const R = 3958.8, toRad = (d2) => (d2 * Math.PI) / 180;
+      const dLat = toRad(c.lat - a.lat), dLng = toRad(c.lng - a.lng);
+      const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(c.lat)) * Math.sin(dLng / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(h));
+    }
+    function segT(start, end, p) {
+      const dx = end.lng - start.lng, dy = end.lat - start.lat;
+      const len2 = dx * dx + dy * dy || 1;
+      return ((p.lng - start.lng) * dx + (p.lat - start.lat) * dy) / len2;
+    }
+    function segStopById(id) { return (rideData.routeStops || []).find((s) => s.id === id) || null; }
+    function segPrice(fullUsd) {
+      if (segLegUsd == null || !(fullUsd > 0)) return fullUsd;
+      return Math.min(fullUsd, segLegUsd);
+    }
+    function recomputeSegment() {
+      const start = rideData.approxStart, end = rideData.approxEnd;
+      const b = segStopById(segBoardingId), a = segStopById(segAlightingId);
+      segLegUsd = null;
+      const note = $('segNote');
+      if ((b || a) && start && end) {
+        // Coordless stops (name-only / catalog drift) must not join the
+        // projection: null coerces to 0 in segT and projects to the point
+        // (0,0), which made ANY coordless boarding trip the "drop-off before
+        // pickup" error (review finding #5). Mirror the server: no coords →
+        // endpoint defaults, price never discounts.
+        const hasC = (p) => p && typeof p.lat === 'number' && isFinite(p.lat)
+          && typeof p.lng === 'number' && isFinite(p.lng);
+        const tb = b && hasC(b) ? segT(start, end, b) : 0;
+        const ta = a && hasC(a) ? segT(start, end, a) : 1;
+        if (ta <= tb) {
+          // Impossible order — reset the alighting side and say why.
+          segAlightingId = null;
+          $('segAlight').value = '';
+          // Re-price for the RESET pair (audit P1): the server will bill the
+          // driver-set board->end leg; showing full price here over-quotes.
+          var spR = rideData.segmentPrices || null;
+          var vR = spR ? spR[(segBoardingId || 'origin') + '|end'] : undefined;
+          segLegUsd = typeof vR === 'number' && isFinite(vR) && vR > 0 ? Math.round(vR) : null;
+          note.textContent = 'That drop-off comes before your pickup on the route — reset to the final stop.';
+          note.classList.remove('hidden');
+        } else {
+          // Driver-set leg price (0226): the driver priced this exact pair
+          // at posting, or the leg costs the full seat price. Same lookup
+          // the server bills with - display cannot drift from the charge.
+          const sp = rideData.segmentPrices || null;
+          const v = sp ? sp[(segBoardingId || 'origin') + '|' + (segAlightingId || 'end')] : undefined;
+          segLegUsd = typeof v === 'number' && isFinite(v) && v > 0 ? Math.round(v) : null;
+          note.textContent = segLegUsd != null
+            ? 'Partial trip \u2014 the driver set this leg at $' + segLegUsd + ' per seat.'
+            : '';
+          note.classList.toggle('hidden', segLegUsd == null);
+        }
+      } else {
+        note.classList.add('hidden');
+      }
+      renderSeats();
+    }
+    function initSegment() {
+      const stops = rideData.routeStops || [];
+      if (!stops.length || !rideData.approxStart || !rideData.approxEnd) return;
+      const wrap = $('segWrap');
+      const bSel = $('segBoard'), aSel = $('segAlight');
+      bSel.innerHTML = ''; aSel.innerHTML = '';
+      const opt = (sel, value, label) => {
+        const o = document.createElement('option');
+        o.value = value; o.textContent = label;
+        sel.appendChild(o);
+      };
+      opt(bSel, '', 'Board: ' + (rideData.fromArea || 'Start'));
+      stops.forEach((st) => { if (st.id) opt(bSel, st.id, 'Board: ' + st.name); });
+      stops.forEach((st) => { if (st.id) opt(aSel, st.id, 'Get off: ' + st.name); });
+      opt(aSel, '', 'Get off: ' + (rideData.toArea || 'End'));
+      aSel.value = '';
+      bSel.addEventListener('change', () => { segBoardingId = bSel.value || null; recomputeSegment(); });
+      aSel.addEventListener('change', () => { segAlightingId = aSel.value || null; recomputeSegment(); });
+      wrap.classList.remove('hidden');
+    }
+
+    function seatBtn(s) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      const priced = typeof s.price === 'number' && s.price > 0;
+      const open = s.avail !== false && priced;
+      btn.className = 'seat' + (open ? '' : ' taken');
+      btn.dataset.seat = s.id;
+      // textContent, never innerHTML: seat label/id come from the DRIVER's
+      // rides.seats JSON (any app user controls their own), so a markup
+      // label here would be stored XSS running with the rider's session.
+      // (2026-08-20)
+      var labelSpan = document.createElement('span');
+      labelSpan.textContent = s.label || s.id;
+      var priceSpan = document.createElement('span');
+      priceSpan.className = 'sp';
+      // Booked-by-a-rider says "Taken"; a seat the driver closed (comfort
+      // seat) says "Closed" — different facts (Justin, 2026-08-28). booked is
+      // new in the payload: only an explicit false means closed, so a cached
+      // pre-field payload still reads "Taken".
+      priceSpan.textContent = open ? fmt$(seatAllIn(segPrice(s.price))) : (s.booked === false ? 'Closed' : 'Taken');
+      btn.appendChild(labelSpan);
+      btn.appendChild(priceSpan);
+      if (open) {
+        btn.addEventListener('click', () => {
+          const i = selectedSeats.indexOf(s.id);
+          if (i >= 0) selectedSeats.splice(i, 1); else selectedSeats.push(s.id);
+          btn.classList.toggle('sel', i < 0);
+          updateSummary();
+        });
+      }
+      return btn;
+    }
+
+    function renderSeats() {
+      const grid = $('seatGrid');
+      grid.innerHTML = '';
+      // Keep the rider's picks across a segment-change re-render (review
+      // finding #9 — changing Board/Get off silently wiped the selection).
+      const priorSeats = selectedSeats.slice();
+      selectedSeats = [];
+      const seats = Array.isArray(rideData.seats) ? rideData.seats : [];
+
+      // Overhead cabin when every seat uses the app's canonical position ids
+      // (fp front passenger; ml/mr middle row; rl/rc/rr rear). Unknown ids
+      // (future layouts) fall back to the plain grid so nothing breaks.
+      const KNOWN = { fp: 1, ml: 1, mr: 1, rl: 1, rc: 1, rr: 1 };
+      const byId = {};
+      for (const s of seats) byId[s.id] = s;
+      const carLayout = seats.length > 0 && seats.every((s) => KNOWN[s.id]);
+
+      if (!carLayout) {
+        for (const s of seats) grid.appendChild(seatBtn(s));
+      } else {
+        const shell = document.createElement('div');
+        shell.className = 'carshell';
+
+        // Front row: the driver's seat (left, US car) + front passenger.
+        const front = document.createElement('div');
+        front.className = 'carrow';
+        const drv = document.createElement('div');
+        drv.className = 'dseat';
+        drv.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M3.5 12h6M14.5 12h6M12 14.5V21"/></svg>';
+        drv.appendChild(document.createTextNode('Driver'));
+        front.appendChild(drv);
+        if (byId.fp) front.appendChild(seatBtn(byId.fp));
+        else front.appendChild(document.createElement('div'));
+        shell.appendChild(front);
+
+        // Middle row (6-seaters / vans) only when the vehicle has one.
+        if (byId.ml || byId.mr) {
+          const mid = document.createElement('div');
+          mid.className = 'carrow';
+          mid.appendChild(byId.ml ? seatBtn(byId.ml) : document.createElement('div'));
+          mid.appendChild(byId.mr ? seatBtn(byId.mr) : document.createElement('div'));
+          const div1 = document.createElement('div');
+          div1.className = 'windshield';
+          shell.appendChild(div1);
+          shell.appendChild(mid);
+        }
+
+        // Rear bench.
+        if (byId.rl || byId.rc || byId.rr) {
+          const div2 = document.createElement('div');
+          div2.className = 'windshield';
+          shell.appendChild(div2);
+          const rear = document.createElement('div');
+          rear.className = 'carrow three';
+          rear.appendChild(byId.rl ? seatBtn(byId.rl) : document.createElement('div'));
+          rear.appendChild(byId.rc ? seatBtn(byId.rc) : document.createElement('div'));
+          rear.appendChild(byId.rr ? seatBtn(byId.rr) : document.createElement('div'));
+          shell.appendChild(rear);
+        }
+
+        // Car chrome (v2): wheels at the corners + side mirrors, centered.
+        const wrap = document.createElement('div');
+        wrap.className = 'carwrap';
+        ['wfl', 'wfr', 'wrl', 'wrr'].forEach((w) => {
+          const el = document.createElement('div');
+          el.className = 'carwheel ' + w;
+          wrap.appendChild(el);
+        });
+        ['mml', 'mmr'].forEach((m) => {
+          const el = document.createElement('div');
+          el.className = 'carmirror ' + m;
+          wrap.appendChild(el);
+        });
+        wrap.appendChild(shell);
+        grid.appendChild(wrap);
+      }
+
+      if (rideData.driverFirst) {
+        $('drvMsgLabel').textContent = 'Message to ' + rideData.driverFirst + ' (optional)';
+        var _smb = $('successMsgBtn'); if (_smb) _smb.textContent = '💬 Message ' + rideData.driverFirst;
+      }
+      for (const pid of priorSeats) {
+        const btn = grid.querySelector('[data-seat="' + (window.CSS && CSS.escape ? CSS.escape(pid) : pid) + '"]');
+        if (btn && !btn.classList.contains('taken')) btn.click();
+      }
+      updateSummary();
+    }
+
+    function seatById(id) { return (rideData.seats || []).find((s) => s.id === id); }
+
+    // The ONE place the charge is computed (display only — the server recomputes
+    // everything from the ride row). Used by the seat summary AND the
+    // "Your pick" line on the gate steps, so both always show the same number.
+    function computeTotals() {
+      const n = selectedSeats.length;
+      if (n === 0 || !rideData) return null;
+      const totalDollars = selectedSeats.reduce((sum, id) => sum + segPrice(seatById(id)?.price || 0), 0);
+      // Same integer math as the server: fee on the summed seat cents.
+      const bps = typeof rideData.serviceFeeBps === 'number' ? rideData.serviceFeeBps : 500;
+      const seatCents = Math.round(totalDollars * 100);
+      const feeCents = Math.floor((seatCents * bps) / 10000);
+      // Flat 99¢ booking fee, when it applies: waived-driver rides (server
+      // says so) OR this rider holds credit (credit parity with the app,
+      // 2026-08-25). The server adds it as its own Checkout line item.
+      const bookingFeeCents =
+        rideData.bookingFeeApplies === true || myCreditCents > 0 ||
+        (rideData.bookingFeeApplies === undefined && rideData.bookingFeeCents > 0)
+          ? 99 : 0;
+      const grandTotal = seatCents + feeCents + bookingFeeCents;
+      // Credit preview — mirrors the server exactly: redeem up to the total
+      // minus Stripe's 50¢ card minimum. charge = what the card is charged.
+      const creditPreview = myCreditCents > 0 && grandTotal > 50 ? Math.min(myCreditCents, grandTotal - 50) : 0;
+      return { n, bps, seatCents, feeCents, bookingFeeCents, grandTotal, creditPreview, charge: grandTotal - creditPreview };
+    }
+
+    function updateSummary() {
+      const n = selectedSeats.length;
+      const bookBtn = $('bookBtn');
+      const t = computeTotals();
+      if (n === 0 || !t) {
+        $('priceSummary').classList.add('hidden');
+        bookBtn.disabled = true;
+        bookBtn.textContent = 'Request seat';
+        return;
+      }
+      const { bps, seatCents, feeCents } = t;
+      $('sumSeatsLabel').textContent = n + ' seat' + (n === 1 ? '' : 's');
+      $('sumSeats').textContent = fmt$(seatCents / 100);
+      $('sumFeeLabel').textContent = 'Service fee (' + (bps / 100) + '%)';
+      $('sumFee').textContent = fmt$(feeCents / 100);
+      // Flat 99¢ booking fee, when it applies: waived-driver rides (server
+      // says so) OR this rider holds credit (credit parity with the app,
+      // 2026-08-25 — their credit auto-applies at checkout as a "Ride credit"
+      // discount, and credit-funded bookings carry the fee). The server adds
+      // it as its own Checkout line item, so this summary must match exactly.
+      var bookingFeeCents = t.bookingFeeCents;
+      var bookingFeeRow = $('sumBookingFeeRow');
+      if (bookingFeeRow) bookingFeeRow.classList.toggle('hidden', bookingFeeCents === 0);
+      if (bookingFeeCents > 0) $('sumBookingFee').textContent = fmt$(bookingFeeCents / 100);
+      var grandTotal = t.grandTotal;
+      var creditPreview = t.creditPreview;
+      var creditRow = $('sumCreditRow');
+      if (creditRow) creditRow.classList.toggle('hidden', creditPreview === 0);
+      if (creditPreview > 0) $('sumCredit').textContent = '−' + fmt$(creditPreview / 100);
+      $('sumTotal').textContent = fmt$((grandTotal - creditPreview) / 100);
+      $('priceSummary').classList.remove('hidden');
+      bookBtn.disabled = false;
+      bookBtn.textContent = 'Request ' + n + ' seat' + (n === 1 ? '' : 's') + ' · ' + fmt$((grandTotal - creditPreview) / 100);
+    }
+
+    // ── Email OTP ─────────────────────────────────────────────────────────
+    let emailCooldown = 0, emailCooldownTimer = null;
+    function startEmailCooldown() {
+      emailCooldown = 60;
+      const btn = $('codeResend');
+      clearInterval(emailCooldownTimer);
+      emailCooldownTimer = setInterval(() => {
+        emailCooldown -= 1;
+        if (emailCooldown <= 0) { clearInterval(emailCooldownTimer); btn.disabled = false; btn.textContent = 'Resend code'; }
+        else { btn.disabled = true; btn.textContent = 'Resend in ' + emailCooldown + 's'; }
+      }, 1000);
+      btn.disabled = true; btn.textContent = 'Resend in 60s';
+    }
+
+    async function sendEmailOtp(email) {
+      // shouldCreateUser — the whole point is a first-time visitor. role:
+      // 'passenger' in user_metadata so the app routes correctly if they
+      // install it later. 6-digit typed code, no redirect link — immune to
+      // mail-scanner link burning.
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: true, data: { role: 'passenger', surface: 'web' } },
+      });
+      if (error) {
+        const m = (error.message || '').toLowerCase();
+        if (m.includes('rate limit')) return 'Too many codes requested. Try again in an hour.';
+        return error.message || "Couldn't send the code. Try again.";
+      }
+      return null;
+    }
+
+    $('emailBtn').addEventListener('click', async () => {
+      setMsg('emailMsg', '');
+      const email = $('email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setMsg('emailMsg', 'Enter a valid email address.'); return; }
+      const btn = $('emailBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      const err = await sendEmailOtp(email);
+      btn.disabled = false; btn.textContent = 'Email me a code';
+      if (err) { setMsg('emailMsg', err); return; }
+      pendingEmail = email;
+      $('codeEmailEcho').textContent = email;
+      $('emailCode').value = '';
+      startEmailCooldown();
+      show('stCode');
+      $('emailCode').focus();
+    });
+
+    $('codeResend').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const err = await sendEmailOtp(pendingEmail);
+      if (err) { setMsg('codeMsg', err); return; }
+      startEmailCooldown();
+      setMsg('codeMsg', 'New code sent.', 'ok');
+    });
+
+    $('codeChangeEmail').addEventListener('click', () => { setMsg('codeMsg', ''); show('stEmail'); });
+
+    // ── Social sign-in (Google / Apple popup — js/ss-oauth.js) ────────────
+    // The popup writes the shared session; the page never navigates, so the
+    // seat/segment selection survives. Continuation mirrors the OTP verify
+    // path: role stamp (keep existing, default passenger), fresh-account
+    // signup event, then route() picks up exactly where the funnel was.
+    if (window.SS_OAUTH) {
+      window.SS_OAUTH.mount($('oauthMount'), {
+        onSignedIn: async () => {
+          try {
+            const { data: u } = await supabase.auth.getUser();
+            if (u && u.user) {
+              try { await supabase.auth.updateUser({ data: { role: u.user.user_metadata?.role || 'passenger' } }); } catch (_) {}
+              try {
+                const created = u.user.created_at ? new Date(u.user.created_at).getTime() : 0;
+                if (created && Date.now() - created < 10 * 60 * 1000 && window.ssTrack) {
+                  window.ssTrack('CompleteRegistration', { em: u.user.email });
+                }
+              } catch (_) {}
+            }
+          } catch (_) {}
+          if (waitlistMode) { waitlistMode = false; await waitlistFlow(); return; }
+          await route();
+        },
+      });
+    }
+
+    $('codeBtn').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const code = $('emailCode').value.replace(/\D/g, '');
+      // 6–8: Supabase's OTP length is a dashboard setting — never stricter here.
+      if (code.length < 6) { setMsg('codeMsg', 'Enter the code from the email.'); return; }
+      const btn = $('codeBtn');
+      btn.disabled = true; btn.textContent = 'Verifying…';
+      const { data, error } = await supabase.auth.verifyOtp({ email: pendingEmail, token: code, type: 'email' });
+      btn.disabled = false; btn.textContent = 'Verify';
+      if (error) {
+        const m = (error.message || '').toLowerCase();
+        setMsg('codeMsg', m.includes('expired') || m.includes('invalid')
+          ? 'That code is incorrect or has expired. Tap Resend for a new one.'
+          : error.message);
+        return;
+      }
+      // Best-effort role stamp for accounts that predate metadata-at-signup.
+      try { await supabase.auth.updateUser({ data: { role: data?.user?.user_metadata?.role || 'passenger' } }); } catch (_) {}
+      // Waitlist join was the whole reason they signed in (scan #1) — finish
+      // it instead of routing into a seat grid that was never rendered.
+      if (waitlistMode) { waitlistMode = false; await waitlistFlow(); return; }
+      await route();
+    });
+
+    // ── Profile (name + bio) ──────────────────────────────────────────────
+    function updateBioCount() { $('bioCount').textContent = String(bioWords($('pfBio').value)); }
+    $('pfBio').addEventListener('input', updateBioCount);
+
+    function nameLooksLikeHandle(n) {
+      const t = String(n || '').trim();
+      if (!t || /\s/.test(t)) return false;
+      return (/\d/.test(t) && /^[a-z0-9._-]+$/i.test(t)) || /^[a-z0-9]{10}$/.test(t);
+    }
+    $('profileBtn').addEventListener('click', async () => {
+      setMsg('profileMsg', ''); setMsg('photoMsg', '');
+      const name = $('pfName').value.trim();
+      const bio = $('pfBio').value.trim();
+      if (!name) { setMsg('profileMsg', 'Please enter your name.'); return; }
+      if (name.includes('@')) { setMsg('profileMsg', "Names can't contain @ — your driver just needs your real name."); return; }
+      if (nameLooksLikeHandle(name)) { setMsg('profileMsg', 'That looks like a username — riders and drivers need your real first and last name.'); return; }
+      if (!bioOk(bio)) { setMsg('profileMsg', 'Tell the driver a little more — at least ' + BIO_MIN_WORDS + ' words.'); return; }
+      const bioHit = bioContact(bio);
+      if (bioHit) { setMsg('profileMsg', BIO_CONTACT_MSG[bioHit]); return; }
+      if (!currentPhotoUrl && !photoBlob) { setMsg('photoMsg', 'Add a face photo — take a selfie or choose one. Your driver uses it to recognize you at pickup.'); return; }
+      const btn = $('profileBtn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      try {
+        // Photo first (if a new one is pending): same bucket/path as the app's
+        // uploadAvatar — avatars/{uid}/avatar.jpg, upsert, ?t= cache-bust.
+        const patch = { name, bio };
+        if (photoBlob) {
+          const path = myUid + '/avatar.jpg';
+          const { error: upErr } = await supabase.storage.from('avatars')
+            .upload(path, photoBlob, { contentType: 'image/jpeg', upsert: true });
+          if (upErr) throw upErr;
+          const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(path);
+          patch.photo_url = urlData.publicUrl + '?t=' + Date.now();
+        }
+        // The signup DB trigger creates the profiles row; update (not insert)
+        // is the same write the app makes under the user's own RLS. One retry
+        // covers the rare just-signed-up trigger race.
+        let { data, error } = await supabase.from('profiles')
+          .update(patch).eq('id', myUid).select('id');
+        if (!error && (!data || data.length === 0)) {
+          await new Promise((r) => setTimeout(r, 900));
+          ({ data, error } = await supabase.from('profiles')
+            .update(patch).eq('id', myUid).select('id'));
+        }
+        if (error || !data || data.length === 0) throw error || new Error('Profile not ready — please try again.');
+        if (patch.photo_url) { currentPhotoUrl = patch.photo_url; photoBlob = null; }
+        // Keep auth user_metadata.name in sync (same as updateMyProfile) so
+        // the app shows the right name if they install it later. Best-effort.
+        try { await supabase.auth.updateUser({ data: { name, role: 'passenger' } }); } catch (_) {}
+      } catch (e) {
+        setMsg('profileMsg', (e && e.message) || 'Could not save. Try again.');
+        btn.disabled = false; btn.textContent = 'Continue';
+        return;
+      }
+      btn.disabled = false; btn.textContent = 'Continue';
+      await route();
+    });
+
+    // ── Phone verify ──────────────────────────────────────────────────────
+    let phoneCooldown = 0, phoneCooldownTimer = null;
+    function startPhoneCooldown() {
+      phoneCooldown = 60;
+      const btn = $('phoneResend');
+      clearInterval(phoneCooldownTimer);
+      phoneCooldownTimer = setInterval(() => {
+        phoneCooldown -= 1;
+        if (phoneCooldown <= 0) { clearInterval(phoneCooldownTimer); btn.disabled = false; btn.textContent = 'Resend code'; }
+        else { btn.disabled = true; btn.textContent = 'Resend in ' + phoneCooldown + 's'; }
+      }, 1000);
+      btn.disabled = true; btn.textContent = 'Resend in 60s';
+    }
+
+    async function sendPhoneOtp() {
+      // updateUser({ phone }) = Supabase's add-or-change-phone flow → Twilio
+      // Verify ships the SMS. Exactly the services/phone-verify.ts contract.
+      const { error } = await supabase.auth.updateUser({ phone: pendingPhone.e164 });
+      return error ? mapPhoneSendError(error) : null;
+    }
+
+    $('phoneSendBtn').addEventListener('click', async () => {
+      setMsg('phoneMsg', '');
+      const cc = $('phoneCc').value, num = $('phoneNum').value;
+      const e164 = toE164(cc, num);
+      if (!plausibleE164(e164)) { setMsg('phoneMsg', 'Enter a valid US or Canada number (10 digits) — other countries are supported in the app.'); return; }
+      pendingPhone = { cc: cc.replace(/\D/g, ''), num, e164 };
+      const btn = $('phoneSendBtn');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      const err = await sendPhoneOtp();
+      btn.disabled = false; btn.textContent = 'Text me a code';
+      if (err) { setMsg('phoneMsg', err); return; }
+      $('phoneCc').disabled = true; $('phoneNum').disabled = true;
+      $('phoneCodeEntry').classList.remove('hidden');
+      $('phoneCode').value = '';
+      startPhoneCooldown();
+      $('phoneCode').focus();
+    });
+
+    $('phoneResend').addEventListener('click', async () => {
+      setMsg('phoneMsg', '');
+      const err = await sendPhoneOtp();
+      if (err) { setMsg('phoneMsg', err); return; }
+      startPhoneCooldown();
+      setMsg('phoneMsg', 'New code sent.', 'ok');
+    });
+
+    $('phoneChange').addEventListener('click', () => {
+      setMsg('phoneMsg', '');
+      $('phoneCc').disabled = false; $('phoneNum').disabled = false;
+      $('phoneCodeEntry').classList.add('hidden');
+    });
+
+    $('phoneVerifyBtn').addEventListener('click', async () => {
+      setMsg('phoneMsg', '');
+      const code = $('phoneCode').value.replace(/\D/g, '');
+      if (code.length !== 6) { setMsg('phoneMsg', 'Enter the 6-digit code.'); return; }
+      const btn = $('phoneVerifyBtn');
+      btn.disabled = true; btn.textContent = 'Verifying…';
+      const { error } = await supabase.auth.verifyOtp({ phone: pendingPhone.e164, token: code, type: 'phone_change' });
+      btn.disabled = false; btn.textContent = 'Verify phone';
+      if (error) {
+        const m = (error.message || '').toLowerCase();
+        setMsg('phoneMsg', m.includes('expired') || m.includes('invalid')
+          ? 'That code is incorrect or has expired. Tap Resend for a new one.'
+          : error.message);
+        return;
+      }
+      // Sync the verified phone onto the profile row (Stripe prefill, call
+      // feature, display) — same normalization as updateMyProfile. Best-effort:
+      // a failure here must never undo the verification.
+      try {
+        await supabase.from('profiles').update({
+          phone: stripCC(pendingPhone.cc, pendingPhone.num) || null,
+          phone_country_code: pendingPhone.cc || null,
+        }).eq('id', myUid);
+      } catch (_) {}
+      // Signup is COMPLETE at phone verification (same semantics as the app's
+      // phone wall) — fire the registration event only for a fresh account.
+      try {
+        const { data: u } = await supabase.auth.getUser();
+        const created = u?.user?.created_at ? new Date(u.user.created_at).getTime() : 0;
+        if (created && Date.now() - created < 10 * 60 * 1000 && window.ssTrack) {
+          window.ssTrack('CompleteRegistration', { em: u.user.email });
+        }
+      } catch (_) {}
+      await route();
+    });
+
+    // ── Photo ─────────────────────────────────────────────────────────────
+    let photoBlob = null;
+
+    // Browser-side clone of the app's preparePhotoForUpload: downscale to
+    // ≤1024px + re-encode JPEG. Avatars render at ≤128px so nothing visible is
+    // lost, and a 10 MB camera original becomes ~100–200 KB. Canvas re-encode
+    // also strips EXIF/GPS.
+    async function downscale(file) {
+      const url = URL.createObjectURL(file);
+      try {
+        const img = await new Promise((res, rej) => {
+          const i = new Image();
+          i.onload = () => res(i);
+          i.onerror = () => rej(new Error('decode'));
+          i.src = url;
+        });
+        const MAX = 1024;
+        const scale = Math.min(1, MAX / Math.max(img.naturalWidth, img.naturalHeight));
+        const w = Math.max(1, Math.round(img.naturalWidth * scale));
+        const h = Math.max(1, Math.round(img.naturalHeight * scale));
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        const blob = await new Promise((res) => c.toBlob(res, 'image/jpeg', 0.85));
+        if (!blob) throw new Error('encode');
+        return blob;
+      } finally { URL.revokeObjectURL(url); }
+    }
+
+    // One path for every source (selfie camera, file picker, Google avatar):
+    // downscale → face gate → preview. The upload happens on Continue.
+    async function acceptPhotoCandidate(fileOrBlob, sourceLabel) {
+      setMsg('photoMsg', '');
+      let candidate;
+      try {
+        candidate = await downscale(fileOrBlob);
+      } catch (_) {
+        setMsg('photoMsg', "That image format isn't supported — try a different photo.");
+        return false;
+      }
+      // Face gate (2026-08-28) — a car photo went through as an avatar.
+      // Blocks ONLY on an affirmative "zero faces found"; if the detector
+      // can't load, fail open rather than brick the booking.
+      try {
+        const { checkFace } = await import('/js/ss-face.js');
+        const fr = await checkFace(candidate);
+        if (fr.ok && fr.faces === 0) {
+          setMsg('photoMsg', sourceLabel === 'google'
+            ? "We couldn't spot a face in your Google photo — take a selfie or choose a clear photo of yourself instead."
+            : "We couldn't spot a face in that photo. Your driver uses it to recognize you at pickup — please use a clear photo of yourself.");
+          return false;
+        }
+      } catch (_) { /* detector unavailable — proceed */ }
+      photoBlob = candidate;
+      const prev = $('photoPrev');
+      prev.src = URL.createObjectURL(photoBlob);
+      prev.classList.remove('hidden');
+      $('googlePhotoOffer').classList.add('hidden');
+      $('photoFileLabel').textContent = '📷 Choose a different photo';
+      return true;
+    }
+    for (const inputId of ['photoFile', 'photoSelfie']) {
+      $(inputId).addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        await acceptPhotoCandidate(file, inputId === 'photoSelfie' ? 'selfie' : 'file');
+        try { e.target.value = ''; } catch (_) {}
+      });
+    }
+    // Add-email (parity with the app's on-open prompt, 2026-09-02): only
+    // shown when auth has no email (Apple re-auth / phone-only sign-ins).
+    async function renderEmailSection() {
+      const sec = $('secEmail'); if (!sec) return;
+      try {
+        const { data } = await supabase.auth.getUser();
+        const u = data && data.user;
+        const missing = !!u && !(u.email || '').trim();
+        sec.classList.toggle('hidden', !missing);
+        if (u && (u.new_email || '').trim()) {
+          $('stEmailOk').textContent = '✓';
+          setMsg('acctEmailMsg', 'Confirmation sent to ' + u.new_email + ' — tap the link in that email to finish.', 'ok');
+        }
+      } catch (_) { sec.classList.add('hidden'); }
+    }
+    $('acctEmailBtn').addEventListener('click', async () => {
+      setMsg('acctEmailMsg', '');
+      const email = $('acctEmail').value.trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setMsg('acctEmailMsg', 'Enter a valid email address.'); return; }
+      const btn = $('acctEmailBtn'); btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const { error } = await supabase.auth.updateUser({ email }, { emailRedirectTo: 'https://seatsherpa.app/email-changed' });
+        if (error) throw error;
+        $('stEmailOk').textContent = '✓';
+        setMsg('acctEmailMsg', 'Confirmation sent to ' + email + ' — tap the link in that email to finish. You can keep going here meanwhile.', 'ok');
+      } catch (e) {
+        setMsg('acctEmailMsg', (e && e.message) || 'Could not save that email. Try again.');
+      }
+      btn.disabled = false; btn.textContent = 'Save email';
+    });
+    $('googlePhotoUse').addEventListener('click', async () => {
+      if (!googlePhotoUrl) return;
+      const btn = $('googlePhotoUse');
+      btn.disabled = true; btn.textContent = 'Checking…';
+      try {
+        const res = await fetch(googlePhotoUrl, { mode: 'cors' });
+        if (!res.ok) throw new Error('fetch');
+        const blob = await res.blob();
+        await acceptPhotoCandidate(blob, 'google');
+      } catch (_) {
+        setMsg('photoMsg', "Couldn't load your Google photo here — take a selfie or choose a photo instead.");
+      }
+      btn.disabled = false; btn.textContent = 'Use this photo';
+    });
+
+    // ── Create booking → Stripe Checkout ──────────────────────────────────
+    $('bookBtn').addEventListener('click', async () => {
+      setMsg('bookMsg', '');
+      if (selectedSeats.length === 0) return;
+      const btn = $('bookBtn');
+      btn.disabled = true;
+      const prevLabel = btn.textContent;
+      btn.textContent = 'Requesting…';
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const token = sessionData.session?.access_token;
+        if (!token) { show('stEmail'); return; }
+        const res = await fetch(SUPA + '/functions/v1/web-create-booking', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: ANON,
+            Authorization: 'Bearer ' + token,
+          },
+          body: JSON.stringify({
+            rideId,
+            seatIds: selectedSeats,
+            boardingStopId: segBoardingId,
+            alightingStopId: segAlightingId,
+            driverMessage: $('drvMsg').value.trim() || null,
+          }),
+        });
+        const body = await res.json().catch(() => ({}));
+        // Resume or fresh — any response carrying a checkoutUrl goes to Stripe.
+        if (body && body.checkoutUrl) {
+          if (body.resumed) {
+            // Resuming an EARLIER request: the charge is that request, not
+            // what's on screen now. Name the real total on the way out
+            // (audit P1 - the one case where charge could exceed display).
+            try {
+              var rp = document.querySelector('#stRedirect .sub, #stRedirect p');
+              if (rp) rp.textContent = 'Resuming the request you already started — ' + fmt$((body.amountCents || 0) / 100) + ' total. It replaces what you just selected. Taking you to secure checkout…';
+            } catch (_) {}
+          }
+          show('stRedirect');
+          location.href = body.checkoutUrl;
+          return;
+        }
+        if (!res.ok) { await handleBookingError(body); return; }
+        throw new Error('Unexpected response.');
+      } catch (e) {
+        setMsg('bookMsg', (e && e.message) || 'Something went wrong. Try again.');
+      } finally {
+        if (!$('stRedirect').classList.contains('hidden')) return;
+        btn.disabled = false;
+        btn.textContent = prevLabel;
+      }
+    });
+
+    function ssLogTos(uid) {
+      // Consent evidence for the sign-in-wrap notice. Flag only on SUCCESS
+      // — a swallowed failure must retry next session (audit P2).
+      try {
+        if (localStorage.getItem('ss-tos-web-v1')) return;
+        supabase.from('terms_acceptances')
+          .insert({ user_id: uid, terms_version: '2026-05-26', privacy_version: '2026-07-08', platform: 'web' })
+          .then(function (r) { if (!r || !r.error) { try { localStorage.setItem('ss-tos-web-v1', '1'); } catch (_) {} } }, function () {});
+      } catch (_) {}
+    }
+    // Server gate bounces → route the visitor to the right step; ride-level
+    // failures → honest terminal states. Machine codes per web-create-booking.
+    async function handleBookingError(body) {
+      const code = body && body.error;
+      switch (code) {
+        case 'GATE_NAME':
+        case 'GATE_BIO':
+          await route();
+          setMsg('profileMsg', 'Please finish your profile first.');
+          return;
+        case 'GATE_PHONE':
+          await route();
+          setMsg('phoneMsg', 'Please verify your phone first.');
+          return;
+        case 'GATE_PHOTO':
+          await route();
+          setMsg('photoMsg', 'Please add a face photo first.');
+          return;
+        case 'RIDE_GONE': showGone(); return;
+        case 'DEPARTS_TOO_SOON': showGone('soon'); return;
+        case 'OWN_RIDE':
+          setMsg('bookMsg', "This is your own ride — you can't book your own seat.");
+          return;
+        case 'SEATS_TAKEN': {
+          // Someone beat them to it — refresh availability and let them re-pick.
+          try {
+            const d = await loadRide(true);
+            if (d && d.found) {
+              rideData = d;
+              // Last seat gone: "pick another" over an all-Taken grid is a
+              // dead end (audit M5) — route to the full-ride state, which
+              // offers the browse list instead.
+              if (!(d.seats || []).some((s) => s.avail !== false)) { showGone('full'); return; }
+              renderSeats();
+              try { initSegment(); recomputeSegment(); } catch (_) {}
+            }
+          } catch (_) {}
+          setMsg('bookMsg', 'Someone grabbed that seat first — pick another.');
+          return;
+        }
+        case 'INVALID_STOP':
+          segBoardingId = null; segAlightingId = null;
+          try { $('segBoard').value = ''; $('segAlight').value = ''; recomputeSegment(); } catch (_) {}
+          setMsg('bookMsg', "Those pickup/drop-off stops don't match this route — reset to the full trip. Try again.");
+          return;
+        case 'ALREADY_BOOKED':
+          setMsg('bookMsg', 'You already have a request on this ride' +
+            (body.refCode ? ' (ref ' + body.refCode + ')' : '') +
+            '. Manage it at seatsherpa.app/trips' +
+            (body.refCode ? '?ref=' + encodeURIComponent(body.refCode) : '') + '.');
+          return;
+        case 'INVALID_SEATS':
+          setMsg('bookMsg', 'One of those seats is no longer offered — refresh and pick again.');
+          return;
+        case 'INVALID_AMOUNT':
+          setMsg('bookMsg', "This ride's pricing looks off — try again in a minute.");
+          return;
+        case 'CHECKOUT_CREATE_FAILED':
+          setMsg('bookMsg', "Couldn't start the payment page. Nothing was charged — try again.");
+          return;
+        default:
+          setMsg('bookMsg', (body && (body.message || body.error)) || 'Something went wrong. Try again.');
+      }
+    }
+
+    // ── Return from Stripe: success ───────────────────────────────────────
+    // Polls the booking row via PostgREST under the rider's own RLS
+    // (bookings_select_own) — explicit column list, never select('*').
+    // payment_verified_at is stamped by the checkout.session.completed webhook,
+    // which can lag the redirect by a few seconds.
+    async function runSuccessFlow() {
+      show('stFinalizing');
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        // Session didn't survive (cleared storage / different browser). The
+        // webhook still stamps + notifies regardless — reassure and stop.
+        $('successTitle').textContent = 'Payment received';
+        $('successSub').textContent = "Your request is being finalized — you'll get an email as soon as the driver responds. Your card is only charged if they accept.";
+        show('stSuccess');
+        return;
+      }
+      for (let attempt = 0; attempt < 20; attempt++) {
+        try {
+          const { data: b } = await supabase.from('bookings')
+            .select('id, status, payment_verified_at, ref_code')
+            .eq('id', bookingParam)
+            .maybeSingle();
+          if (b) {
+            // Point the success screen's message button at THIS booking's
+            // thread rather than the generic inbox (audit 8/28).
+            if (b.ref_code) {
+              var _mb = $('successMsgBtn');
+              if (_mb) _mb.href = '/trips?ref=' + encodeURIComponent(b.ref_code) + '&chat=1';
+            }
+            if (b.status === 'Confirmed') {
+              $('successTitle').textContent = "You're booked!";
+              if (b.ref_code) { $('successRef').textContent = b.ref_code; $('successRef').classList.remove('hidden'); }
+              $('successSub').textContent = 'The driver accepted — check your email for the details. Chat about pickup any time at seatsherpa.app/trips.';
+              show('stSuccess');
+              return;
+            }
+            if (b.status === 'Cancelled') {
+              $('successTitle').textContent = 'This request was cancelled';
+              $('successSub').textContent = "Your card won't be charged. Head back to the ride to try again, or find another ride in the app.";
+              show('stSuccess');
+              return;
+            }
+            if (b.payment_verified_at) {
+              $('successTitle').textContent = 'Your request is in';
+              if (b.ref_code) { $('successRef').textContent = b.ref_code; $('successRef').classList.remove('hidden'); }
+              const drv = rideData && rideData.driverFirst ? rideData.driverFirst : 'The driver';
+              $('successSub').textContent = drv + " has been notified. Your card is authorized but only charged when they accept — we'll email you as soon as they respond.";
+              show('stSuccess');
+              return;
+            }
+          }
+        } catch (_) { /* transient — keep polling */ }
+        await new Promise((r) => setTimeout(r, 3000));
+      }
+      // Webhook slower than our patience — the sweeps/webhook still converge;
+      // never leave the rider thinking their money vanished.
+      $('successTitle').textContent = 'Payment is processing';
+      // No email promise here — nothing mails the rider at this moment (the
+      // next email is the driver's response). My trips is the live truth.
+      $('successSub').textContent = "Your payment went through and your request is being finalized — it'll show in My trips within a few minutes. Your card is only charged if the driver accepts, and we'll email you the moment they respond.";
+      show('stSuccess');
+    }
+
+    // ── Return from Stripe: cancelled ─────────────────────────────────────
+    function runCancelledFlow() {
+      // "Finish booking" resumes the still-open Checkout session DIRECTLY
+      // (resume:true probe — no seats sent; the server returns the session
+      // URL for the rider's own Pending booking). It must NOT reload the
+      // funnel: the rider's own held seats render as taken there, so a
+      // last-seat ride showed them "This ride is full", and re-picking a
+      // different seat silently redirected to the old session for the old
+      // seats anyway. RESUME_NONE (session expired) falls back to the funnel.
+      $('retryLink').addEventListener('click', async (ev) => {
+        ev.preventDefault();
+        const link = $('retryLink');
+        const prev = link.textContent;
+        link.textContent = 'Resuming…';
+        try {
+          const { data: sessionData } = await supabase.auth.getSession();
+          const token = sessionData.session?.access_token;
+          if (!token) { location.href = '/book?id=' + encodeURIComponent(rideId); return; }
+          const res = await fetch(SUPA + '/functions/v1/web-create-booking', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: ANON,
+              Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({ rideId, resume: true }),
+          });
+          const body = await res.json().catch(() => ({}));
+          if (body && body.checkoutUrl) { location.href = body.checkoutUrl; return; }
+        } catch (e) { /* fall through to the funnel */ }
+        location.href = '/book?id=' + encodeURIComponent(rideId);
+      });
+      show('stCancelled');
+    }
+
+    $('withdrawBtn').addEventListener('click', async () => {
+      const btn = $('withdrawBtn');
+      btn.disabled = true;
+      setMsg('cancelMsg', '');
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) throw new Error('Please use the device you booked on, or just leave it — an unpaid request expires on its own.');
+        // Withdraw through web-cancel-booking (same path as /trips) so the
+        // Stripe side is actually cleaned up — the old raw status flip left a
+        // completed authorization dangling on the rider's card and never
+        // stamped cancelled_by. Falls back to the raw flip (still legal under
+        // 0059's column grant) only if the function itself is unreachable.
+        const wcRes = await fetch(SUPA + '/functions/v1/web-cancel-booking', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: ANON,
+            Authorization: 'Bearer ' + sessionData.session.access_token,
+          },
+          body: JSON.stringify({
+            bookingId: bookingParam,
+            reason: 'Rider closed web checkout without paying',
+          }),
+        });
+        if (!wcRes.ok) {
+          const out = await wcRes.json().catch(() => ({}));
+          if (wcRes.status >= 500 || wcRes.status === 0) {
+            const { data, error } = await supabase.from('bookings')
+              .update({ status: 'Cancelled', cancel_reason: 'Rider closed web checkout without paying' })
+              .eq('id', bookingParam)
+              .eq('status', 'Pending')
+              .select('id');
+            if (error) throw error;
+            if (!data || data.length === 0) throw new Error("This request can't be withdrawn here — it may already be accepted. Manage it in the app.");
+          } else {
+            throw new Error((out && out.error) || "This request can't be withdrawn here — it may already be accepted. Manage it in the app.");
+          }
+        }
+        $('retryLink').classList.add('hidden');
+        btn.classList.add('hidden');
+        setMsg('cancelMsg', 'Request withdrawn — the seats are open again and your card was never charged.', 'ok');
+      } catch (e) {
+        setMsg('cancelMsg', (e && e.message) || 'Could not withdraw. Try again.');
+        btn.disabled = false;
+      }
+    });
+
+    $('signOutBtn').addEventListener('click', async () => {
+      await supabase.auth.signOut({ scope: 'local' }); // global scope would revoke the phone app's session too (ss-session.js rule)
+      selectedSeats = [];
+      $('signedIn').classList.add('hidden');
+      show('stEmail');
+    });
+
+    // Enter-key submits on the single-field steps.
+    const enterMap = [['email','emailBtn'], ['emailCode','codeBtn'], ['phoneNum','phoneSendBtn'], ['phoneCode','phoneVerifyBtn']];
+    for (const [inp, btn] of enterMap) {
+      $(inp).addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $(btn).click(); } });
+    }
+
+    // ── Boot ──────────────────────────────────────────────────────────────
+    (async function init() {
+      const returning = (returnState === 'success' || returnState === 'cancelled') && Number.isFinite(bookingParam);
+      if (!Number.isFinite(rideId) && !returning) { showGone(); return; }
+      let d = null;
+      let fetchFailed = false;
+      try { d = await loadRide(); } catch (_) { d = null; fetchFailed = true; }
+      if (d && d.found) { rideData = d; renderRideCard(d); }
+
+      // Return states short-circuit the funnel BEFORE the ride-found check:
+      // a rider coming back from Stripe must always see their booking status,
+      // even if the ride has since departed/cancelled (public-ride reports
+      // those as found:false).
+      if (returnState === 'success' && returning) { runSuccessFlow(); return; }
+      if (returnState === 'cancelled' && returning) { runCancelledFlow(); return; }
+
+      if (fetchFailed) { showGone('offline'); return; }
+      if (!d || !d.found) { showGone(); return; }
+
+      // Pre-extension public-ride payload (no seats array) can't drive the
+      // picker — fall back to the app rather than a broken grid.
+      if (!Array.isArray(d.seats)) { show('stAppOnly'); return; }
+      if (d.seatsLeft === 0 || !d.seats.some((s) => s.avail !== false)) { showGone('full'); return; }
+      if (d.bookable === false) { showGone('soon'); return; }
+
+      renderSeats();
+      initSegment();
+      // SEATS BEFORE SIGN-UP (BlaBlaCar benchmark, 2026-08-26): an anonymous
+      // visitor sees the seat grid, per-seat prices, and the exact total
+      // BEFORE committing any identity — the old boot bounced them straight
+      // to email OTP with the price still invisible, four gates before the
+      // one question that decides everything ("does this price work?").
+      // Tapping Request starts the sign-in walk; selection survives in memory
+      // because every gate is a card on this same page; and the server
+      // re-enforces every gate regardless (GATE_* bounces route back).
+      const { data: bootSession } = await supabase.auth.getSession();
+      if (!bootSession.session) {
+        show('stSeats');
+      } else {
+        await route();
+      }
+    })();
+  </script>
+  <script src="/js/ss-menu.js"></script>
+  <script>try{if(localStorage.getItem('sb-vmfmbntacifqoqxqxgsk-auth-token')){var bn=document.getElementById('bookNav');if(bn){var mk=function(l,h){var a=document.createElement('a');a.className='navghost';a.textContent=l;a.href=h;bn.appendChild(a);};mk('My trips','/trips');mk('Messages','/messages');var mm=document.createElement('span');mm.style.marginLeft='8px';bn.appendChild(mm);if(window.SS_MENU)SS_MENU.mount(mm);}}}catch(_){}</script>
+</body>
+</html>

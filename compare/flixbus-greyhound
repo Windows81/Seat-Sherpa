@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) — Google Ads AW-18365966554 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seat Sherpa vs FlixBus and Greyhound in California and Nevada (2026)</title>
+<meta name="description" content="Carpool seat or bus ticket? FlixBus and Greyhound fares, travel times and station logistics compared with a Seat Sherpa carpool seat on San Francisco to Los Angeles, LA to Las Vegas and LA to San Diego." />
+<link rel="canonical" href="https://seatsherpa.app/compare/flixbus-greyhound" />
+<meta property="og:title" content="Seat Sherpa vs FlixBus and Greyhound in California and Nevada (2026)" />
+<meta property="og:description" content="Carpool seat or bus ticket? FlixBus and Greyhound fares, travel times and station logistics compared with a Seat Sherpa carpool seat on San Francisco to Los Angeles, LA to Las Vegas and LA to San Diego." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/compare/flixbus-greyhound" />
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Seat Sherpa vs FlixBus and Greyhound in California and Nevada (2026)","description":"Carpool seat or bus ticket? FlixBus and Greyhound fares, travel times and station logistics compared with a Seat Sherpa carpool seat on San Francisco to Los Angeles, LA to Las Vegas and LA to San Diego.","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa","url":"https://seatsherpa.app"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-09-02","dateModified":"2026-09-02","mainEntityOfPage":"https://seatsherpa.app/compare/flixbus-greyhound","about":{"@type":"Organization","name":"Seat Sherpa","url":"https://seatsherpa.app","sameAs":["https://apps.apple.com/us/app/seat-sherpa-carpool/id6773077112"]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is carpooling cheaper than FlixBus?","acceptedAnswer":{"@type":"Answer","text":"About the same on most California routes. FlixBus is cheapest booked weeks ahead; a Seat Sherpa seat is capped at $55 regardless of when you book, so it tends to win on short notice and on holiday weekends when bus fares rise."}},{"@type":"Question","name":"Is a Seat Sherpa ride faster than Greyhound?","acceptedAnswer":{"@type":"Answer","text":"Usually by 1 to 3 hours on San Francisco to Los Angeles, because there are no station transfers and no intermediate stops beyond the ones the driver has listed. Both depend on I-5 traffic."}},{"@type":"Question","name":"Does the bus go from Los Angeles to Las Vegas?","acceptedAnswer":{"@type":"Answer","text":"Yes, FlixBus and Greyhound both run it, typically 5.5 to 7 hours for $25 to $60. A carpool seat on Seat Sherpa is typically $25 to $55 plus a 5% fee and 4.5 to 5.5 hours."}},{"@type":"Question","name":"How much does a Seat Sherpa seat cost?","acceptedAnswer":{"@type":"Answer","text":"It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat. Riders pay the seat price plus a 5% service fee, shown before you pay. Live prices for each corridor are on the route pages and in the ride browser."}},{"@type":"Question","name":"Is Seat Sherpa safe?","acceptedAnswer":{"@type":"Answer","text":"Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment."}},{"@type":"Question","name":"What is the cancellation policy?","acceptedAnswer":{"@type":"Answer","text":"One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The 5% service fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seatsherpa.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://seatsherpa.app/compare"},{"@type":"ListItem","position":3,"name":"Seat Sherpa vs FlixBus and Greyhound","item":"https://seatsherpa.app/compare/flixbus-greyhound"}]}</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
+  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
+  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:#eaeaea}
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
+  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:#00D4C8;font-weight:700}
+  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  .callout h3{font-size:18px;margin-bottom:6px}
+  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  .scroll{overflow-x:auto}
+  @media(max-width:640px){h1{font-size:27px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+
+<article class="wrap">
+  <div class="crumb"><a href="/">Home</a> › <a href="/compare">Compare</a> › Seat Sherpa vs FlixBus and Greyhound</div>
+  <h1>Seat Sherpa vs FlixBus and Greyhound</h1>
+  <div class="meta">Updated September 2026 · Prices are typical ranges; live seat prices are on each route page</div>
+
+  <p class="lede"><strong>Short answer:</strong> the prices are close. A bus ticket from San Francisco to Los Angeles is roughly $25 to $70 depending on how early you book; a Seat Sherpa carpool seat is capped at $55 plus a 5% fee. The differences are time and logistics: the carpool is door to door and typically 1 to 3 hours faster, while the bus runs on a fixed timetable whether or not anyone has posted your route.</p>
+
+  <h2>Side by side</h2>
+  <div class="scroll"><table>
+    <thead><tr><th></th><th>Seat Sherpa</th><th>FlixBus / Greyhound</th></tr></thead>
+    <tbody>
+      <tr><td>SF to LA fare</td><td>$30 to $55 + 5% fee</td><td>$25 to $70</td></tr>
+      <tr><td>LA to Las Vegas fare</td><td>$25 to $55 + 5% fee</td><td>$25 to $60</td></tr>
+      <tr><td>LA to San Diego fare</td><td>$15 to $30 + 5% fee</td><td>$15 to $35</td></tr>
+      <tr><td>SF to LA door to door</td><td class="win">6 to 7.5 h</td><td>8 to 10 h with transfers to and from stations</td></tr>
+      <tr><td>Pickup</td><td class="win">A spot you agree in chat: a BART or Metro station, a campus, a parking lot</td><td>Fixed terminal or curbside stop</td></tr>
+      <tr><td>Departure</td><td>The driver’s time; drivers post the week of the trip, often several per day on busy corridors</td><td class="win">Timetabled, many departures a day</td></tr>
+      <tr><td>Luggage</td><td>By arrangement; look for the large-trunk or ski-rack badge on the ride</td><td class="win">One checked bag plus a carry-on included</td></tr>
+      <tr><td>Who you travel with</td><td>One verified driver and up to a few passengers, with reviews</td><td>A full coach</td></tr>
+      <tr><td>Cancellation</td><td>24h+ full seat refund, 2 to 24h 50%, driver cancels 100%</td><td>Varies by fare type; cheapest fares are often non-refundable</td></tr>
+      <tr><td>Overnight</td><td>Rare</td><td class="win">Overnight coaches exist on SF to LA</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>How to decide</h2>
+  <p>Check the route page first. If a driver has posted a time that works, the carpool is faster and starts closer to your door. If nothing is posted yet, either set a route alert so you are emailed the moment a ride appears, post a request on the <a href="/requests">ride request board</a> (drivers read it before deciding what to post), or take the bus. On holiday weekends the bus sells out and prices climb, while carpool seats stay capped.</p>
+
+  <div class="callout" style="text-align:center">
+    <h3>See live seat prices on your route</h3>
+    <p style="margin-bottom:6px">Drivers post trips they are already taking. Book in the browser or the app; no account needed to look.</p>
+    <a class="btn" href="/rides?c=compare">Browse rides →</a>
+    <p style="font-size:14px;color:#8a8a92;margin-top:10px">Driving somewhere yourself? <a href="/post">Post the ride</a> and split the cost.</p>
+  </div>
+
+  <h2>FAQ</h2>
+  <div class="faq"><h3>Is carpooling cheaper than FlixBus?</h3><p>About the same on most California routes. FlixBus is cheapest booked weeks ahead; a Seat Sherpa seat is capped at $55 regardless of when you book, so it tends to win on short notice and on holiday weekends when bus fares rise.</p></div>
+  <div class="faq"><h3>Is a Seat Sherpa ride faster than Greyhound?</h3><p>Usually by 1 to 3 hours on San Francisco to Los Angeles, because there are no station transfers and no intermediate stops beyond the ones the driver has listed. Both depend on I-5 traffic.</p></div>
+  <div class="faq"><h3>Does the bus go from Los Angeles to Las Vegas?</h3><p>Yes, FlixBus and Greyhound both run it, typically 5.5 to 7 hours for $25 to $60. A carpool seat on Seat Sherpa is typically $25 to $55 plus a 5% fee and 4.5 to 5.5 hours.</p></div>
+  <div class="faq"><h3>How much does a Seat Sherpa seat cost?</h3><p>It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat. Riders pay the seat price plus a 5% service fee, shown before you pay. Live prices for each corridor are on the route pages and in the ride browser.</p></div>
+  <div class="faq"><h3>Is Seat Sherpa safe?</h3><p>Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment.</p></div>
+  <div class="faq"><h3>What is the cancellation policy?</h3><p>One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The 5% service fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee.</p></div>
+
+  <h2>More comparisons</h2>
+  <div style="font-size:16px">
+      <a href="/compare" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">All comparisons →</a>
+      <a href="/compare/amtrak" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Seat Sherpa vs Amtrak →</a>
+      <a href="/compare/uber-lyft" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Seat Sherpa vs Uber &amp; Lyft →</a>
+      <a href="/guides/cheapest-way-los-angeles-to-las-vegas" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Cheapest Way: Los Angeles To Las Vegas →</a>
+  </div>
+</article>
+
+<footer><div class="wrap"><a href="/">Home</a><a href="/rides">Live rides</a><a href="/routes">Routes</a><a href="/compare">Compare</a><a href="/faq">FAQ</a><a href="/drive">Drive</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><div style="margin-top:10px">© 2026 Seat Sherpa · California &amp; Nevada carpool marketplace</div></div></footer>
+</body>
+</html>
