@@ -102,6 +102,18 @@ fbq('track','PageView');
   footer a{color:#999;margin-right:16px}
   .scroll{overflow-x:auto}
   @media(max-width:640px){h1{font-size:27px}}
+  /* Phones: tables become cards (UX sweep wave 1, 2026-09-02). Each cell
+     carries its column label in data-l; the first cell is the row title. */
+  @media(max-width:640px){
+    table.stack{display:block}
+    table.stack thead{display:none}
+    table.stack tbody,table.stack tr{display:block}
+    table.stack tr{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.stack td{display:block;border:0;padding:3px 0}
+    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8a92}
+    table.stack td:first-child{font-size:16px;font-weight:700;padding-bottom:6px}
+    table.stack td:first-child::before{display:none}
+  }
 </style>
 </head>
 <body>
@@ -115,18 +127,18 @@ fbq('track','PageView');
   <p class="lede"><strong>Short answer:</strong> Uber and Lyft are ride-hailing: a commercial driver is dispatched to you and paid per mile and per minute, which is why San Francisco to Los Angeles runs $300 to $500 or more, if a driver accepts it at all. Seat Sherpa is carpooling: a driver who is already making the trip posts it ahead of time and you share their cost, capped at the IRS mileage rate split across seats and never more than $55 a seat.</p>
 
   <h2>Side by side</h2>
-  <div class="scroll"><table>
+  <div class="scroll"><table class="stack">
     <thead><tr><th></th><th>Seat Sherpa</th><th>Uber / Lyft</th></tr></thead>
     <tbody>
-      <tr><td>What it is</td><td class="win">Scheduled carpool: book a seat on a trip the driver is taking anyway</td><td>On-demand ride-hailing inside metro areas</td></tr>
-      <tr><td>SF to LA, one person</td><td class="win">$30 to $55 + 5% fee</td><td>$300 to $500+</td></tr>
-      <tr><td>LA to Las Vegas, one person</td><td class="win">$25 to $55 + 5% fee</td><td>$250 to $400+</td></tr>
-      <tr><td>Pricing</td><td class="win">Capped at the IRS mileage rate divided across seats; no surge</td><td>Per mile + per minute, surge at peak times</td></tr>
-      <tr><td>Booking</td><td>Book ahead, usually a day to a week out; instant-book or request</td><td class="win">Minutes away, any time</td></tr>
-      <tr><td>Driver</td><td>Everyday driver: phone, license, vehicle and Stripe identity verified; public rating</td><td>Commercial TNC driver with background check</td></tr>
-      <tr><td>Route</td><td>Fixed intercity route, exact pickup arranged in chat; some rides add stops along the way</td><td class="win">Anywhere the app operates</td></tr>
-      <tr><td>Payment</td><td class="win">Held by Stripe until your pickup code is entered; refunded if the ride does not happen</td><td>Charged at trip end</td></tr>
-      <tr><td>Insurance</td><td>Cost-sharing carpool, the driver’s personal policy applies</td><td class="win">Commercial policy while on trip</td></tr>
+      <tr><td>What it is</td><td class="win" data-l="Seat Sherpa">Scheduled carpool: book a seat on a trip the driver is taking anyway</td><td data-l="Uber / Lyft">On-demand ride-hailing inside metro areas</td></tr>
+      <tr><td>SF to LA, one person</td><td class="win" data-l="Seat Sherpa">$30 to $55 + 5% fee</td><td data-l="Uber / Lyft">$300 to $500+</td></tr>
+      <tr><td>LA to Las Vegas, one person</td><td class="win" data-l="Seat Sherpa">$25 to $55 + 5% fee</td><td data-l="Uber / Lyft">$250 to $400+</td></tr>
+      <tr><td>Pricing</td><td class="win" data-l="Seat Sherpa">Capped at the IRS mileage rate divided across seats; no surge</td><td data-l="Uber / Lyft">Per mile + per minute, surge at peak times</td></tr>
+      <tr><td>Booking</td><td data-l="Seat Sherpa">Book ahead, usually a day to a week out; instant-book or request</td><td class="win" data-l="Uber / Lyft">Minutes away, any time</td></tr>
+      <tr><td>Driver</td><td data-l="Seat Sherpa">Everyday driver: phone, license, vehicle and Stripe identity verified; public rating</td><td data-l="Uber / Lyft">Commercial TNC driver with background check</td></tr>
+      <tr><td>Route</td><td data-l="Seat Sherpa">Fixed intercity route, exact pickup arranged in chat; some rides add stops along the way</td><td class="win" data-l="Uber / Lyft">Anywhere the app operates</td></tr>
+      <tr><td>Payment</td><td class="win" data-l="Seat Sherpa">Held by Stripe until your pickup code is entered; refunded if the ride does not happen</td><td data-l="Uber / Lyft">Charged at trip end</td></tr>
+      <tr><td>Insurance</td><td data-l="Seat Sherpa">Cost-sharing carpool, the driver’s personal policy applies</td><td class="win" data-l="Uber / Lyft">Commercial policy while on trip</td></tr>
     </tbody>
   </table></div>
 

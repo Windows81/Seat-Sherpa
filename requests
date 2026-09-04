@@ -155,6 +155,7 @@
       <p class="sub">We'll email you a sign-in code — and this is where you'll hear when a driver posts your ride.</p>
       <label for="nameInput">First and last name</label>
       <input type="text" id="nameInput" autocomplete="name" maxlength="60" placeholder="Jordan Lee" />
+      <p class="hint" style="margin:4px 0 0;">Just your name — drivers reach you in Seat Sherpa, and your number is only shared on ride day.</p>
       <p class="hint">The board shows first name and last initial only — “Jordan L.”</p>
       <label for="emailInput">Email</label>
       <input type="email" id="emailInput" autocomplete="email" placeholder="you@school.edu" />
@@ -418,7 +419,7 @@
         : '';
       stats.classList.toggle('hidden', !rows.length);
       if (!rows.length) {
-        $('boardList').innerHTML = '<p class="empty">No requests on that route yet.</p>';
+        $('boardList').innerHTML = '<p class="empty">No requests on that route yet. Drivers usually post the week of the trip — request it and you\'ll get an email the moment a match goes up.</p>';
         return;
       }
       let html = ''; let lastDate = '';
@@ -441,7 +442,7 @@
         if (boardRows.length === 0) {
           $('boardStats').classList.add('hidden');
           $('corridorChips').innerHTML = '';
-          $('boardList').innerHTML = '<p class="empty">No open requests right now — the board is new.<br><br>'
+          $('boardList').innerHTML = '<p class="empty">No open requests right now — the board is new. Drivers usually post the week of the trip.<br><br>'
             + 'Need a ride? <strong>Be the first</strong>: drivers check this before deciding what to post, and you\'ll get an email the moment someone posts your route.<br><br>'
             + 'Driving somewhere? <a class="driverlink" href="/post">Post your ride →</a> — riders searching your corridor get notified.</p>';
           return;
@@ -585,13 +586,16 @@
     $('emailBtn').addEventListener('click', async () => {
       setMsg('emailMsg', '');
       const name = $('nameInput').value.trim();
+      // No phone numbers or emails in the name (2026-09-02): it becomes the
+      // public board name and the profile name; the server strips them too.
+      if (/\d{5,}|@/.test(name.replace(/[s().+-]/g, ''))) { setMsg('emailMsg', 'Just your name here — no phone number or email. Drivers reach you in Seat Sherpa, and your number is shared on ride day.'); return; }
       if (name.length < 2) { setMsg('emailMsg', 'Enter your name — the board shows just “First L.”'); return; }
       if (pendingRequest) pendingRequest.name = name;
       const email = $('emailInput').value.trim().toLowerCase();
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { setMsg('emailMsg', 'That email doesn’t look right.'); return; }
       const btn = $('emailBtn'); btn.disabled = true; btn.textContent = 'Sending…';
       try {
-        const { error } = await supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
+        const { error } = await supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true, data: { surface: 'web' } } });
         if (error) throw error;
         pendingEmail = email;
         $('codeSub').textContent = 'We emailed a 6-digit code to ' + email + '.';
@@ -605,7 +609,7 @@
       setMsg('codeMsg', '');
       const btn = $('resendBtn'); btn.disabled = true; btn.textContent = 'Sending…';
       try {
-        const { error } = await supabase.auth.signInWithOtp({ email: pendingEmail, options: { shouldCreateUser: true } });
+        const { error } = await supabase.auth.signInWithOtp({ email: pendingEmail, options: { shouldCreateUser: true, data: { surface: 'web' } } });
         if (error) throw error;
         setMsg('codeMsg', 'New code sent — check your inbox.', 'ok');
       } catch (err) {
@@ -631,6 +635,21 @@
         try {
           const meta = (data.user && data.user.user_metadata) || {};
           if (!meta.role) await supabase.auth.updateUser({ data: { role: 'passenger' } });
+        } catch (_) {}
+        // Welcome email (2026-09-02, the Ahmed miss): this page has its own
+        // sign-in, so it never fired the web welcome that signin.html and the
+        // OAuth callback do. Same rule as ss-session.sendWebWelcomeIfNew —
+        // accounts under 24h old only; the function itself claims the send
+        // atomically, so a repeat call can never double-mail.
+        try {
+          const created = data.user && data.user.created_at ? new Date(data.user.created_at).getTime() : 0;
+          if (created && Date.now() - created < 24 * 60 * 60 * 1000) {
+            fetch(SUPA + '/functions/v1/send-welcome-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+              body: JSON.stringify({ web: true }),
+            }).catch(function () {});
+          }
         } catch (_) {}
         btn.textContent = 'Posting…';
         await handleSubmitResult(await submitRequest(token));

@@ -134,6 +134,19 @@ document.addEventListener('pointerdown',f,true);document.addEventListener('click
   .badge .s{font-size:11px;color:#888}.badge .b{font-size:15px;font-weight:700}
   footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;color:#666;font-size:13px}
   footer a{color:#999;margin-right:16px}
+  /* Phones: tables become cards (UX sweep wave 1, 2026-09-02). Each cell
+     carries its column label in data-l; the first cell is the row title. */
+  @media(max-width:640px){
+    table.stack{display:block}
+    table.stack thead{display:none}
+    table.stack tbody,table.stack tr{display:block}
+    table.stack tr{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.stack td{display:block;border:0;padding:3px 0}
+    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8a92}
+    table.stack td:first-child{font-size:16px;font-weight:700;padding-bottom:6px}
+    table.stack td:first-child::before{display:none}
+  }
+
   @media(max-width:640px){h1{font-size:30px}.facts{grid-template-columns:1fr 1fr}.cols,.safety{grid-template-columns:1fr}}
 </style>
 </head>
@@ -164,38 +177,38 @@ document.addEventListener('pointerdown',f,true);document.addEventListener('click
       that aren't us. Prices checked July 2026; where we haven't verified a fare ourselves, we say so
       instead of guessing.</p>
     <div class="tw">
-      <table class="cmp">
+      <table class="stack cmp">
         <thead><tr><th>Option</th><th>Typical cost</th><th>Time</th><th>Notes</th></tr></thead>
         <tbody>
       <tr class="us">
         <td class="m">Seat Sherpa carpool <span class="tag">that's us</span></td>
-        <td class="p good">$14–$26</td>
-        <td class="t2">2–2.5 hours</td>
-        <td class="n">Door to door. Split the driver's fuel — no surge.</td>
+        <td class="p good" data-l="Typical cost">$14–$26</td>
+        <td class="t2" data-l="Time">2–2.5 hours</td>
+        <td class="n" data-l="Notes">Door to door. Split the driver's fuel — no surge.</td>
       </tr>
       <tr>
         <td class="m">Drive it yourself</td>
-        <td class="p">~$16 of gas</td>
-        <td class="t2">2–2.5 hours</td>
-        <td class="n">100 mi ÷ 30 mpg × $4.80/gal. Before parking, tolls and wear.</td>
+        <td class="p" data-l="Typical cost">~$16 of gas</td>
+        <td class="t2" data-l="Time">2–2.5 hours</td>
+        <td class="n" data-l="Notes">100 mi ÷ 30 mpg × $4.80/gal. Before parking, tolls and wear.</td>
       </tr>
       <tr>
         <td class="m">Bus (Greyhound / FlixBus)</td>
-        <td class="p">Varies</td>
-        <td class="t2">Slower — usually 1–2 h longer</td>
-        <td class="n">Fares move constantly; we don't quote numbers we haven't checked today. <a href="https://www.flixbus.com" rel="nofollow noopener" target="_blank">Check fares →</a></td>
+        <td class="p" data-l="Typical cost">Varies</td>
+        <td class="t2" data-l="Time">Slower — usually 1–2 h longer</td>
+        <td class="n" data-l="Notes">Fares move constantly; we don't quote numbers we haven't checked today. <a href="https://www.flixbus.com" rel="nofollow noopener" target="_blank">Check fares →</a></td>
       </tr>
       <tr>
         <td class="m">Train (Amtrak)</td>
-        <td class="p">Varies</td>
-        <td class="t2">Slower; often a bus connection</td>
-        <td class="n">Not all California city pairs have a direct train. <a href="https://www.amtrak.com" rel="nofollow noopener" target="_blank">Check fares →</a></td>
+        <td class="p" data-l="Typical cost">Varies</td>
+        <td class="t2" data-l="Time">Slower; often a bus connection</td>
+        <td class="n" data-l="Notes">Not all California city pairs have a direct train. <a href="https://www.amtrak.com" rel="nofollow noopener" target="_blank">Check fares →</a></td>
       </tr>
       <tr>
         <td class="m">Fly</td>
-        <td class="p">Varies</td>
-        <td class="t2">Short in the air, ~3 h of airport either side</td>
-        <td class="n">Can win on long routes if booked early; rarely on short ones once you add transfers. <a href="https://www.google.com/travel/flights" rel="nofollow noopener" target="_blank">Check fares →</a></td>
+        <td class="p" data-l="Typical cost">Varies</td>
+        <td class="t2" data-l="Time">Short in the air, ~3 h of airport either side</td>
+        <td class="n" data-l="Notes">Can win on long routes if booked early; rarely on short ones once you add transfers. <a href="https://www.google.com/travel/flights" rel="nofollow noopener" target="_blank">Check fares →</a></td>
       </tr>
         </tbody>
       </table>
@@ -260,6 +273,13 @@ document.addEventListener('pointerdown',f,true);document.addEventListener('click
       <a href="/guides/cheapest-way-san-francisco-to-los-angeles">Cheapest way SF → LA</a>
       <a href="/guides/cheapest-way-los-angeles-to-san-diego">Cheapest way LA → San Diego</a>
       <a href="/guides/cheapest-way-los-angeles-to-las-vegas">Cheapest way LA → Vegas</a>
+      <a href="/compare">Seat Sherpa vs the alternatives</a>
+      <a href="/compare/uber-lyft">vs Uber &amp; Lyft</a>
+      <a href="/compare/flixbus-greyhound">vs FlixBus &amp; Greyhound</a>
+      <a href="/compare/amtrak">vs Amtrak</a>
+      <a href="/compare/flying">vs flying</a>
+      <a href="/compare/rental-car">vs a rental car</a>
+      <a href="/compare/carpool-apps-california">Best carpool apps in California</a>
     </div>
   </section>
 

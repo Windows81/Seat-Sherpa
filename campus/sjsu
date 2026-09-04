@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Reddit Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+rdt('init','a2_jgskhwge1xs2');
+rdt('track','PageVisit');
+}
+</script>
+
+<!-- Meta Pixel -->
+<script>
+if(!navigator.globalPrivacyControl){
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','2440374666473858');
+fbq('track','PageView');
+}
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2440374666473858&ev=PageView&noscript=1"/></noscript>
+
+<!-- Pixels + Conversions API (ss-capi-v2) -->
+<script>
+if(!navigator.globalPrivacyControl){
+(function(){
+function eid(){try{return crypto.randomUUID();}catch(_){return String(Date.now())+'-'+Math.random().toString(16).slice(2);}}
+function ck(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
+window.ssTrack=function(name,opts){
+  opts=opts||{};var id=eid();
+  var rname=name==='CompleteRegistration'?'SignUp':name;
+  try{if(window.rdt)window.rdt('track',rname);}catch(_){}
+  try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
+  if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  try{
+    var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
+    if(opts.em)p.em=opts.em;
+    var b=new Blob([JSON.stringify(p)],{type:'application/json'});
+    if(navigator.sendBeacon)navigator.sendBeacon('/e',b);
+    else fetch('/e',{method:'POST',body:b,keepalive:true});
+  }catch(_){}
+};
+var sent=false;
+function f(e){var t=e.target;if(!t||!t.closest)return;var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');if(!a||sent)return;sent=true;window.ssTrack('Lead');}
+document.addEventListener('pointerdown',f,true);document.addEventListener('click',f,true);
+})();
+}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config', 'AW-18365966554');}
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SJSU rides home: LA &amp; Southern California — from $30 | Seat Sherpa</title>
+<meta name="description" content="SJSU students: carpool San Jose → LA from $30–$50 a seat with verified drivers already making the drive. FlixBus / Greyhound: often ~$60. Prices checked August 2026." />
+<link rel="canonical" href="https://seatsherpa.app/campus/sjsu" />
+<meta property="og:title" content="SJSU ↔ SoCal — rides for SJSU students" />
+<meta property="og:description" content="SJSU students: carpool San Jose → LA from $30–$50 a seat with verified drivers already making the drive. FlixBus / Greyhound: often ~$60. Prices checked August 2026." />
+<meta property="og:image" content="https://seatsherpa.app/icon.png" />
+<meta property="og:url" content="https://seatsherpa.app/campus/sjsu" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do SJSU students get rides home with Seat Sherpa?","acceptedAnswer":{"@type":"Answer","text":"Download the app, search San Jose to LA, and book a seat with a verified driver already making the drive. Payment is held securely until pickup, and you coordinate the exact spot in chat."}},{"@type":"Question","name":"How much does it cost?","acceptedAnswer":{"@type":"Answer","text":"Seats on these routes usually run $30–$50. You're splitting the driver's real gas cost — capped at the IRS mileage rate — so there's no surge and no markup."}},{"@type":"Question","name":"Is it safe?","acceptedAnswer":{"@type":"Answer","text":"Every driver is ID- and license-verified, payment is held until your trip starts (you share a pickup code with the driver), and riders and drivers rate each other after every trip. Everyone is 18+."}},{"@type":"Question","name":"Can I bring a semester's worth of stuff?","acceptedAnswer":{"@type":"Answer","text":"Move-in loads are normal here. Add a note when you book (\"2 suitcases + a mini fridge\") so the driver can plan trunk space — or message them first in the app."}},{"@type":"Question","name":"What about move-in and move-out weeks?","acceptedAnswer":{"@type":"Answer","text":"Those are the busiest weeks of the year on these routes — book a few days ahead. Driving back to school with empty seats? Post your drive and your gas is covered."}}]},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Seat Sherpa","item":"https://seatsherpa.app"},{"@type":"ListItem","position":2,"name":"SJSU rides","item":"https://seatsherpa.app/campus/sjsu"}]}]</script>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:#00D4C8;text-decoration:none}
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px}
+  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  h1{font-size:36px;line-height:1.12;letter-spacing:-.6px;font-weight:800;margin:26px 0 12px}
+  h1 .t{background:linear-gradient(180deg,#fff,#9fe9e4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .lede{color:#c9c9c9;font-size:18px;max-width:640px}
+  .movein{display:inline-flex;align-items:center;gap:9px;margin:18px 0 4px;padding:9px 16px;border:1px solid rgba(0,212,200,.4);border-radius:999px;font-size:14px;color:#eafffd}
+  .live{display:inline-flex;align-items:center;gap:9px;margin:12px 0 6px;padding:9px 16px;border:1px solid rgba(255,255,255,.12);border-radius:999px;font-size:14px;color:#bdbdbd}
+  .live.has{border-color:rgba(0,212,200,.4);color:#eafffd}
+  .live .dot{width:9px;height:9px;border-radius:50%;background:#00D4C8;box-shadow:0 0 0 4px rgba(0,212,200,.18)}
+  .live .dot.idle{background:#666;box-shadow:none}
+  .cta{display:inline-flex;gap:12px;flex-wrap:wrap;margin:22px 0 8px}
+  .btn{background:#00D4C8;color:#04201e;font-weight:800;padding:14px 26px;border-radius:999px;font-size:16px}
+  .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}
+  section{padding:34px 0;border-top:1px solid rgba(255,255,255,.05)}
+  h2{font-size:26px;font-weight:800;letter-spacing:-.4px;margin-bottom:16px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .card{background:#161619;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:18px 20px}
+  .card h3{font-size:15px;margin-bottom:6px}
+  .card p{color:#bbb;font-size:14px}
+  .card .t{color:#00D4C8}
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid rgba(255,255,255,.08);border-radius:14px}
+  table.cmp{width:100%;border-collapse:collapse;font-size:14.5px;min-width:640px}
+  table.cmp th{text-align:left;padding:12px 16px;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#8a8a92;background:#141417;border-bottom:1px solid rgba(255,255,255,.08);font-weight:700}
+  table.cmp td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top;color:#ccc}
+  table.cmp tr:last-child td{border-bottom:none}
+  table.cmp tr.us td{background:rgba(0,212,200,.06)}
+  table.cmp td.m{font-weight:700;color:#fff;white-space:nowrap}
+  table.cmp td.p{font-weight:800;font-size:17px;white-space:nowrap;color:#eee}
+  table.cmp td.p.good{color:#00D4C8}
+  table.cmp td.t2{white-space:nowrap;color:#aaa}
+  table.cmp td.n{color:#9a9aa4;font-size:13px;line-height:1.5;min-width:240px}
+  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}
+  .faq:last-child{border-bottom:none}
+  .faq h3{font-size:16px;margin-bottom:5px}
+  .faq p{color:#bbb;font-size:15px}
+  .badges{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+  .badge{display:flex;align-items:center;gap:9px;background:#1a1a1d;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:11px 18px;min-width:190px}
+  .badge .s{font-size:11px;color:#888}.badge .b{font-size:15px;font-weight:700}
+  .tag{background:rgba(0,212,200,.16);color:#00D4C8;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:3px 7px;border-radius:5px;margin-left:6px;vertical-align:middle}
+  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;color:#666;font-size:13px}
+  footer a{color:#999;margin-right:16px}
+  /* Phones: tables become cards (UX sweep wave 1, 2026-09-02). Each cell
+     carries its column label in data-l; the first cell is the row title. */
+  @media(max-width:640px){
+    table.stack{display:block}
+    table.stack thead{display:none}
+    table.stack tbody,table.stack tr{display:block}
+    table.stack tr{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.stack td{display:block;border:0;padding:3px 0}
+    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8a92}
+    table.stack td:first-child{font-size:16px;font-weight:700;padding-bottom:6px}
+    table.stack td:first-child::before{display:none}
+  }
+
+  @media(max-width:640px){h1{font-size:29px}.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a class="brand" href="/"><span class="t">Seat</span> Sherpa</a><a class="navcta" href="#get">Get the app</a></div></nav>
+
+<div class="wrap">
+  <h1>SJSU ↔ SoCal<br><span class="t">rides for Spartans</span></h1>
+  <p class="lede">Heading home to LA or SoCal for the weekend? Drivers leave San Jose every week with empty seats — split the gas instead of paying bus-plus-hassle.</p>
+  <div class="movein">🎒 Move-in weeks are the busiest of the year — book a few days ahead</div><br>
+  <div id="live" class="live"><span class="dot idle"></span>Checking upcoming rides…</div>
+  <div class="cta"><a class="btn" href="/rides?from=sfba&amp;to=la">Find a ride</a><a class="btn ghost" href="/drive">Driving back? Fill your seats</a></div>
+</div>
+
+<div class="wrap">
+  <section>
+    <h2>SJSU routes</h2>
+    <div class="cols">
+      <div class="card">
+        <h3>San Jose → LA</h3>
+        <p><b class="t">$30–$50</b> a seat · 5.5–6.5 hours · ~380 mi</p>
+        <p style="margin-top:8px"><a href="/rides?from=sfba&amp;to=la">See upcoming rides →</a>
+          &nbsp;·&nbsp; <a href="/routes/san-jose-to-los-angeles">full route guide</a></p>
+      </div>
+      <div class="card">
+        <h3>LA → San Jose</h3>
+        <p><b class="t">$30–$50</b> a seat · 5.5–6.5 hours · ~380 mi</p>
+        <p style="margin-top:8px"><a href="/rides?from=la&amp;to=sfba">See upcoming rides →</a>
+          &nbsp;·&nbsp; <a href="/routes/los-angeles-to-san-jose">full route guide</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Your options from Downtown San Jose</h2>
+    <div class="tw">
+      <table class="stack cmp">
+        <thead><tr><th>Option</th><th>Typical cost</th><th>Time</th><th>Notes</th></tr></thead>
+        <tbody>
+      <tr class="us">
+        <td class="m">Seat Sherpa carpool <span class="tag">that's us</span></td>
+        <td class="p good" data-l="Typical cost">$30–$50</td>
+        <td class="t2" data-l="Time">5.5–6.5 hours</td>
+        <td class="n" data-l="Notes">Door to door. Split the driver's gas — no surge, no station.</td>
+      </tr>
+      <tr>
+        <td class="m">FlixBus / Greyhound</td>
+        <td class="p" data-l="Typical cost">often ~$60</td>
+        <td class="t2" data-l="Time">8–9 hours</td>
+        <td class="n" data-l="Notes">Typical San Jose ↔ LA fare seen August 2026 — and it leaves from Diridon, not campus. <a href="https://www.flixbus.com" rel="nofollow noopener" target="_blank">Check fares →</a></td>
+      </tr>
+      <tr>
+        <td class="m">Drive it yourself</td>
+        <td class="p" data-l="Typical cost">~$61 of gas</td>
+        <td class="t2" data-l="Time">5.5–6.5 hours</td>
+        <td class="n" data-l="Notes">380 mi ÷ 30 mpg × $4.80/gal — before parking and wear. And you keep the car all semester.</td>
+      </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Pickup &amp; drop-off</h2>
+    <div class="card"><p>Pickups near campus and Diridon; drop-offs across LA, Orange County and the Valley — wherever the driver is already headed. You confirm the exact spot in the app after booking.</p></div>
+  </section>
+
+  <section>
+    <h2>SJSU rides — FAQ</h2>
+    <div class="faq"><h3>How do SJSU students get rides home with Seat Sherpa?</h3><p>Download the app, search San Jose to LA, and book a seat with a verified driver already making the drive. Payment is held securely until pickup, and you coordinate the exact spot in chat.</p></div>
+<div class="faq"><h3>How much does it cost?</h3><p>Seats on these routes usually run $30–$50. You're splitting the driver's real gas cost — capped at the IRS mileage rate — so there's no surge and no markup.</p></div>
+<div class="faq"><h3>Is it safe?</h3><p>Every driver is ID- and license-verified, payment is held until your trip starts (you share a pickup code with the driver), and riders and drivers rate each other after every trip. Everyone is 18+.</p></div>
+<div class="faq"><h3>Can I bring a semester's worth of stuff?</h3><p>Move-in loads are normal here. Add a note when you book ("2 suitcases + a mini fridge") so the driver can plan trunk space — or message them first in the app.</p></div>
+<div class="faq"><h3>What about move-in and move-out weeks?</h3><p>Those are the busiest weeks of the year on these routes — book a few days ahead. Driving back to school with empty seats? Post your drive and your gas is covered.</p></div>
+  </section>
+
+  <section id="get">
+    <h2>Get the app &amp; grab a seat</h2>
+    <p class="lede" style="margin-bottom:14px">Browse rides, pick your seat, pay securely — free to download.</p>
+    <div class="badges">
+      <a class="badge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=campus_sjsu"><span></span><div><div class="s">Download on the</div><div class="b">App Store</div></div></a>
+      <a class="badge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=campus_sjsu"><span></span><div><div class="s">Get it on</div><div class="b">Google Play</div></div></a>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap"><a href="/">Home</a><a href="/routes">Routes</a><a href="/drive">Drive</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><br><br>© 2026 Seat Sherpa</div></footer>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
+<script>
+(function(){
+  var el=document.getElementById('live'); if(!el) return;
+  fetch('https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/route-inventory?from=sfba&to=la',{headers:{apikey:'sb_publishable_TGebz9q_z0kkH0Tuivlr4w_3MPLMxF3',Authorization:'Bearer sb_publishable_TGebz9q_z0kkH0Tuivlr4w_3MPLMxF3'}})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d && d.count>0){
+        el.innerHTML='<span class="dot"></span><strong>'+d.count+' upcoming ride'+(d.count===1?'':'s')+'</strong> on this route';
+        el.classList.add('has');
+      } else { el.innerHTML='<span class="dot idle"></span>Be the first — request this ride in the app.'; }
+    }).catch(function(){});
+})();
+</script>
+<!-- Campus campaign beacon — this page IS a campaign, so every landing logs
+     (default campus-sjsu); ?c= overrides for sub-placements (?c=sjsu-flyer).
+     Store taps log a second-stage event with the same code. -->
+<script>
+(function(){
+  var qs=new URLSearchParams(location.search);
+  var campaign=(qs.get('c')||qs.get('utm_campaign')||qs.get('src')||'campus-sjsu').slice(0,40);
+  try{
+    fetch('https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/log-qr-scan?c='+encodeURIComponent(campaign),{redirect:'manual',keepalive:true}).catch(function(){});
+  }catch(e){}
+  var sent=false;
+  document.addEventListener('click',function(e){
+    var t=e.target; if(!t||!t.closest) return;
+    var a=t.closest('a[href*="apps.apple.com"],a[href*="play.google.com"],a[href*="onelink.me"]');
+    if(!a||sent) return; sent=true;
+    try{
+      fetch('https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/log-qr-scan?e=store_tap&c='+encodeURIComponent(campaign),{redirect:'manual',keepalive:true}).catch(function(){});
+    }catch(_){}
+  },true);
+})();
+</script>
+</body>
+</html>

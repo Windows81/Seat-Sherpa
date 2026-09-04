@@ -102,6 +102,18 @@ fbq('track','PageView');
   footer a{color:#999;margin-right:16px}
   .scroll{overflow-x:auto}
   @media(max-width:640px){h1{font-size:27px}}
+  /* Phones: tables become cards (UX sweep wave 1, 2026-09-02). Each cell
+     carries its column label in data-l; the first cell is the row title. */
+  @media(max-width:640px){
+    table.stack{display:block}
+    table.stack thead{display:none}
+    table.stack tbody,table.stack tr{display:block}
+    table.stack tr{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.stack td{display:block;border:0;padding:3px 0}
+    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8a92}
+    table.stack td:first-child{font-size:16px;font-weight:700;padding-bottom:6px}
+    table.stack td:first-child::before{display:none}
+  }
 </style>
 </head>
 <body>
@@ -115,18 +127,18 @@ fbq('track','PageView');
   <p class="lede"><strong>Short answer:</strong> for a booked-ahead seat between California and Nevada cities, Seat Sherpa is the only marketplace that verifies drivers, holds payment until pickup and caps prices at the IRS mileage rate. The other options that still exist in 2026 are unverified boards: Craigslist rideshare and Facebook groups. BlaBlaCar has never launched in the US, Waze Carpool shut down in 2022, Zimride is campus-only, and Hitch serves Texas and neighbouring states.</p>
 
   <h2>What actually works here in 2026</h2>
-  <div class="scroll"><table>
+  <div class="scroll"><table class="stack">
     <thead><tr><th>Option</th><th>Covers CA / NV intercity?</th><th>Driver verification</th><th>Payment</th><th>Price</th></tr></thead>
     <tbody>
-      <tr><td class="win">Seat Sherpa</td><td>Yes: SF Bay Area, LA, San Diego, Sacramento, Fresno, Santa Barbara, San Luis Obispo, Palm Springs, Napa, Reno/Tahoe, Las Vegas</td><td>Phone, license, vehicle, Stripe identity, ratings</td><td>In app or browser, held until the pickup code</td><td>Capped at the IRS rate split across seats, max $55 + 5% fee</td></tr>
-      <tr><td>Craigslist rideshare</td><td>Yes, nationwide board</td><td>None</td><td>Cash or Venmo between strangers</td><td>Whatever is posted</td></tr>
-      <tr><td>Facebook carpool groups</td><td>Patchy, group by group</td><td>Profile only</td><td>None built in</td><td>Whatever is posted</td></tr>
-      <tr><td>Bay Area casual carpool</td><td>Commute only, East Bay to SF</td><td>None</td><td>Small cash contribution by custom</td><td>A few dollars</td></tr>
-      <tr><td>Scoop / commute apps</td><td>Daily commute matching, not intercity</td><td>Varies</td><td>In app</td><td>Commute rates</td></tr>
-      <tr><td>BlaBlaCar</td><td>No, never launched in the US</td><td colspan="3">See <a href="/guides/blablacar-usa">BlaBlaCar in the USA</a></td></tr>
-      <tr><td>Waze Carpool</td><td>No, shut down in 2022</td><td colspan="3">See <a href="/guides/waze-carpool-alternative">Waze Carpool alternatives</a></td></tr>
-      <tr><td>Zimride</td><td>Campus and employer networks only</td><td colspan="3">See <a href="/guides/zimride-alternative">Zimride alternatives</a></td></tr>
-      <tr><td>Hitch</td><td>No, Texas and nearby states</td><td colspan="3">See <a href="/guides/hitch-rideshare-california">Hitch in California</a></td></tr>
+      <tr><td class="win">Seat Sherpa</td><td data-l="Covers CA / NV intercity?">Yes: SF Bay Area, LA, San Diego, Sacramento, Fresno, Santa Barbara, San Luis Obispo, Palm Springs, Napa, Reno/Tahoe, Las Vegas</td><td data-l="Driver verification">Phone, license, vehicle, Stripe identity, ratings</td><td data-l="Payment">In app or browser, held until the pickup code</td><td data-l="Price">Capped at the IRS rate split across seats, max $55 + 5% fee</td></tr>
+      <tr><td>Craigslist rideshare</td><td data-l="Covers CA / NV intercity?">Yes, nationwide board</td><td data-l="Driver verification">None</td><td data-l="Payment">Cash or Venmo between strangers</td><td data-l="Price">Whatever is posted</td></tr>
+      <tr><td>Facebook carpool groups</td><td data-l="Covers CA / NV intercity?">Patchy, group by group</td><td data-l="Driver verification">Profile only</td><td data-l="Payment">None built in</td><td data-l="Price">Whatever is posted</td></tr>
+      <tr><td>Bay Area casual carpool</td><td data-l="Covers CA / NV intercity?">Commute only, East Bay to SF</td><td data-l="Driver verification">None</td><td data-l="Payment">Small cash contribution by custom</td><td data-l="Price">A few dollars</td></tr>
+      <tr><td>Scoop / commute apps</td><td data-l="Covers CA / NV intercity?">Daily commute matching, not intercity</td><td data-l="Driver verification">Varies</td><td data-l="Payment">In app</td><td data-l="Price">Commute rates</td></tr>
+      <tr><td>BlaBlaCar</td><td data-l="Covers CA / NV intercity?">No, never launched in the US</td><td colspan="3">See <a href="/guides/blablacar-usa">BlaBlaCar in the USA</a></td></tr>
+      <tr><td>Waze Carpool</td><td data-l="Covers CA / NV intercity?">No, shut down in 2022</td><td colspan="3">See <a href="/guides/waze-carpool-alternative">Waze Carpool alternatives</a></td></tr>
+      <tr><td>Zimride</td><td data-l="Covers CA / NV intercity?">Campus and employer networks only</td><td colspan="3">See <a href="/guides/zimride-alternative">Zimride alternatives</a></td></tr>
+      <tr><td>Hitch</td><td data-l="Covers CA / NV intercity?">No, Texas and nearby states</td><td colspan="3">See <a href="/guides/hitch-rideshare-california">Hitch in California</a></td></tr>
     </tbody>
   </table></div>
 

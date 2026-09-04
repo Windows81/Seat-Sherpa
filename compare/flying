@@ -102,6 +102,18 @@ fbq('track','PageView');
   footer a{color:#999;margin-right:16px}
   .scroll{overflow-x:auto}
   @media(max-width:640px){h1{font-size:27px}}
+  /* Phones: tables become cards (UX sweep wave 1, 2026-09-02). Each cell
+     carries its column label in data-l; the first cell is the row title. */
+  @media(max-width:640px){
+    table.stack{display:block}
+    table.stack thead{display:none}
+    table.stack tbody,table.stack tr{display:block}
+    table.stack tr{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.stack td{display:block;border:0;padding:3px 0}
+    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8a92}
+    table.stack td:first-child{font-size:16px;font-weight:700;padding-bottom:6px}
+    table.stack td:first-child::before{display:none}
+  }
 </style>
 </head>
 <body>
@@ -115,14 +127,14 @@ fbq('track','PageView');
   <p class="lede"><strong>Short answer:</strong> flying is 2 to 3 hours faster door to door on San Francisco to Los Angeles and costs 2 to 4 times as much once bags and the airport legs are counted. A Seat Sherpa carpool seat is capped at $55 plus a 5% fee, leaves from a pickup point you agree in chat, and takes 6 to 7.5 hours. Flying wins on time; the carpool wins on money, luggage and everything around the flight.</p>
 
   <h2>The honest door-to-door numbers</h2>
-  <div class="scroll"><table>
+  <div class="scroll"><table class="stack">
     <thead><tr><th>SF to LA</th><th>Flying (SFO/OAK to LAX/BUR)</th><th>Seat Sherpa seat</th></tr></thead>
     <tbody>
-      <tr><td>Fare</td><td>$60 to $200 advance; $150 to $300+ same week</td><td class="win">$30 to $55 + 5% fee, any time</td></tr>
-      <tr><td>Bags</td><td>$35 to $80 for a checked bag on basic fares</td><td class="win">Included by arrangement with the driver</td></tr>
-      <tr><td>Getting to and from airports</td><td>$30 to $90 in transit or rideshare, both ends</td><td class="win">Pickup near you; drop-off arranged in chat</td></tr>
-      <tr><td>Time</td><td class="win">4 to 5 h door to door: 90-minute flight plus security and transfers</td><td>6 to 7.5 h</td></tr>
-      <tr><td>Typical all-in</td><td>$150 to $350</td><td class="win">$35 to $60</td></tr>
+      <tr><td>Fare</td><td data-l="Flying (SFO/OAK to LAX/BUR)">$60 to $200 advance; $150 to $300+ same week</td><td class="win" data-l="Seat Sherpa seat">$30 to $55 + 5% fee, any time</td></tr>
+      <tr><td>Bags</td><td data-l="Flying (SFO/OAK to LAX/BUR)">$35 to $80 for a checked bag on basic fares</td><td class="win" data-l="Seat Sherpa seat">Included by arrangement with the driver</td></tr>
+      <tr><td>Getting to and from airports</td><td data-l="Flying (SFO/OAK to LAX/BUR)">$30 to $90 in transit or rideshare, both ends</td><td class="win" data-l="Seat Sherpa seat">Pickup near you; drop-off arranged in chat</td></tr>
+      <tr><td>Time</td><td class="win" data-l="Flying (SFO/OAK to LAX/BUR)">4 to 5 h door to door: 90-minute flight plus security and transfers</td><td data-l="Seat Sherpa seat">6 to 7.5 h</td></tr>
+      <tr><td>Typical all-in</td><td data-l="Flying (SFO/OAK to LAX/BUR)">$150 to $350</td><td class="win" data-l="Seat Sherpa seat">$35 to $60</td></tr>
     </tbody>
   </table></div>
   <p>LA to Las Vegas is closer: a 1-hour flight for $40 to $150 plus bags, about 3.5 to 4.5 hours door to door, against 4.5 to 5.5 hours and $25 to $55 plus fee in a carpool.</p>

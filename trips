@@ -1370,12 +1370,25 @@
         body.appendChild(bn);
       }
 
-      // ── Chat entry
-      const chatBtn = el('button', 'outline', 'Message ' + driverFirst(b));
-      chatBtn.type = 'button';
-      chatBtn.style.marginBottom = '12px';
-      chatBtn.addEventListener('click', () => go('/trips?ref=' + encodeURIComponent(b.ref_code) + '&chat=1'));
-      body.appendChild(chatBtn);
+      // ── Chat entry — or, for a web request that never reached payment, the
+      //    way to finish it (2026-09-03, Sascha → Derek: she chatted for 30
+      //    minutes instead of paying and the request lapsed under her). No
+      //    chat until the card is authorized; that is also the moment the
+      //    driver sees the request at all.
+      if (unpaidWeb(b)) {
+        const pay = el('button', 'primary', 'Finish payment to send your request');
+        pay.type = 'button';
+        pay.style.marginBottom = '8px';
+        pay.addEventListener('click', () => go('/book?id=' + encodeURIComponent(b.ride.id)));
+        body.appendChild(pay);
+        body.appendChild(el('p', 'sub', driverFirst(b) + " won't see this request, and messaging opens, only once your card is authorized. You're only charged if they accept."));
+      } else {
+        const chatBtn = el('button', 'outline', 'Message ' + driverFirst(b));
+        chatBtn.type = 'button';
+        chatBtn.style.marginBottom = '12px';
+        chatBtn.addEventListener('click', () => go('/trips?ref=' + encodeURIComponent(b.ref_code) + '&chat=1'));
+        body.appendChild(chatBtn);
+      }
 
       // ── Cancel
       body.appendChild(cancelSection(b, st, departed));
@@ -1725,6 +1738,12 @@
       return Date.now() - new Date(last.created_at).getTime() < 5 * 60 * 1000;
     }
 
+    /** A browser request that has not reached payment: Pending, web, no
+     *  payment_verified_at. It is not a request yet from the driver's side. */
+    function unpaidWeb(b) {
+      return !!b && b.source === 'web' && b.status === 'Pending' && !b.payment_verified_at;
+    }
+
     function renderChat(b) {
       const body = $('chatBody');
       clear(body);
@@ -1733,6 +1752,22 @@
       composerFocused = false;
 
       body.appendChild(backRow('Back to trip', () => go('/trips?ref=' + encodeURIComponent(b.ref_code))));
+
+      // Unpaid web request: no thread yet (2026-09-03). Finishing payment is
+      // what sends the request; messaging opens right after.
+      if (unpaidWeb(b)) {
+        const c = el('div', 'card');
+        c.appendChild(el('div', 'eyebrow', routeLabel(b.ride) + ' · ' + dateLabel(b.ride.dep_date)));
+        c.appendChild(el('h1', null, 'Finish your request first'));
+        c.appendChild(el('p', 'sub', 'Your request to ' + driverFirst(b) + " hasn't been sent yet. It reaches them the moment your card is authorized, and that's also when messaging opens. You're only charged if they accept."));
+        const pay = el('button', 'primary', 'Finish payment');
+        pay.type = 'button';
+        pay.addEventListener('click', () => go('/book?id=' + encodeURIComponent(b.ride.id)));
+        c.appendChild(pay);
+        body.appendChild(c);
+        body.appendChild(signedInFooter());
+        return;
+      }
 
       const card = el('div', 'card');
       card.appendChild(el('div', 'eyebrow', routeLabel(b.ride) + ' · ' + dateLabel(b.ride.dep_date)));
@@ -1744,6 +1779,51 @@
       const thread = el('div', 'thread');
       thread.id = 'chatThread';
       card.appendChild(thread);
+
+      // CALL (2026-09-03, app parity): the number comes from counterparty_phone()
+      // — Confirmed/Completed only, 24h either side of departure, parties only —
+      // and is fetched only when tapped. The pre-checks just give a friendlier
+      // message than the RPC's empty result.
+      const callRow = el('div', 'callrow');
+      callRow.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 10px;';
+      const callBtn = el('button', 'linkbtn', 'Call ' + driverFirst(b));
+      callBtn.type = 'button';
+      callBtn.style.cssText = 'border:1px solid #00a8a0;color:#00a8a0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;';
+      const callMsg = el('div', 'msg hidden');
+      callMsg.style.cssText = 'font-size:13px;color:#6b7280;margin:0;';
+      callRow.appendChild(callBtn);
+      callRow.appendChild(callMsg);
+      card.appendChild(callRow);
+      callBtn.addEventListener('click', async () => {
+        callMsg.classList.add('hidden');
+        const say = (t) => { callMsg.textContent = t; callMsg.classList.remove('hidden'); };
+        const st = (b.pickup_code_entered_at ? 'Completed' : b.status);
+        if (st !== 'Confirmed' && st !== 'Completed') { say('Calling opens once the booking is confirmed — message here for now.'); return; }
+        const dep = departureMs(b.ride);
+        const H = 3600 * 1000;
+        if (Number.isFinite(dep)) {
+          const now = Date.now();
+          if (now < dep - 24 * H) {
+            const h = Math.ceil((dep - 24 * H - now) / H);
+            say('Calling opens 24 hours before pickup (' + (h <= 24 ? 'in ' + h + (h === 1 ? ' hour' : ' hours') : 'in ' + Math.round(h / 24) + ' days') + '). Until then, message here.');
+            return;
+          }
+          if (now > dep + 24 * H) { say('Calling closed 24 hours after the ride. Message here instead.'); return; }
+        }
+        callBtn.disabled = true;
+        try {
+          const { data, error } = await supabase.rpc('counterparty_phone', { p_booking_id: b.id });
+          const row = Array.isArray(data) ? data[0] : data;
+          const cc = String((row && row.phone_country_code) || '').replace(/\D/g, '');
+          const num = String((row && row.phone) || '').replace(/\D/g, '');
+          if (error || !cc || !num) { say("They haven't added a phone number yet — message here instead."); return; }
+          location.href = 'tel:+' + cc + num;
+        } catch (_) {
+          say("Couldn't get the number just now — try again in a moment.");
+        } finally {
+          callBtn.disabled = false;
+        }
+      });
 
       const composer = el('div', 'composer');
       const ta = document.createElement('textarea');

@@ -148,6 +148,10 @@
    */
   function mount(opts) {
     opts = opts || {};
+    // Remember the page's options even when signed out, so ensure() after an
+    // in-page sign-in mounts the SAME bar (tabs, id, extras) — it used to
+    // mount an empty one (audit 2026-09-04).
+    lastOpts = opts;
     if (!signedIn()) return null;
     ensureStyle();
 
@@ -183,7 +187,7 @@
     right.className = 'ss-bar-right';
     var cta = document.createElement('a');
     cta.className = 'ss-bar-cta';
-    cta.href = '/post';
+    cta.href = '/post?new=1'; // always a brand-new ride (Justin, 2026-09-04)
     cta.innerHTML = '<span aria-hidden="true">+</span><span class="lbl">Post a ride</span>';
     cta.setAttribute('aria-label', 'Post a ride');
     right.appendChild(cta);

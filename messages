@@ -181,7 +181,7 @@
       // Riding: my non-cancelled bookings (Cancelled threads still exist but
       // the console screens for them do too — keep the list focused).
       const ridingQ = S.supabase.from('bookings')
-        .select('id, ref_code, status, created_at, ride:rides!inner(id, driver_name, from_dest, to_dest, departure_area, arrival_area, dep_date, driver:profiles!rides_driver_profile_fkey(name:name_public))')
+        .select('id, ref_code, status, created_at, source, stripe_payment_intent_id, payment_verified_at, ride:rides!inner(id, driver_name, from_dest, to_dest, departure_area, arrival_area, dep_date, driver:profiles!rides_driver_profile_fkey(name:name_public))')
         .eq('passenger_id', me)
         .neq('status', 'Cancelled')
         .order('created_at', { ascending: false })
@@ -199,12 +199,14 @@
       let driving = [];
       if (myRides.length) {
         const { data: db2 } = await S.supabase.from('bookings')
-          .select('id, ref_code, status, created_at, passenger_name, ride_id')
+          .select('id, ref_code, status, created_at, passenger_name, ride_id, source, stripe_payment_intent_id')
           .in('ride_id', myRides.map((r) => r.id))
           .neq('status', 'Cancelled')
           .order('created_at', { ascending: false })
           .limit(80);
-        driving = db2 || [];
+        // Unpaid web requests are not requests yet (2026-09-03): no thread
+        // until the card is authorized, same rule as the driver console list.
+        driving = (db2 || []).filter((b) => !(b.status === 'Pending' && b.source === 'web' && !b.stripe_payment_intent_id));
       }
       const rideById = new Map(myRides.map((r) => [r.id, r]));
 
@@ -255,7 +257,23 @@
           const drvName = (b.ride && ((b.ride.driver && b.ride.driver.name) || b.ride.driver_name)) || 'Your driver';
           // &chat=1 opens the conversation itself — tapping a message preview
           // should land in the chat, not on the booking detail (audit 8/28).
-          rl.appendChild(renderThread('riding', '/trips?ref=' + encodeURIComponent(b.ref_code || '') + '&chat=1', drvName, routeOf(b.ride || {}), dateOf(b.ride && b.ride.dep_date), b));
+          // Unpaid web request (2026-09-03): there is no thread to open yet —
+          // the request is only sent when the card is authorized. Say so and
+          // route to the checkout, which resumes the same request.
+          const unpaidWebRow = b.source === 'web' && b.status === 'Pending' && !b.payment_verified_at;
+          // Land on the "Checkout cancelled → Finish booking" card, which
+          // resumes THIS request via the server (resume:true) instead of the
+          // seat grid — a bare /book?id= showed the rider's own held seat as
+          // taken, and "ride full" when it was the last one (audit 2026-09-04).
+          const href = unpaidWebRow && b.ride && b.ride.id
+            ? '/book?id=' + encodeURIComponent(b.ride.id) + '&booking=' + encodeURIComponent(b.id) + '&state=cancelled'
+            : '/trips?ref=' + encodeURIComponent(b.ref_code || '') + '&chat=1';
+          const node = renderThread('riding', href, drvName, routeOf(b.ride || {}), dateOf(b.ride && b.ride.dep_date), b);
+          if (unpaidWebRow) {
+            const pv = node.querySelector('.preview');
+            if (pv) { pv.textContent = 'Finish payment to send your request — messaging opens once ' + drvName.split(' ')[0] + ' has it.'; pv.classList.remove('none'); }
+          }
+          rl.appendChild(node);
         }
       }
       const dl = $('drivingList');

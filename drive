@@ -522,7 +522,6 @@ fbq('track','PageView');
         <a href="/post" style="color:#00D4C8;font-weight:700;">Post a ride</a>
         <a href="/terms.html">Terms</a>
         <a href="/privacy.html">Privacy</a>
-        <a href="mailto:support@seatsherpa.app">Support</a>
       </div>
     </div>
   </nav>

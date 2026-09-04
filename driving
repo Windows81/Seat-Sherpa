@@ -1,0 +1,3869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your rides &mdash; Seat Sherpa</title>
+
+  <!-- DRIVER WEB CONSOLE (2026-08-22) - the driver-side twin of /trips.
+       Transactional, signed-in-only, and DELIBERATELY UNLINKED. Nothing on
+       index/rides/ride/book/post, the sitemap, robots.txt, or any app screen
+       points here - a driver reaches it by typing the URL (or from the /post
+       success email, if we ever add one). noindex is the belt to that
+       suspenders: this page renders pending payment requests, rider chats and
+       the check-in surface that releases escrow - it must never land in a
+       search index even if someone pastes the link somewhere public. -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="theme-color" content="#0E0E10" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- NO marketing pixels here, same reasoning as trips.html: this is
+       post-signup account plumbing, not a conversion funnel. -->
+
+  <style>
+    /* Styling lifted wholesale from trips.html so the driver console feels
+       like the same product as the funnel that created the ride. */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #0E0E10;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 20px 48px;
+    }
+    a { color: #00D4C8; text-decoration: none; }
+
+    /* Desktop is a console, not a phone column (Justin, 2026-08-28). */
+    .wrap { width: 100%; max-width: 440px; }
+    /* Desktop: the 440px mobile column reads cramped on a laptop. */
+    @media (min-width: 720px) { .wrap { max-width: 700px; } }
+    @media (min-width: 1100px) { .wrap { max-width: 980px; } }
+    /* Ride list goes two-up once there's room — a single 980px column of
+       full-width cards is just a wider ribbon (Justin, 2026-08-28). */
+    @media (min-width: 1100px) {
+      .ridegrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+      .ridegrid > .entry { margin-bottom: 0; }
+    }
+    /* Collapsible "Past rides" header. */
+    .pasthead {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      background: none; border: none; cursor: pointer; font-family: inherit;
+      color: #adadb8; font-size: 13px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; padding: 20px 2px 10px; text-align: left;
+    }
+    .pasthead:hover { color: #cfcfd6; }
+    .pasthead .caret { color: #00D4C8; font-size: 12px; }
+    .pasthead .pastcount {
+      background: rgba(255,255,255,0.08); color: #adadb8; border-radius: 999px;
+      padding: 1px 8px; font-size: 11px; letter-spacing: 0;
+    }
+
+    .brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 28px; }
+
+    .card {
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card .eyebrow {
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #adadb8; margin-bottom: 12px;
+    }
+    .route { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
+    /* Exact pickup/dropoff, opened-ride view only. */
+    .addr { font-size: 13.5px; color: #adadb8; line-height: 1.5; margin-top: 6px; }
+    .meta { font-size: 14px; color: #b9b9c6; margin-top: 6px; }
+
+    h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
+    h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #adadb8; margin: 26px 0 12px; }
+    p.sub { font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 12px; color: #adadb8; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    input, textarea {
+      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      outline: none; transition: border-color 0.15s; font-family: inherit;
+    }
+    input:focus, textarea:focus { border-color: #00D4C8; }
+    input:disabled, textarea:disabled { opacity: 0.5; }
+    textarea { resize: vertical; min-height: 88px; }
+    .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
+    button.primary {
+      width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
+      padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+      font-family: inherit;
+    }
+    button.primary:disabled { opacity: 0.5; cursor: default; }
+    button.outline {
+      width: 100%; background: none; color: #fff; border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: inherit;
+    }
+    button.outline:disabled { opacity: 0.5; cursor: default; }
+    .linkbtn {
+      background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
+      cursor: pointer; padding: 0; font-family: inherit;
+    }
+    .linkbtn:disabled { color: #8f8f98; cursor: default; }
+    .linkbtn.danger { color: #ff8a8a; }
+    .rowlinks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 14px; }
+    .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
+    .msg.err { color: #ff8a8a; }
+    .msg.ok { color: #4ade80; }
+    .hidden { display: none !important; }
+    .center { text-align: center; }
+    .icon { font-size: 44px; margin-bottom: 12px; }
+    .hint { font-size: 12px; color: #adadb8; margin: -8px 0 14px; line-height: 1.5; }
+
+    .spinner {
+      width: 28px; height: 28px; margin: 0 auto 16px;
+      border: 3px solid rgba(255,255,255,0.15); border-top-color: #00D4C8;
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .signedin { text-align: center; font-size: 12px; color: #8f8f98; margin-top: 14px; }
+    .signedin button { font-size: 12px; }
+    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #8f8f98; line-height: 1.6; }
+    .legal a { color: #adadb8; }
+
+    /* Status pills - booking states plus the driver-side "action needed". */
+    .pill {
+      display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
+      text-transform: uppercase; border-radius: 100px; padding: 5px 11px;
+      border: 1px solid transparent;
+    }
+    .pill.pending   { background: #24200d; border-color: rgba(255,193,7,0.35);  color: #ffc94a; }
+    .pill.confirmed { background: #0d1f1e; border-color: rgba(0,212,200,0.35);  color: #00D4C8; }
+    .pill.cancelled { background: #241416; border-color: rgba(255,138,138,0.3); color: #ff8a8a; }
+    .pill.completed { background: #16181c; border-color: rgba(255,255,255,0.15);color: #b9b9c6; }
+    .pill.action    { background: #24200d; border-color: rgba(255,193,7,0.5);   color: #ffc94a; }
+
+    /* ── Dashboard header ────────────────────────────────────────────────
+       The console opens on a state-of-play strip rather than a raw list —
+       the Airbnb-host / Rover pattern. Every figure here is computed from
+       rides already loaded; nothing is a placeholder. */
+    .dashhead { margin-bottom: 20px; }
+    .dashhead h1 { font-size: 27px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 4px; }
+    .dashhead .said { font-size: 14.5px; color: #adadb8; }
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 22px; }
+    @media (min-width: 720px) { .stats { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
+    .stat {
+      background: #141417; border: 1px solid #232329; border-radius: 14px;
+      padding: 14px 16px; text-align: left;
+    }
+    .stat .n { font-size: 25px; font-weight: 800; letter-spacing: -0.6px; line-height: 1.1;
+      font-variant-numeric: tabular-nums; }
+    .stat .k { font-size: 12px; color: #a3a3ae; margin-top: 4px; font-weight: 600; }
+    /* Only a stat that needs the driver to DO something takes colour. */
+    .stat.act { border-color: rgba(255,184,77,0.45); background: #191509; }
+    .stat.act .n { color: #FFB84D; }
+    .stat.act .k { color: #e8c88c; }
+    .stat.link { cursor: pointer; font-family: inherit; width: 100%; }
+    .stat.link:hover { border-color: rgba(0,212,200,0.45); }
+
+    /* Ride list rows are buttons - navigation is pushState. */
+    .ridecard {
+      display: block; width: 100%; text-align: left; font-family: inherit;
+      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 16px;
+      padding: 16px 18px; margin-bottom: 12px; cursor: pointer; color: #fff;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .ridecard:hover { border-color: rgba(0,212,200,0.4); transform: translateY(-1px); }
+    .ridecard.attention { border-color: rgba(255,193,7,0.45); }
+    .ridecard .cardtop { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .ridecard .cardroute { font-size: 17px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.3; }
+    /* The departure date is the #1 thing distinguishing one ride card from
+       the next (Justin, 2026-08-28) — teal + larger so it scans instantly. */
+    .ridecard .cardmeta { font-size: 15px; font-weight: 600; color: #00D4C8; margin-top: 6px; }
+    .ridecard .cardfoot {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.07);
+      font-size: 13px; color: #adadb8;
+    }
+    /* Status chip. Semantic colour, separate from the teal accent. */
+    .chip {
+      display: inline-flex; align-items: center; gap: 5px; flex: none;
+      padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
+      letter-spacing: 0.2px; white-space: nowrap;
+    }
+    .chip.act { background: rgba(255,184,77,0.16); color: #FFB84D; }
+    .chip.full { background: rgba(61,220,151,0.15); color: #3ddc97; }
+    .chip.open { background: rgba(255,255,255,0.07); color: #adadb8; }
+    .chip.off { background: rgba(255,255,255,0.05); color: #8e8e99; }
+    /* Seat fill, read at a glance — filled pips are sold seats. BlaBlaCar
+       shows seat icons for the same reason: "2 of 3" is a sentence, pips
+       are a picture. */
+    .seatpips { display: inline-flex; align-items: center; gap: 4px; }
+    .seatpips i {
+      width: 9px; height: 9px; border-radius: 50%; display: block;
+      background: rgba(255,255,255,0.14);
+    }
+    .seatpips i.on { background: #00D4C8; }
+    .fillrow { display: flex; align-items: center; gap: 9px; }
+
+    .paxrow { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; }
+    .avatar.ph { display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #00D4C8; }
+    .paxname { font-size: 15px; font-weight: 700; }
+    .paxsub { font-size: 12px; color: #adadb8; margin-top: 2px; }
+
+    .bookingbox {
+      border: 1px solid rgba(255,255,255,0.10); border-radius: 14px;
+      padding: 14px 16px; margin-bottom: 12px; background: rgba(255,255,255,0.02);
+    }
+    .bookingbox.request { border-color: rgba(255,193,7,0.4); background: #17150c; }
+    .bookingtop { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .ridernote {
+      background: #0E0E10; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+      padding: 10px 12px; font-size: 13px; color: #b9b9c6; line-height: 1.5; margin-top: 10px;
+      white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .actrow { display: flex; gap: 10px; margin-top: 12px; }
+    .actrow button { flex: 1; padding: 12px; font-size: 14px; }
+    .rowhint { font-size: 12px; color: #adadb8; margin-top: 8px; line-height: 1.5; }
+    /* Seats card (2026-09-03): the app's driver seat grid, on the web. One
+       tile per passenger seat; open = teal, closed = dashed + dim, held by a
+       booking/request = gold and not tappable. The driver tile is decoration. */
+    .seatgrid { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .seatrow { display: flex; gap: 8px; }
+    .seattile {
+      flex: 1; min-width: 0; font: inherit; color: #E8E8EC; text-align: center;
+      background: #18181C; border: 1px solid #2C2C38; border-radius: 12px;
+      padding: 10px 6px; cursor: pointer; transition: transform .12s, opacity .12s;
+    }
+    .seattile:active { transform: scale(.97); }
+    .seattile .sl { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: #8888A8; }
+    .seattile .sp { font-weight: 700; font-size: 15px; margin-top: 2px; font-variant-numeric: tabular-nums; }
+    .seattile .ss { font-size: 12px; margin-top: 4px; color: #C0C0D0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .seattile.open { border-color: rgba(0,212,200,.45); background: rgba(0,212,200,.08); }
+    .seattile.open .ss { color: #00D4C8; }
+    .seattile.closed { opacity: .55; border-style: dashed; }
+    .seattile.held { border-color: rgba(255,214,10,.4); background: rgba(255,214,10,.08); cursor: default; }
+    .seattile.held .ss { color: #FFD60A; }
+    .seattile.driver { opacity: .75; cursor: default; }
+    /* Seats card v2 (2026-09-03): portrait car on the left (the booking
+       page's cabin chrome — wheels flush on the sides, mirrors up front),
+       controls on the right. Stacks on narrow screens. */
+    /* Centered as a pair; the car is a portrait (longer than wide) shell
+       (Justin, 2026-09-04: "the car should be longer than it is wide, and we
+       should center this"). */
+    .seatlayout { display: flex; gap: 28px; align-items: flex-start; justify-content: center; margin-top: 14px; }
+    .carcol { flex: 0 0 auto; width: 250px; }
+    .chipcol { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding-top: 4px; }
+    @media (max-width: 640px) { .seatlayout { flex-direction: column; align-items: center; } .carcol { width: 100%; max-width: 250px; } }
+    .carwrap { position: relative; width: 100%; margin: 6px auto 12px; }
+    .carshell { min-height: 400px; justify-content: space-evenly; }
+    .carwheel { position: absolute; width: 14px; height: 62px; border-radius: 7px; background: #26262e; z-index: 0; }
+    .carwheel.wfl { left: -7px; top: 58px; } .carwheel.wfr { right: -7px; top: 58px; }
+    .carwheel.wrl { left: -7px; bottom: 48px; } .carwheel.wrr { right: -7px; bottom: 48px; }
+    .carmirror { position: absolute; width: 18px; height: 9px; border-radius: 4px 4px 2px 2px; background: #2f2f38; z-index: 2; top: 36px; }
+    .carmirror.mml { left: -14px; transform: rotate(-14deg); } .carmirror.mmr { right: -14px; transform: rotate(14deg); }
+    .carshell { position: relative; z-index: 1; border: 2px solid #2a2a33; border-radius: 46px 46px 30px 30px; background: #101014; padding: 38px 14px 32px; display: flex; flex-direction: column; gap: 18px; align-items: center; }
+    .carrow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+    .carrow.three { grid-template-columns: 1fr 1fr 1fr; }
+    .carshell .seattile { padding: 12px 6px; min-height: 86px; border-radius: 12px; }
+    .carshell .seattile .sl { font-size: 11px; letter-spacing: .5px; }
+    .carshell .seattile .ss { font-size: 12px; margin-top: 4px; }
+    .carshell .seattile .sp { font-size: 13px; }
+    .windshield { width: 86%; height: 6px; border-radius: 999px; background: rgba(0,212,200,.14); }
+    .rowdiv { width: 60%; height: 1px; background: #2C2C38; }
+    .drvbadge { width: 26px; height: 26px; border-radius: 50%; background: #2C2C38; color: #E8E8EC; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 3px; font-size: 12px; }
+    .seatchip { display: inline-flex; width: auto; max-width: 100%; align-items: center; gap: 8px; border: 1px solid #2C2C38; border-radius: 999px; padding: 4px 5px 4px 12px; background: #18181C; font-size: 12.5px; }
+    .seatchip .nm { font-weight: 700; color: #E8E8EC; }
+    .seatchip .st { color: #8888A8; white-space: nowrap; }
+    .seatchip.open .st { color: #00D4C8; }
+    .seatchip.held { border-color: rgba(255,214,10,.35); } .seatchip.held .st { color: #FFD60A; }
+    .seatchip.closed { opacity: .75; }
+    .seatchip.price { border-color: rgba(0,212,200,.45); background: rgba(0,212,200,.06); }
+    .seatchip.price .val { font-weight: 800; font-size: 14px; color: #E8E8EC; }
+    .chipact { font: inherit; font-size: 11px; font-weight: 700; color: #00D4C8; background: transparent; border: 1px solid rgba(0,212,200,.45); border-radius: 999px; padding: 3px 9px; cursor: pointer; margin: 0; }
+    .chipact:disabled { opacity: .5; cursor: default; }
+    .priceedit { display: flex; gap: 8px; align-items: center; margin: -2px 0 4px; }
+    .priceedit .cur { color: #8888A8; }
+    .priceedit input { width: 100px; margin: 0; }
+    .priceedit .primary { width: auto; padding: 10px 18px; margin: 0; }
+    .seatsum { font-size: 12px; color: #8888A8; padding: 2px 4px 4px; }
+    .managerow .linkbtn { border: 1px solid #2C2C38; border-radius: 999px; padding: 8px 14px; background: #18181C; color: #E8E8EC; }
+    .managerow .linkbtn:hover { border-color: rgba(0,212,200,.5); color: #00D4C8; }
+    .managerow .linkbtn.danger { color: #ff8a8a; border-color: rgba(255,138,138,.35); }
+    .seattile:disabled { cursor: default; }
+    .seattile.saving { opacity: .6; }
+    .rowmsg { font-size: 13px; line-height: 1.5; margin-top: 10px; }
+    .rowmsg.err { color: #ff8a8a; }
+    .rowmsg.ok { color: #4ade80; }
+
+    .banner { border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; font-size: 14px; line-height: 1.55; }
+    .banner.warn { background: #241416; border: 1px solid rgba(255,138,138,0.3); color: #ffb3b3; }
+    .banner.info { background: #141d1c; border: 1px solid rgba(0,212,200,0.3); color: #cfe9e7; }
+    .banner.neutral { background: #16181c; border: 1px solid rgba(255,255,255,0.12); color: #b9b9c6; }
+    .banner.amber { background: #24200d; border: 1px solid rgba(255,193,7,0.35); color: #ffe1a3; }
+    .banner strong { color: #fff; }
+    .banner button { margin-top: 12px; }
+
+    .backrow { margin-bottom: 14px; }
+
+    /* Check-in card - the money moment on this page. */
+    .checkin { border-color: rgba(0,212,200,0.35); }
+    .pinwrap { display: flex; gap: 10px; align-items: flex-start; margin-top: 4px; }
+    .pinwrap input { text-align: center; letter-spacing: 8px; font-size: 22px; font-weight: 700; margin-bottom: 0; }
+    .pinwrap button { width: auto; flex-shrink: 0; padding: 14px 18px; }
+    .checkedrow { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: #b9b9c6; margin-top: 10px; }
+    .checkedrow .ok { color: #4ade80; font-weight: 700; }
+
+    /* Chat (trips.html verbatim, sides swapped in JS) */
+    .thread {
+      max-height: 58vh; overflow-y: auto; padding: 4px 2px 6px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .brow { display: flex; }
+    .brow.me { justify-content: flex-end; }
+    .brow.them { justify-content: flex-start; }
+    .brow.sys { justify-content: center; }
+    .bubble {
+      max-width: 78%; border-radius: 16px; padding: 10px 14px; font-size: 15px; line-height: 1.45;
+      white-space: pre-wrap; overflow-wrap: anywhere;
+    }
+    .brow.me .bubble { background: #00D4C8; color: #04201e; border-bottom-right-radius: 5px; }
+    .brow.them .bubble { background: #1f1f23; color: #fff; border-bottom-left-radius: 5px; }
+    .brow.sys .bubble { background: none; color: #adadb8; font-size: 13px; text-align: center; max-width: 92%; }
+    .bubble.sending { opacity: 0.55; }
+    .bubble.failed { background: #3a1c1f; color: #ffb3b3; }
+    .btime { font-size: 10px; color: #8f8f98; margin: 2px 4px 0; text-align: right; }
+    .brow.them + .btime { text-align: left; }
+    .composer { display: flex; gap: 10px; align-items: flex-end; margin-top: 14px; }
+    .composer textarea { min-height: 46px; max-height: 140px; margin-bottom: 0; padding: 12px 14px; font-size: 15px; }
+    .composer button { width: auto; flex-shrink: 0; padding: 13px 18px; }
+    .emptythread { text-align: center; color: #adadb8; font-size: 13px; line-height: 1.6; padding: 22px 8px; }
+    .consolenav {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      margin: 14px 0 4px;
+    }
+    .consolenav a, .consolenav button {
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      color: #b9b9c6; text-decoration: none; background: #17171d;
+      border: 1px solid #2a2a33; border-radius: 999px; padding: 8px 16px;
+      cursor: pointer;
+    }
+    .consolenav a:hover, .consolenav button:hover { border-color: rgba(0,212,200,0.4); color: #fff; }
+    .rolepair { display: inline-flex; gap: 6px; }
+    .consolenav a.rolepill { border-color: rgba(0,212,200,0.4); color: #00D4C8; font-weight: 700; }
+    .consolenav a.rolepill.active { background: #00D4C8; color: #04201e; border-color: #00D4C8; }
+    .consolenav a.rolepill.active:hover { color: #04201e; }
+  </style>
+</head>
+<body>
+  <!-- Shared console app bar (ss-appbar.js), body-level for full bleed. -->
+  <div id="ssAppBar"></div>
+  <div class="wrap">
+
+    <!-- STATES -->
+
+    <div class="card center" id="stLoading">
+      <div class="spinner"></div>
+      <h1>Loading&hellip;</h1>
+      <p class="sub" style="margin-bottom:0;">One moment.</p>
+    </div>
+
+    <!-- Boot failure: the shared session module didn't load. Honest, not blank. -->
+    <div class="card center hidden" id="stBoot">
+      <div class="icon">&#9888;&#65039;</div>
+      <h1>This page didn't finish loading</h1>
+      <p class="sub" style="margin-bottom:0;">Refresh to try again. If it keeps happening, email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a> and we'll sort out your ride.</p>
+    </div>
+
+    <!-- Signed out - a driver checking requests from a laptop lands here. -->
+    <div class="card hidden" id="stEmail">
+      <div class="eyebrow">Your rides</div>
+      <h1>Sign in to manage your rides</h1>
+      <p class="sub">Enter the email you posted your ride with and we'll send a sign-in code &mdash; no password needed.</p>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
+      <button class="primary" id="emailBtn">Email me a code</button>
+      <div class="msg err hidden" id="emailMsg"></div>
+    </div>
+
+    <div class="card hidden" id="stCode">
+      <div class="eyebrow">Your rides &middot; Verify email</div>
+      <h1>Enter the code we emailed you</h1>
+      <p class="sub">We sent it to <strong id="codeEmailEcho"></strong>. It can take a minute &mdash; check spam too.</p>
+      <input id="emailCode" class="codeinput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" />
+      <button class="primary" id="codeBtn">Verify</button>
+      <div class="rowlinks">
+        <button class="linkbtn" id="codeResend">Resend code</button>
+        <button class="linkbtn" id="codeChangeEmail">Use a different email</button>
+      </div>
+      <div class="msg err hidden" id="codeMsg"></div>
+    </div>
+
+    <!-- List / ride / chat are JS-built so every string from the database goes
+         through textContent. See the DOM helpers in the module below. -->
+    <div class="hidden" id="stList"><div id="listBody"></div></div>
+    <div class="hidden" id="stWallet"><div id="walletBody"></div></div>
+    <div class="hidden" id="stAccount"><div id="accountBody"></div></div>
+    <div class="hidden" id="stRide"><div id="rideBody"></div></div>
+    <div class="hidden" id="stChat"><div id="chatBody"></div></div>
+
+    <div class="card center hidden" id="stNotFound">
+      <div class="icon">&#128269;</div>
+      <h1>We couldn't find that ride</h1>
+      <!-- Identical copy for "no such ride" and "not your ride" - same
+           non-oracle reasoning as trips.html. -->
+      <p class="sub">That ride isn't on this account. Sign in with the email you posted it with, or head back to all your rides.</p>
+      <button class="outline" id="nfAllRides">See all my rides</button>
+      <div class="signedin" id="nfSignedIn">Signed in as <span id="nfEmail"></span> &middot; <button class="linkbtn" id="nfSignOut">Not you?</button></div>
+    </div>
+
+    <div class="card center hidden" id="stError">
+      <div class="icon">&#128225;</div>
+      <h1>Couldn't load your rides</h1>
+      <p class="sub" id="errSub">Something went wrong on our end. Check your connection and try again.</p>
+      <button class="primary" id="errRetry">Try again</button>
+    </div>
+
+    <p class="legal">
+      Seat Sherpa is a cost-sharing carpool marketplace, not a ride-hail service.<br />
+      <a href="/terms">Terms</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
+    </p>
+  </div>
+
+  <script src="/js/ss-menu.js"></script>
+  <script src="/js/ss-appbar.js"></script>
+  <script>
+    // Wallet and Car & license switch in-page state rather than navigating,
+    // so they ride in the bar as `extra` buttons. The module below binds the
+    // handlers by id once its render functions exist.
+    if (window.SS_APPBAR) SS_APPBAR.mount({
+      active: 'driving', id: 'consoleNav', startHidden: true,
+      extra: [
+        { label: 'Wallet', id: 'navWallet', onClick: function () {} },
+        { label: 'Car & license', id: 'navAccount', onClick: function () {} },
+      ],
+    });
+  </script>
+  <script src="/js/ss-stops.js"></script>
+  <script type="module">
+    // driving.html - DRIVER web console, everything AFTER "your ride is posted".
+    //
+    // /driving                          -> the driver's rides
+    // /driving?ride=<id>                -> one ride: requests, riders, check-in, complete
+    // /driving?ride=<id>&chat=<bookingId> -> chat with one rider
+    //
+    // WHY this page exists: /post (built 2026-08-21) lets a driver post from a
+    // browser, but every action AFTER a rider appears - accept, decline, chat,
+    // check riders in, mark complete - lived only in the app. An app-less
+    // driver's pending requests rotted until the card hold expired. This page
+    // closes that loop.
+    //
+    // THE CONTRACT: services/bookings.ts is the source of truth for every
+    // action here. Each handler below mirrors its app twin - the same server
+    // call, the same conditional status guard, and the SAME follow-up side
+    // effects (push + email + chat + Stripe hold release), because skipping a
+    // follow-up means a rider who is never told they were accepted. File/line
+    // references are inline at each handler.
+    //
+    // ONE hard rule throughout (same as trips.html): every value that came out
+    // of the database reaches the DOM via textContent, never innerHTML. Rider
+    // names, chat messages, ride areas, seat labels and rider notes are all
+    // user-authored. The el()/clear() helpers make textContent the path of
+    // least resistance.
+
+    // -- Session plumbing (owned by /js/ss-session.js) ----------------------
+    let S = null;
+    try {
+      S = await import('/js/ss-session.js');
+    } catch (_) {
+      document.getElementById('stLoading').classList.add('hidden');
+      document.getElementById('stBoot').classList.remove('hidden');
+      throw new Error('ss-session.js failed to load');
+    }
+    const supabase = S.supabase;
+    const SUPA = S.SUPA;
+    const ANON = S.ANON;
+
+    // -- Wallet + Account pages (in-console; Stripe is a BUTTON inside the
+    //    wallet, not a bounce — Justin, 2026-08-28) ------------------------
+    // Optional chaining on purpose: these two buttons live in the shared app
+    // bar, which does not mount when signed out. An unguarded call here would
+    // throw at module top level and take the whole sign-in screen with it.
+    document.getElementById('navWallet')?.addEventListener('click', () => { void renderWallet(); });
+    document.getElementById('navAccount')?.addEventListener('click', () => { void renderAccount(); });
+
+    /** Open the hosted Stripe Express dashboard (payout history, bank on
+     *  file) in a new tab. Tab opened SYNCHRONOUSLY on click — popup blockers
+     *  kill a window.open that happens after an await. */
+    async function openStripeDashboard(btn) {
+      const original = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Opening…';
+      const tab = window.open('about:blank', '_blank');
+      try {
+        const out = await S.callFn('web-stripe-onboarding-link', { body: { mode: 'dashboard' } });
+        if (out && out.url) { if (tab) tab.location = out.url; else window.location = out.url; btn.textContent = original; }
+        else throw new Error('no url');
+      } catch (e) {
+        if (tab) tab.close();
+        btn.textContent = /NO_ACCOUNT/.test(String((e && (e.error || e.message)) || ''))
+          ? 'Set up deposits first'
+          : 'Unavailable — try again';
+        setTimeout(() => { btn.textContent = original; }, 3500);
+      } finally { btn.disabled = false; }
+    }
+
+    // -- DOM helpers - the XSS fence ----------------------------------------
+    const $ = (id) => document.getElementById(id);
+    /** Build an element. `text` always lands as textContent. */
+    function el(tag, cls, text) {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text !== undefined && text !== null) n.textContent = String(text);
+      return n;
+    }
+    /** Empty a node without innerHTML so a grep for innerHTML stays at zero. */
+    function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+    const STATES = ['stLoading','stBoot','stEmail','stCode','stList','stWallet','stAccount','stRide','stChat','stNotFound','stError'];
+    // The console nav only makes sense once you're in — signed-out states
+    // keep the page focused on the code entry.
+    const NAV_STATES = new Set(['stList','stWallet','stAccount','stRide','stChat']);
+    function show(id) {
+      STATES.forEach((s) => $(s).classList.toggle('hidden', s !== id));
+      // Sign-in happens in-page, so the bar may not exist yet on first paint.
+      if (window.SS_APPBAR) SS_APPBAR.ensure();
+      const nav = $('consoleNav');
+      if (nav) nav.classList.toggle('hidden', !NAV_STATES.has(id));
+    }
+    function setMsg(id, text, kind) {
+      const n = $(id);
+      if (!text) { n.classList.add('hidden'); return; }
+      n.textContent = text;
+      n.className = 'msg ' + (kind || 'err');
+    }
+
+    // Timers are per-render; render() tears the previous set down.
+    let timers = [];
+    function every(ms, fn) { timers.push(setInterval(fn, ms)); }
+    function clearTimers() { timers.forEach(clearInterval); timers = []; }
+
+    // -- Time: ported verbatim from lib/booking-time.ts (via trips.html) -----
+    // Two-pass DST solve. Do NOT approximate - a single-pass version is an
+    // hour wrong on transition days, which here means the check-in window and
+    // the 30-minute complete gate both opening at the wrong time.
+    function zonedWallClockToUtc(year, month, day, hour, minute, timezone) {
+      const desiredWallUtc = Date.UTC(year, month - 1, day, hour, minute);
+      const offsetAt = (instant) => {
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+        }).formatToParts(new Date(instant));
+        const f = {};
+        for (const p of parts) f[p.type] = p.value;
+        const asUtc = Date.UTC(
+          Number(f.year), Number(f.month) - 1, Number(f.day),
+          f.hour === '24' ? 0 : Number(f.hour), Number(f.minute), Number(f.second),
+        );
+        return asUtc - instant;
+      };
+      try {
+        let offset = offsetAt(desiredWallUtc);
+        offset = offsetAt(desiredWallUtc - offset);
+        return desiredWallUtc - offset;
+      } catch (_) {
+        return desiredWallUtc;
+      }
+    }
+
+    const DEFAULT_TZ = 'America/Los_Angeles';
+    /** Absolute departure instant (ms). Math only, never display. */
+    function departureMs(ride) {
+      if (!ride || !ride.dep_date) return 0;
+      const m = /^(\d{1,2}):(\d{2})/.exec(String(ride.dep_time || '').trim());
+      const hour = m ? parseInt(m[1], 10) : 0;
+      const minute = m ? parseInt(m[2], 10) : 0;
+      const p = String(ride.dep_date).split('-').map(Number);
+      if (!p[0] || !p[1] || !p[2]) return 0;
+      return zonedWallClockToUtc(p[0], p[1], p[2], hour, minute, ride.dep_timezone || DEFAULT_TZ);
+    }
+
+    function dateLabel(depDate) {
+      const p = String(depDate || '').split('-').map(Number);
+      if (!p[0] || !p[1] || !p[2]) return String(depDate || '');
+      return new Date(p[0], p[1] - 1, p[2])
+        .toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+
+    /** Literal wall clock in the RIDE's zone - never browser-local parsing. */
+    function timeLabel(depTime) {
+      const m = /^(\d{1,2}):(\d{2})/.exec(String(depTime || '').trim());
+      if (!m) return String(depTime || '');
+      let h = parseInt(m[1], 10);
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12; if (h === 0) h = 12;
+      return h + ':' + m[2] + ' ' + ampm;
+    }
+
+    function tzLabel(ride) {
+      try {
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: ride.dep_timezone || DEFAULT_TZ, timeZoneName: 'short',
+        }).formatToParts(new Date(departureMs(ride) || Date.now()));
+        const p = parts.find((x) => x.type === 'timeZoneName');
+        return p ? p.value : '';
+      } catch (_) { return ''; }
+    }
+
+    function whenLabel(ride) {
+      const tz = tzLabel(ride);
+      return dateLabel(ride.dep_date) + ' \u00b7 ' + timeLabel(ride.dep_time) + (tz ? ' ' + tz : '');
+    }
+
+    // lib/booking-time.ts:45 - check-in affordance hidden until 2h before.
+    const PICKUP_CODE_OPENS_BEFORE_MS = 2 * 60 * 60 * 1000;
+    // services/bookings.ts:377 - complete gate: 30 min after departure.
+    const COMPLETE_AFTER_DEPARTURE_MS = 30 * 60 * 1000;
+
+    /** UI-level status, mirroring lib/booking-time.ts effectiveStatus(). The
+     *  SERVER (0206 trigger + edge fns) is always the authority. */
+    function effectiveStatus(b, ride) {
+      if (b.status === 'Cancelled' || b.status === 'Completed') return b.status;
+      const dep = departureMs(ride);
+      if (dep && Date.now() > dep + 12 * 60 * 60 * 1000) {
+        if (b.status === 'Pending') return 'Cancelled';
+        return b.pickup_code_entered_at ? 'Completed' : b.status;
+      }
+      return b.status;
+    }
+
+    // -- Formatting ---------------------------------------------------------
+    const fmt$ = (n) => '$' + Number(n || 0).toFixed(2);
+
+    /** lib/format-name.ts abbreviateName. name_public is already "First L."
+     *  server-side (0203); this is the belt-and-braces second pass and is
+     *  idempotent on already-short values. */
+    function abbreviateName(name) {
+      if (!name) return '';
+      const parts = String(name).trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return '';
+      if (parts.length === 1) return parts[0];
+      const initial = (parts[parts.length - 1][0] || '').toUpperCase();
+      return initial ? parts[0] + ' ' + initial + '.' : parts[0];
+    }
+    function firstName(name) {
+      const p = String(name || '').trim().split(/\s+/).filter(Boolean);
+      return p[0] || 'your rider';
+    }
+
+    function paxRawName(b) {
+      return (b.passenger && b.passenger.name) || b.passenger_name || '';
+    }
+    function paxDisplay(b) { return abbreviateName(paxRawName(b)) || 'Rider'; }
+    function paxFirst(b) { return firstName(paxRawName(b)); }
+
+    /** Strip the street line, ZIP and state so a card reads "Los Altos \u2192
+     *  San Francisco" instead of a full postal address (Justin, 2026-08-28).
+     *  Same helper as trips.html. Exact addresses still show once a ride is
+     *  opened \u2014 the list is for scanning, the detail is for driving to. */
+    function cityOf(area) {
+      if (!area) return '';
+      const parts = String(area).split(',').map((s) => s.trim()).filter(Boolean);
+      if (!parts.length) return String(area);
+      const STATE = /^(california|ca|nevada|nv|arizona|az|oregon|or|usa|united states|us)( +\d{5}(-\d{4})?)?$/i;
+      const ZIP = /^\d{5}(-\d{4})?$/;
+      const cleaned = parts.filter((p) => !/^\d/.test(p) && !STATE.test(p) && !ZIP.test(p));
+      if (!cleaned.length) return parts[0];
+      return cleaned[cleaned.length - 1];
+    }
+    function routeLabel(ride) {
+      const from = cityOf(ride.departure_area) || ((window.SS_STOPS && SS_STOPS.STOP_BY_ID[ride.from_dest] && SS_STOPS.STOP_BY_ID[ride.from_dest].name) || 'Origin');
+      const to = cityOf(ride.arrival_area) || ((window.SS_STOPS && SS_STOPS.STOP_BY_ID[ride.to_dest] && SS_STOPS.STOP_BY_ID[ride.to_dest].name) || 'Destination');
+      return from + ' \u2192 ' + to;
+    }
+    /** Full postal addresses, for the opened-ride view only. */
+    function fullRouteLabel(ride) {
+      const from = ride.departure_area || cityOf(ride.departure_area) || 'Origin';
+      const to = ride.arrival_area || cityOf(ride.arrival_area) || 'Destination';
+      return from + ' \u2192 ' + to;
+    }
+
+    /** Map seat_ids onto the driver's own seat labels. */
+    function seatLabels(b, ride) {
+      const ids = Array.isArray(b.seat_ids) ? b.seat_ids : [];
+      const seats = (ride && Array.isArray(ride.seats)) ? ride.seats : [];
+      return ids.map((id) => {
+        const s = seats.find((x) => x && x.id === id);
+        return (s && (s.label || s.id)) || id;
+      });
+    }
+
+    function stopName(stop) {
+      if (!stop) return '';
+      if (typeof stop === 'string') return stop;
+      return stop.name || '';
+    }
+
+    /** Only ever assign an https image URL (photo_url is user-writable). */
+    function safePhoto(url) {
+      const u = String(url || '');
+      return /^https:\/\//i.test(u) ? u : '';
+    }
+
+    // -- Push copy: ported from services/bookings.ts so the passenger's phone
+    // shows the SAME notification whether the driver acted in the app or here.
+    // formatRideTimeForPush (bookings.ts:521) -> "3:00pm"
+    function pushTime(depTime) {
+      const m = /^(\d{1,2}):(\d{2})$/.exec(String(depTime || '').trim());
+      if (!m) return String(depTime || '');
+      const h24 = parseInt(m[1], 10);
+      if (!(h24 >= 0 && h24 <= 23)) return String(depTime);
+      const ampm = h24 >= 12 ? 'pm' : 'am';
+      const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+      return h12 + ':' + m[2] + ampm;
+    }
+    // formatRideDateForPush (bookings.ts:505) - UTC-parsed to avoid day drift.
+    function pushDate(depDate) {
+      const p = String(depDate || '').split('-').map(Number);
+      if (!p[0] || !p[1] || !p[2]) return String(depDate || '');
+      return new Date(Date.UTC(p[0], p[1] - 1, p[2]))
+        .toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+    }
+    // cityFromAddress - ported from the send-booking-email copy of
+    // lib/format-address.ts. City -> city, never the search region.
+    function cityFromAddress(address) {
+      if (!address) return '';
+      const parts = String(address).split(',').map((s) => s.trim()).filter(Boolean);
+      if (parts.length === 0) return String(address).trim();
+      const STATE_OR_COUNTRY =
+        /^(california|ca|nevada|nv|arizona|az|oregon|or|usa|united states|us)( +\d{5}(-\d{4})?)?$/i;
+      const ZIP = /^\d{5}(-\d{4})?$/;
+      const cleaned = parts.filter((p) => {
+        if (/^\d/.test(p)) return false;
+        if (STATE_OR_COUNTRY.test(p)) return false;
+        if (ZIP.test(p)) return false;
+        return true;
+      });
+      if (cleaned.length === 0) return parts[0];
+      return cleaned[cleaned.length - 1];
+    }
+    // buildRideDescriptor (bookings.ts:558). The app's fallback chain includes
+    // the destinations map (lib/destinations.ts) - not available here, so the
+    // fallback is the raw dest id. departure_area is NOT NULL in the schema,
+    // so cityFromAddress carries this in practice.
+    function rideDescriptor(ride) {
+      const fromName = cityFromAddress(ride.departure_area) || ((window.SS_STOPS && SS_STOPS.STOP_BY_ID[ride.from_dest] && SS_STOPS.STOP_BY_ID[ride.from_dest].name) || 'origin');
+      const toName = cityFromAddress(ride.arrival_area) || ((window.SS_STOPS && SS_STOPS.STOP_BY_ID[ride.to_dest] && SS_STOPS.STOP_BY_ID[ride.to_dest].name) || 'destination');
+      return pushTime(ride.dep_time) + ' ride on ' + pushDate(ride.dep_date)
+        + ' from ' + fromName + ' to ' + toName;
+    }
+
+    // -- Data ---------------------------------------------------------------
+    // Explicit column lists, never select('*') - house web style, and it keeps
+    // this page honest about exactly which fields it consumes. Passenger name
+    // comes ONLY through the name_public alias (0203); profiles.name (the
+    // private legal name) is never selected anywhere in this file.
+    const RIDE_SELECT = [
+      'id, driver_id, from_dest, to_dest, departure_area, arrival_area',
+      'dep_date, dep_time, dep_timezone, instant, seats, cancelled_at, created_at',
+      // Stops editor (2026-08-28): current stops + endpoints for the
+      // suggester + road miles for the distance-aware stop cap.
+      'route_stops, start_lat, start_lng, end_lat, end_lng, road_miles',
+      // Driver-set leg prices (0226) — re-keyed when stops are edited.
+      'segment_prices',
+    ].join(', ');
+
+    const BOOKING_SELECT = [
+      'id, ride_id, passenger_id, passenger_name, seat_ids, total_price, status',
+      'driver_message, cancel_reason, ref_code, created_at',
+      'pickup_code_entered_at, no_show_reported_at, no_show_disputed_at',
+      'boarding_stop, alighting_stop, source, stripe_payment_intent_id',
+      'passenger:profiles!bookings_passenger_profile_fkey(name:name_public, photo_url)',
+    ].join(', ');
+
+    let me = null;          // auth uid
+    let myEmail = '';
+    let myName = '';        // name_public - already "First L."
+    let payout = { loaded: false, started: false, enabled: false, credit: false };
+
+    async function loadMyRides() {
+      // RLS: rides_select_all lets any authenticated user read rides, but this
+      // page only ever asks for its own (driver_id = me). Mirrors
+      // getMyRidesWithBookings (bookings.ts:261) including the cancelled-rides
+      // exclusion - cascade-cancel already flipped those bookings and the
+      // riders see them on /trips.
+      const { data, error } = await supabase
+        .from('rides')
+        .select(RIDE_SELECT)
+        .eq('driver_id', me)
+        .is('cancelled_at', null)
+        .order('dep_date', { ascending: true });
+      if (error) throw error;
+      return data || [];
+    }
+
+    async function loadRide(rideId) {
+      // Scoped by driver_id = me as well as RLS: a pasted ?ride= id belonging
+      // to someone else comes back null, indistinguishable from "no such
+      // ride" - the URL is never trusted.
+      const { data, error } = await supabase
+        .from('rides')
+        .select(RIDE_SELECT)
+        .eq('id', rideId)
+        .eq('driver_id', me)
+        .maybeSingle();
+      if (error) throw error;
+      return data || null;
+    }
+
+    async function loadBookingsForRides(rideIds) {
+      if (!rideIds.length) return [];
+      // RLS bookings_select_driver_rides (0002) scopes rows to rides I drive.
+      const { data, error } = await supabase
+        .from('bookings')
+        .select(BOOKING_SELECT)
+        .in('ride_id', rideIds)
+        .order('created_at', { ascending: true });
+      if (error) throw error;
+      // UNPAID WEB REQUESTS (2026-09-02): a browser booking is inserted Pending
+      // before Stripe Checkout and only gets its PaymentIntent when the card is
+      // authorized. Until then it is nothing the driver can act on, so it stays
+      // invisible to them (the 30-minute session expiry cancels abandoned ones).
+      const rows = (data || []).filter((b) => !(b.status === 'Pending' && b.source === 'web' && !b.stripe_payment_intent_id));
+      try { await loadRiderRep(rows.map((b) => b.passenger_id)); } catch (_) {}
+      return rows;
+    }
+
+    // Rider reputation (audit 8/28): deciding whether to charge a stranger's
+    // card with nothing but a name is worse than the app, which shows a
+    // rating. Ratings are readable (same table this page writes to).
+    const riderRep = new Map(); // passenger_id -> {avg, n}
+    async function loadRiderRep(ids) {
+      const want = [...new Set((ids || []).filter((x) => x && !riderRep.has(x)))];
+      if (!want.length) return;
+      const { data, error } = await supabase
+        .from('ratings')
+        .select('ratee_id, stars')
+        .in('ratee_id', want);
+      if (error) return;
+      const acc = new Map();
+      for (const r of data || []) {
+        const cur = acc.get(r.ratee_id) || { sum: 0, n: 0 };
+        cur.sum += Number(r.stars) || 0; cur.n += 1;
+        acc.set(r.ratee_id, cur);
+      }
+      for (const id of want) {
+        const a = acc.get(id);
+        riderRep.set(id, a && a.n ? { avg: a.sum / a.n, n: a.n } : null);
+      }
+    }
+    function riderRepLabel(b) {
+      const r = b && b.passenger_id ? riderRep.get(b.passenger_id) : null;
+      if (!r || !r.n) return 'New rider';
+      return '★ ' + r.avg.toFixed(1) + ' (' + r.n + ')';
+    }
+
+    async function loadUnreadCounts(bookingIds) {
+      const map = new Map();
+      if (!bookingIds.length) return map;
+      try {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('booking_id')
+          .in('booking_id', bookingIds)
+          .neq('sender_id', me)
+          .is('read_at', null);
+        if (error) return map;
+        for (const r of data || []) {
+          map.set(r.booking_id, (map.get(r.booking_id) || 0) + 1);
+        }
+      } catch (_) { /* unread badges are cosmetic */ }
+      return map;
+    }
+
+    /** Per-ride aggregates, mirroring getMyRidesWithBookings (bookings.ts:309):
+     *  pendingCount, bookedSeats, totalSeats (open + held; CLOSED seats with no
+     *  booking don't count), unreadCount. */
+    function buildEntry(ride, bookings, unread) {
+      const rideBookings = bookings.filter((b) => b.ride_id === ride.id);
+      const active = rideBookings.filter((b) => b.status !== 'Cancelled');
+      const pendingCount = rideBookings.filter((b) => effectiveStatus(b, ride) === 'Pending').length;
+      const bookedSeats = active.reduce((sum, b) => sum + ((b.seat_ids || []).length), 0);
+      const held = new Set();
+      active.forEach((b) => (b.seat_ids || []).forEach((id) => held.add(id)));
+      const seats = Array.isArray(ride.seats) ? ride.seats : [];
+      const totalSeats = seats.filter((s) => s && !s.isDriver && (s.avail || held.has(s.id))).length;
+      const unreadCount = rideBookings.reduce((sum, b) => sum + (unread.get(b.id) || 0), 0);
+      return { ride, bookings: rideBookings, pendingCount, bookedSeats, totalSeats, unreadCount };
+    }
+
+    // -- Payout state (read-only display; accept still works without it) ----
+    async function loadPayoutState() {
+      try {
+        // payout_method (0190): credit-payout drivers have no Connect account
+        // by design and must not see the Stripe nag. Tolerant two-step select,
+        // same degradation stripe-capture-booking uses for pre-0190 databases.
+        let row = null;
+        const wide = await supabase
+          .from('profiles')
+          .select('name_public, stripe_account_id, stripe_charges_enabled, payout_method')
+          .eq('id', me)
+          .maybeSingle();
+        if (!wide.error) {
+          row = wide.data;
+        } else {
+          const narrow = await supabase
+            .from('profiles')
+            .select('name_public, stripe_account_id, stripe_charges_enabled')
+            .eq('id', me)
+            .maybeSingle();
+          if (narrow.error) return;
+          row = narrow.data;
+        }
+        if (!row) return;
+        myName = row.name_public || myName;
+        payout = {
+          loaded: true,
+          started: !!row.stripe_account_id,
+          enabled: row.stripe_charges_enabled === true,
+          credit: row.payout_method === 'credit',
+        };
+
+        // Rohan lesson (stripe-refresh-account-status header): the webhook is
+        // best-effort, so an account that LOOKS half-onboarded gets reconciled
+        // against Stripe itself, once per page load. Copies Stripe's truth
+        // onto the profile row; never invents a `true`.
+        if (payout.started && !payout.enabled && !payout.credit && !loadPayoutState._reconciled) {
+          loadPayoutState._reconciled = true;
+          try {
+            const out = await callFn('stripe-refresh-account-status', {});
+            if (out && out.ok) {
+              payout.started = out.started === true;
+              payout.enabled = out.chargesEnabled === true;
+            }
+          } catch (_) { /* reconcile is best-effort */ }
+        }
+      } catch (_) { /* payout banner is informational; never block the page */ }
+    }
+
+    async function startStripeOnboarding(btn, msgNode) {
+      btn.disabled = true; btn.textContent = 'Opening Stripe\u2026';
+      try {
+        const out = await callFn('web-stripe-onboarding-link', {});
+        if (out && out.url) { location.href = out.url; return; }
+        throw new Error('Could not open Stripe.');
+      } catch (e) {
+        btn.disabled = false; btn.textContent = 'Set up deposits';
+        msgNode.textContent = (e && e.message) || 'Could not open Stripe \u2014 try again.';
+        msgNode.classList.remove('hidden');
+      }
+    }
+
+    // -- Routing ------------------------------------------------------------
+    function go(search) {
+      history.pushState({}, '', search || '/driving');
+      render();
+    }
+    window.addEventListener('popstate', () => { render(); });
+
+    // -- Sign-in (same flow as trips.html/book.html, via the shared module) --
+    let pendingEmail = '';
+    let emailCooldownTimer = null;
+    function startEmailCooldown() {
+      let left = 60;
+      const btn = $('codeResend');
+      clearInterval(emailCooldownTimer);
+      btn.disabled = true; btn.textContent = 'Resend in 60s';
+      emailCooldownTimer = setInterval(() => {
+        left -= 1;
+        if (left <= 0) { clearInterval(emailCooldownTimer); btn.disabled = false; btn.textContent = 'Resend code'; }
+        else { btn.textContent = 'Resend in ' + left + 's'; }
+      }, 1000);
+    }
+
+    $('emailBtn').addEventListener('click', async () => {
+      setMsg('emailMsg', '');
+      const email = $('email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setMsg('emailMsg', 'Enter a valid email address.'); return; }
+      const btn = $('emailBtn');
+      btn.disabled = true; btn.textContent = 'Sending\u2026';
+      // S.sendEmailOtp already sets shouldCreateUser:false - a typo says
+      // "no account", it never mints an empty driver account.
+      const err = await S.sendEmailOtp(email);
+      btn.disabled = false; btn.textContent = 'Email me a code';
+      if (err) { setMsg('emailMsg', err); return; }
+      pendingEmail = email;
+      $('codeEmailEcho').textContent = email;
+      $('emailCode').value = '';
+      setMsg('codeMsg', '');
+      startEmailCooldown();
+      show('stCode');
+      $('emailCode').focus();
+    });
+
+    $('codeResend').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const err = await S.sendEmailOtp(pendingEmail);
+      if (err) { setMsg('codeMsg', err); return; }
+      startEmailCooldown();
+      setMsg('codeMsg', 'New code sent.', 'ok');
+    });
+
+    $('codeChangeEmail').addEventListener('click', () => { setMsg('codeMsg', ''); show('stEmail'); });
+
+    $('codeBtn').addEventListener('click', async () => {
+      setMsg('codeMsg', '');
+      const btn = $('codeBtn');
+      btn.disabled = true; btn.textContent = 'Verifying\u2026';
+      const err = await S.verifyEmailOtp(pendingEmail, $('emailCode').value);
+      btn.disabled = false; btn.textContent = 'Verify';
+      if (err) { setMsg('codeMsg', err); return; }
+      // ?ride= survives sign-in - the driver lands on the ride they opened.
+      render();
+    });
+
+    for (const [inp, btn] of [['email','emailBtn'], ['emailCode','codeBtn']]) {
+      $(inp).addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $(btn).click(); } });
+    }
+
+    async function doSignOut() {
+      // S.signOut() is scope:'local' - never revokes the driver's app session.
+      try { await S.signOut(); } catch (_) {}
+      me = null; myEmail = ''; myName = '';
+      payout = { loaded: false, started: false, enabled: false, credit: false };
+      go('/driving');
+    }
+    $('nfSignOut').addEventListener('click', doSignOut);
+    $('nfAllRides').addEventListener('click', () => go('/driving'));
+    $('errRetry').addEventListener('click', () => render());
+
+    // -- Edge-function call (shared helper first; local fallback) -----------
+    // ── Edit route (2026-09-03): Mapbox Search Box autocomplete, the same
+    //    public token post.html ships. One billable session per pick.
+    const MAPBOX_TOKEN = 'pk.eyJ1IjoiamR0MjYyIiwiYSI6ImNtcDhnb3pvNzBkbGYyenBpN2psY3g2bGsifQ.sqsxq8sjfLaq978oqGExHg';
+    function ssUuid() { try { return crypto.randomUUID(); } catch (_) { return String(Date.now()) + Math.random().toString(16).slice(2); } }
+    function stripCountry(s) { return (s || '').replace(/,?\s*(United States|USA|US)\s*$/i, ''); }
+    function wireRouteAc(input, list, onPick) {
+      let session = ssUuid(); let timer = null; let seq = 0;
+      list.style.cssText = 'display:none;border:1px solid #202027;border-radius:10px;overflow:hidden;margin:-4px 0 10px;background:#141418;';
+      function render(items) {
+        list.innerHTML = '';
+        if (!items.length) { list.style.display = 'none'; return; }
+        for (const s of items) {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.style.cssText = 'display:block;width:100%;text-align:left;padding:9px 12px;border:0;border-bottom:1px solid #202027;background:transparent;color:#e8e8ee;cursor:pointer;font-size:14px;';
+          b.textContent = (s.name || '') + (s.place_formatted ? ' · ' + stripCountry(s.place_formatted) : '');
+          b.addEventListener('click', async () => {
+            list.style.display = 'none';
+            input.value = stripCountry(s.full_address || ((s.name || '') + (s.place_formatted ? ', ' + s.place_formatted : '')));
+            try {
+              const r = await fetch('https://api.mapbox.com/search/searchbox/v1/retrieve/' + encodeURIComponent(s.mapbox_id) + '?access_token=' + MAPBOX_TOKEN + '&session_token=' + session);
+              const j = r.ok ? await r.json() : null;
+              const f = j && j.features && j.features[0];
+              session = ssUuid();
+              if (f) onPick({ lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0], address: input.value, name: s.name || '' });
+            } catch (_) { /* leave unpicked */ }
+          });
+          list.appendChild(b);
+        }
+        list.style.display = 'block';
+      }
+      input.addEventListener('input', () => {
+        onPick(null);
+        clearTimeout(timer);
+        const q = input.value.trim();
+        if (q.length < 3) { render([]); return; }
+        timer = setTimeout(async () => {
+          const my = ++seq;
+          try {
+            const res = await fetch('https://api.mapbox.com/search/searchbox/v1/suggest?q=' + encodeURIComponent(q) + '&access_token=' + MAPBOX_TOKEN + '&session_token=' + session + '&country=us&bbox=-124.5,32.0,-114.0,42.0&limit=6&types=poi,address,place,locality,neighborhood');
+            const j = res.ok ? await res.json() : {};
+            if (my !== seq) return;
+            render(j.suggestions || []);
+          } catch (_) { render([]); }
+        }, 250);
+      });
+    }
+
+    async function callFn(name, body) {
+      if (typeof S.callFn === 'function') {
+        return await S.callFn(name, { body, auth: 'user' });
+      }
+      const { data: sd } = await supabase.auth.getSession();
+      const token = sd && sd.session && sd.session.access_token;
+      if (!token) { const err = new Error('not signed in'); err.status = 401; throw err; }
+      const res = await fetch(SUPA + '/functions/v1/' + name, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+        body: JSON.stringify(body),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const err = new Error((out && (out.error || out.message)) || ('HTTP ' + res.status));
+        err.status = res.status;
+        err.error = out && out.error;
+        err.body = out || null;
+        throw err;
+      }
+      return out;
+    }
+
+    // -- Side effects mirrored from services/bookings.ts --------------------
+    // Both are FIRE-AND-FORGET, exactly like the app (`void sendPushToUser`,
+    // `void sendBookingEmail`): the DB/Stripe state is already committed, and
+    // a failed notification must never look like a failed action.
+    function firePush(recipientId, title, body, data) {
+      if (!recipientId || recipientId === me) return;
+      callFn('send-push', { recipientIds: [recipientId], title, body, data: data || {} })
+        .catch(() => {});
+    }
+    function fireBookingEmail(bookingId, event) {
+      // send-booking-email accepts a user JWT and checks booking membership
+      // server-side; the driver of the ride passes.
+      callFn('send-booking-email', { bookingId, event }).catch(() => {});
+    }
+    function fireCancelPaymentIntent(bookingId) {
+      // bookings.ts:401 cancelPaymentIntentForBooking - releases the rider's
+      // authorization hold in minutes instead of Stripe's 7-day auto-expiry.
+      // If it fails, the hold expires on its own; never surfaces as an error.
+      callFn('stripe-cancel-payment-intent', { bookingId }).catch(() => {});
+    }
+    function fireReleaseToDriver(bookingId) {
+      // bookings.ts:469 releaseToDriverForBooking - PIN entered = trip started
+      // -> release escrow. stripe-release-due-payments cron is the backstop.
+      callFn('stripe-release-to-driver', { bookingId }).catch(() => {});
+    }
+    /** Auto-post a system notice into the booking's chat thread (is_system,
+     *  0197). No push for system notices - mirrors sendMessage() called
+     *  without recipientId. */
+    function fireSystemChat(bookingId, body) {
+      supabase.from('messages')
+        .insert({ booking_id: bookingId, sender_id: me, body, is_system: true })
+        .then(() => {}, () => {});
+    }
+
+    // Push payloads: byte-for-byte the app's builders so the rider's phone
+    // deep-links identically. buildBookingStatusPushBody (bookings.ts:606) and
+    // buildBookingTerminalPushBody (bookings.ts:651).
+    function pushAccepted(ride, bookingId) {
+      return {
+        title: 'Booking confirmed',
+        body: 'Driver confirmed your seat on the ' + rideDescriptor(ride),
+        data: { type: 'booking_accepted', rideId: ride.id, bookingId },
+      };
+    }
+    function pushDeclined(ride, bookingId) {
+      // Reason intentionally NOT in the push - privacy on the lock screen
+      // (bookings.ts:605). The reason goes to chat instead.
+      return {
+        title: 'Booking update',
+        body: 'Driver declined your request for the ' + rideDescriptor(ride),
+        data: { type: 'booking_declined', rideId: ride.id, bookingId },
+      };
+    }
+    function pushCompleted(ride, bookingId) {
+      return {
+        title: 'Trip complete',
+        body: 'Your ' + rideDescriptor(ride) + ' is complete. Leave a rating?',
+        data: { type: 'booking_completed', rideId: ride.id, bookingId },
+      };
+    }
+
+    // -- ACTIONS ------------------------------------------------------------
+
+    /**
+     * ACCEPT - mirrors acceptBooking (services/bookings.ts:972).
+     * 1. stripe-capture-booking with the driver's JWT: authorizes the caller
+     *    as the driver, captures the rider's card into escrow, and flips
+     *    Pending -> Confirmed server-side (conditionally - it owns the
+     *    accept-vs-withdraw race, including refunding a race capture).
+     * 2. On success: push 'booking_accepted' + email 'confirmed' to the rider.
+     *    Both fire on ok INCLUDING alreadyConfirmed, exactly as the app does.
+     * Throws a driver-readable message on failure; the booking stays Pending.
+     */
+    async function doAccept(booking, ride) {
+      const out = await callFn('stripe-capture-booking', { bookingId: booking.id });
+      if (!out || out.ok !== true) throw new Error('Could not accept just now. Refresh and try again.');
+      const p = pushAccepted(ride, booking.id);
+      firePush(booking.passenger_id, p.title, p.body, p.data);
+      fireBookingEmail(booking.id, 'confirmed');
+      return out;
+    }
+
+    function acceptErrorCopy(e) {
+      // stripe-capture-booking puts MACHINE codes in `code` and human copy in
+      // `error` — fnError stores those as e.body.code / e.error respectively.
+      // Reading only e.error meant none of the branches below ever matched
+      // (launch audit H3); the payouts one survived by regexing the copy.
+      const code = (e && ((e.body && e.body.code) || e.error)) || '';
+      const msg = String((e && e.message) || '');
+      if (code === 'DRIVER_PAYOUTS_NOT_ACTIVE' || /set up deposits/i.test(msg)) {
+        return "Set up deposits first — your rider's card is only charged after you confirm, and we can only charge it once you can be paid. Use the deposits button at the top of this ride.";
+      }
+      if (code === 'SEAT_TAKEN') {
+        return msg || "You've already confirmed another rider for that seat — each seat can only be confirmed once. Decline this request, or ask the rider to book a different seat.";
+      }
+      if (code === 'AUTH_NOT_CAPTURABLE') {
+        return 'This request expired before it could be accepted \u2014 card holds only last about 7 days. The seat is open again; ask the rider to book again.';
+      }
+      if (code === 'BOOKING_CANCELLED_RACE' || code === 'BOOKING_NOT_PENDING') {
+        return 'This request was withdrawn or cancelled before you accepted. Nothing was charged.';
+      }
+      if (code === 'RIDE_CANCELLED') {
+        return 'This ride has been cancelled, so the request can no longer be accepted.';
+      }
+      if (code === 'NO_PAYMENT_INTENT') {
+        return "This request has no payment authorization on it, so it can't be accepted. The rider needs to book again.";
+      }
+      if (e && e.status === 401) return 'Your sign-in expired. Refresh the page and sign in again.';
+      if (msg) return msg;
+      return 'Could not accept just now. Check your connection and try again.';
+    }
+
+    /**
+     * DECLINE - mirrors declineBooking (services/bookings.ts:995), driver arm.
+     * 1. CONDITIONAL flip Pending -> Cancelled (.eq status 'Pending') so a
+     *    simultaneous accept can never be clobbered - whoever commits second
+     *    loses cleanly (bookings.ts:996-1002).
+     * 2. 0 rows -> re-fetch and explain honestly (Confirmed = accepted in
+     *    another tab/the app; Cancelled = rider already withdrew).
+     * 3. Follow-ups, all fire-and-forget like the app:
+     *    - attribution write {cancelled_by:'driver', declined_at} (bookings.ts:1054,
+     *      grant 0182) - written AFTER the flip, never inside its patch.
+     *    - push 'booking_declined' to the rider (bookings.ts:1066).
+     *    - stripe-cancel-payment-intent releases the hold (bookings.ts:1083).
+     *    - email 'declined' - rider only (bookings.ts:1095).
+     *    - reason (if given) auto-posts to chat as a system notice
+     *      (bookings.ts:1099).
+     * Returns 'declined' | 'already-confirmed' | 'already-cancelled'.
+     */
+    async function doDecline(booking, ride, reason) {
+      const trimmed = String(reason || '').trim();
+      const patch = { status: 'Cancelled', cancel_reason: trimmed || null };
+      const { data, error } = await supabase
+        .from('bookings')
+        .update(patch)
+        .eq('id', booking.id)
+        .eq('status', 'Pending')
+        .select('id')
+        .maybeSingle();
+      if (error) throw error;
+
+      if (!data) {
+        // Lost the race - find out to whom.
+        const { data: cur } = await supabase
+          .from('bookings')
+          .select('id, status')
+          .eq('id', booking.id)
+          .maybeSingle();
+        if (cur && cur.status === 'Confirmed') return 'already-confirmed';
+        return 'already-cancelled';
+      }
+
+      // Attribution (fire-and-forget; failure lands on today's null behavior).
+      supabase.from('bookings')
+        .update({ cancelled_by: 'driver', declined_at: new Date().toISOString() })
+        .eq('id', booking.id)
+        .then(() => {}, () => {});
+
+      const p = pushDeclined(ride, booking.id);
+      firePush(booking.passenger_id, p.title, p.body, p.data);
+      fireCancelPaymentIntent(booking.id);
+      fireBookingEmail(booking.id, 'declined');
+      if (trimmed.length > 0) {
+        fireSystemChat(booking.id, "The driver wasn't able to accept this request. Reason: " + trimmed);
+      }
+      return 'declined';
+    }
+
+    /**
+     * CHECK-IN - mirrors submitPickupCode (services/bookings.ts:1517).
+     * submit_pickup_code RPC (0043/0192): driver-gated SECURITY DEFINER; the
+     * driver types ANY rider's 4-digit code and the server finds the booking.
+     * Idempotent (alreadyEntered). On ok: fire stripe-release-to-driver
+     * (bookings.ts:1554), then count remaining un-checked-in Confirmed
+     * bookings so the flow can announce "everyone's in" (bookings.ts:1563).
+     */
+    async function doCheckin(ride, code) {
+      const trimmed = String(code || '').trim();
+      if (!/^\d{4}$/.test(trimmed)) return { ok: false, error: 'Code must be 4 digits.' };
+      const { data, error } = await supabase.rpc('submit_pickup_code', {
+        p_ride_id: ride.id, p_code: trimmed,
+      });
+      if (error) return { ok: false, error: error.message };
+      const result = data || {};
+      if (result.ok === true && typeof result.bookingId === 'number') {
+        fireReleaseToDriver(result.bookingId);
+      }
+      let remaining;
+      if (result.ok === true) {
+        const { count, error: countErr } = await supabase
+          .from('bookings')
+          .select('id', { count: 'exact', head: true })
+          .eq('ride_id', ride.id)
+          .eq('status', 'Confirmed')
+          .is('pickup_code_entered_at', null);
+        if (!countErr) remaining = count || 0;
+      }
+      return {
+        ok: result.ok === true,
+        error: result.error,
+        bookingId: result.bookingId,
+        passengerName: result.passengerName,
+        alreadyEntered: result.alreadyEntered === true,
+        remaining,
+      };
+    }
+
+    /**
+     * COMPLETE - mirrors completeBooking (services/bookings.ts:1366).
+     * Client-side gates first (same order as the app):
+     *   - PIN gate: pickup_code_entered_at must be set (bookings.ts:1372).
+     *   - Time gate: departure + 30 min (bookings.ts:1381), message verbatim.
+     * Then a CONDITIONAL flip Confirmed -> Completed. Server-side, migration
+     * 0206 permits exactly this transition for the ride's driver and rejects
+     * everything else with ILLEGAL_STATUS_TRANSITION.
+     * On success: push 'booking_completed' + email 'completed' (bookings.ts:1393-1400).
+     */
+    async function doComplete(booking, ride) {
+      if (!booking.pickup_code_entered_at) {
+        throw new Error("Enter the rider's pickup code before marking complete. Ask them to read the 4-digit code from their booking.");
+      }
+      const earliest = departureMs(ride) + COMPLETE_AFTER_DEPARTURE_MS;
+      if (Date.now() < earliest) {
+        // In the ride's zone, not the device's (time audit 2026-09-03).
+        const eta = new Date(earliest).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: DEFAULT_TZ }) + ' PT';
+        throw new Error('Too early to mark complete. Try again after ' + eta + '.');
+      }
+      const { data, error } = await supabase
+        .from('bookings')
+        .update({ status: 'Completed' })
+        .eq('id', booking.id)
+        .eq('status', 'Confirmed')
+        .select('id')
+        .maybeSingle();
+      if (error) {
+        if (/ILLEGAL_STATUS_TRANSITION/i.test(error.message || '')) {
+          throw new Error('This booking can no longer be completed from here. Refresh to see its current status.');
+        }
+        throw error;
+      }
+      if (!data) {
+        throw new Error('This booking changed while you were looking at it \u2014 refresh to see its current status.');
+      }
+      const p = pushCompleted(ride, booking.id);
+      firePush(booking.passenger_id, p.title, p.body, p.data);
+      fireBookingEmail(booking.id, 'completed');
+    }
+
+    // -- Shared bits --------------------------------------------------------
+    function pill(status, label) {
+      const map = { Pending: 'pending', Confirmed: 'confirmed', Cancelled: 'cancelled', Completed: 'completed' };
+      return el('span', 'pill ' + (map[status] || 'completed'), label || status);
+    }
+
+    function backRow(label, onClick) {
+      const row = el('div', 'backrow');
+      const b = el('button', 'linkbtn', '\u2039 ' + label);
+      b.type = 'button';
+      b.addEventListener('click', onClick);
+      row.appendChild(b);
+      return row;
+    }
+
+    function signedInFooter() {
+      const d = el('div', 'signedin');
+      d.appendChild(document.createTextNode('Signed in as '));
+      d.appendChild(el('span', null, myEmail));
+      d.appendChild(document.createTextNode(' \u00b7 '));
+      const b = el('button', 'linkbtn', 'Sign out');
+      b.type = 'button';
+      b.addEventListener('click', doSignOut);
+      d.appendChild(b);
+      return d;
+    }
+
+    function paxRow(b, subText) {
+      const row = el('div', 'paxrow');
+      const initial = el('div', 'avatar ph', (paxDisplay(b)[0] || '?').toUpperCase());
+      const photo = safePhoto(b.passenger && b.passenger.photo_url);
+      if (photo) {
+        const img = document.createElement('img');
+        img.className = 'avatar';
+        img.alt = '';
+        img.src = photo;
+        img.addEventListener('error', () => {
+          if (img.parentNode) img.parentNode.replaceChild(initial, img);
+        });
+        row.appendChild(img);
+      } else {
+        row.appendChild(initial);
+      }
+      const col = el('div');
+      col.appendChild(el('div', 'paxname', paxDisplay(b)));
+      if (subText) col.appendChild(el('div', 'paxsub', subText));
+      row.appendChild(col);
+      return row;
+    }
+
+    function payoutBanner() {
+      if (!payout.loaded || payout.credit) return null;
+      if (payout.started && payout.enabled) return null;
+      const bn = el('div', 'banner amber');
+      bn.appendChild(el('strong', null, 'Deposits not set up. '));
+      // 58→20 words (copy audit #11): every un-onboarded web driver read
+      // a four-clause wall with ALL-CAPS before the one action that matters.
+      bn.appendChild(document.createTextNode(
+        'Connect with Stripe (~2 min) to accept requests. '
+        + 'When Stripe finishes, come back to this page.'));
+      const btn = el('button', 'primary', 'Set up deposits');
+      btn.type = 'button';
+      const msg = el('div', 'msg err hidden');
+      btn.addEventListener('click', () => startStripeOnboarding(btn, msg));
+      bn.appendChild(btn);
+      bn.appendChild(msg);
+      return bn;
+    }
+
+    // -- LIST ---------------------------------------------------------------
+    /** Filled pip per sold seat, hollow per seat still open. Capped at 8 so a
+     *  big van doesn't overflow the row. */
+    function seatPips(booked, total) {
+      const wrap = el('span', 'seatpips');
+      const n = Math.min(total, 8);
+      for (let i = 0; i < n; i++) wrap.appendChild(el('i', i < booked ? 'on' : null));
+      return wrap;
+    }
+
+    /** The one chip that matters most, in priority order: something to answer
+     *  beats sold-out beats seats-still-open. Never more than one \u2014 a card
+     *  with three badges tells you nothing. */
+    function rideChip(entry, isPast) {
+      // A departed ride nobody booked never ran — say so instead of "Completed".
+      if (isPast) return el('span', 'chip off', entry.bookedSeats > 0 ? 'Completed' : 'No bookings');
+      // Departed within the last 12h with riders on board: it is in progress,
+      // not "3 seats left" (2026-09-03).
+      if (departureMs(entry.ride) <= Date.now()) return el('span', 'chip act', 'In progress');
+      if (entry.pendingCount > 0) {
+        return el('span', 'chip act',
+          entry.pendingCount + ' request' + (entry.pendingCount === 1 ? '' : 's'));
+      }
+      if (entry.totalSeats > 0 && entry.bookedSeats >= entry.totalSeats) {
+        return el('span', 'chip full', 'Full');
+      }
+      const left = Math.max(0, entry.totalSeats - entry.bookedSeats);
+      return el('span', 'chip open', left + ' seat' + (left === 1 ? '' : 's') + ' left');
+    }
+
+    function rideCard(entry, isPast) {
+      const btn = el('button', 'ridecard' + (entry.pendingCount > 0 ? ' attention' : ''));
+      btn.type = 'button';
+      const top = el('div', 'cardtop');
+      const left = el('div');
+      left.appendChild(el('div', 'cardroute', routeLabel(entry.ride)));
+      left.appendChild(el('div', 'cardmeta', whenLabel(entry.ride)));
+      top.appendChild(left);
+      top.appendChild(rideChip(entry, isPast));
+      btn.appendChild(top);
+
+      const foot = el('div', 'cardfoot');
+      const fill = el('div', 'fillrow');
+      fill.appendChild(seatPips(entry.bookedSeats, entry.totalSeats));
+      fill.appendChild(el('span', null,
+        entry.bookedSeats + ' of ' + entry.totalSeats + ' seat' + (entry.totalSeats === 1 ? '' : 's') + ' booked'));
+      foot.appendChild(fill);
+      if (entry.unreadCount > 0) {
+        foot.appendChild(el('span', null,
+          '\u2709 ' + entry.unreadCount + ' unread'));
+      }
+      btn.appendChild(foot);
+      btn.addEventListener('click', () => go('/driving?ride=' + encodeURIComponent(entry.ride.id)));
+      return btn;
+    }
+
+    // -- Small input builder (el() is textContent-only by design) -----------
+    function inp(type, placeholder, value) {
+      const i = document.createElement('input');
+      i.type = type; i.placeholder = placeholder || ''; i.value = value || '';
+      return i;
+    }
+
+    // -- Wallet page: credit + payouts + cost share received ----------------
+    async function renderWallet() {
+      const body = $('walletBody');
+      clear(body);
+      body.appendChild(backRow('All rides', () => go('/driving')));
+
+      const card = el('div', 'card');
+      card.appendChild(el('div', 'eyebrow', 'Wallet'));
+      const cred = el('div', 'route', 'Ride credit: …');
+      card.appendChild(cred);
+      const recv = el('div', 'meta', 'Cost share received: …');
+      recv.style.marginTop = '8px';
+      card.appendChild(recv);
+      body.appendChild(card);
+
+      const pc = el('div', 'card');
+      pc.appendChild(el('div', 'eyebrow', 'Deposits'));
+      pc.appendChild(el('div', 'meta',
+        payout.credit
+          ? 'Your deposits are credited to your Seat Sherpa balance — no bank account involved.'
+          : payout.enabled
+            ? "Connected — riders' cost share deposits to your bank via Stripe."
+            : payout.started
+              ? 'Stripe setup was started but not finished — finish it to accept bookings.'
+              : 'Not set up yet. Takes about 2 minutes with Stripe.'));
+      if (!payout.credit) {
+        const bmsg = el('div', 'msg err hidden');
+        if (payout.enabled) {
+          const hist = el('button', 'primary', 'Deposit history & bank (Stripe)');
+          hist.type = 'button'; hist.style.marginTop = '12px';
+          hist.addEventListener('click', () => { void openStripeDashboard(hist); });
+          pc.appendChild(hist);
+        } else {
+          const setup = el('button', 'primary', 'Set up deposits');
+          setup.type = 'button'; setup.style.marginTop = '12px';
+          setup.addEventListener('click', () => startStripeOnboarding(setup, bmsg));
+          pc.appendChild(setup);
+        }
+        pc.appendChild(bmsg);
+      }
+      body.appendChild(pc);
+      body.appendChild(signedInFooter());
+      show('stWallet');
+      document.title = 'Wallet — Seat Sherpa';
+
+      // Fill the async numbers after paint.
+      supabase.rpc('credit_balance_cents', { p_user: me }).then(({ data, error }) => {
+        const cents = !error && typeof data === 'number' ? data : null;
+        cred.textContent = 'Ride credit: ' + (cents == null ? '—' : '$' + (cents / 100).toFixed(2));
+      }, () => { cred.textContent = 'Ride credit: —'; });
+      (async () => {
+        try {
+          const { data: rides } = await supabase
+            .from('rides')
+            .select('id, departure_area, arrival_area, dep_date, date_label')
+            .eq('driver_id', me);
+          const ids = (rides || []).map((r) => r.id);
+          const rideOf = {};
+          for (const r of (rides || [])) rideOf[r.id] = r;
+          if (!ids.length) { recv.textContent = 'Cost share received: $0.00'; return; }
+          const { data: bs } = await supabase
+            .from('bookings')
+            .select('ride_id, status, total_price, driver_fee_cents, completed_at')
+            .in('ride_id', ids)
+            .eq('status', 'Completed')
+            .order('completed_at', { ascending: false });
+          let total = 0, n = 0;
+          for (const bkg of (bs || [])) {
+            total += (Number(bkg.total_price) || 0) - ((bkg.driver_fee_cents || 0) / 100);
+            n += 1;
+          }
+          recv.textContent = 'Cost share received: $' + total.toFixed(2)
+            + (n ? ' across ' + n + ' completed booking' + (n === 1 ? '' : 's') : '');
+          // History rows (2026-08-28, earnings-tab parity): latest 15 nets.
+          if (n) {
+            card.appendChild(el('div', 'rowhint', 'Recent'));
+            for (const bkg of (bs || []).slice(0, 15)) {
+              const rd = rideOf[bkg.ride_id] || {};
+              const net = (Number(bkg.total_price) || 0) - ((bkg.driver_fee_cents || 0) / 100);
+              const label = (rd.date_label || rd.dep_date || '') + ' · '
+                + String(rd.departure_area || '').split(',')[0] + ' → '
+                + String(rd.arrival_area || '').split(',')[0];
+              const line = el('div', 'meta', label + ' — $' + net.toFixed(2));
+              line.style.marginTop = '4px';
+              card.appendChild(line);
+            }
+          }
+        } catch (_) { recv.textContent = 'Cost share received: —'; }
+      })();
+    }
+
+    // -- Car & license page (2026-08-28): multi-vehicle + photos + insurance
+    //    + license status/re-upload. Profile basics moved to /account. -------
+    async function dlDownscale(file, max) {
+      const url = URL.createObjectURL(file);
+      try {
+        const img = await new Promise((res, rej) => {
+          const i = new Image();
+          i.onload = () => res(i); i.onerror = () => rej(new Error('decode'));
+          i.src = url;
+        });
+        const MAX = max || 1600;
+        const scale = Math.min(1, MAX / Math.max(img.naturalWidth, img.naturalHeight));
+        const w = Math.max(1, Math.round(img.naturalWidth * scale));
+        const h = Math.max(1, Math.round(img.naturalHeight * scale));
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        const blob = await new Promise((res) => c.toBlob(res, 'image/jpeg', 0.85));
+        if (!blob) throw new Error('encode');
+        return blob;
+      } finally { URL.revokeObjectURL(url); }
+    }
+    function pickFile(accept) {
+      return new Promise((resolve) => {
+        const i = document.createElement('input');
+        i.type = 'file'; i.accept = accept || 'image/*';
+        i.addEventListener('change', () => resolve(i.files && i.files[0] ? i.files[0] : null));
+        i.click();
+      });
+    }
+
+    async function renderAccount() {
+      const body = $('accountBody');
+      clear(body);
+      body.appendChild(backRow('All rides', () => go('/driving')));
+
+      // ── Your cars (multi-vehicle, app parity: app/vehicles/*) ───────────
+      const vcard = el('div', 'card');
+      vcard.appendChild(el('div', 'eyebrow', 'Your cars'));
+      const vList = el('div');
+      vcard.appendChild(vList);
+      const carEdit = el('div', 'hidden');
+      carEdit.style.marginTop = '10px';
+      vcard.appendChild(carEdit);
+      const carMsg = el('div', 'rowhint hidden');
+      vcard.appendChild(carMsg);
+      const addBtn = el('button', 'linkbtn', '+ Add another car');
+      addBtn.type = 'button';
+      addBtn.style.marginTop = '8px';
+      addBtn.addEventListener('click', () => carForm(null));
+      vcard.appendChild(addBtn);
+      body.appendChild(vcard);
+
+      // ── Driver's license ────────────────────────────────────────────────
+      const lcard = el('div', 'card');
+      lcard.appendChild(el('div', 'eyebrow', "Driver's license"));
+      const lStatus = el('div', 'meta', 'Checking…');
+      lcard.appendChild(lStatus);
+      const lMsg = el('div', 'rowhint hidden');
+      const lBtn = el('button', 'linkbtn', 'Upload a new license photo');
+      lBtn.type = 'button';
+      lBtn.style.marginTop = '8px';
+      lBtn.addEventListener('click', async () => {
+        lMsg.classList.add('hidden');
+        const file = await pickFile('image/*');
+        if (!file) return;
+        lBtn.disabled = true; lBtn.textContent = 'Uploading…';
+        try {
+          const blob = await dlDownscale(file, 2000);
+          // Same PRIVATE bucket/path as the app + /post (owner-only RLS, 0023).
+          const path = me + '/license.jpg';
+          const { error: upErr } = await supabase.storage.from('driver-licenses')
+            .upload(path, blob, { contentType: 'image/jpeg', upsert: true });
+          if (upErr) throw upErr;
+          // Stamp minus the OCR fields the browser can't produce — the human
+          // review path fills them (post.html does exactly this).
+          const { error: pfErr } = await supabase.from('profiles').update({
+            driver_license_photo_url: path,
+            driver_license_uploaded_at: new Date().toISOString(),
+            driver_license_expiry_date: null,
+            driver_license_extraction: { source: 'web', raw_text: null },
+          }).eq('id', me);
+          if (pfErr) throw pfErr;
+          callFn('submit-license-review', {}).catch(() => {});
+          lBtn.textContent = 'Uploaded ✓ — in review';
+          void loadLicense();
+        } catch (e) {
+          lBtn.disabled = false; lBtn.textContent = 'Upload a new license photo';
+          lMsg.textContent = (e && e.message) || 'Upload failed — try again.';
+          lMsg.classList.remove('hidden');
+        }
+      });
+      lcard.appendChild(lBtn);
+      lcard.appendChild(lMsg);
+      lcard.appendChild(el('div', 'rowhint', 'Private — riders never see it. A current license is required for your rides to stay live.'));
+      body.appendChild(lcard);
+      body.appendChild(signedInFooter());
+      show('stAccount');
+      document.title = 'Car & license — Seat Sherpa';
+
+      async function loadLicense() {
+        try {
+          const { data: p } = await supabase.from('profiles')
+            .select('driver_license_uploaded_at, driver_license_verified, driver_license_expiry_date')
+            .eq('id', me).maybeSingle();
+          if (!p || !p.driver_license_uploaded_at) { lStatus.textContent = 'No license on file yet — upload one below.'; return; }
+          let txt = p.driver_license_verified ? '✓ Verified' : 'On file — verification in review';
+          if (p.driver_license_expiry_date) {
+            const days = Math.floor((new Date(p.driver_license_expiry_date + 'T00:00:00Z').getTime() - Date.now()) / 864e5);
+            if (days < 0) txt += ' · EXPIRED ' + p.driver_license_expiry_date + ' — upload your renewed license below';
+            else if (days <= 30) txt += ' · expires ' + p.driver_license_expiry_date + ' (' + days + ' days) — upload the renewal when you have it';
+            else txt += ' · expires ' + p.driver_license_expiry_date;
+          }
+          lStatus.textContent = txt;
+        } catch (_) { lStatus.textContent = 'License status unavailable right now.'; }
+      }
+      void loadLicense();
+
+      function carForm(existing) {
+        clear(carEdit);
+        const year = inp('text', 'Year (2021)', existing ? existing.year : '');
+        const make = inp('text', 'Make (Toyota)', existing ? existing.make : '');
+        const model = inp('text', 'Model (Prius)', existing ? existing.model : '');
+        const color = inp('text', 'Color (Blue)', existing ? existing.color : '');
+        const plate = inp('text', 'Plate (optional)', existing ? (existing.plate || '') : '');
+        for (const i of [year, make, model, color, plate]) { i.style.marginBottom = '8px'; carEdit.appendChild(i); }
+        // Rental toggle (0222) — mirrors the app's VehicleForm switch. A
+        // rental is covered by the rental company, so the personal-insurance
+        // ask stops applying, and riders see the badge on the ride.
+        let isRental = !!(existing && existing.is_rental);
+        const rentalRow = el('button', 'disc');
+        rentalRow.type = 'button';
+        rentalRow.style.margin = '4px 0 10px';
+        rentalRow.setAttribute('role', 'switch');
+        rentalRow.setAttribute('aria-checked', String(isRental));
+        const rentalBox = el('span', 'caret', isRental ? '☑' : '☐');
+        rentalRow.appendChild(rentalBox);
+        rentalRow.appendChild(el('span', null, ' This is a rental car'));
+        rentalRow.addEventListener('click', () => {
+          isRental = !isRental;
+          rentalBox.textContent = isRental ? '☑' : '☐';
+          rentalRow.setAttribute('aria-checked', String(isRental));
+        });
+        carEdit.appendChild(rentalRow);
+        const save = el('button', 'primary', existing ? 'Save changes' : 'Save car');
+        save.type = 'button';
+        save.addEventListener('click', async () => {
+          carMsg.classList.add('hidden');
+          if (!/^(19|20)\d{2}$/.test(year.value.trim())) { carMsg.textContent = 'Enter a 4-digit year.'; carMsg.classList.remove('hidden'); return; }
+          if (!make.value.trim() || !model.value.trim()) { carMsg.textContent = 'Enter the make and model.'; carMsg.classList.remove('hidden'); return; }
+          save.disabled = true; save.textContent = 'Saving…';
+          const row = {
+            year: year.value.trim(), make: make.value.trim(), model: model.value.trim(),
+            color: color.value.trim() || null, plate: plate.value.trim() || null,
+            is_rental: isRental,
+          };
+          const q = existing
+            ? supabase.from('vehicles').update(row).eq('id', existing.id)
+            : supabase.from('vehicles').insert({
+                owner_id: me, car_type: 'Sedan', max_passenger_seats: 4,
+                amenities: [], is_default: false, ...row,
+              });
+          const { error } = await q;
+          save.disabled = false; save.textContent = existing ? 'Save changes' : 'Save car';
+          if (error) { carMsg.textContent = error.message || 'Could not save.'; carMsg.classList.remove('hidden'); return; }
+          carEdit.classList.add('hidden');
+          void loadCars();
+        });
+        carEdit.appendChild(save);
+        const cancelLink = el('button', 'linkbtn', 'Cancel');
+        cancelLink.type = 'button';
+        cancelLink.style.marginLeft = '12px';
+        cancelLink.addEventListener('click', () => { carEdit.classList.add('hidden'); carMsg.classList.add('hidden'); });
+        carEdit.appendChild(cancelLink);
+        carEdit.classList.remove('hidden');
+      }
+
+      async function loadCars() {
+        clear(vList);
+        const { data, error } = await supabase
+          .from('vehicles')
+          .select('id, year, make, model, color, plate, is_default, is_rental, car_photo_urls, insurance_uploaded_at')
+          .eq('owner_id', me)
+          .order('is_default', { ascending: false })
+          .order('created_at', { ascending: true });
+        if (error) { vList.appendChild(el('div', 'meta', 'Could not load your cars right now.')); return; }
+        const cars = data || [];
+        if (!cars.length) { vList.appendChild(el('div', 'meta', 'No car on file — add one below.')); return; }
+        for (const v of cars) {
+          const box = el('div', 'bookingbox');
+          const title = el('div', 'meta');
+          title.style.fontWeight = '600';
+          title.style.color = '#fff';
+          title.textContent = [v.year, v.make, v.model].filter(Boolean).join(' ')
+            + (v.color ? ' · ' + v.color : '') + (v.is_rental ? ' · 🔑 rental' : '') + (v.is_default ? '  ★ default' : '');
+          box.appendChild(title);
+          const photos = Array.isArray(v.car_photo_urls) ? v.car_photo_urls : [];
+          if (photos.length && /^https:\/\//.test(photos[0])) {
+            const im = document.createElement('img');
+            im.src = photos[0];
+            im.alt = '';
+            im.loading = 'lazy';
+            im.style.cssText = 'width:100%;max-height:150px;object-fit:cover;border-radius:10px;margin-top:8px;';
+            box.appendChild(im);
+          }
+          box.appendChild(el('div', 'rowhint',
+            (photos.length ? photos.length + ' photo' + (photos.length === 1 ? '' : 's') : 'No photos — riders book cars they can see')
+            + (v.is_rental ? '' : ' · insurance ' + (v.insurance_uploaded_at ? 'on file' : 'not on file'))));
+          const act = el('div', 'actrow');
+          const mkBtn = (label, fn) => {
+            const bt = el('button', 'linkbtn', label);
+            bt.type = 'button';
+            bt.addEventListener('click', fn);
+            act.appendChild(bt);
+            return bt;
+          };
+          mkBtn('Edit', () => carForm(v));
+          mkBtn('Add photo', async function () {
+            const file = await pickFile('image/*');
+            if (!file) return;
+            this.disabled = true; this.textContent = 'Uploading…';
+            try {
+              const blob = await dlDownscale(file, 1600);
+              // Same public bucket/path scheme as the app (services/vehicles.ts).
+              const path = me + '/' + v.id + '/car-' + Date.now() + '-' + Math.floor(Math.random() * 1000) + '.jpg';
+              const { error: upErr } = await supabase.storage.from('vehicle-photos')
+                .upload(path, blob, { contentType: 'image/jpeg', upsert: true });
+              if (upErr) throw upErr;
+              const { data: pub } = supabase.storage.from('vehicle-photos').getPublicUrl(path);
+              const next = photos.concat([pub.publicUrl]);
+              const { error: vErr } = await supabase.from('vehicles')
+                .update({ car_photo_urls: next, car_photo_uploaded_at: new Date().toISOString() })
+                .eq('id', v.id);
+              if (vErr) throw vErr;
+              void loadCars();
+            } catch (e) {
+              this.disabled = false; this.textContent = 'Add photo';
+              carMsg.textContent = (e && e.message) || 'Photo upload failed.';
+              carMsg.classList.remove('hidden');
+            }
+          });
+          // Rentals are covered by the rental company's policy — the personal
+          // insurance ask doesn't apply, so don't offer the upload (0222).
+          if (!v.is_rental) mkBtn(v.insurance_uploaded_at ? 'Update insurance' : 'Add insurance', async function () {
+            const file = await pickFile('image/*');
+            if (!file) return;
+            this.disabled = true; this.textContent = 'Uploading…';
+            try {
+              const blob = await dlDownscale(file, 2000);
+              // PRIVATE bucket, mirrors services/vehicles.ts uploadInsurance.
+              const path = me + '/' + v.id + '/insurance.jpg';
+              const { error: upErr } = await supabase.storage.from('vehicle-insurance')
+                .upload(path, blob, { contentType: 'image/jpeg', upsert: true });
+              if (upErr) throw upErr;
+              const { error: vErr } = await supabase.from('vehicles')
+                .update({ insurance_photo_url: path, insurance_uploaded_at: new Date().toISOString() })
+                .eq('id', v.id);
+              if (vErr) throw vErr;
+              void loadCars();
+            } catch (e) {
+              this.disabled = false;
+              carMsg.textContent = (e && e.message) || 'Insurance upload failed.';
+              carMsg.classList.remove('hidden');
+            }
+          });
+          if (!v.is_default) {
+            mkBtn('Make default', async () => {
+              // vehicles_single_default trigger unsets the others.
+              await supabase.from('vehicles').update({ is_default: true }).eq('id', v.id);
+              void loadCars();
+            });
+            mkBtn('Remove', async function () {
+              if (this.dataset.armed !== '1') { this.dataset.armed = '1'; this.textContent = 'Tap again to remove'; return; }
+              const { error: dErr } = await supabase.from('vehicles').delete().eq('id', v.id);
+              if (dErr) {
+                carMsg.textContent = /foreign key|violates/i.test(dErr.message || '')
+                  ? "This car is on a posted ride, so it can't be removed."
+                  : (dErr.message || 'Could not remove.');
+                carMsg.classList.remove('hidden');
+                this.dataset.armed = ''; this.textContent = 'Remove';
+                return;
+              }
+              void loadCars();
+            });
+          }
+          box.appendChild(act);
+          vList.appendChild(box);
+        }
+      }
+      void loadCars();
+    }
+
+    // -- Cancel + edit (mirrors services/rides.ts + bookings.ts) ------------
+    function pushCancelled(ride, bookingId) {
+      return {
+        title: 'Booking cancelled',
+        body: 'Driver cancelled the ' + rideDescriptor(ride) + ' — you’ve been refunded in full.',
+        data: { type: 'booking_cancelled', rideId: ride.id, bookingId },
+      };
+    }
+
+    /** Cancel ONE Confirmed booking: stripe-refund-booking flips the row and
+     *  refunds; then the same fire-and-forget follow-ups the app sends. */
+    async function doCancelConfirmed(booking, ride, reason) {
+      await callFn('stripe-refund-booking', { bookingId: booking.id, reason });
+      const p = pushCancelled(ride, booking.id);
+      firePush(booking.passenger_id, p.title, p.body, p.data);
+      fireBookingEmail(booking.id, 'cancelled');
+      fireSystemChat(booking.id, 'I had to cancel this trip. Reason: ' + reason);
+    }
+
+    /** Cancel the WHOLE ride — mirrors cancelRide (services/rides.ts:815):
+     *  refund every Confirmed seat, decline every Pending request, flip the
+     *  ride row. Blocked once any trip has started (PIN entered). */
+    async function doCancelRide(ride, reason) {
+      const trimmed = String(reason || '').trim();
+      if (trimmed.length < 10) throw new Error('Give riders a reason — at least 10 characters.');
+      const { data: rows, error } = await supabase
+        .from('bookings')
+        .select('id, status, passenger_id, pickup_code_entered_at')
+        .eq('ride_id', ride.id)
+        .in('status', ['Confirmed', 'Pending']);
+      if (error) throw error;
+      const started = (rows || []).some((b) => b.status === 'Confirmed' && b.pickup_code_entered_at);
+      if (started) throw new Error("A trip on this ride has already started — it can't be cancelled. Email support@seatsherpa.app.");
+      let failed = 0;
+      for (const b of (rows || [])) {
+        try {
+          if (b.status === 'Confirmed') await doCancelConfirmed(b, ride, trimmed);
+          else await doDecline(b, ride, trimmed);
+        } catch (_) { failed += 1; }
+      }
+      const { error: upErr } = await supabase
+        .from('rides')
+        .update({ cancelled_at: new Date().toISOString(), cancellation_reason: trimmed })
+        .eq('id', ride.id);
+      if (upErr) throw upErr;
+      return { failed };
+    }
+
+    /** Edit departure — mirrors updateRideDateTime (services/rides.ts:640):
+     *  only with ZERO active bookings, ≥15 min out, ≥4h from the
+     *  driver's other rides. All rides are Pacific wall-clock. */
+    async function doEditDateTime(ride, depDate, depTime) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(depDate) || !/^\d{2}:\d{2}$/.test(depTime)) {
+        throw new Error('Pick a valid date and time.');
+      }
+      const { count, error: cErr } = await supabase
+        .from('bookings')
+        .select('id', { count: 'exact', head: true })
+        .eq('ride_id', ride.id)
+        .in('status', ['Confirmed', 'Pending']);
+      if (cErr) throw cErr;
+      if ((count || 0) > 0) throw new Error("You can't change the date or time once there are bookings or requests — cancel them or post a new ride instead.");
+      const pacFloor = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Los_Angeles', hour12: false,
+        year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+      }).format(new Date(Date.now() + 15 * 60 * 1000)).replace(', ', 'T').replace(' ', 'T')
+        // Some ICU builds render the midnight hour as 24:xx — same defense
+        // as the check-in clock (Fable audit P4).
+        .replace('T24', 'T00');
+      if ((depDate + 'T' + depTime) <= pacFloor) throw new Error('Pick a date and time at least 15 minutes from now.');
+      // 4h spacing — both sides parsed the same way, so the math is exact.
+      const wall = (d, t) => Date.UTC(+d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8, 10), +t.slice(0, 2), +t.slice(3, 5));
+      const target = wall(depDate, depTime);
+      const { data: others } = await supabase
+        .from('rides')
+        .select('id, dep_date, dep_time')
+        .eq('driver_id', me)
+        .is('cancelled_at', null)
+        .neq('id', ride.id);
+      for (const r of (others || [])) {
+        if (r.dep_date && r.dep_time && Math.abs(wall(r.dep_date, String(r.dep_time).slice(0, 5)) - target) < 4 * 3600 * 1000) {
+          throw new Error('You have another ride within 4 hours of this time — space your rides at least 4 hours apart.');
+        }
+      }
+      const label = new Date(Date.UTC(+depDate.slice(0, 4), +depDate.slice(5, 7) - 1, +depDate.slice(8, 10)))
+        .toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+      const patch = { dep_date: depDate, dep_time: depTime, date_label: label };
+      if (ride.dep_date !== depDate) patch.fill_nudge_sent_at = null; // re-arm the fill nudge for the new window
+      const { error: uErr } = await supabase.from('rides').update(patch).eq('id', ride.id);
+      if (uErr) throw uErr;
+    }
+
+    /** The Manage card on a ride: edit date/time, cancel one booking, cancel
+     *  the ride. Replaces the old "do it in the app" banner (2026-08-27 —
+     *  web drivers get the full console, standing rule). */
+    // ── Seats (2026-09-03) — the app's driver seat grid on the web ──────────
+    const SEAT_SHORT = { fp: 'Front', ml: 'Mid left', mr: 'Mid right', rl: 'Rear left', rc: 'Rear center', rr: 'Rear right' };
+    const seatPrice = (n) => {
+      const v = Number(n || 0);
+      return '$' + (Number.isInteger(v) ? String(v) : v.toFixed(2));
+    };
+
+    /** Port of updateRideSeats (services/rides.ts:587). MERGE, never a blind
+     *  write: re-read the ride, force-close any seat held by a live booking
+     *  (anything not Cancelled), take the driver's toggle for the rest, and
+     *  keep seats the server has that this snapshot doesn't. 0202's trigger
+     *  is the final word server-side if a booking lands between read and
+     *  write. A driver-CLOSED seat is the driver's to reopen — only a booking
+     *  makes a seat untouchable. */
+    async function doUpdateSeats(ride, wanted) {
+      const [fresh, live] = await Promise.all([
+        supabase.from('rides').select('seats').eq('id', ride.id).single(),
+        supabase.from('bookings').select('seat_ids, status').eq('ride_id', ride.id).neq('status', 'Cancelled'),
+      ]);
+      if (fresh.error) throw fresh.error;
+      if (live.error) throw live.error;
+      const held = new Set();
+      (live.data || []).forEach((b) => (b.seat_ids || []).forEach((id) => held.add(id)));
+      const server = (fresh.data && Array.isArray(fresh.data.seats)) ? fresh.data.seats : [];
+      const byId = new Map(server.map((x) => [x.id, x]));
+      const merged = wanted.map((w) => {
+        if (!byId.has(w.id)) return w;
+        // Price is frozen too while a booking holds the seat (sweep
+        // 2026-09-03): a Pending request authorized the OLD price and the
+        // accept captures exactly that, so the listed price must not drift.
+        const cur0 = byId.get(w.id);
+        return Object.assign({}, w, { avail: held.has(w.id) ? false : !!w.avail, price: held.has(w.id) ? cur0.price : w.price });
+      });
+      for (const x of server) if (!merged.some((m) => m.id === x.id)) merged.push(x);
+      const { error } = await supabase.from('rides').update({ seats: merged }).eq('id', ride.id);
+      if (error) throw error;
+      return merged;
+    }
+
+    /** The Seats card on a live ride: one tappable tile per passenger seat.
+     *  Returns null when there is nothing to show (no passenger seats, or the
+     *  ride has departed). */
+    function seatsSection(entry) {
+      const ride = entry.ride;
+      const seats = Array.isArray(ride.seats) ? ride.seats : [];
+      const passengerSeats = seats.filter((x) => x && !x.isDriver);
+      if (passengerSeats.length === 0) return null;
+      const dep = departureMs(ride);
+      if (dep && Date.now() > dep) return null;
+
+      // Who holds which seat — same rule as the merge (any non-cancelled
+      // booking), shown by first name so the driver sees it at a glance.
+      const holder = new Map();
+      entry.bookings.forEach((b) => {
+        if (b.status === 'Cancelled') return;
+        const raw = (b.passenger && b.passenger.name) || b.passenger_name || '';
+        const first = abbreviateName(raw).split(' ')[0] || 'Rider';
+        const st = effectiveStatus(b, ride);
+        (b.seat_ids || []).forEach((id) => holder.set(id, { name: first, pending: st === 'Pending' }));
+      });
+
+      const wrap = el('div', 'card');
+      wrap.appendChild(el('div', 'eyebrow', 'Seats'));
+      wrap.appendChild(el('div', 'rowhint', 'Tap a seat to close or reopen it. One price covers every seat; a seat with a booking or request stays as it is.'));
+      const msg = el('div', 'rowhint hidden');
+      msg.style.color = '#ff8a8a';
+
+      const unbooked = passengerSeats.filter((x) => !holder.has(x.id));
+      const openSeats = unbooked.filter((x) => x.avail);
+      const priceSeat = openSeats[0] || unbooked[0] || passengerSeats[0];
+      let saving = false;
+      const tiles = [];
+      const chipBtns = [];
+      const setBusy = (b) => {
+        saving = b;
+        tiles.forEach((t) => { t.disabled = b || !!holder.get(t.dataset.seat) || t.classList.contains('driver'); t.classList.toggle('saving', b); });
+        chipBtns.forEach((c) => { c.disabled = b; });
+      };
+      async function toggleSeat(id) {
+        if (saving) return;
+        setBusy(true); msg.classList.add('hidden');
+        const wanted = seats.map((x) => (x && x.id === id) ? Object.assign({}, x, { avail: !x.avail }) : x);
+        try {
+          await doUpdateSeats(ride, wanted);
+          await refreshRide(ride.id);
+        } catch (e) {
+          setBusy(false);
+          msg.textContent = (e && e.message) || 'Could not update that seat — try again.';
+          msg.classList.remove('hidden');
+        }
+      }
+
+      // ── Layout: portrait car on the left, controls on the right ────────
+      const layout = el('div', 'seatlayout');
+      const carcol = el('div', 'carcol');
+      const chipcol = el('div', 'chipcol');
+
+      const ids = new Set(passengerSeats.map((x) => x.id));
+      const rows = [['driver', 'fp'], ['ml', 'mr'], ['rl', 'rc', 'rr']]
+        .map((r) => r.filter((id) => id === 'driver' || ids.has(id)))
+        .filter((r) => r.some((id) => id !== 'driver'));
+
+      function tile(id) {
+        if (id === 'driver') {
+          const t = el('button', 'seattile driver');
+          t.type = 'button'; t.disabled = true;
+          t.appendChild(el('div', 'drvbadge', (((ride.driver_name || myEmail || 'You').trim().charAt(0)) || 'Y').toUpperCase()));
+          t.appendChild(el('div', 'ss', 'Driver'));
+          return t;
+        }
+        const seat = passengerSeats.find((x) => x.id === id);
+        const h = holder.get(id);
+        const state = h ? 'held' : (seat.avail ? 'open' : 'closed');
+        const t = el('button', 'seattile ' + state);
+        t.type = 'button';
+        t.appendChild(el('div', 'sl', SEAT_SHORT[id] || seat.label || id));
+        // The price lives in the column on the right (one price per ride);
+        // a held seat shows what its rider is paying.
+        if (h) t.appendChild(el('div', 'sp', seatPrice(seat.price)));
+        t.appendChild(el('div', 'ss', h ? ((h.pending ? 'Requested · ' : 'Booked · ') + h.name) : (seat.avail ? 'Open' : 'Closed')));
+        t.setAttribute('aria-label', (SEAT_SHORT[id] || id) + ' seat, ' + (h ? 'held by ' + h.name : (seat.avail ? 'open, tap to close' : 'closed, tap to reopen')));
+        if (h) { t.disabled = true; return t; }
+        t.addEventListener('click', () => toggleSeat(id));
+        return t;
+      }
+
+      // Car chrome, the booking page's cabin: wheels flush on the sides,
+      // mirrors up front, a long rounded shell, windshield bar after row 1.
+      const carwrap = el('div', 'carwrap');
+      ['wfl', 'wfr', 'wrl', 'wrr'].forEach((w) => carwrap.appendChild(el('div', 'carwheel ' + w)));
+      ['mml', 'mmr'].forEach((m) => carwrap.appendChild(el('div', 'carmirror ' + m)));
+      const shell = el('div', 'carshell');
+      rows.forEach((r, i) => {
+        const row = el('div', 'carrow' + (r.length === 3 ? ' three' : ''));
+        r.forEach((id) => { const t = tile(id); t.dataset.seat = id; tiles.push(t); row.appendChild(t); });
+        shell.appendChild(row);
+        if (i < rows.length - 1) shell.appendChild(el('div', i === 0 ? 'windshield' : 'rowdiv'));
+      });
+      carwrap.appendChild(shell);
+      carcol.appendChild(carwrap);
+
+      // ── Right column: one price (editable), a summary, one chip per seat ─
+      if (unbooked.length > 0 && priceSeat) {
+        const priceRow = el('div', 'seatchip price');
+        const priceTxt = el('span', 'val', seatPrice(priceSeat.price) + ' per seat');
+        const priceRowEdit = el('button', 'chipact', 'Edit');
+        priceRowEdit.type = 'button';
+        priceRow.appendChild(priceTxt); priceRow.appendChild(priceRowEdit);
+        chipcol.appendChild(priceRow);
+        const editBox = el('div', 'priceedit hidden');
+        const priceInp = inp('number', '', String(priceSeat.price || ''));
+        priceInp.min = '10'; priceInp.max = '55'; priceInp.step = '1';
+        const priceSave = el('button', 'primary', 'Save');
+        priceSave.type = 'button';
+        editBox.appendChild(el('span', 'cur', '$'));
+        editBox.appendChild(priceInp); editBox.appendChild(priceSave);
+        chipcol.appendChild(editBox);
+        // actionBusy freezes the periodic refresh while the box is open —
+        // otherwise a 30/60s repaint wiped a half-typed price (audit 2026-09-04).
+        priceRowEdit.addEventListener('click', () => {
+          editBox.classList.toggle('hidden');
+          const open = !editBox.classList.contains('hidden');
+          actionBusy = open;
+          if (open) priceInp.focus();
+        });
+        priceSave.addEventListener('click', async () => {
+          msg.classList.add('hidden');
+          const n = Math.round(Number(priceInp.value));
+          // Same cap rule as the app's grid: (drivable miles × $0.76 − what
+          // booked seats already collect) ÷ open seats, floor $10, ceiling $55.
+          const start = (ride.start_lat != null) ? { lat: Number(ride.start_lat), lng: Number(ride.start_lng) } : null;
+          const end = (ride.end_lat != null) ? { lat: Number(ride.end_lat), lng: Number(ride.end_lng) } : null;
+          const miles = (typeof ride.road_miles === 'number' && ride.road_miles > 0)
+            ? Number(ride.road_miles)
+            : (start && end && window.SS_STOPS ? SS_STOPS.haversineMiles(start, end) * 1.25 : 0);
+          const bookedSum = passengerSeats.filter((x) => holder.has(x.id)).reduce((t, x) => t + (Number(x.price) || 0), 0);
+          // No mileage (no coords / stops lib failed to load) → the price can
+          // only be held or lowered, never raised toward the $55 ceiling
+          // blind (audit 2026-09-04).
+          const cap = miles > 0
+            ? Math.max(10, Math.min(55, Math.floor((miles * 0.76 - bookedSum) / Math.max(1, openSeats.length))))
+            : Math.max(10, Math.min(55, Math.round(Number(priceSeat.price) || 10)));
+          if (!Number.isFinite(n) || n < 10 || n > cap) {
+            msg.textContent = 'Enter a whole dollar amount between $10 and $' + cap + ' — the cost-sharing cap for this trip at its current open seat count.';
+            msg.classList.remove('hidden');
+            return;
+          }
+          actionBusy = false;
+          priceSave.disabled = true; priceSave.textContent = 'Saving…';
+          try {
+            const wanted = seats.map((x) => (x && !x.isDriver && !holder.has(x.id)) ? Object.assign({}, x, { price: n }) : x);
+            await doUpdateSeats(ride, wanted);
+            await refreshRide(ride.id);
+          } catch (e) {
+            priceSave.disabled = false; priceSave.textContent = 'Save';
+            msg.textContent = (e && e.message) || 'Could not save the price — try again.';
+            msg.classList.remove('hidden');
+          }
+        });
+      }
+      chipcol.appendChild(el('div', 'seatsum',
+        openSeats.length + ' open · ' + (unbooked.length - openSeats.length) + ' closed · '
+        + (passengerSeats.length - unbooked.length) + (passengerSeats.length - unbooked.length === 1 ? ' taken' : ' taken')));
+      passengerSeats.forEach((seat) => {
+        const h = holder.get(seat.id);
+        const chip = el('div', 'seatchip ' + (h ? 'held' : (seat.avail ? 'open' : 'closed')));
+        chip.appendChild(el('span', 'nm', SEAT_SHORT[seat.id] || seat.label || seat.id));
+        chip.appendChild(el('span', 'st', h ? ((h.pending ? 'Requested · ' : 'Booked · ') + h.name) : (seat.avail ? 'Open' : 'Closed')));
+        if (!h) {
+          const act = el('button', 'chipact', seat.avail ? 'Close' : 'Reopen');
+          act.type = 'button';
+          act.addEventListener('click', () => toggleSeat(seat.id));
+          chipBtns.push(act);
+          chip.appendChild(act);
+        }
+        chipcol.appendChild(chip);
+      });
+
+      layout.appendChild(carcol);
+      layout.appendChild(chipcol);
+      wrap.appendChild(layout);
+      if (openSeats.length === 0) {
+        wrap.appendChild(el('div', 'rowhint', 'Every seat is closed or taken — riders can\'t book this ride until you reopen one.'));
+      }
+      wrap.appendChild(msg);
+      return wrap;
+    }
+
+    function manageSection(entry) {
+      const ride = entry.ride;
+      const wrap = el('div', 'card');
+      wrap.appendChild(el('div', 'eyebrow', 'Manage'));
+      const active = entry.bookings.filter((b) => {
+        const st = effectiveStatus(b, ride);
+        return st === 'Pending' || st === 'Confirmed';
+      });
+      const confirmedActive = entry.bookings.filter((b) => effectiveStatus(b, ride) === 'Confirmed' && !b.pickup_code_entered_at);
+      const panel = el('div', 'hidden');
+      const msg = el('div', 'rowhint hidden');
+
+      // Every panel gets an escape hatch — a destructive flow with no visible
+      // way out reads as a trap, and closing also unfreezes the refresh.
+      function neverMind() {
+        const b = el('button', 'linkbtn', 'Never mind');
+        b.type = 'button';
+        b.style.display = 'block';
+        b.style.marginTop = '6px';
+        b.addEventListener('click', () => {
+          clear(panel);
+          panel.classList.add('hidden');
+          msg.classList.add('hidden');
+          actionBusy = false;
+        });
+        return b;
+      }
+
+      const row = el('div', 'managerow');
+      row.style.display = 'flex'; row.style.gap = '10px'; row.style.flexWrap = 'wrap';
+
+      // Edit date & time — zero-bookings only, like the app. Hoisted so the
+      // cancel flow below can offer "edit instead" (2026-09-01).
+      let editBtn = null;
+      if (active.length === 0) {
+        editBtn = el('button', 'linkbtn', 'Edit date & time');
+        editBtn.type = 'button';
+        editBtn.addEventListener('click', () => {
+          actionBusy = true;
+          clear(panel); msg.classList.add('hidden');
+          const d = inp('date', '', ride.dep_date || '');
+          const t = inp('time', '', String(ride.dep_time || '').slice(0, 5));
+          d.style.marginBottom = '8px'; t.style.marginBottom = '8px';
+          panel.appendChild(d); panel.appendChild(t);
+          const save = el('button', 'primary', 'Save new departure');
+          save.type = 'button';
+          save.addEventListener('click', async () => {
+            msg.classList.add('hidden');
+            save.disabled = true; save.textContent = 'Saving…';
+            try {
+              await doEditDateTime(ride, d.value, t.value);
+              actionBusy = false;
+              await refreshRide(ride.id);
+            } catch (e) {
+              save.disabled = false; save.textContent = 'Save new departure';
+              msg.textContent = (e && e.message) || 'Could not save.';
+              msg.classList.remove('hidden');
+            }
+          });
+          panel.appendChild(save);
+          panel.appendChild(neverMind());
+          panel.classList.remove('hidden');
+        });
+        row.appendChild(editBtn);
+
+        // Edit route — pickup/dropoff. Server re-derives metros, drivable
+        // miles, the cost-share cap (prices above it are clamped) and clears
+        // stops/leg prices, which belonged to the old road.
+        const editRouteBtn = el('button', 'linkbtn', 'Edit route');
+        editRouteBtn.type = 'button';
+        editRouteBtn.addEventListener('click', () => {
+          actionBusy = true;
+          clear(panel); msg.classList.add('hidden');
+          const picks = {
+            from: (ride.start_lat != null) ? { lat: Number(ride.start_lat), lng: Number(ride.start_lng), address: ride.departure_area || '' } : null,
+            to: (ride.end_lat != null) ? { lat: Number(ride.end_lat), lng: Number(ride.end_lng), address: ride.arrival_area || '' } : null,
+          };
+          const mk = (label, key) => {
+            panel.appendChild(el('div', 'rowhint', label));
+            const i = inp('text', '', (picks[key] && picks[key].address) || '');
+            i.placeholder = key === 'from' ? 'e.g. Caltrain Station, San Jose' : 'e.g. Union Station, Los Angeles';
+            i.autocomplete = 'off';
+            i.style.marginBottom = '6px';
+            const l = el('div');
+            panel.appendChild(i); panel.appendChild(l);
+            wireRouteAc(i, l, (p) => { picks[key] = p; });
+          };
+          mk('Leaving from', 'from');
+          mk('Going to', 'to');
+          panel.appendChild(el('div', 'rowhint', 'Pick both from the suggestions. Stops and leg prices reset for the new road, and seat prices drop to the new cost-share cap if the drive got shorter.'));
+          const save = el('button', 'primary', 'Save new route');
+          save.type = 'button';
+          save.addEventListener('click', async () => {
+            msg.classList.add('hidden');
+            if (!picks.from || !picks.to) { msg.textContent = 'Pick both addresses from the suggestions.'; msg.classList.remove('hidden'); return; }
+            save.disabled = true; save.textContent = 'Saving…';
+            try {
+              const out = await callFn('web-update-ride-route', {
+                rideId: ride.id,
+                fromAddress: picks.from.address, toAddress: picks.to.address,
+                startLat: picks.from.lat, startLng: picks.from.lng,
+                endLat: picks.to.lat, endLng: picks.to.lng,
+              });
+              actionBusy = false;
+              await refreshRide(ride.id);
+              const notes = [];
+              if (out && out.priceClamped) notes.push('Seat prices were lowered from $' + out.priceClamped.from + ' to $' + out.priceClamped.to + ' to stay within the cost-share cap for the new distance.');
+              if (out && out.stopsCleared) notes.push('Your stops were cleared — add them again with Edit stops if they still sit on the new road.');
+              if (notes.length) { const m2 = document.getElementById('manageMsg') || msg; m2.textContent = notes.join(' '); m2.classList.remove('hidden'); }
+            } catch (e) {
+              save.disabled = false; save.textContent = 'Save new route';
+              msg.textContent = (e && e.body && e.body.message) || (e && e.message) || 'Could not save the route.';
+              msg.classList.remove('hidden');
+            }
+          });
+          panel.appendChild(save);
+          panel.appendChild(neverMind());
+          panel.classList.remove('hidden');
+        });
+        row.appendChild(editRouteBtn);
+      } else {
+        wrap.appendChild(el('div', 'rowhint', "Date and time can't change once there are bookings or requests."));
+      }
+
+      // Edit stops — allowed even WITH bookings (adding stops is how a driver
+      // fills remaining seats); only removing a stop a rider boards/alights
+      // at is blocked, mirroring the app's updateRideStops guard.
+      const editStopsBtn = el('button', 'linkbtn', 'Edit stops');
+      editStopsBtn.type = 'button';
+      editStopsBtn.addEventListener('click', () => {
+        actionBusy = true;
+        clear(panel); msg.classList.add('hidden');
+        const start = (ride.start_lat != null && ride.start_lng != null) ? { lat: Number(ride.start_lat), lng: Number(ride.start_lng) } : null;
+        const end = (ride.end_lat != null && ride.end_lng != null) ? { lat: Number(ride.end_lat), lng: Number(ride.end_lng) } : null;
+        const current = Array.isArray(ride.route_stops) ? ride.route_stops.slice() : [];
+        const currentIds = new Set(current.filter((s) => typeof s === 'string'));
+        const customs = current.filter((s) => s && typeof s === 'object');
+        const suggestions = (start && end && window.SS_STOPS) ? SS_STOPS.looseSuggest(start, end) : [];
+        // Union: every currently-saved id stays visible even if no longer
+        // suggested — otherwise it would be invisible yet still on the ride.
+        const byId = {};
+        for (const s of suggestions) byId[s.id] = s;
+        for (const id of currentIds) {
+          if (!byId[id] && window.SS_STOPS && SS_STOPS.STOP_BY_ID[id]) byId[id] = { ...SS_STOPS.STOP_BY_ID[id], t: (start && end) ? SS_STOPS.routeT(start, end, SS_STOPS.STOP_BY_ID[id]) : 0 };
+        }
+        const options = Object.values(byId).sort((a, z) => (a.t || 0) - (z.t || 0));
+        const selected = new Set(currentIds);
+        const keptCustoms = customs.slice();
+        const milesEst = (typeof ride.road_miles === 'number' && ride.road_miles > 0)
+          ? Number(ride.road_miles)
+          : (start && end && window.SS_STOPS ? SS_STOPS.haversineMiles(start, end) * 1.25 : 0);
+        // Mirrors post.html maxStopsFor / lib/route-fill.ts maxStopsForMiles.
+        const cap = milesEst > 165 ? 8 : milesEst > 100 ? 5 : 3;
+
+        if (options.length === 0 && keptCustoms.length === 0) {
+          panel.appendChild(el('div', 'rowhint', 'No suggested stops sit on this route — add a town on the way below.'));
+        } else {
+          panel.appendChild(el('div', 'rowhint', 'Riders at these stops can find and book your ride. Max ' + cap + ' stops.'));
+        }
+        const chipRow = el('div');
+        chipRow.style.display = 'flex'; chipRow.style.flexWrap = 'wrap'; chipRow.style.gap = '8px'; chipRow.style.margin = '10px 0';
+        const paintChips = () => {
+          clear(chipRow);
+          for (const s of options) {
+            const on = selected.has(s.id);
+            const chip = el('button', 'linkbtn', (on ? '✓ ' : '') + s.name);
+            chip.type = 'button';
+            chip.style.cssText = 'border:1px solid ' + (on ? 'rgba(0,212,200,0.6)' : '#2a2a33') + ';border-radius:999px;padding:7px 14px;margin:0;color:' + (on ? '#00D4C8' : '#b9b9c6');
+            chip.addEventListener('click', () => {
+              if (!on && selected.size + keptCustoms.length >= cap) {
+                msg.textContent = 'Max ' + cap + ' stops — more stops means a longer trip for every rider.';
+                msg.classList.remove('hidden');
+                return;
+              }
+              msg.classList.add('hidden');
+              if (on) selected.delete(s.id); else selected.add(s.id);
+              paintChips();
+            });
+            chipRow.appendChild(chip);
+          }
+          keptCustoms.forEach((c, i) => {
+            const chip = el('button', 'linkbtn', '✓ ' + (c.name || 'Custom stop') + '  ✕');
+            chip.type = 'button';
+            chip.style.cssText = 'border:1px solid rgba(0,212,200,0.6);border-radius:999px;padding:7px 14px;margin:0;color:#00D4C8';
+            chip.addEventListener('click', () => { keptCustoms.splice(i, 1); paintChips(); });
+            chipRow.appendChild(chip);
+          });
+        };
+        paintChips();
+        panel.appendChild(chipRow);
+
+        // Add a stop by name (2026-09-03, Justin: "there should be an add
+        // stops button") — the same Mapbox search as posting, and the same
+        // envelope the server enforces: at least 9 mi from both ends and no
+        // more than a 30 mi straight-line detour. Custom stops are stored as
+        // {name, lat, lng} exactly like the posting page writes them.
+        if (start && end && window.SS_STOPS) {
+          const addWrap = el('div');
+          addWrap.style.margin = '2px 0 10px';
+          const addBtn = el('button', 'linkbtn', '+ Add a stop');
+          addBtn.type = 'button';
+          const addInput = inp('text', '', '');
+          addInput.placeholder = 'Town on the way, e.g. Santa Barbara';
+          addInput.autocomplete = 'off';
+          addInput.style.cssText = 'display:none;margin:8px 0 4px;';
+          const addList = el('div');
+          addBtn.addEventListener('click', () => { addInput.style.display = 'block'; addInput.focus(); });
+          wireRouteAc(addInput, addList, (p) => {
+            if (!p) return;
+            const name = ((p.name || p.address || '').split(',')[0] || '').trim() || 'Stop';
+            const direct = SS_STOPS.haversineMiles(start, end);
+            const toS = SS_STOPS.haversineMiles(start, p), toE = SS_STOPS.haversineMiles(end, p);
+            const say = (t) => { msg.textContent = t; msg.classList.remove('hidden'); };
+            if (toS < 9 || toE < 9) { say(name + ' is too close to your start or destination to be a stop.'); return; }
+            if (toS + toE - direct > 30) { say(name + " isn't on the way for this route — stops must sit along it."); return; }
+            if (selected.size + keptCustoms.length >= cap) { say('Max ' + cap + ' stops — more stops means a longer trip for every rider.'); return; }
+            const lc = name.toLowerCase();
+            if (options.some((s) => (s.name || '').toLowerCase() === lc) || keptCustoms.some((c) => (c.name || '').toLowerCase() === lc)) { say(name + ' is already in the list.'); return; }
+            msg.classList.add('hidden');
+            keptCustoms.push({ name, lat: p.lat, lng: p.lng });
+            addInput.value = ''; addInput.style.display = 'none';
+            paintChips();
+          });
+          addWrap.appendChild(addBtn); addWrap.appendChild(addInput); addWrap.appendChild(addList);
+          panel.appendChild(addWrap);
+        }
+
+        const saveStops = el('button', 'primary', 'Save stops');
+        saveStops.type = 'button';
+        saveStops.addEventListener('click', async () => {
+          msg.classList.add('hidden');
+          saveStops.disabled = true; saveStops.textContent = 'Saving…';
+          try {
+            // Booked-stop guard, mirroring services/rides.ts updateRideStops:
+            // a stop an active booking boards/alights at can't be removed.
+            const { data: abs } = await supabase
+              .from('bookings')
+              .select('passenger_name, boarding_stop, alighting_stop, status')
+              .eq('ride_id', ride.id)
+              .in('status', ['Pending', 'Confirmed']);
+            const keptNames = new Set(
+              [...selected].map((id) => (window.SS_STOPS ? SS_STOPS.stopName(id) : id))
+                .concat(keptCustoms.map((c) => c.name)),
+            );
+            const keptIds = new Set([...selected]);
+            for (const bkg of (abs || [])) {
+              for (const bs of [bkg.boarding_stop, bkg.alighting_stop]) {
+                if (bs && bs.name && !keptNames.has(bs.name) && !(bs.id && keptIds.has(bs.id))) {
+                  throw new Error("Can't remove the " + bs.name + ' stop — '
+                    + ((bkg.passenger_name || 'A rider').split(/\s+/)[0])
+                    + ' is booked to board or get off there. Handle that booking first.');
+                }
+              }
+            }
+            const ordered = options.filter((s) => selected.has(s.id)).map((s) => s.id);
+            const merged = ordered.concat(keptCustoms);
+            const patch = { route_stops: merged };
+            if (merged.length > 0) patch.instant = false; // multi-stop = request-to-book
+            // Driver-set leg prices (0226) key custom stops by POSITION — re-key
+            // them to the new order or the wrong leg bills at the old price.
+            // Mirrors lib/segment-price-keys.ts remapSegmentPrices; change both.
+            if (ride.segment_prices && typeof ride.segment_prices === 'object') {
+              const nameOf = (s) => (s && typeof s === 'object' && typeof s.name === 'string') ? s.name.trim().toLowerCase() : null;
+              const olds = Array.isArray(ride.route_stops) ? ride.route_stops : [];
+              const catalogNow = new Set(merged.filter((s) => typeof s === 'string'));
+              const custIdx = new Map();
+              merged.forEach((s, i) => { const n = nameOf(s); if (n && !custIdx.has(n)) custIdx.set(n, i); });
+              const mapTok = (t) => {
+                if (t === 'origin' || t === 'end') return t;
+                const m = /^cust-(\d+)$/.exec(t);
+                if (m) { const n = nameOf(olds[Number(m[1])]); const j = n ? custIdx.get(n) : undefined; return j === undefined ? null : 'cust-' + j; }
+                return catalogNow.has(t) ? t : null;
+              };
+              const out = {}; let n = 0;
+              for (const [k, v] of Object.entries(ride.segment_prices)) {
+                const p = k.split('|');
+                if (p.length !== 2 || typeof v !== 'number') continue;
+                const a = mapTok(p[0]), b = mapTok(p[1]);
+                if (!a || !b || a === b) continue;
+                out[a + '|' + b] = v; n++;
+              }
+              patch.segment_prices = n > 0 ? out : null;
+            }
+            const { error } = await supabase.from('rides').update(patch).eq('id', ride.id);
+            if (error) throw error;
+            actionBusy = false;
+            await refreshRide(ride.id);
+          } catch (e) {
+            saveStops.disabled = false; saveStops.textContent = 'Save stops';
+            msg.textContent = (e && e.message) || 'Could not save stops.';
+            msg.classList.remove('hidden');
+          }
+        });
+        panel.appendChild(saveStops);
+        panel.appendChild(neverMind());
+        panel.classList.remove('hidden');
+      });
+      row.appendChild(editStopsBtn);
+
+      // Cancel ONE confirmed booking.
+      if (confirmedActive.length > 0) {
+        const oneBtn = el('button', 'linkbtn', 'Cancel one booking');
+        oneBtn.type = 'button';
+        oneBtn.addEventListener('click', () => {
+          actionBusy = true;
+          clear(panel); msg.classList.add('hidden');
+          panel.appendChild(el('div', 'rowhint', 'Which rider? They get a full refund and a note with your reason.'));
+          for (const b of confirmedActive) {
+            const pick = el('button', 'linkbtn', paxDisplay(b));
+            pick.type = 'button';
+            pick.addEventListener('click', () => {
+              clear(panel);
+              const ta = document.createElement('textarea');
+              ta.placeholder = 'Reason (riders see this) — at least 10 characters';
+              ta.rows = 3; ta.style.width = '100%'; ta.style.marginBottom = '8px';
+              panel.appendChild(ta);
+              const go2 = el('button', 'primary', 'Cancel ' + paxDisplay(b) + "'s booking");
+              go2.type = 'button';
+              go2.style.background = '#ff5d5d'; go2.style.color = '#2a0505';
+              go2.addEventListener('click', async () => {
+                msg.classList.add('hidden');
+                if (ta.value.trim().length < 10) { msg.textContent = 'Give a reason — at least 10 characters.'; msg.classList.remove('hidden'); return; }
+                go2.disabled = true; go2.textContent = 'Cancelling…';
+                try {
+                  await doCancelConfirmed(b, ride, ta.value.trim());
+                  actionBusy = false;
+                  await refreshRide(ride.id);
+                } catch (e) {
+                  go2.disabled = false; go2.textContent = 'Cancel ' + paxDisplay(b) + "'s booking";
+                  msg.textContent = (e && e.message) || 'Cancellation failed — email support@seatsherpa.app.';
+                  msg.classList.remove('hidden');
+                }
+              });
+              panel.appendChild(go2);
+              panel.appendChild(neverMind());
+            });
+            panel.appendChild(pick);
+          }
+          panel.appendChild(neverMind());
+          panel.classList.remove('hidden');
+        });
+        row.appendChild(oneBtn);
+      }
+
+      // Cancel the whole ride.
+      // "Just changing the time?" — mirrors lib/cancel-intent.ts in the app;
+      // change both together. Empty rides only: with bookings the departure
+      // is locked anyway.
+      const TIME_CHANGE_RE = /(time|timing|date|day|earlier|later|sooner|reschedulw*|postponw*|delayw*|push(ed|ing)?s+(its+)?(back|forward|up|to)|mov(e|ed|ing)s+(its+)?(to|up|back)|leav(e|ing)s+(at|earlier|later|sooner)|departw*|tomorrow|tonight|morning|afternoon|evening|noon|(mon|tues?|wed(nes)?|thu(rs)?|fri|sat(ur)?|sun)(day)?|d{1,2}(:d{2})?s*(am|pm))/i;
+      const canEditInstead = () => active.length === 0 && !!editBtn;
+      function editInsteadBtn(label) {
+        const b = el('button', 'primary', label || 'Edit date & time instead');
+        b.type = 'button';
+        b.style.marginRight = '8px';
+        b.addEventListener('click', () => { actionBusy = false; editBtn.click(); });
+        return b;
+      }
+
+      const cancelBtn = el('button', 'linkbtn', 'Cancel this ride');
+      cancelBtn.type = 'button';
+      cancelBtn.addEventListener('click', () => {
+        actionBusy = true;
+        clear(panel); msg.classList.add('hidden');
+        // Empty ride → offer the edit BEFORE asking for a reason, like the app
+        // (2026-09-01): editing keeps the listing, its link, its place in
+        // search and every rider alert pointed at it.
+        if (canEditInstead()) {
+          panel.appendChild(el('div', 'rowhint',
+            'No one has booked yet. Just changing the time? Edit the departure instead — the ride keeps its link, its place in search, and any rider alerts pointed at it.'));
+          panel.appendChild(editInsteadBtn('Edit date & time instead'));
+          const cont = el('button', 'linkbtn', 'No, cancel the ride');
+          cont.type = 'button';
+          cont.addEventListener('click', () => { clear(panel); renderCancelForm(); });
+          panel.appendChild(cont);
+          panel.appendChild(neverMind());
+          panel.classList.remove('hidden');
+          return;
+        }
+        renderCancelForm();
+      });
+
+      function renderCancelForm() {
+        if (active.length > 0) {
+          panel.appendChild(el('div', 'rowhint',
+            active.length + ' active booking' + (active.length === 1 ? '' : 's') + ' on this ride — cancelling refunds every confirmed rider in full and declines pending requests.'));
+        }
+        const ta = document.createElement('textarea');
+        ta.placeholder = 'Reason (riders see this) — at least 10 characters';
+        ta.rows = 3; ta.style.width = '100%'; ta.style.marginBottom = '8px';
+        panel.appendChild(ta);
+        const go2 = el('button', 'primary', 'Cancel ride for everyone');
+        go2.type = 'button';
+        go2.style.background = '#ff5d5d'; go2.style.color = '#2a0505';
+        let timeChangeAcked = false;
+        go2.addEventListener('click', async () => {
+          msg.classList.add('hidden');
+          // Reason reads like a departure change on an empty ride → one more
+          // chance to edit instead. Second click on the same button proceeds.
+          if (!timeChangeAcked && canEditInstead() && TIME_CHANGE_RE.test(ta.value)) {
+            timeChangeAcked = true;
+            const hint = el('div', 'rowhint',
+              'Sounds like a time change. You can edit the departure instead of cancelling — or cancel anyway.');
+            panel.insertBefore(hint, go2);
+            panel.insertBefore(editInsteadBtn('Edit date & time instead'), go2);
+            go2.textContent = 'Cancel anyway';
+            return;
+          }
+          go2.disabled = true; go2.textContent = 'Cancelling…';
+          try {
+            const out = await doCancelRide(ride, ta.value);
+            if (out.failed > 0) {
+              // Do NOT auto-refresh: the repaint would wipe this warning and
+              // show the "riders were refunded in full" banner — false for
+              // the rider whose refund call failed (Fable audit #2). Keep the
+              // freeze until the driver acknowledges.
+              clear(panel);
+              panel.appendChild(el('div', 'banner warn',
+                out.failed + ' booking' + (out.failed === 1 ? '' : 's') + " couldn't be cancelled automatically — that rider has NOT been refunded yet. Email support@seatsherpa.app and we'll finish it."));
+              const ok = el('button', 'primary', 'OK, got it');
+              ok.type = 'button';
+              ok.addEventListener('click', async () => { actionBusy = false; await refreshRide(ride.id); });
+              panel.appendChild(ok);
+              return;
+            }
+            actionBusy = false;
+            await refreshRide(ride.id);
+          } catch (e) {
+            go2.disabled = false; go2.textContent = 'Cancel ride for everyone';
+            msg.textContent = (e && e.message) || 'Cancellation failed.';
+            msg.classList.remove('hidden');
+          }
+        });
+        panel.appendChild(go2);
+        panel.appendChild(neverMind());
+        panel.classList.remove('hidden');
+      }
+      row.appendChild(cancelBtn);
+
+      wrap.appendChild(row);
+      wrap.appendChild(panel);
+      wrap.appendChild(msg);
+      return wrap;
+    }
+
+    function renderList(entries) {
+      const body = $('listBody');
+      clear(body);
+
+      // Stripe-first drop-off (2026-09-02): the deposits banner used to sit
+      // ABOVE "No rides yet", so brand-new web drivers (and passengers who
+      // wandered in) clicked Set up deposits before posting anything, hit
+      // Stripe's SSN/bank form, and left. Deposits are the LAST step: the
+      // banner only shows once a ride exists. Wallet still has the button.
+      if (entries.length > 0) {
+        const pb = payoutBanner();
+        if (pb) body.appendChild(pb);
+      }
+
+      if (entries.length === 0) {
+        const c = el('div', 'card center');
+        c.appendChild(el('div', 'icon', '\ud83d\ude97'));
+        c.appendChild(el('h1', null, 'No rides yet'));
+        c.appendChild(el('p', 'sub', 'When you post a ride, it shows up here with its requests, riders and check-in.'));
+        const steps = el('ol', 'sub');
+        steps.style.cssText = 'text-align:left;display:inline-block;margin:4px auto 14px;padding-left:20px;line-height:1.7';
+        ['Post a ride — date, route, price per seat (2 min)',
+         'Snap your license so it can go live',
+         'Connect deposits in Wallet once riders start booking'].forEach((t) => steps.appendChild(el('li', null, t)));
+        c.appendChild(steps);
+        const a = document.createElement('a');
+        a.href = '/post?new=1';
+        a.textContent = 'Post a ride \u2192';
+        a.style.fontWeight = '700';
+        c.appendChild(a);
+        body.appendChild(c);
+        body.appendChild(signedInFooter());
+        show('stList');
+        return;
+      }
+
+      const now = Date.now();
+      const upcoming = [];
+      const past = [];
+      for (const e of entries) {
+        const dep = departureMs(e.ride);
+        // "Upcoming" = not departed yet, OR departed within the last 12h WITH
+        // riders still on it (the completion cron's horizon), so a mid-trip
+        // ride keeps its check-in on top. A departed ride nobody booked has
+        // nothing left to do and goes straight to past (Justin, 2026-09-03:
+        // "the ride at 8am is in the past, that should not be here").
+        const live = e.bookings.some((b) => {
+          const st = effectiveStatus(b, e.ride);
+          return st === 'Confirmed' || st === 'Pending';
+        });
+        if (dep > now || (live && dep + 12 * 60 * 60 * 1000 > now)) upcoming.push(e);
+        else past.push(e);
+      }
+      upcoming.sort((a, z) => {
+        // Requests first - they are the most important thing on this page.
+        if ((a.pendingCount > 0) !== (z.pendingCount > 0)) return a.pendingCount > 0 ? -1 : 1;
+        return departureMs(a.ride) - departureMs(z.ride);
+      });
+      past.sort((a, z) => departureMs(z.ride) - departureMs(a.ride));
+
+      const totalPending = entries.reduce((s, e) => s + e.pendingCount, 0);
+      const totalUnread = entries.reduce((s, e) => s + e.unreadCount, 0);
+      const seatsSold = upcoming.reduce((s, e) => s + e.bookedSeats, 0);
+      const seatsTotal = upcoming.reduce((s, e) => s + e.totalSeats, 0);
+
+      // Dashboard header: who you are and what's true right now, before the
+      // list. The subtitle states the single most useful fact rather than
+      // greeting for the sake of it.
+      const head = el('div', 'dashhead');
+      head.appendChild(el('h1', null, 'Driver dashboard'));
+      head.appendChild(el('div', 'said',
+        totalPending > 0
+          ? 'You have ' + totalPending + ' seat request' + (totalPending === 1 ? '' : 's') + ' to answer.'
+          : upcoming.length
+            ? 'Next up: ' + routeLabel(upcoming[0].ride) + ' \u00b7 ' + whenLabel(upcoming[0].ride) + '.'
+            : 'No upcoming rides \u2014 post one and it shows up here.'));
+      body.appendChild(head);
+
+      // Stat strip. Every number is derived from rides already loaded; money
+      // deliberately lives in Wallet, so nothing here can be a guess.
+      const stats = el('div', 'stats');
+      const statTile = (n, k, cls, onClick) => {
+        const t = el(onClick ? 'button' : 'div', 'stat' + (cls ? ' ' + cls : '') + (onClick ? ' link' : ''));
+        if (onClick) { t.type = 'button'; t.addEventListener('click', onClick); }
+        t.appendChild(el('div', 'n', String(n)));
+        t.appendChild(el('div', 'k', k));
+        return t;
+      };
+      stats.appendChild(statTile(upcoming.length, upcoming.length === 1 ? 'Upcoming ride' : 'Upcoming rides'));
+      stats.appendChild(statTile(
+        seatsTotal ? seatsSold + '/' + seatsTotal : '\u2014',
+        'Seats booked'));
+      stats.appendChild(statTile(totalPending, totalPending === 1 ? 'Request waiting' : 'Requests waiting',
+        totalPending > 0 ? 'act' : ''));
+      // location.href, not go(): go() is pushState within /driving, so it
+      // would rewrite the URL and re-render this page instead of leaving.
+      stats.appendChild(statTile(totalUnread, totalUnread === 1 ? 'Unread message' : 'Unread messages',
+        '', () => { location.href = '/messages'; }));
+      body.appendChild(stats);
+
+      if (totalPending > 0) {
+        body.appendChild(el('div', 'banner amber',
+          totalPending + ' seat request' + (totalPending === 1 ? '' : 's') + ' waiting for your answer. '
+          + "Riders' card holds expire after about 7 days \u2014 answer soon so nobody is left hanging."));
+      }
+
+      // Demand signals (2026-08-28, app dashboard parity): waitlist counts on
+      // your rides + the hottest searched corridors this week. Both fail-soft
+      // (services/driver-insights.ts pattern) and fill in after paint.
+      const demandSlot = el('div');
+      body.appendChild(demandSlot);
+      (async () => {
+        try {
+          const [{ data: wl }, { data: rd }] = await Promise.all([
+            supabase.rpc('driver_waitlist_counts'),
+            supabase.rpc('route_search_demand'),
+          ]);
+          const bits = [];
+          const wlTotal = (wl || []).reduce((s, r) => s + (Number(r.waitlisted) || 0), 0);
+          if (wlTotal > 0) {
+            bits.push(wlTotal + ' rider' + (wlTotal === 1 ? '' : 's') + ' waitlisted on your rides — they book the moment a seat opens.');
+          }
+          const top = (rd || [])[0];
+          if (top && Number(top.searches) >= 3) {
+            // NEVER show raw metro ids ("la", "sfba") publicly — full area
+            // names via the shared catalog (Justin, 2026-08-28).
+            const destName = (id) =>
+              (window.SS_STOPS && SS_STOPS.STOP_BY_ID[id] && SS_STOPS.STOP_BY_ID[id].name) || String(id);
+            bits.push('Hot this week: ' + destName(top.from_dest) + ' → ' + destName(top.to_dest) + ' searched '
+              + top.searches + '× by ' + top.searchers + ' rider' + (Number(top.searchers) === 1 ? '' : 's')
+              + '. Driving it? Post the ride.');
+          }
+          if (bits.length) demandSlot.appendChild(el('div', 'banner info', bits.join(' ')));
+        } catch (_) { /* tiles are optional */ }
+      })();
+
+      if (upcoming.length) {
+        body.appendChild(el('h2', null, 'Upcoming'));
+        const upGrid = el('div', 'ridegrid');
+        upcoming.forEach((e) => upGrid.appendChild(rideCard(e)));
+        body.appendChild(upGrid);
+      }
+      if (past.length) {
+        // Collapsed by default (Justin, 2026-08-28): finished rides are
+        // reference, not work. The console should open on what still needs
+        // the driver's attention. Choice is remembered for the session.
+        const openPast = sessionStorage.getItem('ss_past_open') === '1';
+        const head = el('button', 'pasthead');
+        head.type = 'button';
+        head.setAttribute('aria-expanded', String(openPast));
+        const caret = el('span', 'caret', openPast ? '▾' : '▸');
+        head.appendChild(caret);
+        head.appendChild(el('span', null, 'Past rides'));
+        head.appendChild(el('span', 'pastcount', String(past.length)));
+        const pastWrap = el('div', 'ridegrid');
+        if (!openPast) pastWrap.classList.add('hidden');
+        past.slice(0, 10).forEach((e) => pastWrap.appendChild(rideCard(e, true)));
+        head.addEventListener('click', () => {
+          const nowOpen = pastWrap.classList.contains('hidden');
+          pastWrap.classList.toggle('hidden', !nowOpen);
+          caret.textContent = nowOpen ? '▾' : '▸';
+          head.setAttribute('aria-expanded', String(nowOpen));
+          try { sessionStorage.setItem('ss_past_open', nowOpen ? '1' : '0'); } catch (_) {}
+        });
+        body.appendChild(head);
+        body.appendChild(pastWrap);
+      }
+      body.appendChild(signedInFooter());
+      show('stList');
+      document.title = 'Your rides \u2014 Seat Sherpa';
+    }
+
+    // -- RIDE CONSOLE -------------------------------------------------------
+    // A half-typed decline reason or PIN must never be repainted away by the
+    // background refresh - same freeze pattern as trips.html's cancel panel.
+    let actionBusy = false;
+
+    function rideIsLive() {
+      return !$('stRide').classList.contains('hidden') && !actionBusy;
+    }
+
+    async function refreshRide(rideId) {
+      if (!rideIsLive()) return;
+      try {
+        const fresh = await loadRideEntry(rideId);
+        if (!rideIsLive()) return;
+        if (fresh) renderRide(fresh);
+      } catch (_) { /* transient - keep the current paint */ }
+    }
+
+    async function loadRideEntry(rideId) {
+      const ride = await loadRide(rideId);
+      if (!ride) return null;
+      const bookings = await loadBookingsForRides([ride.id]);
+      const unread = await loadUnreadCounts(bookings.map((b) => b.id));
+      bookings.forEach((b) => { b._unread = unread.get(b.id) || 0; });
+      return buildEntry(ride, bookings, unread);
+    }
+
+    function requestBox(b, ride) {
+      const box = el('div', 'bookingbox request');
+      const top = el('div', 'bookingtop');
+      const seats = seatLabels(b, ride);
+      top.appendChild(paxRow(b, riderRepLabel(b) + ' \u00b7 ' + seats.length + ' seat' + (seats.length === 1 ? '' : 's')
+        + (seats.length ? ' \u00b7 ' + seats.join(', ') : '') + ' \u00b7 ' + fmt$(b.total_price)));
+      top.appendChild(pill('Pending', 'Requested'));
+      box.appendChild(top);
+
+      const boarding = stopName(b.boarding_stop);
+      const alighting = stopName(b.alighting_stop);
+      if (boarding) box.appendChild(el('div', 'rowhint', 'On-route pickup: ' + boarding));
+      if (alighting) box.appendChild(el('div', 'rowhint', 'On-route drop-off: ' + alighting));
+
+      if (b.driver_message && String(b.driver_message).trim()) {
+        box.appendChild(el('div', 'ridernote', 'Note from ' + paxFirst(b) + ': ' + String(b.driver_message).trim()));
+      }
+
+      const msg = el('div', 'rowmsg err hidden');
+
+      // Accept: two-step inline confirm - this is the moment the rider's card
+      // is actually charged, so it gets a deliberate second tap.
+      const actions = el('div', 'actrow');
+      const acceptBtn = el('button', 'primary', 'Accept');
+      acceptBtn.type = 'button';
+      const declineBtn = el('button', 'outline', 'Decline');
+      declineBtn.type = 'button';
+      actions.appendChild(acceptBtn);
+      actions.appendChild(declineBtn);
+      box.appendChild(actions);
+      box.appendChild(el('div', 'rowhint',
+        "Accepting charges " + paxFirst(b) + "'s card and confirms their seat. "
+        + 'They get a push and an email the moment you do.'));
+      // The app lets a driver chat with a requester BEFORE deciding
+      // (app/chat/[bookingId].tsx has accept controls in the thread) - give
+      // the web driver the same option.
+      const askBtn = el('button', 'linkbtn', 'Message ' + paxFirst(b) + ' first'
+        + (b._unread > 0 ? ' (' + b._unread + ' unread)' : ''));
+      askBtn.type = 'button';
+      askBtn.style.display = 'block';
+      askBtn.style.margin = '10px auto 0';
+      askBtn.addEventListener('click', () =>
+        go('/driving?ride=' + encodeURIComponent(ride.id) + '&chat=' + encodeURIComponent(b.id)));
+      box.appendChild(askBtn);
+      box.appendChild(msg);
+
+      // Confirm row (hidden until Accept is tapped once).
+      const confirmRow = el('div', 'actrow hidden');
+      const confirmBtn = el('button', 'primary', 'Yes, charge and confirm');
+      confirmBtn.type = 'button';
+      const backBtn = el('button', 'outline', 'Back');
+      backBtn.type = 'button';
+      confirmRow.appendChild(confirmBtn);
+      confirmRow.appendChild(backBtn);
+      box.appendChild(confirmRow);
+
+      // Decline panel (optional reason).
+      const declinePanel = el('div', 'hidden');
+      const lbl = el('label', null, 'Reason (optional \u2014 shared with the rider in chat)');
+      const ta = document.createElement('textarea');
+      ta.maxLength = 500;
+      ta.placeholder = 'e.g. Sorry \u2014 my plans changed and this seat is no longer open';
+      declinePanel.appendChild(lbl);
+      declinePanel.appendChild(ta);
+      const dActions = el('div', 'actrow');
+      const dConfirm = el('button', 'primary', 'Decline request');
+      dConfirm.type = 'button';
+      const dKeep = el('button', 'outline', 'Keep it');
+      dKeep.type = 'button';
+      dActions.appendChild(dConfirm);
+      dActions.appendChild(dKeep);
+      declinePanel.appendChild(dActions);
+      declinePanel.appendChild(el('div', 'rowhint',
+        "Declining releases the hold on the rider's card right away. They get a push and an email; the reason is never shown on their lock screen."));
+      box.appendChild(declinePanel);
+
+      function setBusy(v) {
+        actionBusy = v;
+        [acceptBtn, declineBtn, confirmBtn, backBtn, dConfirm, dKeep].forEach((x) => { x.disabled = v; });
+        ta.disabled = v;
+      }
+
+      acceptBtn.addEventListener('click', () => {
+        actionBusy = true; // freeze background refresh while deciding
+        msg.classList.add('hidden');
+        actions.classList.add('hidden');
+        declinePanel.classList.add('hidden');
+        confirmRow.classList.remove('hidden');
+      });
+      backBtn.addEventListener('click', () => {
+        actionBusy = false;
+        confirmRow.classList.add('hidden');
+        actions.classList.remove('hidden');
+      });
+      confirmBtn.addEventListener('click', async () => {
+        setBusy(true);
+        confirmBtn.textContent = 'Confirming\u2026';
+        try {
+          await doAccept(b, ride);
+          actionBusy = false;
+          await refreshRide(ride.id);
+        } catch (e) {
+          setBusy(false);
+          actionBusy = false;
+          confirmBtn.textContent = 'Yes, charge and confirm';
+          confirmRow.classList.add('hidden');
+          actions.classList.remove('hidden');
+          msg.textContent = acceptErrorCopy(e);
+          msg.classList.remove('hidden');
+          const deadCode = (e && ((e.body && e.body.code) || e.error)) || '';
+          if (deadCode === 'BOOKING_CANCELLED_RACE' || deadCode === 'BOOKING_NOT_PENDING'
+              || deadCode === 'AUTH_NOT_CAPTURABLE' || deadCode === 'RIDE_CANCELLED') {
+            // The request is gone - refresh after a beat so the copy is read.
+            setTimeout(() => { void refreshRide(ride.id); }, 3500);
+          }
+        }
+      });
+
+      declineBtn.addEventListener('click', () => {
+        actionBusy = true;
+        msg.classList.add('hidden');
+        actions.classList.add('hidden');
+        confirmRow.classList.add('hidden');
+        declinePanel.classList.remove('hidden');
+        ta.focus();
+      });
+      dKeep.addEventListener('click', () => {
+        actionBusy = false;
+        declinePanel.classList.add('hidden');
+        actions.classList.remove('hidden');
+      });
+      dConfirm.addEventListener('click', async () => {
+        setBusy(true);
+        dConfirm.textContent = 'Declining\u2026';
+        try {
+          const outcome = await doDecline(b, ride, ta.value);
+          actionBusy = false;
+          if (outcome === 'already-confirmed') {
+            setBusy(false);
+            dConfirm.textContent = 'Decline request';
+            msg.textContent = 'Already accepted (maybe in another tab) — to cancel it, use the Manage card below.';
+            msg.classList.remove('hidden');
+            setTimeout(() => { void refreshRide(ride.id); }, 3500);
+            return;
+          }
+          if (outcome === 'already-cancelled') {
+            setBusy(false);
+            dConfirm.textContent = 'Decline request';
+            msg.textContent = 'This request was already withdrawn or cancelled \u2014 nothing more to do.';
+            msg.className = 'rowmsg ok';
+            setTimeout(() => { void refreshRide(ride.id); }, 2500);
+            return;
+          }
+          await refreshRide(ride.id);
+        } catch (e) {
+          setBusy(false);
+          actionBusy = false;
+          dConfirm.textContent = 'Decline request';
+          msg.textContent = (e && e.status === 401)
+            ? 'Your sign-in expired. Refresh the page and sign in again.'
+            : ((e && e.message) || 'Could not decline just now. Try again.');
+          msg.classList.remove('hidden');
+        }
+      });
+
+      return box;
+    }
+
+    function confirmedBox(b, ride, st, unreadCount) {
+      const box = el('div', 'bookingbox');
+      const top = el('div', 'bookingtop');
+      const seats = seatLabels(b, ride);
+      const subBits = [seats.length + ' seat' + (seats.length === 1 ? '' : 's')];
+      if (seats.length) subBits.push(seats.join(', '));
+      subBits.push(fmt$(b.total_price));
+      top.appendChild(paxRow(b, subBits.join(' \u00b7 ')));
+      if (st === 'Completed') top.appendChild(pill('Completed'));
+      else if (b.pickup_code_entered_at) top.appendChild(pill('Confirmed', 'On board'));
+      else top.appendChild(pill('Confirmed'));
+      box.appendChild(top);
+
+      const boarding = stopName(b.boarding_stop);
+      const alighting = stopName(b.alighting_stop);
+      if (boarding) box.appendChild(el('div', 'rowhint', 'On-route pickup: ' + boarding));
+      if (alighting) box.appendChild(el('div', 'rowhint', 'On-route drop-off: ' + alighting));
+
+      const msg = el('div', 'rowmsg err hidden');
+      const actions = el('div', 'actrow');
+
+      const chatBtn = el('button', 'outline',
+        'Message' + (unreadCount > 0 ? ' (' + unreadCount + ')' : ''));
+      chatBtn.type = 'button';
+      chatBtn.addEventListener('click', () =>
+        go('/driving?ride=' + encodeURIComponent(ride.id) + '&chat=' + encodeURIComponent(b.id)));
+      actions.appendChild(chatBtn);
+
+      // Complete: only for checked-in Confirmed bookings. Time gate mirrors
+      // the app; the message is completeBooking's, shown BEFORE the DB gets a
+      // chance to reject (0206 would also block anything else).
+      if (st === 'Confirmed' && b.pickup_code_entered_at) {
+        const earliest = departureMs(ride) + COMPLETE_AFTER_DEPARTURE_MS;
+        const completeBtn = el('button', 'primary', 'Mark completed');
+        completeBtn.type = 'button';
+        actions.appendChild(completeBtn);
+        if (Date.now() < earliest) {
+          completeBtn.disabled = true;
+          const eta = new Date(earliest).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: DEFAULT_TZ }) + ' PT';
+          box.appendChild(actions);
+          box.appendChild(el('div', 'rowhint', 'Too early to mark complete. Try again after ' + eta + '.'));
+        } else {
+          box.appendChild(actions);
+        }
+        completeBtn.addEventListener('click', async () => {
+          actionBusy = true;
+          completeBtn.disabled = true; chatBtn.disabled = true;
+          completeBtn.textContent = 'Completing\u2026';
+          msg.classList.add('hidden');
+          try {
+            await doComplete(b, ride);
+            actionBusy = false;
+            await refreshRide(ride.id);
+          } catch (e) {
+            actionBusy = false;
+            completeBtn.disabled = false; chatBtn.disabled = false;
+            completeBtn.textContent = 'Mark completed';
+            msg.textContent = (e && e.status === 401)
+              ? 'Your sign-in expired. Refresh the page and sign in again.'
+              : ((e && e.message) || 'Could not complete just now. Try again.');
+            msg.classList.remove('hidden');
+          }
+        });
+      } else {
+        box.appendChild(actions);
+      }
+
+      // Departure passed, Confirmed, no PIN: the honest driver-side warning +
+      // the no-show report (2026-08-28, app parity \u2014 booking-detail.tsx:783).
+      // 1h grace after departure; the conditional update mirrors
+      // services/bookings.ts reportNoShow exactly, and 0206 backs it server-side.
+      const dep = departureMs(ride);
+      if (st === 'Confirmed' && !b.pickup_code_entered_at && dep && Date.now() >= dep) {
+        box.appendChild(el('div', 'rowhint',
+          paxFirst(b) + " hasn't been checked in. You must enter their 4-digit code (below) to be paid for this seat. "
+          + "Never enter a code for a rider who wasn't there."));
+        if (!b.no_show_reported_at && Date.now() >= dep + 60 * 60 * 1000) {
+          const nsBtn = el('button', 'outline', 'Report no-show');
+          nsBtn.type = 'button';
+          nsBtn.style.marginTop = '8px';
+          nsBtn.addEventListener('click', async () => {
+            if (nsBtn.dataset.armed !== '1') {
+              nsBtn.dataset.armed = '1';
+              nsBtn.textContent = 'Tap again to confirm \u2014 ' + paxFirst(b) + ' never showed';
+              return;
+            }
+            nsBtn.disabled = true; nsBtn.textContent = 'Reporting\u2026';
+            msg.classList.add('hidden');
+            try {
+              const { data, error } = await supabase
+                .from('bookings')
+                .update({ no_show_reported_at: new Date().toISOString() })
+                .eq('id', b.id)
+                .eq('status', 'Confirmed')
+                .is('pickup_code_entered_at', null)
+                .is('no_show_reported_at', null)
+                .select('id');
+              if (error) throw error;
+              if (!data || data.length === 0) throw new Error('This booking can no longer be reported as a no-show.');
+              firePush(b.passenger_id, 'Seat Sherpa',
+                'Your driver reported you as a no-show. If this is wrong, open the booking to dispute within 48 hours.',
+                { type: 'no_show_reported', bookingId: b.id });
+              fireSystemChat(b.id,
+                '\u26a0\ufe0f The driver reported this booking as a no-show. If that\u2019s not right, open the booking and tap "Dispute" within 48 hours.');
+              await refreshRide(ride.id);
+            } catch (e) {
+              nsBtn.disabled = false; nsBtn.dataset.armed = ''; nsBtn.textContent = 'Report no-show';
+              msg.textContent = (e && e.message) || 'Could not report just now.';
+              msg.classList.remove('hidden');
+            }
+          });
+          box.appendChild(nsBtn);
+        } else if (b.no_show_reported_at) {
+          box.appendChild(el('div', 'rowhint',
+            'No-show reported. ' + paxFirst(b) + ' has 48 hours to dispute; if they don\u2019t, your payment for the seat is released automatically.'));
+        }
+      }
+
+      // Rate your rider (2026-08-28, app parity \u2014 trips.tsx ratingQueue):
+      // completed + PIN-entered bookings only, one rating per rater (the
+      // ratings constraints enforce both server-side, migration 0093).
+      if (st === 'Completed' && b.pickup_code_entered_at && !b._myRating) {
+        const rateWrap = el('div');
+        rateWrap.style.marginTop = '8px';
+        const rateLbl = el('div', 'rowhint', 'How was ' + paxFirst(b) + ' as a rider?');
+        rateWrap.appendChild(rateLbl);
+        const starRow = el('div');
+        starRow.style.cssText = 'display:flex;gap:6px;margin:6px 0;';
+        let picked = 0;
+        const starBtns = [];
+        for (let i = 1; i <= 5; i++) {
+          const sb = el('button', null, '\u2606');
+          sb.type = 'button';
+          sb.style.cssText = 'background:none;border:0;font-size:26px;color:#a3a3ae;cursor:pointer;padding:2px;';
+          sb.addEventListener('click', () => {
+            picked = i;
+            starBtns.forEach((x, j) => {
+              x.textContent = j < i ? '\u2605' : '\u2606';
+              x.style.color = j < i ? '#FFD75A' : '#a3a3ae';
+            });
+            sendRate.classList.remove('hidden');
+          });
+          starBtns.push(sb);
+          starRow.appendChild(sb);
+        }
+        rateWrap.appendChild(starRow);
+        const sendRate = el('button', 'outline hidden', 'Submit rating');
+        sendRate.type = 'button';
+        sendRate.addEventListener('click', async () => {
+          if (!picked) return;
+          sendRate.disabled = true; sendRate.textContent = 'Submitting\u2026';
+          msg.classList.add('hidden');
+          try {
+            const { error } = await supabase.from('ratings').insert({
+              booking_id: b.id, rater_id: me, ratee_id: b.passenger_id,
+              rater_role: 'driver', stars: picked, comment: null,
+            });
+            if (error && !/one_per_rater/.test(error.message || '')) throw error;
+            b._myRating = picked;
+            await refreshRide(ride.id);
+          } catch (e) {
+            sendRate.disabled = false; sendRate.textContent = 'Submit rating';
+            msg.textContent = /can_rate/.test(String(e && e.message))
+              ? 'The rating window has closed for this booking.'
+              : ((e && e.message) || 'Could not submit just now.');
+            msg.classList.remove('hidden');
+          }
+        });
+        rateWrap.appendChild(sendRate);
+        box.appendChild(rateWrap);
+      } else if (st === 'Completed' && b._myRating) {
+        box.appendChild(el('div', 'rowhint', 'You rated ' + paxFirst(b) + ' ' + b._myRating + '\u2605 \u2014 thanks!'));
+      }
+
+      box.appendChild(msg);
+      return box;
+    }
+
+    function checkinCard(entry) {
+      const ride = entry.ride;
+      const confirmed = entry.bookings.filter((b) => effectiveStatus(b, ride) === 'Confirmed');
+      if (confirmed.length === 0) return null;
+      const dep = departureMs(ride);
+      const horizon = dep + 12 * 60 * 60 * 1000;
+      if (Date.now() > horizon) return null;
+
+      const card = el('div', 'card checkin');
+      card.appendChild(el('div', 'eyebrow', 'Start trip \u00b7 Check riders in'));
+
+      const windowOpen = Date.now() >= dep - PICKUP_CODE_OPENS_BEFORE_MS;
+      const waiting = confirmed.filter((b) => !b.pickup_code_entered_at);
+      const boarded = confirmed.filter((b) => !!b.pickup_code_entered_at);
+
+      for (const b of boarded) {
+        const row = el('div', 'checkedrow');
+        row.appendChild(el('span', null, paxDisplay(b)));
+        row.appendChild(el('span', 'ok', '\u2713 Checked in'));
+        card.appendChild(row);
+      }
+
+      if (waiting.length === 0) {
+        card.appendChild(el('p', 'sub', 'Everyone is checked in. Safe drive!'));
+        return card;
+      }
+
+      if (!windowOpen) {
+        // Mirrors the app: the affordance stays hidden until 2h before -
+        // entering a code starts the trip and releases the payout.
+        card.appendChild(el('p', 'sub',
+          'Check-in opens 2 hours before departure (' + dateLabel(ride.dep_date) + ' \u00b7 '
+          + timeLabel(ride.dep_time) + '). Each rider has a 4-digit code in their booking \u2014 '
+          + "you'll type it here when they're in the car."));
+        return card;
+      }
+
+      card.appendChild(el('p', 'sub',
+        'Ask each rider for the 4-digit code in their booking and type it here once '
+        + "they're in the car. That's what marks the trip started \u2014 and it's how you get paid."));
+
+      const wrap = el('div', 'pinwrap');
+      const input = document.createElement('input');
+      input.id = 'pinInput';
+      input.type = 'text';
+      input.inputMode = 'numeric';
+      input.maxLength = 4;
+      input.placeholder = '\u2022\u2022\u2022\u2022';
+      input.autocomplete = 'off';
+      const goBtn = el('button', 'primary', 'Check in');
+      goBtn.type = 'button';
+      wrap.appendChild(input);
+      wrap.appendChild(goBtn);
+      card.appendChild(wrap);
+
+      const msg = el('div', 'rowmsg hidden');
+      card.appendChild(msg);
+      card.appendChild(el('div', 'rowhint',
+        waiting.length + ' rider' + (waiting.length === 1 ? '' : 's') + ' still to check in: '
+        + waiting.map((b) => paxDisplay(b)).join(', ')));
+
+      // Freeze background refresh while a PIN is being typed — renderRide()
+      // rebuilds the card, which would wipe a half-typed code. But the old
+      // rule (stay frozen while ANY digits remain) meant an abandoned
+      // half-PIN froze refresh until navigation (audit L3). Compromise: a
+      // blurred, non-empty input keeps its freeze for 3 minutes, then the
+      // page assumes abandonment and resumes refreshing.
+      let pinFreezeTimer = null;
+      input.addEventListener('focus', () => {
+        actionBusy = true;
+        if (pinFreezeTimer) { clearTimeout(pinFreezeTimer); pinFreezeTimer = null; }
+      });
+      input.addEventListener('blur', () => {
+        if (!input.value.trim()) { actionBusy = false; return; }
+        if (pinFreezeTimer) clearTimeout(pinFreezeTimer);
+        pinFreezeTimer = setTimeout(() => { actionBusy = false; }, 180000);
+      });
+      input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); goBtn.click(); } });
+
+      goBtn.addEventListener('click', async () => {
+        msg.classList.add('hidden');
+        const code = input.value.replace(/\D/g, '');
+        if (code.length !== 4) {
+          msg.textContent = 'Code must be 4 digits.';
+          msg.className = 'rowmsg err';
+          return;
+        }
+        actionBusy = true;
+        goBtn.disabled = true; input.disabled = true;
+        goBtn.textContent = 'Checking\u2026';
+        const out = await doCheckin(ride, code);
+        goBtn.disabled = false; input.disabled = false;
+        goBtn.textContent = 'Check in';
+        if (!out.ok) {
+          // RPC failure strings are already written for drivers - verbatim.
+          msg.textContent = out.error || 'That code did not match. Try again.';
+          msg.className = 'rowmsg err';
+          input.select();
+          return;
+        }
+        input.value = '';
+        actionBusy = false;
+        if (out.alreadyEntered) {
+          msg.textContent = (out.passengerName ? abbreviateName(out.passengerName) : 'That rider')
+            + ' was already checked in.';
+        } else if (out.remaining === 0) {
+          msg.textContent = (out.passengerName ? abbreviateName(out.passengerName) : 'Rider')
+            + ' checked in \u2014 everyone is on board. Safe drive!';
+        } else {
+          msg.textContent = (out.passengerName ? abbreviateName(out.passengerName) : 'Rider')
+            + ' checked in.'
+            + (typeof out.remaining === 'number'
+              ? ' ' + out.remaining + ' more to go.' : '');
+        }
+        msg.className = 'rowmsg ok';
+        await refreshRide(ride.id);
+      });
+
+      return card;
+    }
+
+    async function renderRide(entry) {
+      clearTimers();
+      actionBusy = false;
+      const body = $('rideBody');
+      clear(body);
+      const ride = entry.ride;
+
+      body.appendChild(backRow('All rides', () => go('/driving')));
+
+      // Summary card
+      const card = el('div', 'card');
+      card.appendChild(el('div', 'eyebrow', 'Your ride'));
+      card.appendChild(el('div', 'route', routeLabel(ride)));
+      // The list shows cities; the opened ride is where you actually drive
+      // from and to, so it shows the exact addresses (Justin, 2026-08-28).
+      const fullAddr = fullRouteLabel(ride);
+      if (fullAddr && fullAddr !== routeLabel(ride)) {
+        card.appendChild(el('div', 'addr', fullAddr));
+      }
+      card.appendChild(el('div', 'meta', whenLabel(ride)));
+      card.appendChild(el('div', 'meta',
+        entry.bookedSeats + ' of ' + entry.totalSeats + ' seat' + (entry.totalSeats === 1 ? '' : 's') + ' booked'
+        + (ride.instant ? ' \u00b7 Instant book' : ' \u00b7 Review each request')));
+      body.appendChild(card);
+
+      if (ride.cancelled_at) {
+        // Raw status on purpose: a Confirmed booking surviving on a cancelled
+        // ride means a refund call failed — saying "refunded in full" there
+        // would be false (Fable audit #2).
+        const unRefunded = entry.bookings.filter((b) => b.status === 'Confirmed').length;
+        body.appendChild(el('div', 'banner warn',
+          unRefunded > 0
+            ? 'This ride is cancelled, but ' + unRefunded + ' booking' + (unRefunded === 1 ? '' : 's') + " couldn't be refunded automatically — email support@seatsherpa.app and we'll finish it."
+            : 'This ride is cancelled. Riders were refunded in full; nothing more to do here.'));
+      }
+
+      const pb = payoutBanner();
+      if (pb) body.appendChild(pb);
+
+      const pending = entry.bookings.filter((b) => effectiveStatus(b, ride) === 'Pending');
+      const confirmed = entry.bookings.filter((b) => {
+        const st = effectiveStatus(b, ride);
+        return st === 'Confirmed' || st === 'Completed';
+      });
+      const cancelled = entry.bookings.filter((b) => effectiveStatus(b, ride) === 'Cancelled');
+
+      // Requests first - the most important thing on the page.
+      if (pending.length > 0 && !ride.cancelled_at) {
+        body.appendChild(el('h2', null, 'Requests waiting'));
+        pending.forEach((b) => body.appendChild(requestBox(b, ride)));
+      }
+
+      // Check-in card (Confirmed riders, day-of).
+      if (!ride.cancelled_at) {
+        const ci = checkinCard(entry);
+        if (ci) body.appendChild(ci);
+      }
+
+      if (confirmed.length > 0) {
+        body.appendChild(el('h2', null, 'Your riders'));
+        // Mark bookings I already rated so the star row doesn't re-offer
+        // (fail-soft: an error just re-shows the row; the one-per-rater
+        // constraint catches the duplicate).
+        try {
+          const doneIds = confirmed.filter((b) => effectiveStatus(b, ride) === 'Completed').map((b) => b.id);
+          if (doneIds.length && !confirmed.some((b) => b._ratingsChecked)) {
+            const { data: myRs } = await supabase
+              .from('ratings')
+              .select('booking_id, stars')
+              .eq('rater_id', me)
+              .in('booking_id', doneIds);
+            for (const b of confirmed) {
+              b._ratingsChecked = true;
+              const r = (myRs || []).find((x) => x.booking_id === b.id);
+              if (r) b._myRating = r.stars;
+            }
+          }
+        } catch (_) {}
+        confirmed.forEach((b) =>
+          body.appendChild(confirmedBox(b, ride, effectiveStatus(b, ride), b._unread || 0)));
+      }
+
+      if (pending.length === 0 && confirmed.length === 0 && !ride.cancelled_at) {
+        body.appendChild(el('div', 'banner neutral',
+          'No riders yet. Requests and bookings show up here the moment they land \u2014 you also get an email.'));
+      }
+
+      if (cancelled.length > 0) {
+        body.appendChild(el('h2', null, 'Cancelled'));
+        cancelled.forEach((b) => {
+          const box = el('div', 'bookingbox');
+          const top = el('div', 'bookingtop');
+          top.appendChild(paxRow(b, (b.seat_ids || []).length + ' seat' + ((b.seat_ids || []).length === 1 ? '' : 's')));
+          top.appendChild(pill('Cancelled'));
+          box.appendChild(top);
+          if (b.cancel_reason && String(b.cancel_reason).trim()) {
+            box.appendChild(el('div', 'rowhint', 'Reason: ' + String(b.cancel_reason).trim()));
+          }
+          body.appendChild(box);
+        });
+      }
+
+      // Manage (edit / cancel) \u2014 the full flows, in the browser. The old
+      // banner here said "do it in the Seat Sherpa app": exactly the funnel
+      // the standing rule bans.
+      if (!ride.cancelled_at) { const seatsCard = seatsSection(entry); if (seatsCard) body.appendChild(seatsCard); }
+      if (!ride.cancelled_at) body.appendChild(manageSection(entry));
+
+      // Post again (2026-08-28, app refill parity): same route/seats/price on
+      // a fresh date \u2014 the cheapest supply we have.
+      {
+        const again = document.createElement('a');
+        again.href = '/post?refill=' + encodeURIComponent(ride.id);
+        again.textContent = 'Post this route again \u2192';
+        again.style.cssText = 'display:block;text-align:center;margin:4px 0 10px;font-weight:700;';
+        body.appendChild(again);
+      }
+
+      body.appendChild(signedInFooter());
+      show('stRide');
+      document.title = routeLabel(ride) + ' \u2014 Seat Sherpa';
+
+      // Refresh cadence: fast while something can change under the driver
+      // (pending requests, day-of check-in), slow otherwise. Frozen whenever
+      // an action panel is open (actionBusy) via rideIsLive().
+      const dep = departureMs(ride);
+      const dayOf = dep && Math.abs(Date.now() - dep) < 12 * 60 * 60 * 1000;
+      const cadence = (pending.length > 0 || dayOf) ? 30000 : 60000;
+      every(cadence, () => { void refreshRide(ride.id); });
+    }
+
+    // -- CHAT ---------------------------------------------------------------
+    // trips.html's polling chat, sides swapped: here *I* am the driver and the
+    // other party is the rider. Same honest trade-offs (up to ~6s latency,
+    // pauses while hidden).
+    const MSG_SELECT = 'id, booking_id, sender_id, body, created_at, read_at, is_system';
+    let chatMsgs = new Map();
+    let chatSince = null;
+    let composerFocused = false;
+
+    function uuid() {
+      try { return crypto.randomUUID(); } catch (_) {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+          const r = (Math.random() * 16) | 0;
+          return (c === 'x' ? r : ((r & 0x3) | 0x8)).toString(16);
+        });
+      }
+    }
+
+    function orderedMsgs() {
+      return Array.from(chatMsgs.values()).sort((a, z) => {
+        const d = String(a.created_at).localeCompare(String(z.created_at));
+        return d !== 0 ? d : String(a.id).localeCompare(String(z.id));
+      });
+    }
+
+    function absorb(rows) {
+      let changed = false;
+      for (const r of rows || []) {
+        const prev = chatMsgs.get(r.id);
+        chatMsgs.set(r.id, Object.assign({}, prev || {}, r, { _state: null }));
+        if (!prev) changed = true;
+        if (!chatSince || String(r.created_at) > chatSince) chatSince = String(r.created_at);
+      }
+      return changed;
+    }
+
+    function paintThread() {
+      const box = $('chatThread');
+      if (!box) return;
+      const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 60;
+      clear(box);
+      const rows = orderedMsgs();
+      if (rows.length === 0) {
+        box.appendChild(el('div', 'emptythread',
+          'No messages yet. Say hi \u2014 riders usually reply quickly.'));
+      }
+      for (const m of rows) {
+        const mine = m.sender_id === me;
+        const sys = m.is_system === true;
+        const row = el('div', 'brow ' + (sys ? 'sys' : mine ? 'me' : 'them'));
+        const bub = el('div', 'bubble' + (m._state === 'sending' ? ' sending' : m._state === 'failed' ? ' failed' : ''));
+        bub.textContent = m.body || '';
+        row.appendChild(bub);
+        box.appendChild(row);
+        if (!sys) {
+          const t = el('div', 'btime', m._state === 'sending' ? 'Sending\u2026'
+            : m._state === 'failed' ? 'Not sent \u2014 tap send to retry'
+            : new Date(m.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
+          if (!mine) t.style.textAlign = 'left';
+          box.appendChild(t);
+        }
+      }
+      if (atBottom) box.scrollTop = box.scrollHeight;
+    }
+
+    async function pollMessages(bookingId, initial) {
+      let q = supabase.from('messages').select(MSG_SELECT).eq('booking_id', bookingId).order('created_at', { ascending: true });
+      if (!initial && chatSince) q = q.gte('created_at', chatSince);
+      const { data, error } = await q;
+      if (error) throw error;
+      const changed = absorb(data);
+      if (changed || initial) paintThread();
+      if (changed) void markRead(bookingId);
+      return data || [];
+    }
+
+    async function markRead(bookingId) {
+      try {
+        await supabase.from('messages')
+          .update({ read_at: new Date().toISOString() })
+          .eq('booking_id', bookingId)
+          .neq('sender_id', me)
+          .is('read_at', null);
+      } catch (_) { /* read receipts are cosmetic */ }
+    }
+
+    function threadIsHot() {
+      if (composerFocused) return true;
+      const rows = orderedMsgs();
+      if (rows.length === 0) return false;
+      const last = rows[rows.length - 1];
+      return Date.now() - new Date(last.created_at).getTime() < 5 * 60 * 1000;
+    }
+
+    function renderChat(entry, b) {
+      const ride = entry.ride;
+      const body = $('chatBody');
+      clear(body);
+      chatMsgs = new Map();
+      chatSince = null;
+      composerFocused = false;
+
+      body.appendChild(backRow('Back to ride', () => go('/driving?ride=' + encodeURIComponent(ride.id))));
+
+      const card = el('div', 'card');
+      card.appendChild(el('div', 'eyebrow', routeLabel(ride) + ' \u00b7 ' + dateLabel(ride.dep_date)));
+      card.appendChild(el('h1', null, paxDisplay(b)));
+      card.appendChild(el('p', 'sub',
+        'Messages here reach ' + paxFirst(b) + ' in the Seat Sherpa app (or on their trips page). '
+        + 'This page checks for replies every few seconds while it\u2019s open.'));
+
+      const thread = el('div', 'thread');
+      thread.id = 'chatThread';
+      card.appendChild(thread);
+
+      // CALL (2026-09-03, app parity): the number comes from counterparty_phone()
+      // — Confirmed/Completed only, 24h either side of departure, parties only —
+      // and is fetched only when tapped. The pre-checks just give a friendlier
+      // message than the RPC's empty result.
+      const callRow = el('div', 'callrow');
+      callRow.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 10px;';
+      const callBtn = el('button', 'linkbtn', 'Call ' + String(paxDisplay(b) || 'your rider').split(' ')[0]);
+      callBtn.type = 'button';
+      callBtn.style.cssText = 'border:1px solid #00a8a0;color:#00a8a0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;';
+      const callMsg = el('div', 'msg hidden');
+      callMsg.style.cssText = 'font-size:13px;color:#6b7280;margin:0;';
+      callRow.appendChild(callBtn);
+      callRow.appendChild(callMsg);
+      card.appendChild(callRow);
+      callBtn.addEventListener('click', async () => {
+        callMsg.classList.add('hidden');
+        const say = (t) => { callMsg.textContent = t; callMsg.classList.remove('hidden'); };
+        const st = (b.pickup_code_entered_at ? 'Completed' : b.status);
+        if (st !== 'Confirmed' && st !== 'Completed') { say('Calling opens once the booking is confirmed — message here for now.'); return; }
+        const dep = departureMs(ride);
+        const H = 3600 * 1000;
+        if (Number.isFinite(dep)) {
+          const now = Date.now();
+          if (now < dep - 24 * H) {
+            const h = Math.ceil((dep - 24 * H - now) / H);
+            say('Calling opens 24 hours before pickup (' + (h <= 24 ? 'in ' + h + (h === 1 ? ' hour' : ' hours') : 'in ' + Math.round(h / 24) + ' days') + '). Until then, message here.');
+            return;
+          }
+          if (now > dep + 24 * H) { say('Calling closed 24 hours after the ride. Message here instead.'); return; }
+        }
+        callBtn.disabled = true;
+        try {
+          const { data, error } = await supabase.rpc('counterparty_phone', { p_booking_id: b.id });
+          const row = Array.isArray(data) ? data[0] : data;
+          const cc = String((row && row.phone_country_code) || '').replace(/\D/g, '');
+          const num = String((row && row.phone) || '').replace(/\D/g, '');
+          if (error || !cc || !num) { say("They haven't added a phone number yet — message here instead."); return; }
+          location.href = 'tel:+' + cc + num;
+        } catch (_) {
+          say("Couldn't get the number just now — try again in a moment.");
+        } finally {
+          callBtn.disabled = false;
+        }
+      });
+
+      const composer = el('div', 'composer');
+      const ta = document.createElement('textarea');
+      ta.placeholder = 'Message ' + paxFirst(b) + '\u2026';
+      ta.maxLength = 2000; // same cap as sendMessage()
+      ta.rows = 1;
+      const sendBtn = el('button', 'primary', 'Send');
+      sendBtn.type = 'button';
+      composer.appendChild(ta);
+      composer.appendChild(sendBtn);
+      card.appendChild(composer);
+
+      const cmsg = el('div', 'msg err hidden');
+      card.appendChild(cmsg);
+      body.appendChild(card);
+      body.appendChild(signedInFooter());
+
+      ta.addEventListener('focus', () => { composerFocused = true; });
+      ta.addEventListener('blur', () => { composerFocused = false; });
+      ta.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey && !/Mobi|Android/i.test(navigator.userAgent)) {
+          e.preventDefault(); sendBtn.click();
+        }
+      });
+
+      async function doSend() {
+        cmsg.classList.add('hidden');
+        const failed = orderedMsgs().filter((m) => m._state === 'failed');
+        let text = ta.value.trim();
+        let retryRow = null;
+        if (!text && failed.length) { retryRow = failed[failed.length - 1]; text = retryRow.body; }
+        if (!text) return;
+        if (text.length > 2000) { cmsg.textContent = 'That message is too long (2000 characters max).'; cmsg.classList.remove('hidden'); return; }
+        // Off-platform contact WARNING — never a block (app parity,
+        // lib/off-platform-guard.ts: one matched adult telling another how to
+        // reach them is their call; we just remind them what they give up).
+        // Covers plain numbers AND the letter-interleaved evasion (0216).
+        if (!retryRow && sendBtn.dataset.warned !== text) {
+          let hit = /(^|\D)(\+?1[\s.\-·]?)?\(?\d{3}\)?[\s.\-·]?\d{3}[\s.\-·]?\d{4}(?!\d)/.test(text);
+          if (!hit) {
+            const digs = [];
+            for (let i2 = 0; i2 < text.length; i2++) if (text[i2] >= '0' && text[i2] <= '9') digs.push(i2);
+            for (let i2 = 0; i2 + 9 < digs.length; i2++) {
+              const win = text.slice(digs[i2], digs[i2 + 9] + 1);
+              if (win.length <= 20 && !/^((19|20)\d\d\D{0,3})+$/.test(win)) { hit = true; break; }
+            }
+          }
+          if (hit) {
+            sendBtn.dataset.warned = text;
+            cmsg.textContent = 'Heads up: sharing phone numbers moves things off Seat Sherpa — payments and no-show protection only work in here, and you can call each other from the app once the trip is near. Tap Send again to share it anyway.';
+            cmsg.classList.remove('hidden');
+            return;
+          }
+        }
+        sendBtn.dataset.warned = '';
+        cmsg.classList.add('hidden');
+
+        const id = retryRow ? retryRow.id : uuid();
+        const now = new Date().toISOString();
+        chatMsgs.set(id, { id, booking_id: b.id, sender_id: me, body: text, created_at: retryRow ? retryRow.created_at : now, read_at: null, is_system: false, _state: 'sending' });
+        ta.value = '';
+        sendBtn.disabled = true;
+        paintThread();
+
+        try {
+          const { data, error } = await supabase
+            .from('messages')
+            .insert({ id, booking_id: b.id, sender_id: me, body: text })
+            .select(MSG_SELECT)
+            .single();
+          if (error) throw error;
+          absorb([data]);
+          paintThread();
+          // Push the rider - mirrors sendMessage (services/messages.ts:672):
+          // branded title, "driver <name>" body, never the message content.
+          // myName is name_public ("First L.") and send-push re-abbreviates
+          // idempotently for type:'new_message'. Fire-and-forget.
+          if (b.passenger_id && b.passenger_id !== me) {
+            callFn('send-push', {
+              recipientIds: [b.passenger_id],
+              title: 'Seat Sherpa',
+              body: myName
+                ? 'You have a new message from driver ' + myName
+                : 'You have a new message',
+              data: { type: 'new_message', bookingId: b.id, messageId: id },
+            }).catch(() => {});
+          }
+        } catch (e) {
+          const row = chatMsgs.get(id);
+          if (row) { row._state = 'failed'; chatMsgs.set(id, row); }
+          paintThread();
+          cmsg.textContent = (e && e.message)
+            ? 'Message not sent: ' + e.message
+            : 'Message not sent. Check your connection and tap Send to retry.';
+          cmsg.classList.remove('hidden');
+        } finally {
+          sendBtn.disabled = false;
+        }
+      }
+      sendBtn.addEventListener('click', doSend);
+
+      show('stChat');
+      document.title = 'Chat with ' + paxDisplay(b) + ' \u2014 Seat Sherpa';
+
+      pollMessages(b.id, true)
+        .then(() => markRead(b.id))
+        .catch(() => {
+          cmsg.textContent = "We couldn't load this conversation. Refresh, or email support@seatsherpa.app.";
+          cmsg.classList.remove('hidden');
+        });
+
+      let sinceLastTick = 0;
+      every(2000, () => {
+        if (document.hidden) return;
+        sinceLastTick += 2000;
+        const interval = threadIsHot() ? 6000 : 20000;
+        if (sinceLastTick < interval) return;
+        sinceLastTick = 0;
+        pollMessages(b.id, false).catch(() => {});
+      });
+
+      const catchUp = () => {
+        if (document.hidden) return;
+        sinceLastTick = 0;
+        pollMessages(b.id, false).catch(() => {});
+      };
+      document.addEventListener('visibilitychange', catchUp);
+      window.addEventListener('focus', catchUp);
+      chatListenerCleanup = () => {
+        document.removeEventListener('visibilitychange', catchUp);
+        window.removeEventListener('focus', catchUp);
+      };
+    }
+
+    let chatListenerCleanup = null;
+
+    // -- Render -------------------------------------------------------------
+    async function render() {
+      clearTimers();
+      if (chatListenerCleanup) { chatListenerCleanup(); chatListenerCleanup = null; }
+      actionBusy = false;
+
+      const qp = new URLSearchParams(location.search);
+      let rideParam = qp.get('ride');
+      const chatParam = qp.get('chat');
+      // The booking emails deep-link /driving?bookingId=N (Fable audit #3):
+      // resolve it to the booking's ride so "Review & respond" actually lands
+      // on the request instead of the list. Runs after auth below.
+      const bookingParam = qp.get('bookingId');
+
+      let session = null;
+      try {
+        const { data } = await supabase.auth.getSession();
+        session = data ? data.session : null;
+      } catch (_) { session = null; }
+
+      if (!session) {
+        setMsg('emailMsg', '');
+        show('stEmail');
+        document.title = 'Your rides \u2014 Seat Sherpa';
+        return;
+      }
+
+      show('stLoading');
+      try {
+        // getUser() = fresh /auth/v1/user round trip - a revoked session
+        // surfaces as a sign-in prompt, not an empty list.
+        const { data: ud, error: uerr } = await supabase.auth.getUser();
+        if (uerr || !ud || !ud.user) { show('stEmail'); return; }
+        me = ud.user.id; try { localStorage.setItem('ss_last_role', 'driver'); } catch (_) {} // /signin routes by last role
+        myEmail = ud.user.email || '';
+        $('nfEmail').textContent = myEmail;
+
+        if (!payout.loaded) await loadPayoutState();
+
+        // bookingId → ride resolution (RLS: the driver can read bookings on
+        // their own rides; a bogus/foreign id just falls through to the list).
+        if (!rideParam && bookingParam) {
+          const bid = parseInt(bookingParam, 10);
+          if (Number.isFinite(bid) && bid > 0) {
+            try {
+              const { data: bk } = await supabase
+                .from('bookings').select('ride_id').eq('id', bid).maybeSingle();
+              if (bk && bk.ride_id) rideParam = String(bk.ride_id);
+            } catch (_) { /* fall through to the list */ }
+          }
+        }
+
+        if (!rideParam) {
+          const rides = await loadMyRides();
+          const bookings = await loadBookingsForRides(rides.map((r) => r.id));
+          const unread = await loadUnreadCounts(bookings.map((b) => b.id));
+          const entries = rides.map((r) => buildEntry(r, bookings, unread));
+          renderList(entries);
+          // AUTO-REFRESH (sweep 2026-09-03): the list sat stale until a manual
+          // reload, so a new request only ever arrived by email. Poll a cheap
+          // signature every 60s while the tab is visible and re-render only
+          // when it changed — an open "Past rides" section is not collapsed
+          // for nothing. Bookings (count + pending count) are the signal.
+          const sigOf = (list) => list.map((e) => {
+            const r = e.ride || e;
+            const bs = Array.isArray(e.bookings) ? e.bookings : [];
+            return r.id + ':' + bs.length + ':' + bs.filter((b) => b.status === 'Pending').length;
+          }).join('|');
+          let listSig = sigOf(entries);
+          every(60000, async () => {
+            if (document.hidden || actionBusy) return;
+            try {
+              const rides2 = await loadMyRides();
+              const bookings2 = await loadBookingsForRides(rides2.map((r) => r.id));
+              const unread2 = await loadUnreadCounts(bookings2.map((b) => b.id));
+              const sig = sigOf(rides2.map((r) => buildEntry(r, bookings2, unread2)));
+              if (sig !== listSig) { listSig = sig; render(); }
+            } catch (_) { /* next tick */ }
+          });
+          return;
+        }
+
+        const rideId = parseInt(rideParam, 10);
+        if (!Number.isFinite(rideId) || rideId <= 0) {
+          show('stNotFound');
+          document.title = 'Ride not found \u2014 Seat Sherpa';
+          return;
+        }
+        const entry = await loadRideEntry(rideId);
+        if (!entry) {
+          show('stNotFound');
+          document.title = 'Ride not found \u2014 Seat Sherpa';
+          return;
+        }
+        if (chatParam) {
+          const bId = parseInt(chatParam, 10);
+          const b = entry.bookings.find((x) => x.id === bId);
+          if (b) { renderChat(entry, b); return; }
+          // Unknown booking id on my ride -> fall through to the ride view.
+        }
+        renderRide(entry);
+      } catch (e) {
+        $('errSub').textContent = (e && e.message)
+          ? "We couldn't load that: " + e.message
+          : 'Something went wrong on our end. Check your connection and try again.';
+        show('stError');
+      }
+    }
+
+    // Stripe return (?stripe=return|refresh): web-stripe-onboarding-link's
+    // contract sends the driver back to /post, not here - but if that fn ever
+    // grows a /driving return, or the driver pastes the URL with the param,
+    // reconcile Connect status before first paint (the Rohan lesson).
+    (async () => {
+      const qp = new URLSearchParams(location.search);
+      const stripeReturn = qp.get('stripe');
+      if (stripeReturn === 'return' || stripeReturn === 'refresh') {
+        try {
+          const { data } = await supabase.auth.getSession();
+          if (data && data.session) await callFn('stripe-refresh-account-status', {});
+        } catch (_) {}
+        const clean = new URLSearchParams(location.search);
+        clean.delete('stripe');
+        const rest = clean.toString();
+        history.replaceState(null, '', '/driving' + (rest ? '?' + rest : ''));
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -181,12 +181,21 @@ fbq('track','PageView');
   // app-funnel line leaking through (benchmark fix 8/26).
   if(webMode){document.getElementById('subLine').textContent='Live carpools across California & Nevada. Book your seat right here — no app needed.';}
 
-  function fmt(dateStr,timeStr){
-    var d=new Date(dateStr+'T'+(timeStr||'12:00'));
-    var day=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-    var t=timeStr?d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):'';
-    return day+(t?' · '+t:'');
+  // Pacific wall-clock, shown as posted (time audit 2026-09-03): the old
+  // Date(date+'T'+time) re-read the time in the VIEWER's zone, so a rider in
+  // New York saw a 10:30 PM Pacific ride as 10:30 PM their time.
+  function rideWhen(dateStr, timeStr) {
+    var p = String(dateStr || '').split('-').map(Number);
+    if (!p[0] || !p[1] || !p[2]) return '';
+    var day = new Date(p[0], p[1] - 1, p[2]).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    var t = '';
+    if (timeStr) {
+      var h = parseInt(String(timeStr).slice(0, 2), 10), m = String(timeStr).slice(3, 5);
+      if (!isNaN(h)) t = ((h % 12) || 12) + ':' + m + ' ' + (h >= 12 ? 'PM' : 'AM') + ' PT';
+    }
+    return day + (t ? ' · ' + t : '');
   }
+  function fmt(dateStr,timeStr){ return rideWhen(dateStr, timeStr); }
   // "All-in" = seat + per-metro service fee + per-ride booking fee (99¢ on
   // fee-waived drivers, from public-rides). Omitting the booking fee left the
   // label 99¢ under checkout on waived rides — the SB 478 drip-pricing
@@ -198,6 +207,9 @@ fbq('track','PageView');
   function card(r){
     var f=M[r.fromDest]||{n:r.fromDest,e:''}, t=M[r.toDest]||{n:r.toDest,e:''};
     var fromLabel=r.fromArea||f.n, toLabel=r.toArea||t.n;
+    // Same state on both ends ("Canoga Park, CA → Los Angeles, CA") reads once.
+    var st=/,\s*([A-Z]{2})$/, mf=st.exec(fromLabel||''), mt=st.exec(toLabel||'');
+    if(mf&&mt&&mf[1]===mt[1]){fromLabel=fromLabel.replace(st,'');toLabel=toLabel.replace(st,'');}
     // Just the id. from/to/date/time/price/web were painted-before-fetch
     // hints that ride.html stopped reading long ago, and they turned every
     // copied address into a 180-character wall that wrapped to three lines
@@ -213,16 +225,16 @@ fbq('track','PageView');
       ?(' <span class="star">★</span> '+Number(r.driverRating).toFixed(1)+(r.driverRatingCount?' ('+r.driverRatingCount+')':''))
       :'';
     var dTrips=(typeof r.driverTrips==='number'&&r.driverTrips>0)?(' · '+r.driverTrips+' trip'+(r.driverTrips===1?'':'s')):'';
-    var driver=r.driverFirst?('· '+dAvatar+esc(r.driverFirst)+dRating+dTrips):'';
-    var stops=(r.stops&&r.stops.length)?'<div class="meta" style="color:#00D4C8;">⤷ Also picks up / drops off in '+r.stops.map(esc).join(' · ')+'</div>':'';
+    var driver=r.driverFirst?(dAvatar+esc(r.driverFirst)+dRating+dTrips):'';
+    var stops=(r.stops&&r.stops.length)?'<div class="meta" style="color:#00D4C8;">Also stops in '+r.stops.map(esc).join(' · ')+'</div>':'';
     return '<a class="ride" href="'+link+'">'
-      +'<div class="top"><div class="route">'+f.e+' '+esc(fromLabel)+' → '+t.e+' '+esc(toLabel)+'</div>'
+      +'<div class="top"><div class="route">'+esc(fromLabel)+' → '+esc(toLabel)+'</div>'
       +(r.soldOut
         ?'<div class="price" style="color:#8a8a92;">$'+(allIn(r))+' <small>/seat</small></div></div>'
         :'<div class="price">$'+(allIn(r))+' <small>/seat all-in</small></div></div>')
       +stops
       +'<div class="meta"><span>'+fmt(r.depDate,r.depTime)+'</span>'
-      +(r.instant&&!r.soldOut?'<span class="pill inst">⚡ Instant book</span>':'')
+      +(r.instant&&!r.soldOut?'<span class="pill inst">Instant book</span>':'')
       +(r.soldOut
         ?'<span class="pill seats" style="color:#8a8a92;">Sold out</span>'
         :'<span class="pill seats">'+r.seatsLeft+' seat'+(r.seatsLeft===1?'':'s')+' left</span>')
@@ -281,12 +293,17 @@ fbq('track','PageView');
         if(cf) cf.addEventListener('click',function(e){e.preventDefault();document.getElementById('dateF').value='';document.getElementById('availF').checked=false;addrCoords=null;document.getElementById('addrF').value='';document.getElementById('addrClear').classList.add('hidden');renderRides();});
         return;
       }
+      // Searching a date more than 5 days out (Justin, 2026-09-02): most rides
+      // are posted the week of the trip, so "nothing yet" is usually "not yet".
+      var farOut = (function(){ try { var d = document.getElementById('dateF').value; if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return false; var t = new Date(); t.setHours(0,0,0,0); var target = new Date(d + 'T00:00:00'); return (target - t) / 86400000 > 5; } catch (_) { return false; } })();
+      var checkBack = farOut ? '<b>Check back closer to the date</b> — drivers usually post the week of the trip, and the request board emails you the moment a match goes up.<br><br>' : '';
       list.innerHTML = webMode
         ? '<div class="empty">No rides match that yet.<br><br>'
+          + checkBack
           + '<a href="/requests">Tell drivers you need this ride →</a><br>'
           + 'Drivers who’ve driven the route get notified, and you’ll get an email the moment one posts it.<br><br>'
           + 'Driving this route yourself? <a href="/post">Post the ride</a>.</div>'
-        : '<div class="empty">No rides match that yet.<br><br>Be the first — <a href="/#get">post or request one in the app</a>, or try different cities.</div>';
+        : '<div class="empty">No rides match that yet.<br><br>' + checkBack + 'Be the first — <a href="/#get">post or request one in the app</a>, or try different cities.</div>';
       countEl.textContent='';
       return;
     }

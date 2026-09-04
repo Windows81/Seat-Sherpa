@@ -102,6 +102,18 @@ fbq('track','PageView');
   footer a{color:#999;margin-right:16px}
   .scroll{overflow-x:auto}
   @media(max-width:640px){h1{font-size:27px}}
+  /* Phones: tables become cards (UX sweep wave 1, 2026-09-02). Each cell
+     carries its column label in data-l; the first cell is the row title. */
+  @media(max-width:640px){
+    table.stack{display:block}
+    table.stack thead{display:none}
+    table.stack tbody,table.stack tr{display:block}
+    table.stack tr{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.stack td{display:block;border:0;padding:3px 0}
+    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8a92}
+    table.stack td:first-child{font-size:16px;font-weight:700;padding-bottom:6px}
+    table.stack td:first-child::before{display:none}
+  }
 </style>
 </head>
 <body>
@@ -115,15 +127,15 @@ fbq('track','PageView');
   <p class="lede"><strong>Short answer:</strong> it depends on the corridor. Where Amtrak runs a direct train, such as Los Angeles to San Diego on the Pacific Surfliner or Sacramento to the Bay Area on the Capitol Corridor, the train is a strong option and a carpool mainly wins on price and door-to-door time. Where there is no direct train, which includes San Francisco to Los Angeles and Los Angeles to Las Vegas, a Seat Sherpa carpool seat is both cheaper and hours faster.</p>
 
   <h2>Corridor by corridor</h2>
-  <div class="scroll"><table>
+  <div class="scroll"><table class="stack">
     <thead><tr><th>Route</th><th>Amtrak</th><th>Seat Sherpa seat</th></tr></thead>
     <tbody>
-      <tr><td>San Francisco to Los Angeles</td><td>No direct train. San Joaquins plus Thruway bus, about 9 to 10 h, $50 to $90; or Coast Starlight from Emeryville or San Jose, 11 to 12 h, $60 to $120+</td><td class="win">6 to 7.5 h, $30 to $55 + 5% fee</td></tr>
-      <tr><td>Los Angeles to San Diego</td><td class="win">Pacific Surfliner, direct, 2 h 45 to 3 h, $30 to $45</td><td>2 to 2.5 h, $15 to $30 + 5% fee</td></tr>
-      <tr><td>Sacramento to San Francisco</td><td class="win">Capitol Corridor to Emeryville plus bus, 2 to 2.5 h, $30 to $40</td><td>1.5 to 2 h, $15 to $25 + 5% fee</td></tr>
-      <tr><td>Los Angeles to Santa Barbara</td><td>Pacific Surfliner, 2 h 45, $30 to $40</td><td class="win">1.5 to 2 h, $15 to $25 + 5% fee</td></tr>
-      <tr><td>Fresno to Los Angeles</td><td>San Joaquins to Bakersfield plus Thruway bus, 4.5 to 5 h, $35 to $50</td><td class="win">3.5 to 4 h, $25 to $40 + 5% fee</td></tr>
-      <tr><td>Los Angeles to Las Vegas</td><td>No Amtrak service</td><td class="win">4.5 to 5.5 h, $25 to $55 + 5% fee</td></tr>
+      <tr><td>San Francisco to Los Angeles</td><td data-l="Amtrak">No direct train. San Joaquins plus Thruway bus, about 9 to 10 h, $50 to $90; or Coast Starlight from Emeryville or San Jose, 11 to 12 h, $60 to $120+</td><td class="win" data-l="Seat Sherpa seat">6 to 7.5 h, $30 to $55 + 5% fee</td></tr>
+      <tr><td>Los Angeles to San Diego</td><td class="win" data-l="Amtrak">Pacific Surfliner, direct, 2 h 45 to 3 h, $30 to $45</td><td data-l="Seat Sherpa seat">2 to 2.5 h, $15 to $30 + 5% fee</td></tr>
+      <tr><td>Sacramento to San Francisco</td><td class="win" data-l="Amtrak">Capitol Corridor to Emeryville plus bus, 2 to 2.5 h, $30 to $40</td><td data-l="Seat Sherpa seat">1.5 to 2 h, $15 to $25 + 5% fee</td></tr>
+      <tr><td>Los Angeles to Santa Barbara</td><td data-l="Amtrak">Pacific Surfliner, 2 h 45, $30 to $40</td><td class="win" data-l="Seat Sherpa seat">1.5 to 2 h, $15 to $25 + 5% fee</td></tr>
+      <tr><td>Fresno to Los Angeles</td><td data-l="Amtrak">San Joaquins to Bakersfield plus Thruway bus, 4.5 to 5 h, $35 to $50</td><td class="win" data-l="Seat Sherpa seat">3.5 to 4 h, $25 to $40 + 5% fee</td></tr>
+      <tr><td>Los Angeles to Las Vegas</td><td data-l="Amtrak">No Amtrak service</td><td class="win" data-l="Seat Sherpa seat">4.5 to 5.5 h, $25 to $55 + 5% fee</td></tr>
     </tbody>
   </table></div>
 

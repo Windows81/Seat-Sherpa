@@ -263,8 +263,24 @@ fbq('track','PageView');
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+  <!-- Shared console app bar for signed-in riders (2026-09-03): Trips /
+       Messages / Find a ride are one tap away from checkout. No-op signed out. -->
+  <script src="/js/ss-appbar.js"></script>
+  <script>
+    // Mounted once .wrap exists: mount() measures that column to size the
+    // bar, and this script sits above it (audit 2026-09-04).
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!window.SS_APPBAR) return;
+      var bar = SS_APPBAR.mount({ active: 'rides' });
+      if (bar) {
+        var b = document.querySelector('.wrap > .brand');
+        if (b) b.style.display = 'none';
+      }
+    });
+  </script>
   <div class="wrap">
     <div class="brand">
+      <a href="/rides?web=1" class="navghost" style="margin-right:auto;">← Back to rides</a>
       <a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a>
       <span id="bookNav" style="display:none;align-items:center;"></span>
     </div>
@@ -444,6 +460,17 @@ fbq('track','PageView');
         <div class="sumline hidden" id="sumCreditRow" style="color:#4ade80;"><span>Ride credit</span><span id="sumCredit"></span></div>
         <div class="sumline total"><span>Estimated total</span><span id="sumTotal"></span></div>
         <p class="hint" style="margin:8px 0 14px;">Exact total shown at secure checkout.</p>
+        <p class="hint hidden" id="instantNote" style="margin:-6px 0 14px;">This ride is instant-book in the app. In the browser the driver confirms your request, usually within the hour; your card is only charged when they do.</p>
+        <!-- Typed code at checkout (2026-09-03): applying one refreshes the
+             credit line above. Same applier as sign-in and the account page. -->
+        <details id="codeBox" style="margin:0 0 14px;">
+          <summary style="cursor:pointer;font-size:13px;color:#7dd3fc;">Have an invite or promo code?</summary>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <input id="webCode" placeholder="e.g. TAYLOR5" autocapitalize="characters" autocomplete="off" maxlength="12" style="flex:1;min-width:0;" />
+            <button class="primary" id="webCodeBtn" type="button" style="width:auto;padding:0 18px;">Apply</button>
+          </div>
+          <div class="msg hidden" id="webCodeMsg" style="font-size:13px;margin-top:8px;"></div>
+        </details>
         <!-- Cancellation terms BEFORE money (benchmark 8/26) — copy matches
              trips.html's POLICY_DETAILS so pre- and post-booking never
              disagree. Populated from public-ride's cancellationPolicy. -->
@@ -659,6 +686,22 @@ fbq('track','PageView');
     // permits reading your OWN balance under your own session). Drives the
     // fee trigger + the credit preview in updateSummary, mirroring the app.
     let myCreditCents = 0;
+    // Typed code at checkout (2026-09-03). Lazy import keeps this page's own
+    // client untouched; both clients share the same stored session.
+    (async () => {
+      try {
+        const S = await import('/js/ss-session.js');
+        S.wireCodeEntry({
+          input: 'webCode', button: 'webCodeBtn', msg: 'webCodeMsg',
+          onApplied: async () => {
+            if (!myUid) return;
+            const { data: bal } = await supabase.rpc('credit_balance_cents', { p_user: myUid });
+            myCreditCents = Number(bal) || 0;
+            try { updateSummary(); } catch (_) {}
+          },
+        });
+      } catch (_) { /* code entry is a convenience, never a blocker */ }
+    })();
     async function fetchMyCredit() {
       if (!myUid) return;
       try {
@@ -768,13 +811,9 @@ fbq('track','PageView');
     // ── Ride card render ──────────────────────────────────────────────────
     function renderRideCard(d) {
       $('rideRoute').textContent = '🚗 ' + (d.fromArea || 'A city') + ' → ' + (d.toArea || 'destination');
-      const parts = [];
-      if (d.depDate) {
-        const dt = new Date(d.depDate + 'T' + (d.depTime || '12:00'));
-        parts.push(dt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
-        if (d.depTime) parts.push(dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
-      }
-      $('rideMeta').textContent = parts.join(' · ');
+      // Pacific wall-clock, shown as posted (time audit 2026-09-03): the old
+      // Date(depDate + 'T' + depTime) re-read the time in the VIEWER's zone.
+      $('rideMeta').textContent = rideWhen(d.depDate, d.depTime);
       if (d.driverFirst) {
         $('rideDriver').textContent = 'Driven by ' + d.driverFirst +
           (d.driverRating ? ' · ★ ' + Number(d.driverRating).toFixed(1) + (d.driverRatingCount ? ' (' + d.driverRatingCount + ')' : '') : ' · New driver') +
@@ -1001,6 +1040,11 @@ fbq('track','PageView');
         if (qp.get('waitlist') === '1' && rideId) { void waitlistFlow(); return; }
         $('goneTitle').textContent = 'This ride is full';
         $('goneSub').innerHTML = 'Every seat has been taken — <a href="?id=' + encodeURIComponent(rideId) + '&waitlist=1" style="font-weight:700;">join the waitlist</a> and we’ll email you if one opens.';
+      } else if (kind === 'too_soon') {
+        // Requests close 15 minutes before departure — the driver needs time
+        // to answer. Distinct from an actual departure (sweep 2026-09-03).
+        $('goneTitle').textContent = 'Too close to departure to request';
+        $('goneSub').innerHTML = 'Requests close 15 minutes before a ride leaves so the driver has time to answer. <a href="/rides?web=1" style="font-weight:700;">See other rides on this route</a>.';
       } else if (kind === 'soon') {
         // Reachable only if the ride departs mid-session now that booking runs
         // right up to departure (2026-08-28) — so say what actually happened.
@@ -1255,6 +1299,18 @@ fbq('track','PageView');
       const creditPreview = myCreditCents > 0 && grandTotal > 50 ? Math.min(myCreditCents, grandTotal - 50) : 0;
       return { n, bps, seatCents, feeCents, bookingFeeCents, grandTotal, creditPreview, charge: grandTotal - creditPreview };
     }
+
+function rideWhen(dateStr, timeStr) {
+  var p = String(dateStr || '').split('-').map(Number);
+  if (!p[0] || !p[1] || !p[2]) return '';
+  var day = new Date(p[0], p[1] - 1, p[2]).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  var t = '';
+  if (timeStr) {
+    var h = parseInt(String(timeStr).slice(0, 2), 10), m = String(timeStr).slice(3, 5);
+    if (!isNaN(h)) t = ((h % 12) || 12) + ':' + m + ' ' + (h >= 12 ? 'PM' : 'AM') + ' PT';
+  }
+  return day + (t ? ' · ' + t : '');
+}
 
     function updateSummary() {
       const n = selectedSeats.length;
@@ -1743,7 +1799,7 @@ fbq('track','PageView');
           setMsg('photoMsg', 'Please add a face photo first.');
           return;
         case 'RIDE_GONE': showGone(); return;
-        case 'DEPARTS_TOO_SOON': showGone('soon'); return;
+        case 'DEPARTS_TOO_SOON': showGone('too_soon'); return;
         case 'OWN_RIDE':
           setMsg('bookMsg', "This is your own ride — you can't book your own seat.");
           return;
@@ -1885,6 +1941,28 @@ fbq('track','PageView');
         location.href = '/book?id=' + encodeURIComponent(rideId);
       });
       show('stCancelled');
+      // Name a card decline (2026-09-04): Stripe shows it on its own page,
+      // but a rider who backs out landed on a bare "Checkout cancelled" with
+      // no hint why. Read-only peek at the open session's PaymentIntent.
+      (async () => {
+        try {
+          const { data: sessionData } = await supabase.auth.getSession();
+          const token = sessionData.session?.access_token;
+          if (!token) return;
+          const res = await fetch(SUPA + '/functions/v1/web-create-booking', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + token },
+            body: JSON.stringify({ rideId, peek: true }),
+          });
+          const body = await res.json().catch(() => ({}));
+          if (body && body.declined) {
+            const bank = String(body.declineMessage || 'Your card was declined.').trim().replace(/([^.!?])$/, '$1.');
+            $('stCancelled').querySelector('h1').textContent = 'Your card was declined';
+            $('stCancelled').querySelector('.sub').textContent = bank + ' Nothing was charged and your seat request is still held open — tap Finish booking to try a different card.';
+            $('retryLink').textContent = 'Try a different card';
+          }
+        } catch (_) { /* leave the generic card */ }
+      })();
     }
 
     $('withdrawBtn').addEventListener('click', async () => {
@@ -1913,14 +1991,12 @@ fbq('track','PageView');
         });
         if (!wcRes.ok) {
           const out = await wcRes.json().catch(() => ({}));
+          // No direct row write as a fallback (sweep 2026-09-03): that path
+          // skipped the authorization release and every notification. A
+          // server hiccup just asks the rider to try again; an unpaid request
+          // is cleared by the sweeps anyway.
           if (wcRes.status >= 500 || wcRes.status === 0) {
-            const { data, error } = await supabase.from('bookings')
-              .update({ status: 'Cancelled', cancel_reason: 'Rider closed web checkout without paying' })
-              .eq('id', bookingParam)
-              .eq('status', 'Pending')
-              .select('id');
-            if (error) throw error;
-            if (!data || data.length === 0) throw new Error("This request can't be withdrawn here — it may already be accepted. Manage it in the app.");
+            throw new Error("Couldn't withdraw just now — please try again in a moment.");
           } else {
             throw new Error((out && out.error) || "This request can't be withdrawn here — it may already be accepted. Manage it in the app.");
           }
@@ -1954,7 +2030,7 @@ fbq('track','PageView');
       let d = null;
       let fetchFailed = false;
       try { d = await loadRide(); } catch (_) { d = null; fetchFailed = true; }
-      if (d && d.found) { rideData = d; renderRideCard(d); }
+      if (d && d.found) { rideData = d; renderRideCard(d); try { $('instantNote').classList.toggle('hidden', !d.instant); } catch (_) {} }
 
       // Return states short-circuit the funnel BEFORE the ride-found check:
       // a rider coming back from Stripe must always see their booking status,

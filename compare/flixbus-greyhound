@@ -102,6 +102,18 @@ fbq('track','PageView');
   footer a{color:#999;margin-right:16px}
   .scroll{overflow-x:auto}
   @media(max-width:640px){h1{font-size:27px}}
+  /* Phones: tables become cards (UX sweep wave 1, 2026-09-02). Each cell
+     carries its column label in data-l; the first cell is the row title. */
+  @media(max-width:640px){
+    table.stack{display:block}
+    table.stack thead{display:none}
+    table.stack tbody,table.stack tr{display:block}
+    table.stack tr{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.stack td{display:block;border:0;padding:3px 0}
+    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8a92}
+    table.stack td:first-child{font-size:16px;font-weight:700;padding-bottom:6px}
+    table.stack td:first-child::before{display:none}
+  }
 </style>
 </head>
 <body>
@@ -115,19 +127,19 @@ fbq('track','PageView');
   <p class="lede"><strong>Short answer:</strong> the prices are close. A bus ticket from San Francisco to Los Angeles is roughly $25 to $70 depending on how early you book; a Seat Sherpa carpool seat is capped at $55 plus a 5% fee. The differences are time and logistics: the carpool is door to door and typically 1 to 3 hours faster, while the bus runs on a fixed timetable whether or not anyone has posted your route.</p>
 
   <h2>Side by side</h2>
-  <div class="scroll"><table>
+  <div class="scroll"><table class="stack">
     <thead><tr><th></th><th>Seat Sherpa</th><th>FlixBus / Greyhound</th></tr></thead>
     <tbody>
-      <tr><td>SF to LA fare</td><td>$30 to $55 + 5% fee</td><td>$25 to $70</td></tr>
-      <tr><td>LA to Las Vegas fare</td><td>$25 to $55 + 5% fee</td><td>$25 to $60</td></tr>
-      <tr><td>LA to San Diego fare</td><td>$15 to $30 + 5% fee</td><td>$15 to $35</td></tr>
-      <tr><td>SF to LA door to door</td><td class="win">6 to 7.5 h</td><td>8 to 10 h with transfers to and from stations</td></tr>
-      <tr><td>Pickup</td><td class="win">A spot you agree in chat: a BART or Metro station, a campus, a parking lot</td><td>Fixed terminal or curbside stop</td></tr>
-      <tr><td>Departure</td><td>The driver’s time; drivers post the week of the trip, often several per day on busy corridors</td><td class="win">Timetabled, many departures a day</td></tr>
-      <tr><td>Luggage</td><td>By arrangement; look for the large-trunk or ski-rack badge on the ride</td><td class="win">One checked bag plus a carry-on included</td></tr>
-      <tr><td>Who you travel with</td><td>One verified driver and up to a few passengers, with reviews</td><td>A full coach</td></tr>
-      <tr><td>Cancellation</td><td>24h+ full seat refund, 2 to 24h 50%, driver cancels 100%</td><td>Varies by fare type; cheapest fares are often non-refundable</td></tr>
-      <tr><td>Overnight</td><td>Rare</td><td class="win">Overnight coaches exist on SF to LA</td></tr>
+      <tr><td>SF to LA fare</td><td data-l="Seat Sherpa">$30 to $55 + 5% fee</td><td data-l="FlixBus / Greyhound">$25 to $70</td></tr>
+      <tr><td>LA to Las Vegas fare</td><td data-l="Seat Sherpa">$25 to $55 + 5% fee</td><td data-l="FlixBus / Greyhound">$25 to $60</td></tr>
+      <tr><td>LA to San Diego fare</td><td data-l="Seat Sherpa">$15 to $30 + 5% fee</td><td data-l="FlixBus / Greyhound">$15 to $35</td></tr>
+      <tr><td>SF to LA door to door</td><td class="win" data-l="Seat Sherpa">6 to 7.5 h</td><td data-l="FlixBus / Greyhound">8 to 10 h with transfers to and from stations</td></tr>
+      <tr><td>Pickup</td><td class="win" data-l="Seat Sherpa">A spot you agree in chat: a BART or Metro station, a campus, a parking lot</td><td data-l="FlixBus / Greyhound">Fixed terminal or curbside stop</td></tr>
+      <tr><td>Departure</td><td data-l="Seat Sherpa">The driver’s time; drivers post the week of the trip, often several per day on busy corridors</td><td class="win" data-l="FlixBus / Greyhound">Timetabled, many departures a day</td></tr>
+      <tr><td>Luggage</td><td data-l="Seat Sherpa">By arrangement; look for the large-trunk or ski-rack badge on the ride</td><td class="win" data-l="FlixBus / Greyhound">One checked bag plus a carry-on included</td></tr>
+      <tr><td>Who you travel with</td><td data-l="Seat Sherpa">One verified driver and up to a few passengers, with reviews</td><td data-l="FlixBus / Greyhound">A full coach</td></tr>
+      <tr><td>Cancellation</td><td data-l="Seat Sherpa">24h+ full seat refund, 2 to 24h 50%, driver cancels 100%</td><td data-l="FlixBus / Greyhound">Varies by fare type; cheapest fares are often non-refundable</td></tr>
+      <tr><td>Overnight</td><td data-l="Seat Sherpa">Rare</td><td class="win" data-l="FlixBus / Greyhound">Overnight coaches exist on SF to LA</td></tr>
     </tbody>
   </table></div>
 

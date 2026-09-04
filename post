@@ -84,6 +84,9 @@ fbq('track','PageView');
     .wrap { width: 100%; max-width: 440px; }
     /* Desktop: the 440px mobile column reads cramped on a laptop. */
     @media (min-width: 720px) { .wrap { max-width: 560px; } }
+    /* Large desktop (Justin, 2026-09-04: "less than 50% of the screen"): scale
+       the whole column up a notch rather than restyle every size. */
+    @media (min-width: 1100px) { .wrap { max-width: 600px; zoom: 1.15; } }
 
     .brand {
       display: flex; align-items: center; justify-content: center;
@@ -242,6 +245,29 @@ fbq('track','PageView');
       font-family: inherit; line-height: 1;
     }
     .stepper button:disabled { opacity: 0.3; cursor: default; }
+    /* Seat map step (Justin, 2026-09-04): the /driving car — portrait, centered —
+       right before booking style / price. Tap toggles a seat. */
+    .seatmapcar { width: 250px; margin: 6px auto 10px; }
+    .carwrap { position: relative; width: 100%; margin: 6px auto 12px; }
+    .carwheel { position: absolute; width: 14px; height: 62px; border-radius: 7px; background: #26262e; z-index: 0; }
+    .carwheel.wfl { left: -7px; top: 58px; } .carwheel.wfr { right: -7px; top: 58px; }
+    .carwheel.wrl { left: -7px; bottom: 48px; } .carwheel.wrr { right: -7px; bottom: 48px; }
+    .carmirror { position: absolute; width: 18px; height: 9px; border-radius: 4px 4px 2px 2px; background: #2f2f38; z-index: 2; top: 36px; }
+    .carmirror.mml { left: -14px; transform: rotate(-14deg); } .carmirror.mmr { right: -14px; transform: rotate(14deg); }
+    .carshell { position: relative; z-index: 1; border: 2px solid #2a2a33; border-radius: 46px 46px 30px 30px; background: #101014; padding: 38px 14px 32px; display: flex; flex-direction: column; gap: 18px; align-items: center; min-height: 400px; justify-content: space-evenly; }
+    .carrow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+    .carrow.three { grid-template-columns: 1fr 1fr 1fr; }
+    .windshield { width: 86%; height: 6px; border-radius: 999px; background: rgba(0,212,200,.14); }
+    .rowdiv { width: 60%; height: 1px; background: #2C2C38; }
+    .seattile { min-width: 0; font: inherit; color: #E8E8EC; text-align: center; background: #18181C; border: 1px solid #2C2C38; border-radius: 12px; padding: 12px 6px; min-height: 86px; cursor: pointer; transition: transform .12s, opacity .12s; }
+    .seattile:active { transform: scale(.97); }
+    .seattile .sl { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: #8888A8; }
+    .seattile .ss { font-size: 12px; margin-top: 4px; color: #C0C0D0; }
+    .seattile.open { border-color: rgba(0,212,200,.45); background: rgba(0,212,200,.08); }
+    .seattile.open .ss { color: #00D4C8; }
+    .seattile.closed { opacity: .55; border-style: dashed; }
+    .seattile.driver { opacity: .75; cursor: default; }
+    .drvbadge { width: 28px; height: 28px; border-radius: 50%; background: #2C2C38; color: #fff; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px; }
     .stepper .val { font-size: 52px; font-weight: 800; letter-spacing: -1px; min-width: 110px; text-align: center; }
     .pill {
       display: block; text-align: center; background: rgba(74,222,128,0.12); color: #4ade80;
@@ -323,14 +349,50 @@ fbq('track','PageView');
     .signedin button { font-size: 12px; }
     .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #666; line-height: 1.6; }
     .legal a { color: #888; }
-  </style>
+      .profsec{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 16px 14px;margin:14px 0}
+    .photo-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .google-offer{display:flex;gap:14px;align-items:center;padding:12px;border:1px solid rgba(0,212,200,0.45);border-radius:12px;background:rgba(0,212,200,0.06);margin-bottom:10px}
+    .google-offer img{width:64px;height:64px;border-radius:50%;object-fit:cover}
+    .google-offer-title{font-weight:700;margin-bottom:2px}
+    .google-offer-sub{font-size:13px;color:#9aa3ad;margin-bottom:8px}
+    .primary.small{padding:8px 14px;font-size:14px;width:auto}
+    .msg.ok{color:#00D4C8}
+    .profsec.done{border-color:rgba(0,212,200,.45)}
+    .profhead{display:flex;align-items:center;gap:10px;font-size:17px;margin-bottom:4px}
+    .profst{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.25);font-size:13px;color:#9aa}
+    .profsec.done .profst{background:#00D4C8;color:#04201e;border-color:#00D4C8}
+</style>
   <!-- Vercel Web Analytics — same as the other funnel pages. -->
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+  <!-- Shared console app bar (ss-appbar.js): a signed-in driver always has
+       Trips / Driving / Messages one tap away, even mid-wizard. mount() is a
+       no-op when signed out, so first-time visitors keep the plain logo. -->
+  <script src="/js/ss-appbar.js"></script>
+  <script>
+    (function () {
+      if (!window.SS_APPBAR) return;
+      var bar = SS_APPBAR.mount({ active: 'post' });
+      if (bar) document.addEventListener('DOMContentLoaded', function () {
+        var b = document.querySelector('.wrap > .brand');
+        if (b) b.style.display = 'none';
+      });
+    })();
+  </script>
   <div class="wrap">
     <div class="brand">
       <svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>
+    </div>
+
+    <!-- Escape hatches (2026-09-03): a wizard with no way out strands people.
+         "Start over" wipes the saved draft and reloads; "Back to dashboard"
+         is for signed-in drivers (the app bar covers it too), home otherwise. -->
+    <!-- Two pills, opposite ends, different weights (Justin, 2026-09-04: the
+         dot-separated pair read as one link). -->
+    <div id="postEscape" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin:-8px 0 14px;font-size:13px;">
+      <a href="/driving" id="postBackDash" style="color:#00D4C8;font-weight:700;text-decoration:none;border:1px solid rgba(0,212,200,.35);border-radius:999px;padding:6px 12px;">← Back to dashboard</a>
+      <a href="#" id="postStartOver" style="color:#E8E8EC;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 12px;">↺ Start over</a>
     </div>
 
     <!-- ── FLOW SCREENS ─────────────────────────────────────────────────── -->
@@ -429,6 +491,10 @@ fbq('track','PageView');
       <div class="eyebrow">Post a ride</div>
       <h1>What time do you leave?</h1>
       <p class="sub" id="timeSub">Departure time for your ride.</p>
+      <!-- Soft lead-time nudge (Justin, 2026-09-03: "no soft prompt that
+           posting a few days in advance will get me more riders"). Shown when
+           the earliest date is today or tomorrow; never blocks. -->
+      <div class="msg hidden" id="leadHint" style="color:#F5F5F7;border:1px solid rgba(0,212,200,0.45);background:rgba(0,212,200,0.10);border-radius:10px;padding:10px 12px;margin:0 0 14px;font-size:14px;line-height:1.5;"></div>
       <label for="timeHour">Departure time</label>
       <!-- Dropdowns, not free entry (Justin, 2026-09-01): minutes locked to
            00/15/30/45 like the app; browsers don't enforce step on typed
@@ -462,14 +528,25 @@ fbq('track','PageView');
       <button class="choice sel" id="comfortRow" type="button">
         <span class="tick" id="comfortTick">✓</span>
         <span><span class="t">Max 2 in the back</span>
-        <span class="d">Think comfort — keep the middle seat empty. Opening it splits the trip's cost-sharing cap across 4 seats instead of 3, so the max price per seat drops.</span></span>
+        <span class="d">Think comfort — no one in a middle seat. A sedan offers 3 this way, a 3-row car up to 5. Turn it off to fill every seat (up to 6); the trip's cost-sharing cap is split across more seats, so the max price per seat drops.</span></span>
       </button>
       <button class="primary" id="seatsBtn">Continue</button>
     </div>
 
+    <!-- Seat map (2026-09-04): confirm exactly which seats are for sale -->
+    <div class="card hidden" id="stSeatMap">
+      <div class="backrow"><button class="linkbtn" data-back="stSeats">← Back</button></div>
+      <div class="eyebrow">Post a ride</div>
+      <h1>Which seats?</h1>
+      <p class="sub">Tap a seat to close or open it. Closed seats stay in the car but aren't for sale.</p>
+      <div class="seatmapcar" id="seatMapCar"></div>
+      <p class="hint" id="seatMapSum" style="text-align:center;margin-top:0"></p>
+      <button class="primary" id="seatMapBtn">Confirm seats</button>
+    </div>
+
     <!-- Instant book -->
     <div class="card hidden" id="stInstant">
-      <div class="backrow"><button class="linkbtn" data-back="stSeats">← Back</button></div>
+      <div class="backrow"><button class="linkbtn" data-back="stSeatMap">← Back</button></div>
       <div class="eyebrow">Post a ride</div>
       <h1>How do you want to take bookings?</h1>
       <p class="sub">You can change this later in the app.</p>
@@ -672,45 +749,67 @@ fbq('track','PageView');
       <div class="msg err hidden" id="phoneMsg"></div>
     </div>
 
-    <!-- Photo -->
-    <div class="card hidden" id="gPhoto">
+    <!-- Photo + bio + license — ONE screen (Justin, 2026-09-02: "didn't we
+         make it so that it's one screen to add bio, pic, and DL?"). The three
+         forms keep their ids and handlers; each saves on its own and the
+         screen stays put until all three are on file. -->
+    <div class="card hidden" id="gProfile">
       <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
-      <div class="eyebrow">Almost there · Face photo</div>
-      <h1>Add a face photo</h1>
-      <p class="sub">Riders will want to see who you are. No sunglasses, look straight ahead, just you in the frame.</p>
-      <img id="photoPrev" class="avatar-prev hidden" alt="Your photo" />
-      <label class="filebtn" for="photoFile" id="photoFileLabel">📷 Choose a photo</label>
-      <input id="photoFile" type="file" accept="image/*" class="hidden" />
-      <button class="primary hidden" id="photoBtn">Use this photo</button>
-      <div class="msg err hidden" id="photoMsg"></div>
-    </div>
+      <div class="eyebrow">Almost there · Photo, bio &amp; license</div>
+      <h1>Riders need to know who's driving</h1>
+      <p class="sub">Three quick things, all on this page. Your photo and bio are public; the license is private and never shown to riders.</p>
 
-    <!-- License -->
-    <div class="card hidden" id="gLicense">
-      <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
-      <div class="eyebrow">Almost there · Driver's license</div>
-      <h1>Snap your driver's license</h1>
-      <p class="sub">A clear photo of the front of your license. It stays private — never shown to riders — and it's the last step before your ride goes live.</p>
-      <img id="licensePrev" class="doc-prev hidden" alt="Your license" />
-      <label class="filebtn" for="licenseFile" id="licenseFileLabel">🪪 Choose a photo</label>
-      <input id="licenseFile" type="file" accept="image/*" class="hidden" />
-      <button class="primary hidden" id="licenseBtn">Submit license</button>
-      <div class="msg err hidden" id="licenseMsg"></div>
-    </div>
+      <div class="profsec" id="secPhoto">
+        <div class="profhead"><span class="profst" id="stPhotoOk">○</span><strong>Face photo</strong></div>
+        <p class="hint">No sunglasses, look straight ahead, just you in the frame.</p>
+        <img id="photoPrev" class="avatar-prev hidden" alt="Your photo" />
+        <div id="googlePhotoOffer" class="google-offer hidden">
+          <img id="googlePhotoImg" alt="Your Google photo" />
+          <div>
+            <div class="google-offer-title">Use your Google photo?</div>
+            <div class="google-offer-sub">Saves a step — riders just need to recognize you.</div>
+            <button type="button" class="primary small" id="googlePhotoUse">Use this photo</button>
+          </div>
+        </div>
+        <div class="photo-btns">
+          <label class="filebtn" for="photoSelfie" id="photoSelfieLabel">🤳 Take a selfie</label>
+          <input id="photoSelfie" type="file" accept="image/*" capture="user" class="hidden" />
+          <label class="filebtn" for="photoFile" id="photoFileLabel">📷 Choose a photo</label>
+          <input id="photoFile" type="file" accept="image/*" class="hidden" />
+        </div>
+        <button class="primary hidden" id="photoBtn">Use this photo</button>
+        <div class="msg err hidden" id="photoMsg"></div>
+      </div>
 
-    <!-- Bio -->
-    <div class="card hidden" id="gBio">
-      <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
-      <div class="eyebrow">Almost there · About you</div>
-      <h1>A few words about you</h1>
-      <p class="sub">Riders decide largely on the bio — where you're headed and why, what the ride's like.</p>
-      <label for="bioInput">Your intro</label>
-      <textarea id="bioInput" maxlength="500" placeholder="e.g. Engineer in San Jose, drive to LA most weekends to see family. Easy-going, music on low."></textarea>
-      <p class="hint"><span id="bioCount">0</span> / 3 words minimum</p>
-      <button class="primary" id="bioBtn">Save</button>
-      <div class="msg err hidden" id="bioMsg"></div>
-    </div>
+      <div class="profsec" id="secBio">
+        <div class="profhead"><span class="profst" id="stBioOk">○</span><strong>A few words about you</strong></div>
+        <p class="hint">Where you're headed and why, what the ride's like. Riders decide largely on this.</p>
+        <textarea id="bioInput" maxlength="500" placeholder="e.g. Engineer in San Jose, drive to LA most weekends to see family. Easy-going, music on low."></textarea>
+        <p class="hint"><span id="bioCount">0</span> / 3 words minimum</p>
+        <button class="primary" id="bioBtn">Save bio</button>
+        <div class="msg err hidden" id="bioMsg"></div>
+      </div>
 
+      <div class="profsec" id="secLicense">
+        <div class="profhead"><span class="profst" id="stLicenseOk">○</span><strong>Driver's license</strong></div>
+        <p class="hint">A clear photo of the front. Private — riders never see it.</p>
+        <img id="licensePrev" class="doc-prev hidden" alt="Your license" />
+        <label class="filebtn" for="licenseFile" id="licenseFileLabel">🪪 Choose a photo</label>
+        <input id="licenseFile" type="file" accept="image/*" class="hidden" />
+        <button class="primary hidden" id="licenseBtn">Submit license</button>
+        <div class="msg err hidden" id="licenseMsg"></div>
+      </div>
+
+      <div class="profsec hidden" id="secEmail">
+        <div class="profhead"><span class="profst" id="stEmailOk">○</span><strong>Email for confirmations</strong></div>
+        <p class="hint">This account signed in without an email address, so receipts, confirmations and pickup details have nowhere to go. Add one and we'll send a link to confirm it.</p>
+        <input id="acctEmail" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
+        <button class="primary" id="acctEmailBtn">Save email</button>
+        <div class="msg err hidden" id="acctEmailMsg"></div>
+      </div>
+
+      <button class="primary hidden" id="profileDoneBtn" style="margin-top:16px;">Back to your ride →</button>
+    </div>
     <!-- Car -->
     <div class="card hidden" id="gCar">
       <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
@@ -805,11 +904,30 @@ fbq('track','PageView');
     const LS_KEY = 'ss-post-v1';
 
     // ── State helpers ─────────────────────────────────────────────────────
-    const STATES = ['stFrom','stTo','stRoute','stStops','stDates','stTime','stSeats','stInstant','stPrice','stRegular','stReturn',
-      'stEmail','stCode','stName','stPublishing','stReady','gPhone','gPhoto','gLicense','gBio','gCar',
+    const STATES = ['stFrom','stTo','stRoute','stStops','stDates','stTime','stSeats','stSeatMap','stInstant','stPrice','stRegular','stReturn',
+      'stEmail','stCode','stName','stPublishing','stReady','gPhone','gProfile','gCar',
       'stStripeRedirect','stUnavailable'];
     const $ = (id) => document.getElementById(id);
+    let currentScreen = null;
+    const GATE_SCREENS = new Set(['gPhone', 'gProfile', 'gCar']);
+    // Wizard screens keep a trail so the browser's Back button steps back one
+    // screen (parity with book.html's stepTrail). In-page "← Back" links and
+    // popstate-driven shows never push.
+    const WIZARD_SCREENS = new Set(['stFrom','stTo','stRoute','stStops','stDates','stTime','stSeats','stSeatMap','stInstant','stPrice','stRegular','stReturn']);
+    const screenTrail = [];
+    let quietNav = false;
     function show(id) {
+      // Browser Back on a gate screen used to leave /post entirely (Justin,
+      // 2026-09-02). Push a history entry when stepping INTO a gate from the
+      // checklist so Back lands on the checklist instead.
+      if (GATE_SCREENS.has(id) && currentScreen === 'stReady') {
+        try { history.pushState({ ssGate: id }, ''); } catch (_) {}
+      } else if (!quietNav && WIZARD_SCREENS.has(id) && WIZARD_SCREENS.has(currentScreen) && currentScreen !== id) {
+        screenTrail.push(currentScreen);
+        try { history.pushState({ ssStep: id }, ''); } catch (_) {}
+      }
+      if (id === 'gProfile') { try { renderProfileSections(); } catch (_) {} }
+      currentScreen = id;
       STATES.forEach((s) => $(s).classList.toggle('hidden', s !== id));
       window.scrollTo(0, 0);
       // Work-in-progress autosave (audit H2): the email-OTP step actively
@@ -836,14 +954,26 @@ fbq('track','PageView');
       stDates: () => enterDates(),
       stTime: () => enterTime(),
       stSeats: () => { renderSeats(); show('stSeats'); },
+      stSeatMap: () => { renderSeatMap(); show('stSeatMap'); },
       stInstant: () => { renderInstant(); show('stInstant'); },
       stPrice: () => { void enterPrice(); },
       stStops: () => { renderStops(); show('stStops'); },
     };
+    window.addEventListener('popstate', () => {
+      if (GATE_SCREENS.has(currentScreen)) { show('stReady'); void refreshGates(); return; }
+      if (WIZARD_SCREENS.has(currentScreen) && screenTrail.length > 0) {
+        const prev = screenTrail.pop();
+        quietNav = true;
+        try { if (BACK_VIA[prev]) BACK_VIA[prev](); else show(prev); } finally { quietNav = false; }
+      }
+    });
     document.querySelectorAll('[data-back]').forEach((b) => {
       b.addEventListener('click', () => {
         const t = b.getAttribute('data-back');
-        if (BACK_VIA[t]) BACK_VIA[t](); else show(t);
+        // In-page back: consume the trail entry (if it matches) without pushing.
+        if (screenTrail.length > 0 && screenTrail[screenTrail.length - 1] === t) { screenTrail.pop(); try { history.back(); return; } catch (_) {} }
+        quietNav = true;
+        try { if (BACK_VIA[t]) BACK_VIA[t](); else show(t); } finally { quietNav = false; }
       });
     });
 
@@ -992,6 +1122,9 @@ fbq('track','PageView');
         stopSuggestions: null, stops: new Set(),
         dates: [], time: '', perDateTimes: {},
         seatCount: 3, comfort: true, instant: false, priceUsd: null,
+        // Seat map (2026-09-04): 'sedan' | 'van' + the open seat ids; null
+        // until the map step initialises them from count + comfort.
+        seatLayout: null, openSeats: null, seatMapKey: null,
         isReturn: false,
       };
     }
@@ -1005,6 +1138,7 @@ fbq('track','PageView');
     // by the signed-in driver's saved vehicle capacity once known.
     let saveSeats = 4;
     let saveSeatsLoaded = false;
+    let saveSeatsFromVehicle = false; // true only when a saved car set saveSeats
     // 0220 stamp, /post edition. ss-session.js stamps web_seen_at on every
     // page that imports it — but /post runs its OWN client, so a driver who
     // signs up mid-post-flow (the common web-driver path) never got stamped
@@ -1022,11 +1156,15 @@ fbq('track','PageView');
     // BOOT stamp (Justin's "Jake" probe, round 2): the four in-flow sites
     // only run at publish/verify/ready/gates, so a signed-in driver who
     // loads /post and sits at the From screen was never stamped — exactly
-    // the abandoned-signup case the badge exists to classify. Deliberately
-    // does NOT touch myUid: the flow's own auth checks still own that.
+    // the abandoned-signup case the badge exists to classify. Since
+    // 2026-09-03 it also seeds myUid so the saved car loads up front.
     supabase.auth.getSession().then(({ data }) => {
       const u = data && data.session && data.session.user;
-      if (u) stampWebSeen(u.id);
+      // A signed-in driver resuming the wizard never reached a myUid site
+      // until publish, so the saved car's capacity (and the seat cap that
+      // depends on it) was unknown for the whole flow (Justin's browser test,
+      // 2026-09-03: a 4-seat Model Y could step to 6). Load it up front.
+      if (u) { stampWebSeen(u.id); myUid = u.id; void loadSaveSeats(); }
     }).catch(() => {});
     async function loadSaveSeats() {
       stampWebSeen(); // piggyback: fires at every myUid-assignment site
@@ -1039,7 +1177,7 @@ fbq('track','PageView');
           .order('is_default', { ascending: false })
           .limit(1);
         const n2 = data && data[0] && Number(data[0].max_passenger_seats);
-        if (isFinite(n2) && n2 >= 1 && n2 <= 8) { saveSeats = n2; updateSaveLine(); }
+        if (isFinite(n2) && n2 >= 1 && n2 <= 8) { saveSeats = n2; saveSeatsFromVehicle = true; updateSaveLine(); try { renderSeats(); } catch (_) {} }
       } catch (_) { /* the 4-seat default stands */ }
     }
     let suggestCache = null;   // suggest-seat-price response for current leg
@@ -1047,7 +1185,7 @@ fbq('track','PageView');
     function saveLocal() {
       try {
         localStorage.setItem(LS_KEY, JSON.stringify({
-          drafts: publishedDrafts.map((d) => ({ id: d.id, from: d.from, to: d.to, nDates: d.nDates })),
+          drafts: publishedDrafts.map((d) => ({ id: d.id, from: d.from, to: d.to, nDates: d.nDates, dates: d.dates, time: d.time, perDateTimes: d.perDateTimes, isReturn: d.isReturn })),
           ts: Date.now(),
         }));
       } catch (_) {}
@@ -1066,10 +1204,25 @@ fbq('track','PageView');
     // was evicted/reloaded mid-flow (the OTP step SENDS drivers to their mail
     // app, so this is the common case on phones, not the edge case).
     const WIP_KEY = 'ss-post-wip-v1';
+    // Start over = forget the draft, reload the page clean (the flow's own
+    // state lives in closures, so a reload is the honest reset). Back-to-
+    // dashboard goes home for a signed-out visitor.
+    (function () {
+      var so = document.getElementById('postStartOver');
+      if (so) so.addEventListener('click', function (e) {
+        e.preventDefault();
+        // Everything the page remembers, not just the draft: the published-ride
+        // checklist kept coming back after Start over (Justin, 2026-09-04).
+        try { localStorage.removeItem(WIP_KEY); localStorage.removeItem(LS_KEY); localStorage.removeItem('ss-post-prefill-v1'); } catch (_) {}
+        location.replace('/post?new=1');
+      });
+      var bd = document.getElementById('postBackDash');
+      if (bd && !(window.SS_APPBAR && SS_APPBAR.signedIn())) { bd.href = '/'; bd.textContent = 'Back to home'; }
+    })();
     const WIP_TTL_MS = 24 * 60 * 60 * 1000;
     // Screens worth resuming to. Gate/checklist states derive from the server
     // at boot and must not be restored blindly.
-    const WIP_SCREENS = ['stTo', 'stStops', 'stDates', 'stTime', 'stSeats', 'stInstant', 'stPrice', 'stReturn', 'stEmail', 'stCode', 'stName'];
+    const WIP_SCREENS = ['stTo', 'stStops', 'stDates', 'stTime', 'stSeats', 'stSeatMap', 'stInstant', 'stPrice', 'stReturn', 'stEmail', 'stCode', 'stName'];
     const legToJson = (l) => ({ ...l, stops: [...(l.stops || [])] });
     const legFromJson = (l) => ({ ...l, stops: new Set(Array.isArray(l.stops) ? l.stops : []) });
     function saveWip(screen) {
@@ -1097,6 +1250,7 @@ fbq('track','PageView');
         if (v.screen === 'stReturn') { show('stReturn'); return true; }
         if (v.screen === 'stPrice' && cur.time && cur.dates.length) { void enterPrice(); return true; }
         if (v.screen === 'stInstant' && cur.time && cur.dates.length) { renderInstant(); show('stInstant'); return true; }
+        if (v.screen === 'stSeatMap' && cur.time && cur.dates.length) { renderSeatMap(); show('stSeatMap'); return true; }
         if (v.screen === 'stSeats' && cur.time && cur.dates.length) { renderSeats(); show('stSeats'); return true; }
         if (v.screen === 'stTime' && cur.dates.length) { enterTime(); return true; }
         if (v.screen === 'stDates' || cur.dates.length) { enterDates(); return true; }
@@ -1718,7 +1872,13 @@ fbq('track','PageView');
       // within that envelope the bigger rider pool wins; detour only breaks
       // ties. Spread-by-thirds + min-gap below still guarantee coverage
       // along the whole route.
-      const byCost = [...cands].sort((a, b) => (b.pop || 0) - (a.pop || 0) || a.cost - b.cost);
+      // Metros first (Justin, 2026-09-02: SLO and Santa Barbara were missing
+      // from a 101 shortlist while Salinas and Santa Maria made it — raw
+      // population ranked 165k Salinas over 47k SLO, but SLO and SB are
+      // DESTINATIONS with route pages, route alerts and campuses; a waypoint
+      // never outranks one). Within each tier, population, then detour.
+      const rank = (c) => (c.custom ? 0 : 1e6) + (c.pop || 0);
+      const byCost = [...cands].sort((a, b) => rank(b) - rank(a) || a.cost - b.cost);
       // Adaptive spacing (Justin, 2026-08-30: "at least 3 stopovers"): a flat
       // 15mi floor made short corridors max out at 1-2 stops — Santa Cruz→SF
       // is 75mi and its candidates cluster on the Peninsula. Long corridors
@@ -2141,6 +2301,23 @@ fbq('track','PageView');
         ? 'Departure on ' + fmtDateShort(cur.dates[0]) + '.'
         : 'One time for all ' + cur.dates.length + ' dates — or set a different time for specific dates below.';
       setTimeTrio($('timeHour'), $('timeMin'), $('timeAmPm'), cur.time || '');
+      // Lead-time nudge: riders browse days ahead, so a same-day or next-day
+      // post has less time to be found. Soft — the ride still posts, and the
+      // route alerts go out to anyone who searched it.
+      try {
+        const todayPac = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+        const earliest = cur.dates.slice().sort()[0] || '';
+        const dayMs = (s) => { const p = String(s).split('-').map(Number); return Date.UTC(p[0], p[1] - 1, p[2]); };
+        const daysOut = earliest ? Math.round((dayMs(earliest) - dayMs(todayPac)) / 864e5) : 99;
+        const hint = $('leadHint');
+        if (daysOut <= 1) {
+          hint.textContent = (daysOut <= 0 ? 'Posting for today? ' : 'Posting for tomorrow? ')
+            + 'That works — we alert everyone who searched this route. Tip: rides posted 3+ days ahead fill more often.';
+          hint.classList.remove('hidden');
+        } else {
+          hint.classList.add('hidden');
+        }
+      } catch (_) { /* hint only */ }
       $('timeBtn').disabled = !cur.time;
       $('perDateWrap').classList.toggle('hidden', cur.dates.length <= 1);
       $('perDateList').classList.add('hidden');
@@ -2251,21 +2428,48 @@ fbq('track','PageView');
     // to publish — price stepper pinned at $10, everything looking fine — then
     // bounces BAD_PRICE to a screen where the price can't go lower (Fable
     // review #4, 2026-08-24; SJ→Santa Cruz with the default 3 seats).
+    // Vehicle capacity cap (sweep 2026-09-03, posting P0): the app ties the
+    // stepper to the chosen car's passenger seats; here the saved car does
+    // the same. Comfort keeps the middle seat free, so a 4-seat sedan gives
+    // 3. No saved car yet → the layout max; the server re-fits the seats
+    // when the car is added.
+    // Layout max only (Justin, 2026-09-04: "should be a max of 6", "max 2 in
+    // the back can have 5 too"). The saved car no longer CLAMPS the stepper —
+    // a driver may be taking a bigger car than the one on file — it only
+    // prompts a hint below, and the server fits the seat map to whichever
+    // car the ride is published with.
+    function vehicleSeatCap() {
+      return cur.comfort ? 5 : 6;
+    }
+    // Seats the cost-share total carries at the $10 floor. Unknown mileage
+    // (route not measured yet) must not clamp — it used to read as a "0-mile
+    // trip with a $0 total, supports 1 seat" (2026-09-04).
     function seatsSupported() {
-      const total = tripMilesOf(cur) * IRS_RATE;
+      const miles = tripMilesOf(cur);
+      if (!(miles > 0)) return 6;
+      const total = miles * IRS_RATE;
       return Math.max(1, Math.floor(total / FLOOR));
     }
     function renderSeats() {
       const supported = seatsSupported();
-      const hardMax = Math.min(cur.comfort ? 3 : 4, supported);
+      // 4 → 6 (Justin, 2026-09-02): vans and 3-row SUVs. Comfort keeps 5.
+      const layoutMax = vehicleSeatCap();
+      const hardMax = Math.min(layoutMax, supported);
       const note = $('seatFitNote');
+      const savedCap = saveSeatsLoaded && saveSeatsFromVehicle ? saveSeats : null;
       if (cur.seatCount > hardMax) {
         cur.seatCount = hardMax;
         note.textContent = 'This ' + tripMilesOf(cur).toFixed(0) + '-mile trip has a $'
           + (tripMilesOf(cur) * IRS_RATE).toFixed(0) + ' cost-sharing total, which supports '
           + hardMax + (hardMax === 1 ? ' seat' : ' seats') + ' at the $' + FLOOR + ' minimum — we set it for you.';
         note.classList.remove('hidden');
-      } else if (!(supported < (cur.comfort ? 3 : 4) && cur.seatCount === hardMax)) {
+      } else if (savedCap != null && cur.seatCount > savedCap) {
+        // Soft hint, never a clamp: the seat map follows the car the ride is
+        // published with.
+        note.textContent = 'Your saved car seats ' + savedCap + (savedCap === 1 ? ' passenger' : ' passengers')
+          + ' — keep ' + cur.seatCount + ' only if you’re driving a bigger car for this trip; the seat map follows the car you publish with.';
+        note.classList.remove('hidden');
+      } else if (!(supported < layoutMax && cur.seatCount === hardMax)) {
         // Hide unless the driver is STILL pinned at a clamped ceiling — the
         // old `supported >= max` condition let a short-route note linger
         // after the route changed to one with no clamp at all (audit L6).
@@ -2278,13 +2482,91 @@ fbq('track','PageView');
       $('comfortTick').textContent = cur.comfort ? '✓' : '';
     }
     $('seatMinus').addEventListener('click', () => { cur.seatCount = Math.max(1, cur.seatCount - 1); renderSeats(); });
-    $('seatPlus').addEventListener('click', () => { cur.seatCount = Math.min(cur.comfort ? 3 : 4, seatsSupported(), cur.seatCount + 1); renderSeats(); });
+    $('seatPlus').addEventListener('click', () => { cur.seatCount = Math.min(vehicleSeatCap(), seatsSupported(), cur.seatCount + 1); renderSeats(); });
     $('comfortRow').addEventListener('click', () => {
       cur.comfort = !cur.comfort;
-      if (cur.comfort && cur.seatCount > 3) cur.seatCount = 3;
+      if (cur.comfort && cur.seatCount > 5) cur.seatCount = 5;
       renderSeats();
     });
-    $('seatsBtn').addEventListener('click', () => { renderInstant(); show('stInstant'); });
+    $('seatsBtn').addEventListener('click', () => { renderSeatMap(); show('stSeatMap'); });
+
+    // ── Seat map (Justin, 2026-09-04) ─────────────────────────────────────
+    // Sedan = 4 passenger positions (front, rear left/center/right) for 1–4
+    // seats; van = 6 (two in front incl. the driver, two in the middle, three
+    // in the back) for 5–6. Comfort keeps the back middle CLOSED by default in
+    // both, so comfort fits 1–3 in a sedan and 4–5 in a van. The driver can
+    // open or close any seat; the confirmed set is what gets published.
+    const SEAT_LAYOUTS = { sedan: ['fp', 'rl', 'rc', 'rr'], van: ['fp', 'ml', 'mr', 'rl', 'rc', 'rr'] };
+    const SEAT_ROWS = { sedan: [['driver', 'fp'], ['rl', 'rc', 'rr']], van: [['driver', 'fp'], ['ml', 'mr'], ['rl', 'rc', 'rr']] };
+    const SEAT_NAMES = { fp: 'Front', ml: 'Middle left', mr: 'Middle right', rl: 'Rear left', rc: 'Rear center', rr: 'Rear right' };
+    const SEAT_OPEN_ORDER = ['fp', 'ml', 'mr', 'rl', 'rr', 'rc'];
+    function seatLayoutFor(n, comfort) { return n <= (comfort ? 3 : 4) ? 'sedan' : 'van'; }
+    function defaultOpenSeats(n, comfort) {
+      const layout = seatLayoutFor(n, comfort);
+      const ids = SEAT_LAYOUTS[layout];
+      return { layout, open: SEAT_OPEN_ORDER.filter((id) => ids.indexOf(id) !== -1 && !(comfort && id === 'rc')).slice(0, n) };
+    }
+    function ensureSeatMap() {
+      const key = cur.seatCount + '|' + (cur.comfort ? 1 : 0);
+      if (cur.seatMapKey !== key || !cur.seatLayout || !Array.isArray(cur.openSeats) || cur.openSeats.length === 0) {
+        const d = defaultOpenSeats(cur.seatCount, cur.comfort);
+        cur.seatLayout = d.layout; cur.openSeats = d.open; cur.seatMapKey = key;
+      }
+    }
+    function renderSeatMap() {
+      ensureSeatMap();
+      const host = $('seatMapCar');
+      host.innerHTML = '';
+      const open = new Set(cur.openSeats);
+      const mk = (cls, text) => { const d = document.createElement('div'); d.className = cls; if (text != null) d.textContent = text; return d; };
+      const carwrap = mk('carwrap');
+      ['wfl', 'wfr', 'wrl', 'wrr'].forEach((w) => carwrap.appendChild(mk('carwheel ' + w)));
+      ['mml', 'mmr'].forEach((m) => carwrap.appendChild(mk('carmirror ' + m)));
+      const shell = mk('carshell');
+      const rows = SEAT_ROWS[cur.seatLayout];
+      rows.forEach((r, i) => {
+        const row = mk('carrow' + (r.length === 3 ? ' three' : ''));
+        r.forEach((id) => {
+          const t = document.createElement('button');
+          t.type = 'button';
+          if (id === 'driver') {
+            t.className = 'seattile driver';
+            t.disabled = true;
+            t.appendChild(mk('drvbadge', 'You'));
+            t.appendChild(mk('ss', 'Driver'));
+          } else {
+            const isOpen = open.has(id);
+            t.className = 'seattile ' + (isOpen ? 'open' : 'closed');
+            t.appendChild(mk('sl', SEAT_NAMES[id]));
+            t.appendChild(mk('ss', isOpen ? 'Open' : 'Closed'));
+            t.setAttribute('aria-label', SEAT_NAMES[id] + ' seat, ' + (isOpen ? 'open, tap to close' : 'closed, tap to open'));
+            t.addEventListener('click', () => {
+              const next = new Set(cur.openSeats);
+              if (next.has(id)) { if (next.size === 1) return; next.delete(id); } else next.add(id);
+              cur.openSeats = SEAT_LAYOUTS[cur.seatLayout].filter((x) => next.has(x));
+              renderSeatMap();
+            });
+          }
+          row.appendChild(t);
+        });
+        shell.appendChild(row);
+        if (i < rows.length - 1) shell.appendChild(mk(i === 0 ? 'windshield' : 'rowdiv'));
+      });
+      carwrap.appendChild(shell);
+      host.appendChild(carwrap);
+      const n = cur.openSeats.length;
+      const total = SEAT_LAYOUTS[cur.seatLayout].length;
+      $('seatMapSum').textContent = n + ' open · ' + (total - n) + ' closed' + (cur.comfort && !open.has('rc') ? ' · back middle kept free' : '');
+      $('seatMapBtn').textContent = 'Confirm ' + n + ' seat' + (n === 1 ? '' : 's');
+    }
+    $('seatMapBtn').addEventListener('click', () => {
+      ensureSeatMap();
+      // The confirmed open set IS the seat count from here on (price cap,
+      // publish payload); keep the key in step so Back → Continue keeps edits.
+      cur.seatCount = cur.openSeats.length;
+      cur.seatMapKey = cur.seatCount + '|' + (cur.comfort ? 1 : 0);
+      renderInstant(); show('stInstant');
+    });
 
     // ── Instant book ──────────────────────────────────────────────────────
     function renderInstant() {
@@ -2315,16 +2597,20 @@ fbq('track','PageView');
       setMsg('priceMsg', '');
       const fromDest = nearestDestId(cur.start), toDest = nearestDestId(cur.end);
       // The suggestion endpoint is public + aggregate — same one the app uses.
-      if (!suggestCache || suggestCache.key !== fromDest + '|' + toDest + '|' + cur.seatCount) {
+      // Road miles ride along (2026-09-04): the suggestion is distance-banded
+      // now, and the corridor table doesn't know every route.
+      const suggestMiles = Math.round(tripMilesOf(cur) || 0);
+      const suggestKey = fromDest + '|' + toDest + '|' + cur.seatCount + '|' + suggestMiles;
+      if (!suggestCache || suggestCache.key !== suggestKey) {
         $('priceVal').textContent = '$—';
         $('priceBtn').disabled = true;
         let resp = null;
         try {
-          const r = await fetch(SUPA + '/functions/v1/suggest-seat-price?from=' + fromDest + '&to=' + toDest + '&seats=' + cur.seatCount,
+          const r = await fetch(SUPA + '/functions/v1/suggest-seat-price?from=' + fromDest + '&to=' + toDest + '&seats=' + cur.seatCount + (suggestMiles > 0 ? '&miles=' + suggestMiles : ''),
             { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON } });
           if (r.ok) resp = await r.json();
         } catch (_) {}
-        suggestCache = { key: fromDest + '|' + toDest + '|' + cur.seatCount, resp };
+        suggestCache = { key: suggestKey, resp };
       }
       const resp = suggestCache.resp;
       priceCap = maxSeatPrice(cur, cur.seatCount, resp && resp.cap_cents);
@@ -2441,11 +2727,30 @@ fbq('track','PageView');
     // that leg costs the full seat price. Values live on the leg keyed by
     // LOCAL stop id (origin/end/suggestion id) and remap to wire ids
     // (catalog id / cust-<index>) at publish.
+    // A leg's own cost-share cap (Justin, 2026-09-04: SF→Redwood City let
+    // the box run to $55). Same IRS math as the whole trip, on the leg's
+    // road-ish miles, split across the open seats. Never above the seat price.
+    function legCapUsd(b, a) {
+      const legMiles = haversineMiles(b, a) * 1.25;
+      const seats = Math.max(1, cur.seatCount || 1);
+      const cap = legMiles > 0 ? Math.floor((legMiles * IRS_RATE) / seats) : HARD_CAP;
+      return Math.max(FLOOR, Math.min(HARD_CAP, cap, cur.priceUsd || HARD_CAP));
+    }
+    // Leg prefill relative to the FULL seat price (Justin, 2026-09-04: "don't
+    // drop the leg pricing so much"): a leg that is 60%+ of the trip is 10%
+    // off the seat price, 30–60% is 20% off, under 30% is 30% off, and any
+    // hop under 40 road miles is just the $10 floor. SF→LA at $50 with a
+    // Santa Barbara stop prefills $45 to SB. Capped by the leg's own cap.
     function segSuggestUsd(b, a, trip) {
-      const seg = haversineMiles(b, a);
-      if (!(trip > 0) || !(seg > 0)) return cur.priceUsd;
-      const fct = Math.min(0.8, Math.max(0.3, seg / trip));
-      return Math.min(cur.priceUsd, Math.max(10, Math.ceil(cur.priceUsd * fct)));
+      const segMi = haversineMiles(b, a) * 1.25;
+      if (!(trip > 0) || !(segMi > 0) || !(cur.priceUsd > 0)) return cur.priceUsd;
+      const share = segMi / (trip * 1.25);
+      let usd;
+      if (segMi < 40) usd = FLOOR;
+      else if (share >= 0.6) usd = Math.round(cur.priceUsd * 0.9);
+      else if (share >= 0.3) usd = Math.round(cur.priceUsd * 0.8);
+      else usd = Math.round(cur.priceUsd * 0.7);
+      return Math.min(legCapUsd(b, a), Math.max(FLOOR, usd));
     }
     function renderSegPrices() {
       const wrap = $('segWrap'), list = $('segList');
@@ -2516,8 +2821,9 @@ fbq('track','PageView');
       list.innerHTML = '';
       for (const pr of shown) {
         const key = pr.key;
+        const legCap = legCapUsd(pr.a.ll, pr.b.ll);
         if (!cur.segEdited[key]) cur.segPrices[key] = segSuggestUsd(pr.a.ll, pr.b.ll, trip);
-        if (cur.segPrices[key] != null && cur.segPrices[key] > cur.priceUsd) cur.segPrices[key] = cur.priceUsd;
+        if (cur.segPrices[key] != null && cur.segPrices[key] > legCap) cur.segPrices[key] = legCap;
         const row = document.createElement('div');
         row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13.5px;';
         const left = document.createElement('span');
@@ -2529,7 +2835,8 @@ fbq('track','PageView');
         dollar.style.cssText = 'color:#00D4C8;font-weight:700;';
         dollar.textContent = '$';
         const inp = document.createElement('input');
-        inp.type = 'number'; inp.min = '10'; inp.max = String(cur.priceUsd); inp.step = '1'; inp.inputMode = 'numeric';
+        inp.type = 'number'; inp.min = '10'; inp.max = String(legCap); inp.step = '1'; inp.inputMode = 'numeric';
+        inp.title = 'Up to $' + legCap + ' for this leg (cost-sharing cap for its distance)';
         inp.style.cssText = 'width:64px;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);color:#00D4C8;font-weight:700;font-size:14px;text-align:right;';
         inp.value = cur.segPrices[key] != null ? String(cur.segPrices[key]) : '';
         inp.setAttribute('aria-label', 'Seat price ' + pr.a.name + ' to ' + pr.b.name);
@@ -2537,9 +2844,10 @@ fbq('track','PageView');
           cur.segEdited[key] = true;
           const v = Math.round(Number(inp.value));
           if (!inp.value.trim() || !isFinite(v) || v <= 0) { delete cur.segPrices[key]; inp.value = ''; return; }
-          const clamped = Math.min(cur.priceUsd, Math.max(10, v));
+          const clamped = Math.min(legCap, Math.max(10, v));
           cur.segPrices[key] = clamped;
           inp.value = String(clamped);
+          if (v > legCap) { inp.title = 'Capped at $' + legCap + ' — the cost-sharing limit for this leg'; }
         });
         money.appendChild(dollar); money.appendChild(inp);
         const per = document.createElement('span');
@@ -2589,21 +2897,12 @@ fbq('track','PageView');
         // Band width capped at $10 (Justin, 2026-08-28): "Suggested $16–$55"
         // reads as no guidance at all — a tight band anchors. Slide the $10
         // window to bracket the suggested price so the default opens green.
-        const rawLo = Math.round(resp.low_cents / 100);
-        const rawHi = Math.min(Math.round(resp.high_cents / 100), priceCap);
-        const suggUsd = resp.suggested_cents ? Math.round(resp.suggested_cents / 100) : null;
-        // Band width TIERED by trip length (Justin, 2026-09-01): >150mi at
-        // least $10 wide, 75-150mi $5-10, under 75mi $1-5 - short trips
-        // price near the $10 floor, so their band starts at it. Centered on
-        // the suggested price; never below the floor or above the cap.
-        const roadIsh = cur.roadMiles && isFinite(Number(cur.roadMiles)) ? Number(cur.roadMiles) : haversineMiles(cur.start, cur.end) * 1.25;
-        const minW = roadIsh > 150 ? 10 : roadIsh >= 75 ? 5 : 1;
-        const maxW = roadIsh > 150 ? 12 : roadIsh >= 75 ? 10 : 5;
-        const width = Math.min(Math.max(rawHi - rawLo, minW), maxW);
-        let lo = suggUsd != null ? suggUsd - Math.floor(width / 2) : rawLo;
-        lo = Math.max(FLOOR, Math.min(lo, priceCap - width));
-        let hi = Math.min(priceCap, lo + width);
-        if (hi - lo < minW) lo = Math.max(FLOOR, hi - minW);
+        // The server's band is the distance band (Justin, 2026-09-04: <50mi
+        // $10–12, 50–100 $12–20, 100–200 $15–30, 200+ $25–40) — show it as
+        // is, clipped to this trip's cap. (The 9/1 sliding-width logic went
+        // with the old cost-basis suggestion.)
+        const lo = Math.max(FLOOR, Math.min(Math.round(resp.low_cents / 100), priceCap));
+        const hi = Math.max(lo, Math.min(Math.round(resp.high_cents / 100), priceCap));
         const hint = $('priceHint');
         if (cur.priceUsd <= hi) {
           $('priceVal').style.color = '#4ade80';
@@ -2651,6 +2950,7 @@ fbq('track','PageView');
       ret.routeGeom = cur.routeGeom ? [...cur.routeGeom].reverse() : null;
       ret.roadMiles = cur.roadMiles; ret.roadMinutes = cur.roadMinutes;
       ret.seatCount = cur.seatCount; ret.comfort = cur.comfort;
+      ret.seatLayout = cur.seatLayout; ret.openSeats = Array.isArray(cur.openSeats) ? cur.openSeats.slice() : null; ret.seatMapKey = cur.seatMapKey;
       ret.instant = cur.instant; ret.priceUsd = cur.priceUsd;
       cur = ret;
       suggestCache = null;
@@ -2677,7 +2977,7 @@ fbq('track','PageView');
     async function sendEmailOtp(email) {
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: { shouldCreateUser: true, data: { role: 'driver' } },
+        options: { shouldCreateUser: true, data: { role: 'driver', surface: 'web' } },
       });
       if (error) {
         const m = (error.message || '').toLowerCase();
@@ -2849,13 +3149,19 @@ fbq('track','PageView');
         profileName = ((p && p.name) || '').trim();
       } catch (_) {}
       const emailLocal = (user.email || '').split('@')[0].toLowerCase();
-      if (!profileName || profileName.toLowerCase() === emailLocal) { show('stName'); return; }
+      if (!profileName || profileName.toLowerCase() === emailLocal || nameLooksLikeHandle(profileName)) { show('stName'); return; }
       await publishAll();
+    }
+    function nameLooksLikeHandle(n) {
+      const t = String(n || '').trim();
+      if (!t || /\s/.test(t)) return false;
+      return (/\d/.test(t) && /^[a-z0-9._-]+$/i.test(t)) || /^[a-z0-9]{10}$/.test(t);
     }
     $('nameBtn').addEventListener('click', async () => {
       setMsg('nameMsg', '');
       const name = $('nameInput').value.trim();
       if (!name || name.split(/\s+/).length < 1) { setMsg('nameMsg', 'Please enter your name.'); return; }
+      if (name.includes('@') || nameLooksLikeHandle(name)) { setMsg('nameMsg', 'That looks like a username — riders and drivers need your real first and last name.'); return; }
       const btn = $('nameBtn');
       btn.disabled = true; btn.textContent = 'Saving…';
       try {
@@ -2903,6 +3209,10 @@ fbq('track','PageView');
         departures: leg.dates.map((d) => ({ date: d, time: leg.perDateTimes[d] || leg.time })),
         seatCount: leg.seatCount,
         comfort: leg.comfort,
+        // Exact seat map when the driver confirmed one (2026-09-04); the
+        // server falls back to the count-only fill without it.
+        seatLayout: leg.seatLayout || null,
+        openSeatIds: Array.isArray(leg.openSeats) && leg.openSeats.length ? leg.openSeats : null,
         priceCents: leg.priceUsd * 100,
         instant: leg.instant,
         // Driver-set leg prices keyed by wire stop ids (catalog id as-is,
@@ -2976,6 +3286,7 @@ fbq('track','PageView');
             publishedDrafts.push({
               id: body.draftId,
               from: leg.fromAddress, to: leg.toAddress, nDates: leg.dates.length,
+              dates: leg.dates.slice(), time: leg.time, perDateTimes: leg.perDateTimes || {}, isReturn: !!leg.isReturn,
               status: body.status === 'live' ? 'live' : 'pending',
               rideIds: Array.isArray(body.rideIds) ? body.rideIds : [],
               gates: body.gates || null,
@@ -3031,20 +3342,22 @@ fbq('track','PageView');
     }
 
     // ── Ready screen + gates ──────────────────────────────────────────────
+    // Photo + bio + license are ONE step (2026-09-02) and all three block
+    // go-live, matching the app (photo + bio required since 1.0.8) and the
+    // server's gatesClear. Car and deposits stay optional.
     const GATE_DEFS = [
       { key: 'phone', title: 'Confirm your phone', doneTitle: 'Phone confirmed',
-        unlock: 'Unlocks your ride going live — riders need a real number at pickup.', screen: 'gPhone', blocking: true },
-      { key: 'photo', title: 'Add a face photo', doneTitle: 'Face photo added',
-        unlock: 'Riders will want to see who you are.', screen: 'gPhoto', blocking: false },
-      { key: 'license', title: "Snap your driver's license", doneTitle: 'License on file',
-        unlock: 'Unlocks your ride going live. Private — riders never see it.', screen: 'gLicense', blocking: true },
-      { key: 'bio', title: 'Write a short bio', doneTitle: 'Bio written',
-        unlock: 'Riders decide largely on the bio.', screen: 'gBio', blocking: false },
+        unlock: 'Riders need a real number at pickup. Required to go live.', screen: 'gPhone', blocking: true },
+      { key: 'profile', title: 'Photo, bio & driver\u2019s license', doneTitle: 'Photo, bio & license on file',
+        unlock: 'Riders see your photo and bio; the license stays private. Required to go live.', screen: 'gProfile', blocking: true },
       { key: 'car', title: 'Add your car', doneTitle: 'Car added',
         unlock: 'Shows riders what to look for at pickup.', screen: 'gCar', blocking: false },
       { key: 'payouts', title: 'Set up deposits', doneTitle: 'Deposits connected',
         unlock: 'Unlocks accepting bookings and Instant Book — Stripe sends riders’ cost share to your bank.', screen: null, blocking: false },
     ];
+    const gateDone = (key) => key === 'profile'
+      ? !!(gateState.photo && gateState.bio && gateState.license)
+      : !!gateState[key];
     let gateState = { phone: false, photo: false, license: false, bio: false, car: false, payouts: false };
     let reviewHold = false;
 
@@ -3069,13 +3382,35 @@ fbq('track','PageView');
         const card = document.createElement('div');
         card.className = 'ridecard';
         const route = document.createElement('div'); route.className = 'route';
-        route.textContent = '🚗 ' + shortPlace(d.from) + ' → ' + shortPlace(d.to);
+        route.textContent = (d.isReturn ? '↩ Return: ' : '🚗 ') + shortPlace(d.from) + ' → ' + shortPlace(d.to);
         const meta = document.createElement('div'); meta.className = 'meta';
-        meta.textContent = d.nDates === 1 ? '1 date' : d.nDates + ' dates';
+        meta.textContent = draftWhen(d);
         if (d.status === 'live') meta.textContent += ' · LIVE to riders';
         card.appendChild(route); card.appendChild(meta);
         wrap.appendChild(card);
       }
+    }
+    // "1 date" → "Fri, Sep 5 · 7:00 AM"; several → "3 dates · Sep 5, 6, 7 · 7:00 AM"
+    // ("times vary" when per-date times differ). Justin, 2026-09-02.
+    function draftWhen(d) {
+      const dates = Array.isArray(d.dates) ? d.dates : [];
+      if (dates.length === 0) return d.nDates === 1 ? '1 date' : d.nDates + ' dates';
+      const fmtDate = (iso, withWeekday) => {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso); if (!m) return iso;
+        const dt = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+        return dt.toLocaleDateString('en-US', withWeekday ? { weekday: 'short', month: 'short', day: 'numeric' } : { month: 'short', day: 'numeric' });
+      };
+      const fmtTime = (t) => {
+        const m = /^(\d{1,2}):(\d{2})$/.exec(t || ''); if (!m) return '';
+        let h = Number(m[1]); const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+        return h + ':' + m[2] + ' ' + ap;
+      };
+      const times = new Set(dates.map((iso) => (d.perDateTimes && d.perDateTimes[iso]) || d.time || ''));
+      const timeStr = times.size === 1 ? fmtTime([...times][0]) : 'times vary';
+      if (dates.length === 1) return fmtDate(dates[0], true) + (timeStr ? ' · ' + timeStr : '');
+      const sorted = dates.slice().sort();
+      const list = sorted.length <= 4 ? sorted.map((iso) => fmtDate(iso, false)).join(', ') : fmtDate(sorted[0], false) + ' → ' + fmtDate(sorted[sorted.length - 1], false);
+      return sorted.length + ' dates · ' + list + (timeStr ? ' · ' + timeStr : '');
     }
     function shortPlace(addr) {
       const parts = (addr || '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -3159,7 +3494,7 @@ fbq('track','PageView');
       const wrap = $('gateList');
       wrap.innerHTML = '';
       const allLive = publishedDrafts.length > 0 && publishedDrafts.every((d) => d.status === 'live');
-      const blockingLeft = GATE_DEFS.filter((g) => g.blocking && !gateState[g.key]).length;
+      const blockingLeft = GATE_DEFS.filter((g) => g.blocking && !gateDone(g.key)).length;
 
       const line = $('statusLine');
       if (allLive) {
@@ -3176,21 +3511,22 @@ fbq('track','PageView');
         line.textContent = 'All set on your side — your ride is in review and will go live shortly.';
       } else {
         line.className = 'statusline';
-        // Only phone + license actually GATE going live; the other checklist
-        // items are boosters. Say so — "Two steps" above six empty circles
-        // read as a lie (Justin, 2026-08-27).
-        const reqNames = { phone: 'phone', license: 'license' };
-        const reqLeft = GATE_DEFS.filter((g) => g.blocking && !gateState[g.key])
-          .map((g) => reqNames[g.key] || g.title.toLowerCase());
+        // Phone, photo, bio and license gate going live (server gatesClear);
+        // car and deposits are boosters. Name exactly what is still needed.
+        const missing = [];
+        if (!gateState.phone) missing.push('confirm your phone');
+        const prof = [];
+        if (!gateState.photo) prof.push('a photo');
+        if (!gateState.bio) prof.push('a short bio');
+        if (!gateState.license) prof.push('your license');
+        if (prof.length) missing.push('add ' + (prof.length === 1 ? prof[0] : prof.slice(0, -1).join(', ') + ' and ' + prof[prof.length - 1]));
         line.textContent = blockingLeft === 0
           ? 'Finishing up — this usually takes a moment. Refresh if it lingers.'
-          : (blockingLeft === 2
-              ? 'Confirm your ' + reqLeft.join(' and ') + ' and this goes live — the rest are optional, but help fill seats.'
-              : 'One step — ' + reqLeft[0] + ' — and this goes live. The rest are optional, but help fill seats.');
-      }
+          : missing.map((m, i) => i === 0 ? m.charAt(0).toUpperCase() + m.slice(1) : m).join(' and ')
+            + ' — then this goes live. Car and deposits are optional, but help fill seats.';      }
 
       for (const g of GATE_DEFS) {
-        const done = !!gateState[g.key];
+        const done = gateDone(g.key);
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'gate' + (done ? ' done' : '');
@@ -3365,9 +3701,8 @@ fbq('track','PageView');
         return blob;
       } finally { URL.revokeObjectURL(url); }
     }
-    $('photoFile').addEventListener('change', async (e) => {
+    async function handlePhotoCandidate(file, sourceLabel) {
       setMsg('photoMsg', '');
-      const file = e.target.files && e.target.files[0];
       if (!file) return;
       let candidate;
       try { candidate = await downscale(file, 1024, 0.85); }
@@ -3378,7 +3713,9 @@ fbq('track','PageView');
         const { checkFace } = await import('/js/ss-face.js');
         const fr = await checkFace(candidate);
         if (fr.ok && fr.faces === 0) {
-          setMsg('photoMsg', "We couldn't spot a face in that photo. Riders use it to recognize you at pickup — please use a clear photo of yourself.");
+          setMsg('photoMsg', sourceLabel === 'google'
+            ? "We couldn't spot a face in your Google photo — take a selfie or choose a clear photo of yourself instead."
+            : "We couldn't spot a face in that photo. Riders use it to recognize you at pickup — please use a clear photo of yourself.");
           return;
         }
       } catch (_) { /* proceed */ }
@@ -3387,7 +3724,28 @@ fbq('track','PageView');
       prev.src = URL.createObjectURL(photoBlob);
       prev.classList.remove('hidden');
       $('photoFileLabel').textContent = '📷 Choose a different photo';
+      $('googlePhotoOffer').classList.add('hidden');
       $('photoBtn').classList.remove('hidden');
+    }
+    for (const inputId of ['photoFile', 'photoSelfie']) {
+      $(inputId).addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        await handlePhotoCandidate(file, inputId === 'photoSelfie' ? 'selfie' : 'file');
+        try { e.target.value = ''; } catch (_) {}
+      });
+    }
+    let googlePhotoUrl = '';
+    $('googlePhotoUse').addEventListener('click', async () => {
+      if (!googlePhotoUrl) return;
+      const btn = $('googlePhotoUse'); btn.disabled = true; btn.textContent = 'Checking…';
+      try {
+        const res = await fetch(googlePhotoUrl, { mode: 'cors' });
+        if (!res.ok) throw new Error('fetch');
+        await handlePhotoCandidate(await res.blob(), 'google');
+      } catch (_) {
+        setMsg('photoMsg', "Couldn't load your Google photo here — take a selfie or choose a photo instead.");
+      }
+      btn.disabled = false; btn.textContent = 'Use this photo';
     });
     $('photoBtn').addEventListener('click', async () => {
       if (!photoBlob) return;
@@ -3411,8 +3769,10 @@ fbq('track','PageView');
         return;
       }
       btn.disabled = false; btn.textContent = 'Use this photo';
-      show('stReady');
+      // Merged screen: mark this section done, stay put, and only offer the
+      // way back once all three are on file.
       await refreshGates();
+      renderProfileSections();
     });
 
     // ── Gate: license (driver-licenses bucket, PRIVATE; feeds the existing
@@ -3503,8 +3863,10 @@ fbq('track','PageView');
         return;
       }
       btn.disabled = false; btn.textContent = 'Submit license';
-      show('stReady');
+      // Merged screen: mark this section done, stay put, and only offer the
+      // way back once all three are on file.
       await refreshGates();
+      renderProfileSections();
     });
 
     // ── Gate: bio ─────────────────────────────────────────────────────────
@@ -3564,13 +3926,71 @@ fbq('track','PageView');
         if (error) throw error;
       } catch (e) {
         setMsg('bioMsg', (e && e.message) || 'Could not save. Try again.');
-        btn.disabled = false; btn.textContent = 'Save';
+        btn.disabled = false; btn.textContent = 'Save bio';
         return;
       }
-      btn.disabled = false; btn.textContent = 'Save';
-      show('stReady');
+      btn.disabled = false; btn.textContent = 'Save bio';
+      // Merged screen: mark this section done, stay put, and only offer the
+      // way back once all three are on file.
       await refreshGates();
+      renderProfileSections();
     });
+
+    // ── Merged profile screen state ─────────────────────────────────────
+    function renderProfileSections() {
+      const set = (sec, st, ok) => { $(sec).classList.toggle('done', ok); $(st).textContent = ok ? '✓' : '○'; };
+      set('secPhoto', 'stPhotoOk', !!gateState.photo);
+      set('secBio', 'stBioOk', !!gateState.bio);
+      set('secLicense', 'stLicenseOk', !!gateState.license);
+      const all = !!(gateState.photo && gateState.bio && gateState.license);
+      $('profileDoneBtn').classList.toggle('hidden', !all);
+      void renderEmailSection();
+      // Google sign-ins: one-tap "Use my Google photo" (face-checked like any
+      // upload) while no photo is on file yet.
+      void (async () => {
+        try {
+          if (gateState.photo || photoBlob) { $('googlePhotoOffer').classList.add('hidden'); return; }
+          const { data } = await supabase.auth.getUser();
+          const meta = (data && data.user && data.user.user_metadata) || {};
+          const gUrl = String(meta.avatar_url || meta.picture || '');
+          if (!gUrl) return;
+          googlePhotoUrl = gUrl.replace(/=s\d+(-c)?$/, '=s512-c');
+          $('googlePhotoImg').src = googlePhotoUrl;
+          $('googlePhotoOffer').classList.remove('hidden');
+        } catch (_) {}
+      })();
+    }
+    // Add-email (parity with the app's on-open prompt, 2026-09-02): only
+    // shown when auth has no email (Apple re-auth / phone-only sign-ins).
+    async function renderEmailSection() {
+      const sec = $('secEmail'); if (!sec) return;
+      try {
+        const { data } = await supabase.auth.getUser();
+        const u = data && data.user;
+        const missing = !!u && !(u.email || '').trim();
+        sec.classList.toggle('hidden', !missing);
+        if (u && (u.new_email || '').trim()) {
+          $('stEmailOk').textContent = '✓';
+          setMsg('acctEmailMsg', 'Confirmation sent to ' + u.new_email + ' — tap the link in that email to finish.', 'ok');
+        }
+      } catch (_) { sec.classList.add('hidden'); }
+    }
+    $('acctEmailBtn').addEventListener('click', async () => {
+      setMsg('acctEmailMsg', '');
+      const email = $('acctEmail').value.trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setMsg('acctEmailMsg', 'Enter a valid email address.'); return; }
+      const btn = $('acctEmailBtn'); btn.disabled = true; btn.textContent = 'Sending…';
+      try {
+        const { error } = await supabase.auth.updateUser({ email }, { emailRedirectTo: 'https://seatsherpa.app/email-changed' });
+        if (error) throw error;
+        $('stEmailOk').textContent = '✓';
+        setMsg('acctEmailMsg', 'Confirmation sent to ' + email + ' — tap the link in that email to finish. You can keep going here meanwhile.', 'ok');
+      } catch (e) {
+        setMsg('acctEmailMsg', (e && e.message) || 'Could not save that email. Try again.');
+      }
+      btn.disabled = false; btn.textContent = 'Save email';
+    });
+    $('profileDoneBtn').addEventListener('click', () => { show('stReady'); void refreshGates(); });
 
     // ── Gate: car (vehicles insert — same client-side write the app makes) ─
     $('carBtn').addEventListener('click', async () => {
@@ -3663,6 +4083,17 @@ fbq('track','PageView');
       const qp = new URLSearchParams(location.search);
       const stripeReturn = qp.get('stripe'); // 'return' | 'refresh' | null
 
+      // "+ Post a ride" (app bar, console) = a brand-new ride, always (Justin,
+      // 2026-09-04). Forget the last published ride's checklist, any
+      // half-finished draft and any hero hand-off, then start at From.
+      if (qp.get('new') === '1') {
+        try { localStorage.removeItem(WIP_KEY); localStorage.removeItem(LS_KEY); localStorage.removeItem('ss-post-prefill-v1'); } catch (_) {}
+        try { history.replaceState(null, '', '/post'); } catch (_) {}
+        show('stFrom');
+        return;
+      }
+      const refillWanted = /^\d+$/.test(qp.get('refill') || '');
+
       const stored = loadLocal();
       const { data: sessionData } = await supabase.auth.getSession();
 
@@ -3721,17 +4152,26 @@ fbq('track','PageView');
         }
       } catch (_) { /* bad payload — fall through to the normal flow */ }
 
-      if (stored && sessionData.session) {
+      // The last published ride's checklist resumes ONLY while something on it
+      // is still pending (a gate to clear, a draft not yet live). Once every
+      // draft is live the memory is spent — the old code showed "Your ride is
+      // live" on every later visit, including after that ride was cancelled,
+      // and swallowed Post-again (Justin, 2026-09-04). Post-again always wins.
+      if (stored && sessionData.session && !refillWanted) {
         publishedDrafts = stored.drafts.map((d) => ({ ...d, status: 'pending', rideIds: [] }));
         await enterReady('');
-        return;
+        const stillPending = publishedDrafts.some((d) => d.status !== 'live');
+        if (stillPending || stripeReturn) return;
+        publishedDrafts = [];
+        try { localStorage.removeItem(LS_KEY); } catch (_) {}
+        renderRideCards();
       }
 
       // No local memory, but the driver may still have a pending draft from
       // another day/browser tab: the SELECT-own grant on web_ride_drafts (0205)
       // lets us resume it. Only PUBLISHED drafts resume — finalized history
       // shouldn't hijack a fresh visit.
-      if (sessionData.session) {
+      if (sessionData.session && !refillWanted) {
         try {
           const { data: rows } = await supabase
             .from('web_ride_drafts')
@@ -3758,6 +4198,67 @@ fbq('track','PageView');
       // seats, price, instant — and drops them on the stops screen; only
       // dates and time need answering. Signed-in only (rides are readable by
       // anyone, but posting requires the session anyway).
+      // "Post again" used to prefill only the endpoints: the source ride's
+      // route stops and driver-set leg prices were dropped without a word
+      // (sweep 2026-09-03). Re-select the same catalog stops, re-create the
+      // custom ones, and carry the leg prices across (marked edited so the
+      // suggestion pass leaves them alone).
+      function applyRefillStops(routeStops, segPrices) {
+        if (!cur.start || !cur.end) return;
+        // A ride the driver posted WITHOUT stops (explicit empty list) must
+        // come back without them — enterStops() has just auto-selected the
+        // corridor's defaults, and returning here left those in place, so
+        // "Post again" quietly re-added stops the driver had removed (audit
+        // 2026-09-04). Legacy rides (null, pre-stops) keep the defaults.
+        if (Array.isArray(routeStops) && routeStops.length === 0) {
+          cur.stops = new Set();
+          renderStops();
+          return;
+        }
+        if (!Array.isArray(routeStops)) return;
+        if (!Array.isArray(cur.stopSuggestions)) cur.stopSuggestions = [];
+        const cap = maxStopsFor(cur);
+        const localIdByIndex = [];
+        cur.stops = new Set();
+        routeStops.forEach((st, i) => {
+          let id = null;
+          if (typeof st === 'string') {
+            if (cur.stopSuggestions.some((x) => x && x.id === st)) id = st;
+          } else if (st && isFinite(Number(st.lat)) && isFinite(Number(st.lng))) {
+            const lat = Number(st.lat), lng = Number(st.lng);
+            const near = cur.stopSuggestions.find((x) => x && typeof x.lat === 'number' && Math.abs(x.lat - lat) < 0.04 && Math.abs(x.lng - lng) < 0.04);
+            if (near) id = near.id;
+            else {
+              id = 'custom-r' + i + '-' + Math.abs(Math.round(lat * 1e4)) + '' + Math.abs(Math.round(lng * 1e4));
+              const toS = haversineMiles(cur.start, { lat, lng }), toE = haversineMiles(cur.end, { lat, lng });
+              const t = (toS + toE) > 0 ? toS / (toS + toE) : 0.5;
+              cur.stopSuggestions.push({ id, name: String(st.name || 'Stop'), lat, lng, t, custom: true });
+            }
+          }
+          localIdByIndex[i] = id;
+          if (id && cur.stops.size < cap) cur.stops.add(id);
+        });
+        cur.stopSuggestions.sort((a, b) => (a.t || 0) - (b.t || 0));
+        if (segPrices && typeof segPrices === 'object') {
+          cur.segPrices = {}; cur.segEdited = {};
+          const local = (tok) => {
+            if (tok === 'origin' || tok === 'end') return tok;
+            const m = /^cust-(\d+)$/.exec(tok);
+            if (m) return localIdByIndex[Number(m[1])] || null;
+            return cur.stops.has(tok) ? tok : null;
+          };
+          for (const k in segPrices) {
+            const parts = String(k).split('|');
+            if (parts.length !== 2) continue;
+            const a = local(parts[0]), b = local(parts[1]);
+            const v = Number(segPrices[k]);
+            if (!a || !b || !isFinite(v) || v <= 0) continue;
+            cur.segPrices[a + '|' + b] = v;
+            cur.segEdited[a + '|' + b] = true;
+          }
+        }
+        renderStops();
+      }
       const refillId = parseInt(new URLSearchParams(location.search).get('refill') || '', 10);
       if (Number.isFinite(refillId) && refillId > 0) {
         try {
@@ -3765,7 +4266,7 @@ fbq('track','PageView');
           if (sd && sd.session) {
             const { data: r } = await supabase
               .from('rides')
-              .select('id, driver_id, departure_area, arrival_area, start_lat, start_lng, end_lat, end_lng, seats, instant, dep_time')
+              .select('id, driver_id, departure_area, arrival_area, start_lat, start_lng, end_lat, end_lng, seats, instant, dep_time, route_stops, segment_prices')
               .eq('id', refillId)
               .maybeSingle();
             if (r && r.driver_id === sd.session.user.id) {
@@ -3779,11 +4280,19 @@ fbq('track','PageView');
               const open = pax.filter((s) => s.avail !== false);
               if (open.length) cur.seatCount = open.length;
               cur.comfort = !open.some((s) => s.id === 'rc');
+              // Carry the exact seat map across (2026-09-04): layout from the
+              // stored positions, open set from avail.
+              if (pax.length) {
+                cur.seatLayout = pax.some((s) => s.id === 'ml' || s.id === 'mr') ? 'van' : 'sedan';
+                cur.openSeats = open.map((s) => s.id).filter((id) => SEAT_LAYOUTS[cur.seatLayout].indexOf(id) !== -1);
+                if (!cur.openSeats.length) cur.openSeats = null;
+                cur.seatMapKey = cur.seatCount + '|' + (cur.comfort ? 1 : 0);
+              }
               cur.instant = r.instant === true;
               const prices = open.map((s) => Number(s.price)).filter((n) => n > 0);
               if (prices.length) cur.priceUsd = Math.round(Math.min.apply(null, prices));
               if (r.dep_time) cur.time = String(r.dep_time).slice(0, 5);
-              if (cur.start && cur.end) { await enterStops(); return; }
+              if (cur.start && cur.end) { await enterStops(); applyRefillStops(r.route_stops, r.segment_prices); return; }
             }
           }
         } catch (_) { /* fall through to the normal flow */ }

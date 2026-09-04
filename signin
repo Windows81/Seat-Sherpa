@@ -93,8 +93,8 @@
 
     <!-- Step 1: email (+ Google/Apple via js/ss-oauth.js) -->
     <div id="stEmail">
-      <h1>Sign in</h1>
-      <p class="sub">No passwords — use Google or Apple, or get a code by email.</p>
+      <h1>Sign in or sign up</h1>
+      <p class="sub">No passwords — use Google or Apple, or get a code by email. New here? The same steps create your account.</p>
       <div id="oauthMount"></div>
       <label for="email">Email</label>
       <input id="email" type="email" autocomplete="email" placeholder="you@example.com" />
@@ -128,6 +128,16 @@
         <div class="d">Seats you've booked, trip details, driver chat, and ride alerts.</div>
       </a>
 
+      <!-- Typed code (2026-09-03): the web's first place to enter an invite or
+           promo code. Same applier as checkout and the account page. -->
+      <div style="margin:18px 0 6px;">
+        <label for="webCode" style="display:block;font-size:13px;color:#adadb8;margin-bottom:6px;">Have an invite or promo code?</label>
+        <div style="display:flex;gap:8px;">
+          <input id="webCode" placeholder="e.g. TAYLOR5" autocapitalize="characters" autocomplete="off" maxlength="12" style="flex:1;min-width:0;" />
+          <button class="primary" id="webCodeBtn" type="button" style="width:auto;padding:0 18px;">Apply</button>
+        </div>
+        <div class="msg hidden" id="webCodeMsg"></div>
+      </div>
       <p class="foot"><a href="/rides?web=1">Find a ride</a> &middot; <a href="/post">Post a ride</a></p>
     </div>
 
@@ -186,6 +196,7 @@
         } catch (_) { /* fall through to the chooser */ }
       }
       $('who').textContent = 'Signed in as ' + (session.user?.email || 'your account');
+      S.wireCodeEntry({ input: 'webCode', button: 'webCodeBtn', msg: 'webCodeMsg' });
       show('stIn');
       return true;
     }
