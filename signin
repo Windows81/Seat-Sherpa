@@ -14,6 +14,29 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#0E0E10" />
+  <!-- Google Ads sign-up conversion ONLY (bug sweep, 2026-09-11). This page
+       mints real accounts and reported nothing, so the Web sign-up action was
+       undercounting while the driver waitlist was overcounting. Google tag
+       alone, deliberately: no Meta, no Reddit, no Conversions API beacon on a
+       sign-in page. Honours Global Privacy Control, and ssSignup fires at most
+       once per browser, ever. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+  <script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config','AW-18365966554');}
+  window.SS_GADS_SIGNUP='AW-18365966554/WY7_CPzJufQcENrRybVE';
+  window.ssSignup=function(){
+    if(navigator.globalPrivacyControl)return;
+    if(window.__ssSignupCounted)return;
+    var k='ss_signup_counted';var seen=false;
+    try{seen=!!localStorage.getItem(k);}catch(_){}
+    if(seen)return;
+    window.__ssSignupCounted=1;
+    try{localStorage.setItem(k,String(Date.now()));}catch(_){}
+    try{if(window.gtag)window.gtag('event','conversion',{'send_to':window.SS_GADS_SIGNUP});}catch(_){}
+  };
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
@@ -177,6 +200,15 @@
     async function enterSignedIn() {
       const session = await S.getSession();
       if (!session) return false;
+      // A first-time Google/Apple user creates their account right here, and
+      // this page reported nothing. Only count a genuinely NEW account (same
+      // 10-minute created_at test the booking page uses); ssSignup itself is
+      // once-per-browser, so a returning signer-in can never be counted.
+      try {
+        const created = session.user && session.user.created_at
+          ? new Date(session.user.created_at).getTime() : 0;
+        if (created && Date.now() - created < 10 * 60 * 1000 && window.ssSignup) window.ssSignup();
+      } catch (_) {}
       if (!forceChooser) {
         const r = lastRole();
         if (r === 'driver') { location.replace('/driving'); return true; }

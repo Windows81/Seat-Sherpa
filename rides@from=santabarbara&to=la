@@ -29,6 +29,10 @@ window.ssTrack=function(name,opts){
   try{if(window.rdt)window.rdt('track',rname);}catch(_){}
   try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
   if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  /* Web sign-up -> Google Ads (2026-09-11). SS_GADS_SIGNUP is the 'AW-18365966554/<label>' of the Web sign-up conversion action; empty = no-op until it exists. */
+  window.SS_GADS_SIGNUP='AW-18365966554/WY7_CPzJufQcENrRybVE';
+  /* ONCE PER BROWSER, EVER. A sign-up is not a repeatable event, and the created_at<10min heuristic that guards the call sites fires on every auth event inside that window. Belt (per page) and braces (localStorage), so adding this tag to more sign-up surfaces can never double-count (bug sweep, 2026-09-11). */
+  if(name==='CompleteRegistration'&&window.SS_GADS_SIGNUP&&!window.__ssSignupCounted){var _k='ss_signup_counted';var _seen=false;try{_seen=!!localStorage.getItem(_k);}catch(_){}if(!_seen){window.__ssSignupCounted=1;try{localStorage.setItem(_k,String(Date.now()));}catch(_){}try{if(window.gtag)window.gtag('event','conversion',{'send_to':window.SS_GADS_SIGNUP});}catch(_){}}}
   try{
     var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
     if(opts.em)p.em=opts.em;
@@ -128,10 +132,10 @@ fbq('track','PageView');
   <div class="filters" style="margin-top:-10px">
     <input type="date" id="dateF" style="background:#161619;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;flex:1;min-width:140px" aria-label="Filter by date" />
     <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:#bbb;cursor:pointer;padding:0 4px" title="Include rides up to 3 days either side">
-      <input type="checkbox" id="flexF" checked style="accent-color:#00D4C8;width:16px;height:16px" /> ±3 days
+      <input type="checkbox" id="flexF" checked style="accent-color:#00D4C8;width:20px;height:20px" /> ±3 days
     </label>
     <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:#bbb;cursor:pointer;padding:0 4px">
-      <input type="checkbox" id="availF" style="accent-color:#00D4C8;width:16px;height:16px" /> Open seats only
+      <input type="checkbox" id="availF" style="accent-color:#00D4C8;width:20px;height:20px" /> Open seats only
     </label>
   </div>
   <!-- Address search (2026-08-28, app parity: 60-mile radius on both ends).
@@ -202,8 +206,14 @@ fbq('track','PageView');
   // pattern this label exists to avoid (audit M1).
   // Math.floor — matches the server and book.html exactly. Ceil advertised a
   // price 1c higher than checkout actually charges (audit 8/28).
-  function allIn(r){var b=(typeof r.serviceFeeBps==='number')?r.serviceFeeBps:500;var bk=(typeof r.bookingFeeCents==='number'?r.bookingFeeCents:0)/100;return (r.minPrice+Math.floor(r.minPrice*100*b/10000)/100+bk).toFixed(2);}
+  // legPrice (2026-09-08): when the search matched a leg the driver priced
+  // (Santa Barbara → LA on a San Jose → LA ride), that is the seat basis —
+  // public-rides already min'd it against the seat the way checkout bills.
+  function allIn(r){var base=(typeof r.legPrice==='number')?r.legPrice:r.minPrice;var b=(typeof r.serviceFeeBps==='number')?r.serviceFeeBps:500;var minC=(typeof r.serviceFeeMinCents==='number')?r.serviceFeeMinCents:0;var bk=(typeof r.bookingFeeCents==='number'?r.bookingFeeCents:0)/100;var fee=Math.max(Math.floor(base*100*b/10000),minC);/* 0256: $2 floor on rides posted after the cutoff */return (base+fee/100+bk).toFixed(2);}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  // lucide "medal" (v1.14.0, ISC), the exact glyph components/ride-card.tsx
+  // draws in the app, so the medal reads the same on both surfaces.
+  var MEDAL_PATHS='<path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/><path d="M8 7h8"/><circle cx="12" cy="17" r="5"/><path d="M12 18v-2h-.5"/>';
   function card(r){
     var f=M[r.fromDest]||{n:r.fromDest,e:''}, t=M[r.toDest]||{n:r.toDest,e:''};
     var fromLabel=r.fromArea||f.n, toLabel=r.toArea||t.n;
@@ -221,19 +231,54 @@ fbq('track','PageView');
     var dAvatar=(r.driverPhotoUrl&&/^https:\/\//.test(r.driverPhotoUrl))
       ?'<img src="'+esc(r.driverPhotoUrl)+'" alt="" style="width:22px;height:22px;border-radius:50%;object-fit:cover;object-position:50% 25%;vertical-align:-5px;margin-right:5px;border:1px solid rgba(0,212,200,0.45);" loading="lazy" />'
       :'';
+    // Preferred medal: same lucide "medal" glyph and gold ring as the app's
+    // ride card, top-right of the photo. Only for drivers this viewer rated 5
+    // stars (see loadPreferred); the title carries the meaning for screen
+    // readers and hover.
+    if(preferredRideIds[String(r.id)]){
+      var medal='<span title="You rated this driver 5 stars" style="position:absolute;top:-6px;right:-6px;width:14px;height:14px;border-radius:50%;background:#0E0E10;border:1px solid #FFD60A;display:flex;align-items:center;justify-content:center;">'
+        +'<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00D4C8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        +MEDAL_PATHS+'</svg></span>';
+      dAvatar=dAvatar
+        ?'<span style="position:relative;display:inline-block;margin-right:5px;">'+dAvatar.replace('margin-right:5px;','')+medal+'</span>'
+        // No photo: the app still draws the medal on its initials avatar, so
+        // give it an empty ring to sit on here rather than dropping it.
+        :'<span style="position:relative;display:inline-block;width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,212,200,0.45);vertical-align:-5px;margin-right:5px;">'+medal+'</span>';
+    }
     var dRating=r.driverRating
-      ?(' <span class="star">★</span> '+Number(r.driverRating).toFixed(1)+(r.driverRatingCount?' ('+r.driverRatingCount+')':''))
+      ?(' <span class="star">★</span> '+Number(r.driverRating).toFixed(1))
       :'';
     var dTrips=(typeof r.driverTrips==='number'&&r.driverTrips>0)?(' · '+r.driverTrips+' trip'+(r.driverTrips===1?'':'s')):'';
     var driver=r.driverFirst?(dAvatar+esc(r.driverFirst)+dRating+dTrips):'';
     var stops=(r.stops&&r.stops.length)?'<div class="meta" style="color:#00D4C8;">Also stops in '+r.stops.map(esc).join(' · ')+'</div>':'';
+    // Searched-leg line (2026-09-08): the rider asked for Santa Barbara → LA
+    // and this ride serves that pair, so lead with THEIR leg and its price
+    // status instead of the generic stop list. The stop ids ride along on the
+    // link so the booking page opens on the same pair — the price a rider
+    // clicked must be the price the next page shows.
+    var leg='';
+    if(r.leg){
+      leg='<div class="meta" style="color:#00D4C8;">Your leg: '+esc(r.leg.board.name)+' → '+esc(r.leg.alight.name)
+        +(r.leg.priced?' · priced by the driver for this leg':' · full-ride price, this leg is not priced separately')+'</div>';
+      if(r.leg.board.id!=='origin') link+='&board='+encodeURIComponent(r.leg.board.id);
+      if(r.leg.alight.id!=='end') link+='&alight='+encodeURIComponent(r.leg.alight.id);
+    }
+    // Leg riders board later than the ride departs (2026-09-08): a Santa
+    // Barbara → LA rider on a 10 AM Cupertino ride boards ~2:50 PM, and this
+    // slot showed 10 AM. Lead with THEIR estimated pickup (same formula as the
+    // app card, computed by public-rides) and say it's an estimate. The ride's
+    // own departure stays on the detail page.
+    var when=fmt(r.depDate,r.depTime);
+    if(r.leg&&r.leg.board&&r.leg.board.eta&&r.leg.board.id!=='origin'){
+      when=fmt(r.leg.board.etaDate||r.depDate,r.leg.board.eta)+' <small style="color:#8a8a92;">est. pickup, '+esc(r.leg.board.name)+'</small>';
+    }
     return '<a class="ride" href="'+link+'">'
       +'<div class="top"><div class="route">'+esc(fromLabel)+' → '+esc(toLabel)+'</div>'
       +(r.soldOut
         ?'<div class="price" style="color:#8a8a92;">$'+(allIn(r))+' <small>/seat</small></div></div>'
         :'<div class="price">$'+(allIn(r))+' <small>/seat all-in</small></div></div>')
-      +stops
-      +'<div class="meta"><span>'+fmt(r.depDate,r.depTime)+'</span>'
+      +(r.leg?leg:stops)
+      +'<div class="meta"><span>'+when+'</span>'
       +(r.instant&&!r.soldOut?'<span class="pill inst">Instant book</span>':'')
       +(r.soldOut
         ?'<span class="pill seats" style="color:#8a8a92;">Sold out</span>'
@@ -396,6 +441,12 @@ fbq('track','PageView');
     try{
       var dF=document.getElementById('dateF');
       if(dF&&dF.value)u+='&date='+encodeURIComponent(dF.value);
+      // 0258: colour preference + screen class, so the light-theme question
+      // is answered by data (browsers report light when no preference is set).
+      try{
+        var dark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+        u+='&cs='+(dark?'dark':'light')+'&scr='+(window.innerWidth<=768?'phone':'desktop');
+      }catch(_){}
       var qp=new URLSearchParams(location.search);
       var camp=qp.get('c')||qp.get('utm_source')||'';
       if(camp)u+='&c='+encodeURIComponent(camp.slice(0,80));
@@ -407,7 +458,31 @@ fbq('track','PageView');
       allRides=rides;
       logSearch(rides.filter(function(r){return !r.adjacent;}).length); // exact matches only - nearby top-ups are not met demand
       renderRides();
+      loadPreferred(rides);
     }).catch(function(){ list.innerHTML='<div class="empty">Could not load rides right now — refresh to try again.</div>'; });
+  }
+  // Preferred medal (Justin, 2026-09-14: "lets have it on web too"): drivers
+  // this signed-in rider has rated 5 stars get the app's small teal medal on
+  // their photo. public-rides is publicly cached and carries no driver ids, so
+  // this is a separate private call: the ride ids on screen go in, the ids
+  // whose driver you rated 5 stars come back. Automatic ratings never count.
+  // Signed out or an expired token: no medals, nothing else changes.
+  var preferredRideIds={};
+  function loadPreferred(rides){
+    try{
+      var tok=null;
+      try{var raw=localStorage.getItem('sb-vmfmbntacifqoqxqxgsk-auth-token');if(raw)tok=(JSON.parse(raw)||{}).access_token||null;}catch(_){}
+      if(!tok||!rides.length)return;
+      var ids=rides.map(function(r){return Number(r.id);}).filter(function(n){return isFinite(n)&&n>0;}).slice(0,200);
+      fetch(SUPA+'/functions/v1/web-preferred-rides',{method:'POST',headers:{apikey:ANON,Authorization:'Bearer '+tok,'Content-Type':'application/json'},body:JSON.stringify({rideIds:ids})})
+        .then(function(r){return r.ok?r.json():null;})
+        .then(function(d){
+          var got=(d&&d.rideIds)||[];
+          if(!got.length)return;
+          got.forEach(function(id){preferredRideIds[String(id)]=true;});
+          if(allRides===rides)renderRides(); // a newer search already replaced this list
+        }).catch(function(){});
+    }catch(_){}
   }
   // Booking-intent signal: fires when someone taps a ride to open it. Filter
   // this event by Desktop in Vercel Analytics to size web-checkout demand.
@@ -439,5 +514,6 @@ try {
   }
 } catch (_) { /* the marketing nav is a fine fallback */ }
 </script>
+<script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

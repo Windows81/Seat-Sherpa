@@ -293,5 +293,6 @@
       try { localStorage.setItem('ss_last_role', localStorage.getItem('ss_last_role') || (driving.length > riding.length ? 'driver' : 'rider')); } catch (_) {}
     }
   </script>
+  <script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

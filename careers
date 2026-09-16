@@ -29,6 +29,10 @@ window.ssTrack=function(name,opts){
   try{if(window.rdt)window.rdt('track',rname);}catch(_){}
   try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
   if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  /* Web sign-up -> Google Ads (2026-09-11). SS_GADS_SIGNUP is the 'AW-18365966554/<label>' of the Web sign-up conversion action; empty = no-op until it exists. */
+  window.SS_GADS_SIGNUP='AW-18365966554/WY7_CPzJufQcENrRybVE';
+  /* ONCE PER BROWSER, EVER. A sign-up is not a repeatable event, and the created_at<10min heuristic that guards the call sites fires on every auth event inside that window. Belt (per page) and braces (localStorage), so adding this tag to more sign-up surfaces can never double-count (bug sweep, 2026-09-11). */
+  if(name==='CompleteRegistration'&&window.SS_GADS_SIGNUP&&!window.__ssSignupCounted){var _k='ss_signup_counted';var _seen=false;try{_seen=!!localStorage.getItem(_k);}catch(_){}if(!_seen){window.__ssSignupCounted=1;try{localStorage.setItem(_k,String(Date.now()));}catch(_){}try{if(window.gtag)window.gtag('event','conversion',{'send_to':window.SS_GADS_SIGNUP});}catch(_){}}}
   try{
     var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
     if(opts.em)p.em=opts.em;
@@ -99,6 +103,7 @@ fbq('track','PageView');
   </style>
 </head>
 <body>
+  <div id="ssAppBar"></div>
   <div class="wrap">
     <a class="logo" href="/"><img src="/icon.png" alt="" /><span>Seat Sherpa</span></a>
 
@@ -191,5 +196,8 @@ fbq('track','PageView');
   <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=careers" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
   <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=careers" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
 </div>
+<script src="/js/ss-menu.js"></script>
+<script src="/js/ss-appbar.js"></script>
+<script>if (window.SS_APPBAR) SS_APPBAR.mount({});</script>
 </body>
 </html>

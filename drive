@@ -29,6 +29,12 @@ window.ssTrack=function(name,opts){
   try{if(window.rdt)window.rdt('track',rname);}catch(_){}
   try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
   if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  /* NO Google Ads Web sign-up conversion on this page. The only
+     CompleteRegistration here is the DRIVER WAITLIST form, which inserts a
+     lead row and creates no account at all. Firing the Web sign-up action on
+     it would train Smart Bidding toward driver lead-form traffic (bug sweep,
+     2026-09-11). Meta and Reddit keep their own CompleteRegistration/SignUp
+     below, which is the behaviour they have had since 8/11. */
   try{
     var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
     if(opts.em)p.em=opts.em;
@@ -715,7 +721,7 @@ fbq('track','PageView');
               For that to hold up, drivers <strong>can't profit</strong> from a trip — they can only recover what the trip actually costs to drive. The IRS publishes a standard mileage rate ($0.76/mile as of July 1, 2026) that's universally accepted as a proxy for the real cost of operating a personal vehicle: gas, wear, depreciation, insurance. We use that as our ceiling:
             </p>
             <p style="background:#1a1a1d;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 18px;font-family:ui-monospace,monospace;font-size:13px;color:#ccc;">
-              max per-seat price = (trip distance × $0.76) ÷ seats offered
+              max per-seat price = (trip distance × $0.76) ÷ seats offered (at least 4)
             </p>
             <p>
               Examples (4 passenger seats):
@@ -727,7 +733,7 @@ fbq('track','PageView');
               <li>Bay → Las Vegas (~570 mi) → would calc to $108, capped at $55</li>
             </ul>
             <p>
-              On longer routes the IRS-rate cap is generous enough that our $55 brand ceiling takes over. On shorter routes the IRS cap binds. Either way, you can't price yourself into "commercial driver" territory by accident — when you post a ride the app shows the exact max for your route (trip distance × $0.76 ÷ seats offered) and won't let you set a seat price above it.
+              On longer routes the IRS-rate cap is generous enough that our $55 brand ceiling takes over. On shorter routes the IRS cap binds. Either way, you can't price yourself into "commercial driver" territory by accident — when you post a ride the app shows the exact max for your route (trip distance × $0.76 ÷ seats offered, counted as at least four) and won't let you set a seat price above it.
             </p>
             <p>
               <strong>This is also why a rideshare endorsement isn't strictly required</strong> (see the insurance FAQ above): you're staying squarely in cost-sharing territory, which is what your personal auto insurance is designed to cover. The endorsement is a belt-and-suspenders option if you want extra peace of mind, not a legal necessity.

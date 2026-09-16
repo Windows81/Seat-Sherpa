@@ -172,6 +172,17 @@
         Seat prices are capped at the trip's shared driving cost (currently up to $55 a seat), because this is
         cost-sharing carpooling — not a ride-hail service and not a way for students to run a business.
       </div>
+      <!-- Optional paid tier (Justin, 2026-09-06): matches the $2,500 / $3,500
+           proposal emailed to 16 campuses on 9/4, so a click-through no longer
+           lands on "it costs nothing" alone. -->
+      <div class="note" style="margin-top:14px;">
+        <strong>Optional: Seat Sherpa Campus.</strong> A branded ride board for your school with .edu verification,
+        preset routes for the trips your students actually make, and a term report for your office.
+        $2,500 a year for the first three founding campuses, $3,500 after. Students still ride free of any
+        institutional fee either way.
+        <br /><br />
+        <a href="/campus/proposal">See the campus proposal →</a>
+      </div>
     </div>
   </section>
 

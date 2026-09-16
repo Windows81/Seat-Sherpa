@@ -66,11 +66,12 @@
     .pasthead {
       display: flex; align-items: center; gap: 10px; width: 100%;
       background: none; border: none; cursor: pointer; font-family: inherit;
-      color: #a3a3ae; font-size: 13px; font-weight: 700; letter-spacing: 1.2px;
+      color: #a3a3ae; font-size: 14px; font-weight: 700; letter-spacing: 1.2px;
       text-transform: uppercase; padding: 20px 2px 10px; text-align: left;
     }
     .pasthead:hover { color: #cfcfd6; }
     .pasthead .caret { color: #00D4C8; font-size: 12px; }
+    .unpaidnote { color: #8b8b95; font-size: 13px; line-height: 1.55; margin: 0 0 10px; }
     .pasthead .pastcount {
       background: rgba(255,255,255,0.08); color: #a3a3ae; border-radius: 999px;
       padding: 1px 8px; font-size: 11px; letter-spacing: 0;
@@ -103,7 +104,7 @@
     button.star.on { color: #00D4C8; }
 
     h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
-    h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #adadb8; margin: 26px 0 12px; }
+    h2 { font-size: 14px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #adadb8; margin: 26px 0 12px; }
     p.sub { font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
     label { display: block; font-size: 12px; color: #adadb8; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
     input, textarea {
@@ -188,8 +189,8 @@
     .trip:hover { border-color: rgba(0,212,200,0.4); transform: translateY(-1px); }
     .trip .triptop { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
     .trip .triproute { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; line-height: 1.3; }
-    .trip .tripmeta { font-size: 13px; color: #b9b9c6; margin-top: 5px; }
-    .trip .tripfoot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 13px; color: #adadb8; }
+    .trip .tripmeta { font-size: 14px; color: #b9b9c6; margin-top: 5px; }
+    .trip .tripfoot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 14px; color: #adadb8; }
 
     .driverrow { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
     .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; }
@@ -217,7 +218,7 @@
     .banner strong { color: #fff; }
 
     .policy { list-style: none; margin: 8px 0 14px; padding: 0; }
-    .policy li { font-size: 13px; color: #b9b9c6; line-height: 1.6; margin-bottom: 4px; }
+    .policy li { font-size: 14px; color: #b9b9c6; line-height: 1.6; margin-bottom: 4px; }
 
     /* ── Chat ─────────────────────────────────────────────────────────────── */
     .thread {
@@ -234,7 +235,7 @@
     }
     .brow.me .bubble { background: #00D4C8; color: #04201e; border-bottom-right-radius: 5px; }
     .brow.them .bubble { background: #1f1f23; color: #fff; border-bottom-left-radius: 5px; }
-    .brow.sys .bubble { background: none; color: #adadb8; font-size: 13px; text-align: center; max-width: 92%; }
+    .brow.sys .bubble { background: none; color: #adadb8; font-size: 14px; text-align: center; max-width: 92%; }
     .bubble.sending { opacity: 0.55; }
     .bubble.failed { background: #3a1c1f; color: #ffb3b3; }
     .btime { font-size: 10px; color: #8f8f98; margin: 2px 4px 0; text-align: right; }
@@ -242,7 +243,7 @@
     .composer { display: flex; gap: 10px; align-items: flex-end; margin-top: 14px; }
     .composer textarea { min-height: 46px; max-height: 140px; margin-bottom: 0; padding: 12px 14px; font-size: 15px; }
     .composer button { width: auto; flex-shrink: 0; padding: 13px 18px; }
-    .emptythread { text-align: center; color: #adadb8; font-size: 13px; line-height: 1.6; padding: 22px 8px; }
+    .emptythread { text-align: center; color: #adadb8; font-size: 14px; line-height: 1.6; padding: 22px 8px; }
     .consolenav {
       display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
       margin: 14px 0 4px;
@@ -611,8 +612,8 @@
         '✓ Cancel 24+ hours before departure → 100% of the seat price back',
         '~ Cancel 2 – 24 hours before → 50% of the seat price back',
         '✗ Cancel within 2 hours of departure → no refund',
-        'ⓘ The 5% service fee is non-refundable when you cancel',
-        '✓ If the DRIVER cancels: 100% refund including the service fee',
+        'ⓘ The booking fee is non-refundable when you cancel',
+        '✓ If the DRIVER cancels: 100% refund including the booking fee',
       ],
       free: [
         '✓ Cancel 2+ hours before departure → 100% refund',
@@ -636,7 +637,7 @@
     // query. The RPC is the only way in, by design.
     const BOOKING_SELECT = [
       'id, ref_code, status, seat_ids, total_price, service_fee_cents, booking_fee_cents, created_at, source',
-      'payment_verified_at, refund_amount_cents, cancel_reason',
+      'payment_verified_at, refund_amount_cents, credit_restore_cents, cancel_reason',
       'pickup_code_entered_at, no_show_reported_at, no_show_disputed_at',
       'boarding_stop, alighting_stop',
       'ride:rides!inner(id, driver_id, driver_name, from_dest, to_dest, departure_area, arrival_area,'
@@ -657,7 +658,27 @@
         .eq('passenger_id', me)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return data || [];
+      // A request the rider never paid for is NOT a trip, so it does not belong
+      // in Past trips (on 2026-09-09 Mario W. abandoned checkout, immediately
+      // re-requested the same seat, and got TWO identical cancelled cards, which
+      // reads as the app cancelling on him twice). It is NOT hidden either,
+      // per Justin: it drops into a collapsed "Unfinished requests" group he can
+      // open. Classified here, split in the render below.
+      // "Cancelled" past trip is misleading: on 2026-09-09 Mario W. abandoned
+      // checkout, immediately re-requested the same seat, and ended up with
+      // TWO identical cancelled cards, which reads as the app cancelling on
+      // him twice. Same filter as the app's My Trips tab; the reason strings
+      // are the ones the admin Bookings page labels "Abandoned at payment" /
+      // "Never paid". payment_verified_at guards it: anything actually paid
+      // for is never hidden. A real "Payment failed" (card declined) still
+      // shows, because there the rider tried and may need to know.
+      // loadBooking(ref) is deliberately NOT filtered - a direct ref link
+      // should still resolve.
+      const NEVER_PAID = /web checkout expired|closed web checkout without paying|payment was cancelled by the (passenger|rider)|payment was never completed/i;
+      return (data || []).map((b) => ({
+        ...b,
+        __unpaid: b.status === 'Cancelled' && !b.payment_verified_at && NEVER_PAID.test(b.cancel_reason || ''),
+      }));
     }
 
     async function loadBooking(ref) {
@@ -784,8 +805,13 @@
     $('errRetry').addEventListener('click', () => render());
 
     // ── Shared bits ───────────────────────────────────────────────────────
-    function pill(status) {
+    function pill(status, unfinished) {
       const map = { Pending: 'pending', Confirmed: 'confirmed', Cancelled: 'cancelled', Completed: 'completed' };
+      // An abandoned checkout is not something anyone cancelled, so it must not
+      // wear the red Cancelled pill: that contradicts the "Unfinished requests"
+      // header and the line under it (Justin, 2026-09-09). Neutral styling, and
+      // wording that says what actually happened.
+      if (unfinished) return el('span', 'pill completed', 'Not completed');
       const label = status === 'Pending' ? 'Awaiting driver' : status;
       return el('span', 'pill ' + (map[status] || 'completed'), label);
     }
@@ -848,7 +874,7 @@
 
       const top = el('div', 'triptop');
       top.appendChild(el('div', 'triproute', routeLabel(b.ride)));
-      top.appendChild(pill(st));
+      top.appendChild(pill(st, !!b.__unpaid));
       btn.appendChild(top);
 
       btn.appendChild(el('div', 'tripmeta', whenLabel(b.ride)));
@@ -888,18 +914,21 @@
       const now = Date.now();
       const upcoming = [];
       const past = [];
+      const unpaid = [];
       for (const b of rows) {
         const st = effectiveStatus(b);
         const dep = departureMs(b.ride);
         // "Upcoming" holds anything still live: a Confirmed trip stays here
         // through the 12h completion horizon so a rider mid-trip (or one whose
         // driver hasn't entered the PIN yet) still finds their code up top.
-        if ((st === 'Pending' || st === 'Confirmed') && dep + 12 * 60 * 60 * 1000 > now) upcoming.push(b);
+        if (b.__unpaid) unpaid.push(b);
+        else if ((st === 'Pending' || st === 'Confirmed') && dep + 12 * 60 * 60 * 1000 > now) upcoming.push(b);
         else past.push(b);
       }
       // Upcoming reads soonest-first; past reads most-recent-first.
       upcoming.sort((a, z) => departureMs(a.ride) - departureMs(z.ride));
       past.sort((a, z) => departureMs(z.ride) - departureMs(a.ride));
+      unpaid.sort((a, z) => departureMs(z.ride) - departureMs(a.ride));
 
       const awaiting = upcoming.filter((b) => effectiveStatus(b) === 'Pending').length;
       const completed = rows.filter((b) => b.status === 'Completed');
@@ -958,6 +987,32 @@
         });
         body.appendChild(phead);
         body.appendChild(pastWrap);
+      }
+      if (unpaid.length) {
+        // Requests that never reached payment. Out of Past trips because they
+        // were never booked, but reachable so nothing silently disappears.
+        const openUp = sessionStorage.getItem('ss_unpaid_open') === '1';
+        const uhead = el('button', 'pasthead');
+        uhead.type = 'button';
+        uhead.setAttribute('aria-expanded', String(openUp));
+        const ucaret = el('span', 'caret', openUp ? '▾' : '▸');
+        uhead.appendChild(ucaret);
+        uhead.appendChild(el('span', null, 'Unfinished requests'));
+        uhead.appendChild(el('span', 'pastcount', String(unpaid.length)));
+        const uWrap = el('div', 'tripgrid');
+        if (!openUp) uWrap.classList.add('hidden');
+        const unote = el('p', 'unpaidnote', 'You did not finish checking out, so this never became a booking.');
+        uWrap.appendChild(unote);
+        unpaid.forEach((b2) => uWrap.appendChild(tripRow(b2)));
+        uhead.addEventListener('click', () => {
+          const nowOpen = uWrap.classList.contains('hidden');
+          uWrap.classList.toggle('hidden', !nowOpen);
+          ucaret.textContent = nowOpen ? '▾' : '▸';
+          uhead.setAttribute('aria-expanded', String(nowOpen));
+          try { sessionStorage.setItem('ss_unpaid_open', nowOpen ? '1' : '0'); } catch (_) {}
+        });
+        body.appendChild(uhead);
+        body.appendChild(uWrap);
       }
       // Your impact (2026-08-28, app parity — lib/co2.computePassengerImpact):
       // completed trips only, same 0.88 lbs/mi + $0.76/mi constants.
@@ -1077,6 +1132,15 @@
     // any booking with no pickup on record. So the browser needs no privileged
     // endpoint: the database is the gate, exactly as it is for the app.
     let myRatingByBooking = {};   // booking_id -> { stars } already submitted
+    // The page-level rating gate (/js/ss-rating-gate.js) may submit a rating
+    // over this page; keep our cache in step so the card flips to "you rated"
+    // instead of offering the form a second time (review 2026-09-08).
+    window.addEventListener('ss:rated', (e) => {
+      const d = e && e.detail;
+      if (!d || !d.bookingId) return;
+      myRatingByBooking[d.bookingId] = { booking_id: d.bookingId, stars: d.stars };
+      try { render(); } catch (_) { /* not on a view that needs it */ }
+    });
 
     /** One rating row for each booking on screen, so the card can show
      *  "you rated 5 stars" instead of re-offering the form. */
@@ -1247,14 +1311,26 @@
 
       if (ride.cancelled_at) {
         body.appendChild(el('div', 'banner warn',
-          'The driver cancelled this ride. Any payment is refunded in full, including the service fee — '
+          'The driver cancelled this ride. Any payment is refunded in full, including the booking fee — '
           + "it can take 5–10 business days to appear on your statement."));
       } else if (st === 'Cancelled') {
         const bn = el('div', 'banner warn');
         bn.appendChild(document.createTextNode('This booking is cancelled. '));
         if (typeof b.refund_amount_cents === 'number' && b.refund_amount_cents > 0) {
+          // refund_amount_cents is the TOTAL value returned, card PLUS any ride
+          // credit put back (stripe-refund-booking). Calling all of it a card
+          // refund was wrong whenever credit was involved (2026-09-09). 0249
+          // records the credit half; when it is null the split is a trigger-side
+          // proportional fallback we cannot reproduce here, so we state the
+          // value and make no claim about where it landed.
+          var credBack = typeof b.credit_restore_cents === 'number' ? b.credit_restore_cents : null;
+          var cardBack = credBack === null ? null : Math.max(0, b.refund_amount_cents - credBack);
           bn.appendChild(document.createTextNode(
-            fmtCents(b.refund_amount_cents) + ' was refunded to your original payment method — it can take 5–10 business days to appear.'));
+            (credBack && cardBack !== null)
+              ? fmtCents(cardBack) + ' was refunded to your original payment method and ' + fmtCents(credBack) + ' was returned as ride credit — the card refund can take 5–10 business days to appear.'
+              : (cardBack !== null)
+                ? fmtCents(cardBack) + ' was refunded to your original payment method — it can take 5–10 business days to appear.'
+                : fmtCents(b.refund_amount_cents) + ' was refunded — anything charged to your card can take 5–10 business days to appear.'));
         } else if (b.refund_amount_cents === 0) {
           bn.appendChild(document.createTextNode(
             'No refund was due under the ride’s cancellation policy. Questions? Email support@seatsherpa.app.'));
@@ -1690,6 +1766,10 @@
       for (const m of rows) {
         const mine = m.sender_id === me;
         const sys = m.is_system === true;
+        // The 24h "How was your trip?" card is one shared bubble; hide it once
+        // THIS viewer has rated (Justin, 2026-09-05). The other side may still
+        // need it, so the row stays in the thread for them.
+        if (sys && /^⭐ How was your trip\?/.test(String(m.body || '')) && myRatingByBooking[m.booking_id]) continue;
         const row = el('div', 'brow ' + (sys ? 'sys' : mine ? 'me' : 'them'));
         const bub = el('div', 'bubble' + (m._state === 'sending' ? ' sending' : m._state === 'failed' ? ' failed' : ''));
         // textContent: chat bodies are typed by the other party.
@@ -1790,7 +1870,7 @@
       callBtn.type = 'button';
       callBtn.style.cssText = 'border:1px solid #00a8a0;color:#00a8a0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;';
       const callMsg = el('div', 'msg hidden');
-      callMsg.style.cssText = 'font-size:13px;color:#6b7280;margin:0;';
+      callMsg.style.cssText = 'font-size:14px;color:#6b7280;margin:0;';
       callRow.appendChild(callBtn);
       callRow.appendChild(callMsg);
       card.appendChild(callRow);
@@ -2042,5 +2122,6 @@
 
     render();
   </script>
+  <script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

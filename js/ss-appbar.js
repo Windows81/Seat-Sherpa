@@ -93,6 +93,10 @@
     'background:#00D4C8;color:#04201e;font-size:14.5px;font-weight:700;text-decoration:none;white-space:nowrap;}',
     '.ss-bar-cta:hover{background:#25e6da;}',
     '.ss-bar-cta .lbl{display:inline;}',
+    // Signed-out: a plain "Sign in" link where the avatar menu would be.
+    '.ss-bar-signin{display:inline-flex;align-items:center;height:38px;padding:0 8px;color:#E8E8EC;',
+    'font-size:14.5px;font-weight:600;text-decoration:none;white-space:nowrap;}',
+    '.ss-bar-signin:hover{color:#fff;}',
     // Tighten before truncating: at mid widths the strip fits if the tabs
     // give up some padding, so scrolling stays a last resort.
     '@media (max-width:1100px){.ss-bar-in{gap:12px;}',
@@ -152,11 +156,16 @@
     // in-page sign-in mounts the SAME bar (tabs, id, extras) — it used to
     // mount an empty one (audit 2026-09-04).
     lastOpts = opts;
-    if (!signedIn()) return null;
+    // Signed-out visitors get a bar too (Justin, 2026-09-06: "every screen
+    // should have a nav") — public sections instead of the console tabs, and
+    // a Sign-in link where the avatar menu sits. ensure() swaps it for the
+    // signed-in bar the moment a session exists.
+    var authed = signedIn();
     ensureStyle();
 
     var bar = document.createElement('div');
     bar.className = 'ss-bar';
+    bar.setAttribute('data-authed', authed ? '1' : '0');
     // trips.html / driving.html already toggle a #consoleNav element per
     // state (the bar must not show over the sign-in or loading screens).
     // Adopting that id keeps their show() working untouched.
@@ -174,12 +183,16 @@
 
     var tabs = document.createElement('div');
     tabs.className = 'ss-bar-tabs';
-    var items = [
+    var items = (authed ? [
       { key: 'trips', label: 'Trips', href: '/trips' },
       { key: 'driving', label: 'Driving', href: '/driving' },
       { key: 'messages', label: 'Messages', href: '/messages', badge: opts.unread },
       { key: 'rides', label: 'Find a ride', href: '/rides?web=1' },
-    ].concat(opts.extra || []);
+    ] : [
+      { key: 'rides', label: 'Find a ride', href: '/rides?web=1' },
+      { key: 'requests', label: 'Ride requests', href: '/requests' },
+      { key: 'faq', label: 'How it works', href: '/faq' },
+    ]).concat(authed ? (opts.extra || []) : []);
     items.forEach(function (it) { tabs.appendChild(tab(it, opts.active)); });
     inner.appendChild(tabs);
 
@@ -192,7 +205,15 @@
     cta.setAttribute('aria-label', 'Post a ride');
     right.appendChild(cta);
     var menuSlot = document.createElement('span');
-    right.appendChild(menuSlot);
+    if (authed) {
+      right.appendChild(menuSlot);
+    } else {
+      var si = document.createElement('a');
+      si.className = 'ss-bar-signin';
+      si.href = '/signin?next=' + encodeURIComponent(location.pathname + location.search);
+      si.textContent = 'Sign in';
+      right.appendChild(si);
+    }
     inner.appendChild(right);
 
     bar.appendChild(inner);
@@ -201,9 +222,32 @@
     // console pages each chose a different one (26/16, 32/20, …). Measure it
     // and cancel it rather than hard-coding a value that only fits one page.
     var bp = window.getComputedStyle(document.body);
-    bar.style.marginLeft = '-' + bp.paddingLeft;
-    bar.style.marginRight = '-' + bp.paddingRight;
-    bar.style.marginTop = '-' + bp.paddingTop;
+    var bodyIsColumn = bp.maxWidth && bp.maxWidth !== 'none';
+    // Centred-column bodies (privacy, terms, delete-account: body itself has
+    // a max-width) — span the viewport by measuring, not with 100vw, which
+    // includes the scrollbar and overshoots by its width on both sides.
+    function placeColumn() {
+      var br = document.body.getBoundingClientRect();
+      var contentLeft = br.left + parseFloat(bp.paddingLeft || '0');
+      // border-box: the width below must INCLUDE the side padding copied
+      // from the body, or the bar runs past the viewport by that much.
+      bar.style.boxSizing = 'border-box';
+      bar.style.width = document.documentElement.clientWidth + 'px';
+      bar.style.marginLeft = (-contentLeft) + 'px';
+      bar.style.marginRight = '0';
+    }
+    if (bodyIsColumn) {
+      placeColumn();
+      window.addEventListener('resize', placeColumn);
+    } else {
+      bar.style.marginLeft = '-' + bp.paddingLeft;
+      bar.style.marginRight = '-' + bp.paddingRight;
+    }
+    // Cancel the body's top padding AND top margin (privacy/terms use
+    // `margin:40px auto`): a first child's negative margin collapses with the
+    // parent's, so the bar reaches the top of the page instead of leaving a
+    // strip of page background above it.
+    bar.style.marginTop = '-' + (parseFloat(bp.paddingTop || '0') + parseFloat(bp.marginTop || '0')) + 'px';
     bar.style.paddingLeft = bp.paddingLeft;
     bar.style.paddingRight = bp.paddingRight;
 
@@ -211,14 +255,14 @@
     if (target && target.parentNode) target.parentNode.replaceChild(bar, target);
     else document.body.insertBefore(bar, document.body.firstChild);
 
-    if (window.SS_MENU && window.SS_MENU.mount) {
+    if (authed && window.SS_MENU && window.SS_MENU.mount) {
       try { window.SS_MENU.mount(menuSlot); } catch (_) {}
     }
 
     // Keep the bar's inner column the same width as the page's content column
     // (.wrap), so the wordmark and the page's first heading share a left edge.
     // Both are media-query driven, so re-sync on resize rather than once.
-    var col = opts.alignTo || document.querySelector('.wrap');
+    var col = opts.alignTo || document.querySelector('.wrap') || (bodyIsColumn ? document.body : null);
     function syncWidth() {
       if (!col) return;
       var mw = window.getComputedStyle(col).maxWidth;
@@ -235,6 +279,12 @@
     syncWidth();
     window.addEventListener('resize', syncWidth);
     tabs.addEventListener('scroll', syncFade, { passive: true });
+    // ensure() calls this before discarding a bar so its window listeners go
+    // with it (each swap used to leave two resize handlers on a detached node).
+    bar._ssCleanup = function () {
+      window.removeEventListener('resize', syncWidth);
+      window.removeEventListener('resize', placeColumn);
+    };
 
     // On a phone the strip starts scrolled to "Trips", so the tab you are
     // actually on can sit off-screen and the bar stops answering "where am
@@ -262,7 +312,19 @@
   var lastOpts = null;
   function ensure(opts) {
     if (opts) lastOpts = opts;
-    if (document.querySelector('.ss-bar')) return null;
+    var existing = document.querySelector('.ss-bar');
+    if (existing) {
+      // Bar already matches the session state → nothing to do. A signed-out
+      // bar left over from first parse is swapped for the signed-in one
+      // (same options), keeping any hidden/shown state the page set on it.
+      if ((existing.getAttribute('data-authed') === '1') === signedIn()) return null;
+      var wasHidden = existing.classList.contains('hidden');
+      var fresh = mount(lastOpts || {});
+      if (fresh) { fresh.classList.toggle('hidden', wasHidden); }
+      try { if (existing._ssCleanup) existing._ssCleanup(); } catch (_) {}
+      if (existing.parentNode) existing.parentNode.removeChild(existing);
+      return fresh;
+    }
     return mount(lastOpts || {});
   }
 

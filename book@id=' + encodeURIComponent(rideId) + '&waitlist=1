@@ -29,6 +29,10 @@ window.ssTrack=function(name,opts){
   try{if(window.rdt)window.rdt('track',rname);}catch(_){}
   try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
   if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  /* Web sign-up -> Google Ads (2026-09-11). SS_GADS_SIGNUP is the 'AW-18365966554/<label>' of the Web sign-up conversion action; empty = no-op until it exists. */
+  window.SS_GADS_SIGNUP='AW-18365966554/WY7_CPzJufQcENrRybVE';
+  /* ONCE PER BROWSER, EVER. A sign-up is not a repeatable event, and the created_at<10min heuristic that guards the call sites fires on every auth event inside that window. Belt (per page) and braces (localStorage), so adding this tag to more sign-up surfaces can never double-count (bug sweep, 2026-09-11). */
+  if(name==='CompleteRegistration'&&window.SS_GADS_SIGNUP&&!window.__ssSignupCounted){var _k='ss_signup_counted';var _seen=false;try{_seen=!!localStorage.getItem(_k);}catch(_){}if(!_seen){window.__ssSignupCounted=1;try{localStorage.setItem(_k,String(Date.now()));}catch(_){}try{if(window.gtag)window.gtag('event','conversion',{'send_to':window.SS_GADS_SIGNUP});}catch(_){}}}
   try{
     var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
     if(opts.em)p.em=opts.em;
@@ -91,7 +95,7 @@ fbq('track','PageView');
       display: flex; align-items: center; justify-content: space-between;
       gap: 12px; margin-bottom: 28px;
     }
-    .navghost{color:#00D4C8;border:1px solid rgba(0,212,200,.4);padding:7px 13px;border-radius:999px;font-size:13px;font-weight:700;text-decoration:none;margin-left:8px;white-space:nowrap}
+    .navghost{color:#00D4C8;border:1px solid rgba(0,212,200,.4);padding:7px 13px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;margin-left:8px;white-space:nowrap}
     .navghost:hover{border-color:#00D4C8}
     @media (max-width:560px){.navghost{padding:6px 10px;font-size:12px;margin-left:6px}}
 
@@ -142,7 +146,9 @@ fbq('track','PageView');
     .hidden { display: none !important; }
     .center { text-align: center; }
     .icon { font-size: 44px; margin-bottom: 12px; }
-    .hint { font-size: 13px; color: #9a9aa4; margin: -8px 0 14px; line-height: 1.5; }
+    .hint { font-size: 14px; color: #9a9aa4; margin: -8px 0 14px; line-height: 1.5; }
+    .infobtn { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; margin-left:6px; padding:0; border-radius:50%; border:1px solid #6b6b78; background:transparent; color:#9a9aa4; font:600 12px/1 Georgia, serif; font-style:italic; cursor:pointer; vertical-align:-2px; }
+    .infobtn:hover, .infobtn:focus-visible { color:#00D4C8; border-color:#00D4C8; outline:none; }
 
     /* Seat picker */
     .seatgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
@@ -216,13 +222,13 @@ fbq('track','PageView');
     .google-offer { display: flex; gap: 14px; align-items: center; padding: 12px; border: 1px solid rgba(0,212,200,0.45); border-radius: 12px; background: rgba(0,212,200,0.06); margin-bottom: 10px; }
     .google-offer img { width: 64px; height: 64px; border-radius: 32px; object-fit: cover; flex: none; }
     .google-offer-title { font-weight: 700; margin-bottom: 2px; }
-    .google-offer-sub { font-size: 13px; color: #9aa3ad; margin-bottom: 8px; }
+    .google-offer-sub { font-size: 14px; color: #9aa3ad; margin-bottom: 8px; }
     .profsec { border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 16px 16px 14px; margin: 14px 0; }
     .profhead { display: flex; align-items: center; gap: 10px; font-size: 17px; margin-bottom: 4px; }
-    .profst { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,.25); font-size: 13px; color: #9aa; }
+    .profst { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,.25); font-size: 14px; color: #9aa; }
     .msg.ok { color: #00D4C8; }
     .primary.small { padding: 8px 14px; font-size: 14px; width: auto; }
-    .gate-pick { font-size: 13px; color: #9aa3ad; margin: -4px 0 14px; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .gate-pick { font-size: 14px; color: #9aa3ad; margin: -4px 0 14px; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
     .gate-pick b { color: #e5e7eb; }
     .gate-pick .step { float: right; color: #00d4c8; font-weight: 700; }
 
@@ -261,6 +267,13 @@ fbq('track','PageView');
   <!-- Vercel Web Analytics — the whole point of this page is conversion; keep
        every visit tracked like the other landing pages. -->
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
+<style>
+  /* Neutral outline for the promo Apply (primary-action audit, 2026-09-05):
+     "Request seat" is the one filled button on the booking step. */
+  .outline { background: transparent; border: 1px solid rgba(0,212,200,.45); color: #00D4C8; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; }
+  .outline.muted { border-color: rgba(255,255,255,.18); color: #c0c0d0; }
+  .outline:disabled { opacity: .4; cursor: default; }
+</style>
 </head>
 <body>
   <!-- Shared console app bar for signed-in riders (2026-09-03): Trips /
@@ -272,7 +285,10 @@ fbq('track','PageView');
     document.addEventListener('DOMContentLoaded', function () {
       if (!window.SS_APPBAR) return;
       var bar = SS_APPBAR.mount({ active: 'rides' });
-      if (bar) {
+      // The bar now mounts for signed-out visitors too; keep this page's own
+      // "← Back to rides" row for them (the console tabs replace it only
+      // when signed in).
+      if (bar && SS_APPBAR.signedIn()) {
         var b = document.querySelector('.wrap > .brand');
         if (b) b.style.display = 'none';
       }
@@ -388,7 +404,7 @@ fbq('track','PageView');
       <label for="pfName">Your name</label>
       <input id="pfName" type="text" autocomplete="name" placeholder="First Last" />
       <label for="pfBio">A few words about you</label>
-      <p class="sub" style="margin:0 0 8px;font-size:13px;">No phone numbers or emails — you and your driver chat and call right in Seat Sherpa once booked.</p>
+      <p class="sub" style="margin:0 0 8px;font-size:14px;">No phone numbers or emails — you and your driver chat and call right in Seat Sherpa once booked.</p>
       <textarea id="pfBio" maxlength="500" placeholder="e.g. Grad student heading home for the weekend. Quiet rider, one small bag."></textarea>
       <p class="hint"><span id="bioCount">0</span> / 3 words minimum</p>
       <div class="profsec hidden" id="secEmail">
@@ -448,15 +464,19 @@ fbq('track','PageView');
           <select id="segBoard" style="flex:1;min-width:140px;"></select>
           <select id="segAlight" style="flex:1;min-width:140px;"></select>
         </div>
-        <div class="sub hidden" id="segNote" style="margin:8px 0 0;font-size:13px;"></div>
+        <div class="sub hidden" id="segNote" style="margin:8px 0 0;font-size:14px;"></div>
       </div>
       <div class="seatgrid" id="seatGrid"></div>
       <label for="drvMsg" id="drvMsgLabel">Message to the driver (optional)</label>
       <textarea id="drvMsg" maxlength="300" style="min-height:64px;" placeholder="e.g. Hi! I can meet anywhere near downtown."></textarea>
       <div id="priceSummary" class="hidden">
         <div class="sumline"><span id="sumSeatsLabel">Seats</span><span id="sumSeats"></span></div>
-        <div class="sumline"><span id="sumFeeLabel">Service fee</span><span id="sumFee"></span></div>
-        <div class="sumline hidden" id="sumBookingFeeRow"><span>Booking fee</span><span id="sumBookingFee"></span></div>
+        <!-- "Booking fee" with an info toggle, never a derived rate in the label
+             (Justin, 2026-09-10: "(18%)" on an $11 seat, "($2.00 min)"). The
+             flat 99¢ line below is "Processing fee" so the two never share a name. -->
+        <div class="sumline"><span id="sumFeeLabel">Booking fee <button type="button" class="infobtn" id="feeInfoBtn" aria-label="About the booking fee" aria-controls="feeInfo" aria-expanded="false">i</button></span><span id="sumFee"></span></div>
+        <p class="hint hidden" id="feeInfo" style="margin:2px 0 10px;"></p>
+        <div class="sumline hidden" id="sumBookingFeeRow"><span>Processing fee</span><span id="sumBookingFee"></span></div>
         <div class="sumline hidden" id="sumCreditRow" style="color:#4ade80;"><span>Ride credit</span><span id="sumCredit"></span></div>
         <div class="sumline total"><span>Estimated total</span><span id="sumTotal"></span></div>
         <p class="hint" style="margin:8px 0 14px;">Exact total shown at secure checkout.</p>
@@ -464,19 +484,19 @@ fbq('track','PageView');
         <!-- Typed code at checkout (2026-09-03): applying one refreshes the
              credit line above. Same applier as sign-in and the account page. -->
         <details id="codeBox" style="margin:0 0 14px;">
-          <summary style="cursor:pointer;font-size:13px;color:#7dd3fc;">Have an invite or promo code?</summary>
+          <summary style="cursor:pointer;font-size:14px;color:#7dd3fc;">Have an invite or promo code?</summary>
           <div style="display:flex;gap:8px;margin-top:10px;">
             <input id="webCode" placeholder="e.g. TAYLOR5" autocapitalize="characters" autocomplete="off" maxlength="12" style="flex:1;min-width:0;" />
-            <button class="primary" id="webCodeBtn" type="button" style="width:auto;padding:0 18px;">Apply</button>
+            <button class="outline muted" id="webCodeBtn" type="button" style="width:auto;padding:0 18px;margin:0;">Apply</button>
           </div>
-          <div class="msg hidden" id="webCodeMsg" style="font-size:13px;margin-top:8px;"></div>
+          <div class="msg hidden" id="webCodeMsg" style="font-size:14px;margin-top:8px;"></div>
         </details>
         <!-- Cancellation terms BEFORE money (benchmark 8/26) — copy matches
              trips.html's POLICY_DETAILS so pre- and post-booking never
              disagree. Populated from public-ride's cancellationPolicy. -->
         <details id="policyBox" style="margin:0 0 14px;">
-          <summary style="cursor:pointer;font-size:13px;color:#7dd3fc;">Cancellation policy</summary>
-          <ul id="policyList" style="margin:8px 0 0 18px;font-size:13px;color:#9a9aa8;line-height:1.6;"></ul>
+          <summary style="cursor:pointer;font-size:14px;color:#7dd3fc;">Cancellation policy</summary>
+          <ul id="policyList" style="margin:8px 0 0 18px;font-size:14px;color:#9a9aa8;line-height:1.6;"></ul>
         </details>
       </div>
       <button class="primary" id="bookBtn" disabled>Request seat</button>
@@ -506,8 +526,11 @@ fbq('track','PageView');
       <p class="sub" id="successSub">The driver has been notified. Your card is authorized but only charged when they accept — we'll email you as soon as they respond.</p>
       <!-- Web-first (2026-08-28): a web booker's home is the browser console,
            not the app stores. Soft app line only. -->
-      <a class="primary" id="successMsgBtn" href="/messages" style="display:block;text-align:center;text-decoration:none;padding:14px;border-radius:12px;background:transparent;border:1px solid rgba(0,212,200,0.55);color:#00D4C8;font-weight:700;font-size:16px;margin-bottom:12px;">💬 Message the driver</a>
-      <a class="primary" href="/trips" style="display:block;text-align:center;text-decoration:none;padding:15px;border-radius:12px;background:#00D4C8;color:#04201e;font-weight:700;font-size:16px;">🎒 Track it in My trips</a>
+      <!-- One filled button (primary-action audit, Justin 2026-09-05):
+           messaging the driver is what improves the trip, so it's the fill;
+           My trips is a link. Emoji dropped per the design rules. -->
+      <a class="primary" id="successMsgBtn" href="/messages" style="display:block;text-align:center;text-decoration:none;padding:15px;border-radius:12px;background:#00D4C8;color:#04201e;font-weight:700;font-size:16px;">Message the driver</a>
+      <a class="linkbtn" href="/trips" style="display:inline-block;margin-top:14px;font-size:15px;font-weight:600;text-decoration:none;">See it in My trips</a>
       <p class="hint" style="margin-top:14px;text-align:center;">
         Prefer the app on ride day? It's on the
         <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=book">App Store and Google Play</a>.
@@ -520,7 +543,7 @@ fbq('track','PageView');
       <h1>Checkout cancelled</h1>
       <p class="sub">Your card wasn't charged. Your seat request is held open for a little while if you'd like to finish paying.</p>
       <a class="primary" id="retryLink" href="#" style="display:block; background:#00D4C8; color:#04201e; border-radius:12px; padding:15px; font-size:16px; font-weight:700; margin-bottom:12px;">Finish booking</a>
-      <button class="linkbtn danger" id="withdrawBtn">Withdraw my request</button>
+      <button class="linkbtn danger" id="withdrawBtn" style="font-size:14px;">Withdraw my request</button>
       <div class="msg hidden" id="cancelMsg"></div>
     </div>
 
@@ -686,6 +709,9 @@ fbq('track','PageView');
     // permits reading your OWN balance under your own session). Drives the
     // fee trigger + the credit preview in updateSummary, mirroring the app.
     let myCreditCents = 0;
+    // 0286: does this rider hold a live booking-fee waiver? Display only;
+    // web-create-booking re-reads the same column and is authoritative.
+    let myFeeWaived = false;
     // Typed code at checkout (2026-09-03). Lazy import keeps this page's own
     // client untouched; both clients share the same stored session.
     (async () => {
@@ -709,6 +735,24 @@ fbq('track','PageView');
         const v = typeof bal === 'number' ? bal : 0;
         if (v !== myCreditCents) { myCreditCents = v; try { updateSummary(); } catch (_) {} }
       } catch (_) { /* preview only — checkout is authoritative */ }
+      // 0286 booking-fee waiver. web-create-booking applies the same rule from
+      // the same column, so this only decides what the rider SEES before they
+      // pay. Without it a waived rider would be shown a fee, then charged
+      // less, which reads as a bait-and-switch in reverse and is exactly the
+      // kind of number mismatch we have been stamping out all month.
+      try {
+        const { data: w } = await supabase.rpc('passenger_fee_waived', { p_user: myUid });
+        window.__ssWaiverChecked = true;
+        const nw = w === true;
+        if (nw !== myFeeWaived) {
+          myFeeWaived = nw;
+          // The seat TILES carry the fee too and are painted before sign-in
+          // resolves, so they must repaint here or a $10 seat reads "$12" over
+          // a "$10.00" total (review, 2026-09-11). renderSeats keeps picks.
+          try { renderSeats(); } catch (_) {}
+          try { updateSummary(); } catch (_) {}
+        }
+      } catch (_) { /* no waiver on a failed read — never invent a discount */ }
     }
 
     // ── Shared validation (cloned from the app so web + app enforce the same
@@ -802,10 +846,50 @@ fbq('track','PageView');
     // same integer math as the summary (Justin, 2026-08-28 — the seat tile
     // should show $10.50, not the $10 base). The flat booking fee is per-
     // booking, not per-seat, so it stays out of the tile and on its own line.
-    function seatAllIn(dollars) {
+    // Minimum service fee (0256): the server says whether the $2 floor applies to
+    // THIS ride (serviceFeeMinCents > 0 only for rides posted after the cutoff);
+    // the fee is max(bps fee, floor). Same rule web-create-booking charges.
+    function serviceFeeCentsFor(seatCents) {
+      // 0286: a live waiver zeroes the fee for this rider, on every seat tile
+      // as well as the receipt, so the tile price and the total agree.
+      if (myFeeWaived) return 0;
       var bps = typeof rideData !== 'undefined' && typeof rideData.serviceFeeBps === 'number' ? rideData.serviceFeeBps : 500;
+      var minC = typeof rideData !== 'undefined' && typeof rideData.serviceFeeMinCents === 'number' ? rideData.serviceFeeMinCents : 0;
+      var pct = Math.floor((seatCents * bps) / 10000);
+      return minC > 0 ? Math.max(pct, minC) : pct;
+    }
+    function seatAllIn(dollars) {
       var c = Math.round(Number(dollars) * 100);
-      return (c + Math.floor((c * bps) / 10000)) / 100;
+      return (c + serviceFeeCentsFor(c)) / 100;
+    }
+
+    // MARGINAL tile pricing — ported from the app's booking-sheet, which fixed
+    // this on 2026-09-09. The $2 minimum booking fee (0256) and the 99c
+    // processing fee are per BOOKING, not per seat, so charging them on every
+    // tile made two $11 seats read $13.00 each against a $24.00 receipt: two
+    // numbers on one screen that could not both be true. What a tile must show
+    // is what ADDING that seat costs, given what is already selected, so the
+    // tiles always sum to the receipt (13 + 11 = the 24 charged).
+    function allInCentsForWeb(cents) {
+      if (cents <= 0) return 0;
+      var base = cents + serviceFeeCentsFor(cents);
+      var bookingFee = (rideData && (rideData.bookingFeeApplies === true ||
+        (typeof myCreditCents === 'number' && myCreditCents > 0) ||
+        (rideData.bookingFeeApplies === undefined && rideData.bookingFeeCents > 0))) ? 99 : 0;
+      return base + bookingFee;
+    }
+    /** Dollars this tile adds to the total right now. Measured from the total
+     *  WITHOUT this seat, so the number reads the same whether or not it is
+     *  already selected. */
+    function tilePriceDollars(seat) {
+      var p = Math.round(segPrice(seat.price) * 100);
+      var sel = 0;
+      for (var i = 0; i < selectedSeats.length; i++) {
+        var s = seatById(selectedSeats[i]);
+        if (s) sel += Math.round(segPrice(s.price) * 100);
+      }
+      var without = selectedSeats.indexOf(seat.id) >= 0 ? sel - p : sel;
+      return (allInCentsForWeb(without + p) - allInCentsForWeb(without)) / 100;
     }
 
     // ── Ride card render ──────────────────────────────────────────────────
@@ -816,7 +900,8 @@ fbq('track','PageView');
       $('rideMeta').textContent = rideWhen(d.depDate, d.depTime);
       if (d.driverFirst) {
         $('rideDriver').textContent = 'Driven by ' + d.driverFirst +
-          (d.driverRating ? ' · ★ ' + Number(d.driverRating).toFixed(1) + (d.driverRatingCount ? ' (' + d.driverRatingCount + ')' : '') : ' · New driver') +
+          // "New driver" parked 2026-09-07 (Justin) until more drivers carry reviews — unrated shows nothing.
+          (d.driverRating ? ' · ★ ' + Number(d.driverRating).toFixed(1) : '') +
           (typeof d.driverTrips === 'number' && d.driverTrips > 0 ? ' · ' + d.driverTrips + ' trip' + (d.driverTrips === 1 ? '' : 's') : '');
         // Preference chips (2026-08-28) — folded into the driver line where
         // the booking decision happens.
@@ -852,8 +937,8 @@ fbq('track','PageView');
           '✓ Cancel 24+ hours before departure → 100% of the seat price back',
           '~ Cancel 2 – 24 hours before → 50% of the seat price back',
           '✗ Cancel within 2 hours of departure → no refund',
-          'ⓘ The 5% service fee is non-refundable when you cancel',
-          '✓ If the DRIVER cancels: 100% refund including the service fee',
+          'ⓘ The booking fee is non-refundable when you cancel',
+          '✓ If the DRIVER cancels: 100% refund including the booking fee',
         ],
         free: [
           '✓ Cancel 2+ hours before departure → 100% refund',
@@ -993,12 +1078,28 @@ fbq('track','PageView');
     // fresh:true bypasses the browser's HTTP cache (public-ride is cached
     // ~120s) — used after SEATS_TAKEN, where re-reading the cached response
     // would keep showing the just-taken seat as open.
-    async function loadRide(fresh) {
+    async function fetchRide(bearer, fresh) {
+      // v=book: public-ride logs this as a booking-page view (0295), keyed to
+      // the signed-in user when a JWT is sent, else to the salted IP hash.
       const r = await fetch(SUPA + '/functions/v1/public-ride?id=' + encodeURIComponent(rideId)
-          + (fresh ? '&fresh=' + Date.now() : ''),
-        { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON },
+          + '&v=book' + (fresh ? '&fresh=' + Date.now() : ''),
+        { headers: { apikey: ANON, Authorization: 'Bearer ' + (bearer || ANON) },
           cache: fresh ? 'reload' : 'default' });
       return r.json();
+    }
+
+    // Send the SIGNED-IN user's token when we have one, not the anon key:
+    // public-ride answers `isOwnRide` only for an identified caller, which is
+    // how this page learns the viewer is the driver BEFORE the seat picker
+    // (Justin, 2026-09-08 — web let him walk to payment on his own ride).
+    // Anonymous visitors keep the anon key and the old behaviour exactly.
+    async function loadRide(fresh) {
+      let bearer = ANON;
+      try {
+        const { data: sd } = await supabase.auth.getSession();
+        if (sd && sd.session && sd.session.access_token) bearer = sd.session.access_token;
+      } catch (_) { /* not signed in — anon key */ }
+      return fetchRide(bearer, fresh);
     }
 
     // Waitlist (2026-08-28, app parity): ?waitlist=1 turns the full-ride dead
@@ -1040,6 +1141,9 @@ fbq('track','PageView');
         if (qp.get('waitlist') === '1' && rideId) { void waitlistFlow(); return; }
         $('goneTitle').textContent = 'This ride is full';
         $('goneSub').innerHTML = 'Every seat has been taken — <a href="?id=' + encodeURIComponent(rideId) + '&waitlist=1" style="font-weight:700;">join the waitlist</a> and we’ll email you if one opens.';
+      } else if (kind === 'own_ride') {
+        $('goneTitle').textContent = 'This is your ride';
+        $('goneSub').innerHTML = 'You can’t book a seat on a ride you’re driving. <a href="/driving" style="font-weight:700;">Open your driving console</a> to manage seats and riders, or share the link to fill it.';
       } else if (kind === 'too_soon') {
         // Requests close 15 minutes before departure — the driver needs time
         // to answer. Distinct from an actual departure (sweep 2026-09-03).
@@ -1142,14 +1246,43 @@ fbq('track','PageView');
         o.value = value; o.textContent = label;
         sel.appendChild(o);
       };
-      opt(bSel, '', 'Board: ' + (rideData.fromArea || 'Start'));
-      stops.forEach((st) => { if (st.id) opt(bSel, st.id, 'Board: ' + st.name); });
-      stops.forEach((st) => { if (st.id) opt(aSel, st.id, 'Get off: ' + st.name); });
+      // Times: departure on the origin, the server's per-stop estimate on each
+      // stop (public-ride `eta`, same math as the app chips and the pickup
+      // reminders; timing sweep 2026-09-10). Estimates, confirmed in chat.
+      const to12h = (t) => { const m = /^(\d{1,2}):(\d{2})/.exec(t || ''); if (!m) return ''; const h = Number(m[1]); return (h % 12 || 12) + ':' + m[2] + ' ' + (h >= 12 ? 'PM' : 'AM'); };
+      const depLabel = to12h(rideData.depTime);
+      const withEta = (label, st) => label + (st.eta ? ' (' + st.eta + ')' : '');
+      opt(bSel, '', 'Board: ' + (rideData.fromArea || 'Start') + (depLabel ? ' (' + depLabel + ')' : ''));
+      stops.forEach((st) => { if (st.id) opt(bSel, st.id, withEta('Board: ' + st.name, st)); });
+      stops.forEach((st) => { if (st.id) opt(aSel, st.id, withEta('Get off: ' + st.name, st)); });
       opt(aSel, '', 'Get off: ' + (rideData.toArea || 'End'));
       aSel.value = '';
+      // Leg preselect from the search card (2026-09-08): ?board=<stopId>
+      // &alight=<stopId>, forwarded by ride.html. Only ids that exist on THIS
+      // ride are honoured; recomputeSegment re-validates order and prices the
+      // pair exactly as the seat tiles and the server will.
+      try {
+        const pb = qp.get('board'), pa = qp.get('alight');
+        if (pb && segStopById(pb)) { bSel.value = pb; segBoardingId = pb; }
+        if (pa && segStopById(pa)) { aSel.value = pa; segAlightingId = pa; }
+        if (segBoardingId || segAlightingId) recomputeSegment();
+      } catch (_) {}
       bSel.addEventListener('change', () => { segBoardingId = bSel.value || null; recomputeSegment(); });
       aSel.addEventListener('change', () => { segAlightingId = aSel.value || null; recomputeSegment(); });
       wrap.classList.remove('hidden');
+    }
+
+    /** Rewrite every open tile's price from the current selection. Open tiles
+     *  carry data-seat; closed ones are disabled and show a word, not a price. */
+    function refreshTilePrices() {
+      var tiles = document.querySelectorAll('[data-seat]');
+      for (var i = 0; i < tiles.length; i++) {
+        var el = tiles[i];
+        if (el.disabled) continue;
+        var seat = seatById(el.dataset.seat);
+        var sp = el.querySelector('.sp');
+        if (seat && sp) sp.textContent = fmt$(tilePriceDollars(seat));
+      }
     }
 
     function seatBtn(s) {
@@ -1171,7 +1304,7 @@ fbq('track','PageView');
       // seat) says "Closed" — different facts (Justin, 2026-08-28). booked is
       // new in the payload: only an explicit false means closed, so a cached
       // pre-field payload still reads "Taken".
-      priceSpan.textContent = open ? fmt$(seatAllIn(segPrice(s.price))) : (s.booked === false ? 'Closed' : 'Taken');
+      priceSpan.textContent = open ? fmt$(tilePriceDollars(s)) : (s.booked === false ? 'Closed' : 'Taken');
       btn.appendChild(labelSpan);
       btn.appendChild(priceSpan);
       if (open) {
@@ -1179,9 +1312,35 @@ fbq('track','PageView');
           const i = selectedSeats.indexOf(s.id);
           if (i >= 0) selectedSeats.splice(i, 1); else selectedSeats.push(s.id);
           btn.classList.toggle('sel', i < 0);
+          // Marginal prices depend on what else is selected, so every OTHER
+          // tile's number changes when this one is picked: the first seat
+          // carries the per-booking minimum, the second does not. Repaint the
+          // labels in place (never the whole grid, which would drop the DOM
+          // nodes and the selection styling we just set).
+          refreshTilePrices();
           updateSummary();
         });
       }
+      return btn;
+    }
+
+    // A position this ride never offered (see the car layout in renderSeats):
+    // drawn locked so the diagram still reads as a whole car, never clickable,
+    // never in selectedSeats. Plain text only — the label is ours, not the
+    // driver's, but keep the same no-innerHTML discipline as seatBtn.
+    function closedTile(id, name) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'seat taken closed';
+      btn.disabled = true;
+      btn.setAttribute('aria-label', name + ' seat, closed');
+      var labelSpan = document.createElement('span');
+      labelSpan.textContent = name;
+      var priceSpan = document.createElement('span');
+      priceSpan.className = 'sp';
+      priceSpan.textContent = 'Closed';
+      btn.appendChild(labelSpan);
+      btn.appendChild(priceSpan);
       return btn;
     }
 
@@ -1216,32 +1375,41 @@ fbq('track','PageView');
         drv.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M3.5 12h6M14.5 12h6M12 14.5V21"/></svg>';
         drv.appendChild(document.createTextNode('Driver'));
         front.appendChild(drv);
-        if (byId.fp) front.appendChild(seatBtn(byId.fp));
-        else front.appendChild(document.createElement('div'));
+        // Every standard position is DRAWN. A ride posted from a car profile
+        // with fewer passenger seats (the app builds the layout from the
+        // vehicle's seat count — a "2-seat" car lists fp + rl only) used to
+        // show a car with the rear row simply missing. Positions the ride
+        // never listed now render as CLOSED tiles (Justin, 2026-09-07: "they
+        // should appear but be marked as closed"). Same treatment as the app's
+        // booking sheet. The middle row is still only drawn when the ride has
+        // one — sedans have no middle row to close.
+        const CLOSED_NAME = { fp: 'Front', ml: 'Middle Left', mr: 'Middle Right', rl: 'Rear Left', rc: 'Rear Center', rr: 'Rear Right' };
+        const tile = (id) => byId[id] ? seatBtn(byId[id]) : closedTile(id, CLOSED_NAME[id]);
+        front.appendChild(tile('fp'));
         shell.appendChild(front);
 
         // Middle row (6-seaters / vans) only when the vehicle has one.
         if (byId.ml || byId.mr) {
           const mid = document.createElement('div');
           mid.className = 'carrow';
-          mid.appendChild(byId.ml ? seatBtn(byId.ml) : document.createElement('div'));
-          mid.appendChild(byId.mr ? seatBtn(byId.mr) : document.createElement('div'));
+          mid.appendChild(tile('ml'));
+          mid.appendChild(tile('mr'));
           const div1 = document.createElement('div');
           div1.className = 'windshield';
           shell.appendChild(div1);
           shell.appendChild(mid);
         }
 
-        // Rear bench.
-        if (byId.rl || byId.rc || byId.rr) {
+        // Rear bench — always drawn.
+        {
           const div2 = document.createElement('div');
           div2.className = 'windshield';
           shell.appendChild(div2);
           const rear = document.createElement('div');
           rear.className = 'carrow three';
-          rear.appendChild(byId.rl ? seatBtn(byId.rl) : document.createElement('div'));
-          rear.appendChild(byId.rc ? seatBtn(byId.rc) : document.createElement('div'));
-          rear.appendChild(byId.rr ? seatBtn(byId.rr) : document.createElement('div'));
+          rear.appendChild(tile('rl'));
+          rear.appendChild(tile('rc'));
+          rear.appendChild(tile('rr'));
           shell.appendChild(rear);
         }
 
@@ -1285,7 +1453,8 @@ fbq('track','PageView');
       // Same integer math as the server: fee on the summed seat cents.
       const bps = typeof rideData.serviceFeeBps === 'number' ? rideData.serviceFeeBps : 500;
       const seatCents = Math.round(totalDollars * 100);
-      const feeCents = Math.floor((seatCents * bps) / 10000);
+      const feeCents = serviceFeeCentsFor(seatCents);
+      const minLifted = feeCents > Math.floor((seatCents * bps) / 10000);
       // Flat 99¢ booking fee, when it applies: waived-driver rides (server
       // says so) OR this rider holds credit (credit parity with the app,
       // 2026-08-25). The server adds it as its own Checkout line item.
@@ -1297,8 +1466,22 @@ fbq('track','PageView');
       // Credit preview — mirrors the server exactly: redeem up to the total
       // minus Stripe's 50¢ card minimum. charge = what the card is charged.
       const creditPreview = myCreditCents > 0 && grandTotal > 50 ? Math.min(myCreditCents, grandTotal - 50) : 0;
-      return { n, bps, seatCents, feeCents, bookingFeeCents, grandTotal, creditPreview, charge: grandTotal - creditPreview };
+      return { n, bps, minLifted, seatCents, feeCents, bookingFeeCents, grandTotal, creditPreview, charge: grandTotal - creditPreview };
     }
+
+    // Booking-fee info toggle; aria-expanded mirrors the hint's visibility.
+    (function wireFeeInfo() {
+      function init() {
+        var btn = $('feeInfoBtn'), box = $('feeInfo');
+        if (!btn || !box) return;
+        btn.addEventListener('click', function () {
+          var open = box.classList.toggle('hidden') === false;
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+      else init();
+    })();
 
 function rideWhen(dateStr, timeStr) {
   var p = String(dateStr || '').split('-').map(Number);
@@ -1322,11 +1505,21 @@ function rideWhen(dateStr, timeStr) {
         bookBtn.textContent = 'Request seat';
         return;
       }
-      const { bps, seatCents, feeCents } = t;
+      const { bps, minLifted, seatCents, feeCents } = t;
       $('sumSeatsLabel').textContent = n + ' seat' + (n === 1 ? '' : 's');
       $('sumSeats').textContent = fmt$(seatCents / 100);
-      $('sumFeeLabel').textContent = 'Service fee (' + (bps / 100) + '%)';
-      $('sumFee').textContent = fmt$(feeCents / 100);
+      // The label stays "Booking fee" + the info button (never a derived rate,
+      // Justin 2026-09-10); the toggle text carries the live rate and floor.
+      var minC = typeof rideData.serviceFeeMinCents === 'number' ? rideData.serviceFeeMinCents : 0;
+      var minTxt = minC % 100 === 0 ? '$' + (minC / 100) : fmt$(minC / 100);
+      $('feeInfo').textContent = myFeeWaived
+        ? 'Your booking fee is waived. Nothing to do, it is already off this total.'
+        : 'The booking fee is ' + (bps / 100) + '% of the seat price'
+          + (minC > 0 ? ', with a minimum of ' + minTxt + ' for processing and server fees on rides under that amount.' : '.')
+          + (minLifted ? ' The minimum applies to this booking.' : '');
+      // A waived rider reads "Waived", not "$0.00". A zero dollar amount looks
+      // like a bug; the word says a thing was done for them on purpose.
+      $('sumFee').textContent = myFeeWaived ? 'Waived' : fmt$(feeCents / 100);
       // Flat 99¢ booking fee, when it applies: waived-driver rides (server
       // says so) OR this rider holds credit (credit parity with the app,
       // 2026-08-25 — their credit auto-applies at checkout as a "Ride credit"
@@ -1416,10 +1609,18 @@ function rideWhen(dateStr, timeStr) {
           try {
             const { data: u } = await supabase.auth.getUser();
             if (u && u.user) {
-              try { await supabase.auth.updateUser({ data: { role: u.user.user_metadata?.role || 'passenger' } }); } catch (_) {}
+              // surface:'web' so 0261's trigger stamps profiles.web_seen_at for
+              // OAuth sign-ups too (only the OTP path set it at signUp).
+              try { await supabase.auth.updateUser({ data: { role: u.user.user_metadata?.role || 'passenger', surface: 'web' } }); } catch (_) {}
               try {
                 const created = u.user.created_at ? new Date(u.user.created_at).getTime() : 0;
-                if (created && Date.now() - created < 10 * 60 * 1000 && window.ssTrack) {
+                // ONCE per page. A new Google/Apple rider signs in here and is
+                // sent straight to the phone wall, whose success handler fires
+                // the same event, so both landed inside the 10-minute window:
+                // two Google Ads conversions, two Meta, two Reddit, for one
+                // rider (bug sweep, 2026-09-11).
+                if (created && Date.now() - created < 10 * 60 * 1000 && window.ssTrack && !window.__ssSignupFired) {
+                  window.__ssSignupFired = true;
                   window.ssTrack('CompleteRegistration', { em: u.user.email });
                 }
               } catch (_) {}
@@ -1595,7 +1796,10 @@ function rideWhen(dateStr, timeStr) {
       try {
         const { data: u } = await supabase.auth.getUser();
         const created = u?.user?.created_at ? new Date(u.user.created_at).getTime() : 0;
-        if (created && Date.now() - created < 10 * 60 * 1000 && window.ssTrack) {
+        // Same once-flag as the OAuth handler above: an OAuth rider reaches
+        // both, and only the first may count.
+        if (created && Date.now() - created < 10 * 60 * 1000 && window.ssTrack && !window.__ssSignupFired) {
+          window.__ssSignupFired = true;
           window.ssTrack('CompleteRegistration', { em: u.user.email });
         }
       } catch (_) {}
@@ -1655,6 +1859,14 @@ function rideWhen(dateStr, timeStr) {
           return false;
         }
       } catch (_) { /* detector unavailable — proceed */ }
+      // REAL-PHOTO gate (2026-09-07): illustrations / AI portraits are a hard
+      // no; any failure falls open. Shared helper: /js/ss-photo-check.js.
+      try {
+        const { checkRealPhoto, NOT_REAL_PHOTO_MESSAGE } = await import('/js/ss-photo-check.js');
+        const { data: sess } = await supabase.auth.getSession();
+        const rp = await checkRealPhoto(candidate, sess && sess.session && sess.session.access_token);
+        if (rp.realPhoto === false) { setMsg('photoMsg', NOT_REAL_PHOTO_MESSAGE); return false; }
+      } catch (_) { /* fail open */ }
       photoBlob = candidate;
       const prev = $('photoPrev');
       prev.src = URL.createObjectURL(photoBlob);
@@ -1728,6 +1940,27 @@ function rideWhen(dateStr, timeStr) {
         const { data: sessionData } = await supabase.auth.getSession();
         const token = sessionData.session?.access_token;
         if (!token) { show('stEmail'); return; }
+        // Re-read the booking-fee waiver RIGHT BEFORE creating the booking.
+        // It is read once at sign-in, but a checkout-lapse waiver can end one
+        // hour before departure, and these riders are by definition slow to
+        // finish: OTP, name, bio, phone, photo. The app has a pre-pay amount
+        // check for this; web has none, so a stale "Waived" would have become
+        // an unexplained higher number on the Stripe page (bug sweep,
+        // 2026-09-11). If it changed, redraw and make them look again.
+        if (myUid) {
+          try {
+            const { data: wNow } = await supabase.rpc('passenger_fee_waived', { p_user: myUid });
+            if ((wNow === true) !== myFeeWaived) {
+              myFeeWaived = wNow === true;
+              try { renderSeats(); } catch (_) {}
+              try { updateSummary(); } catch (_) {}
+              setMsg('bookMsg', myFeeWaived
+                ? 'Good news, your booking fee came off. Check the total and tap again.'
+                : 'Your booking fee waiver just ran out, so the total changed. Check it and tap again.');
+              return;
+            }
+          } catch (_) { /* the server is authoritative either way */ }
+        }
         const res = await fetch(SUPA + '/functions/v1/web-create-booking', {
           method: 'POST',
           headers: {
@@ -1801,7 +2034,11 @@ function rideWhen(dateStr, timeStr) {
         case 'RIDE_GONE': showGone(); return;
         case 'DEPARTS_TOO_SOON': showGone('too_soon'); return;
         case 'OWN_RIDE':
-          setMsg('bookMsg', "This is your own ride — you can't book your own seat.");
+          // Reached when the driver signed in MID-funnel, so the boot-time
+          // isOwnRide check couldn't know yet (review, 2026-09-08). Show the
+          // same terminal screen the boot check shows rather than a small
+          // inline note under a Request button that will never work.
+          showGone('own_ride');
           return;
         case 'SEATS_TAKEN': {
           // Someone beat them to it — refresh availability and let them re-pick.
@@ -2027,9 +2264,15 @@ function rideWhen(dateStr, timeStr) {
     (async function init() {
       const returning = (returnState === 'success' || returnState === 'cancelled') && Number.isFinite(bookingParam);
       if (!Number.isFinite(rideId) && !returning) { showGone(); return; }
+      // FIRST PAINT NEVER WAITS ON AUTH (2026-09-08): the ride card is public
+      // data, so fetch it with the anon key and start the session read at the
+      // same time instead of chaining them. getSession can trigger a token
+      // refresh — a network round-trip that retries on a weak connection —
+      // and the card used to sit blank behind it for no reason.
+      const sessionP = supabase.auth.getSession().catch(() => ({ data: { session: null } }));
       let d = null;
       let fetchFailed = false;
-      try { d = await loadRide(); } catch (_) { d = null; fetchFailed = true; }
+      try { d = await fetchRide(ANON); } catch (_) { d = null; fetchFailed = true; }
       if (d && d.found) { rideData = d; renderRideCard(d); try { $('instantNote').classList.toggle('hidden', !d.instant); } catch (_) {} }
 
       // Return states short-circuit the funnel BEFORE the ride-found check:
@@ -2041,6 +2284,28 @@ function rideWhen(dateStr, timeStr) {
 
       if (fetchFailed) { showGone('offline'); return; }
       if (!d || !d.found) { showGone(); return; }
+
+      // A driver can't book their own seat. web-create-booking has always
+      // refused this with OWN_RIDE 403, but only AFTER seat pick and payment
+      // details — say it up front, the way the app does (app/ride.tsx).
+      // Only an identified caller gets `isOwnRide` back, so this is a second
+      // fetch — one the anonymous majority never pays for, and one that no
+      // longer blocks the ride card above it.
+      // BOTH of these are raced against a timeout. They sit between the ride
+      // card and the seat grid, so anything that hangs here leaves a signed-in
+      // rider looking at a ride they cannot book. fetch() never times out on
+      // its own, and this path went from one network call to two on 2026-09-08,
+      // which doubled the exposure. Losing the race is safe: the worst case is
+      // a driver briefly seeing their own ride's seat grid, and
+      // web-create-booking still refuses with OWN_RIDE 403.
+      const withTimeout = (p, ms, fallback) =>
+        Promise.race([p, new Promise((res) => setTimeout(() => res(fallback), ms))]);
+      const bootSession = (await withTimeout(sessionP, 4000, { data: { session: null } })).data;
+      const token = bootSession && bootSession.session ? bootSession.session.access_token : null;
+      if (token) {
+        const own = await withTimeout(fetchRide(token).catch(() => null), 4000, null);
+        if (own && own.isOwnRide) { showGone('own_ride'); return; }
+      }
 
       // Pre-extension public-ride payload (no seats array) can't drive the
       // picker — fall back to the app rather than a broken grid.
@@ -2058,8 +2323,7 @@ function rideWhen(dateStr, timeStr) {
       // Tapping Request starts the sign-in walk; selection survives in memory
       // because every gate is a card on this same page; and the server
       // re-enforces every gate regardless (GATE_* bounces route back).
-      const { data: bootSession } = await supabase.auth.getSession();
-      if (!bootSession.session) {
+      if (!token) {
         show('stSeats');
       } else {
         await route();
@@ -2068,5 +2332,6 @@ function rideWhen(dateStr, timeStr) {
   </script>
   <script src="/js/ss-menu.js"></script>
   <script>try{if(localStorage.getItem('sb-vmfmbntacifqoqxqxgsk-auth-token')){var bn=document.getElementById('bookNav');if(bn){var mk=function(l,h){var a=document.createElement('a');a.className='navghost';a.textContent=l;a.href=h;bn.appendChild(a);};mk('My trips','/trips');mk('Messages','/messages');var mm=document.createElement('span');mm.style.marginLeft='8px';bn.appendChild(mm);if(window.SS_MENU)SS_MENU.mount(mm);}}}catch(_){}</script>
+  <script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

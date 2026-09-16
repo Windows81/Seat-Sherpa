@@ -31,6 +31,10 @@ window.ssTrack=function(name,opts){
   try{if(window.rdt)window.rdt('track',rname);}catch(_){}
   try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
   if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  /* Web sign-up -> Google Ads (2026-09-11). SS_GADS_SIGNUP is the 'AW-18365966554/<label>' of the Web sign-up conversion action; empty = no-op until it exists. */
+  window.SS_GADS_SIGNUP='AW-18365966554/WY7_CPzJufQcENrRybVE';
+  /* ONCE PER BROWSER, EVER. A sign-up is not a repeatable event, and the created_at<10min heuristic that guards the call sites fires on every auth event inside that window. Belt (per page) and braces (localStorage), so adding this tag to more sign-up surfaces can never double-count (bug sweep, 2026-09-11). */
+  if(name==='CompleteRegistration'&&window.SS_GADS_SIGNUP&&!window.__ssSignupCounted){var _k='ss_signup_counted';var _seen=false;try{_seen=!!localStorage.getItem(_k);}catch(_){}if(!_seen){window.__ssSignupCounted=1;try{localStorage.setItem(_k,String(Date.now()));}catch(_){}try{if(window.gtag)window.gtag('event','conversion',{'send_to':window.SS_GADS_SIGNUP});}catch(_){}}}
   try{
     var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
     if(opts.em)p.em=opts.em;
@@ -369,16 +373,20 @@ fbq('track','PageView');
   <!-- Shared console app bar (ss-appbar.js): a signed-in driver always has
        Trips / Driving / Messages one tap away, even mid-wizard. mount() is a
        no-op when signed out, so first-time visitors keep the plain logo. -->
+  <script src="/js/ss-menu.js"></script>
   <script src="/js/ss-appbar.js"></script>
   <script>
-    (function () {
+    // Mounted once .wrap exists: mount() measures that column to size the
+    // bar, and this script sits above it (bug scan 2026-09-06 — mounting at
+    // parse time left the bar at the 1180px fallback over a 600px wizard).
+    document.addEventListener('DOMContentLoaded', function () {
       if (!window.SS_APPBAR) return;
       var bar = SS_APPBAR.mount({ active: 'post' });
-      if (bar) document.addEventListener('DOMContentLoaded', function () {
+      if (bar && SS_APPBAR.signedIn()) {
         var b = document.querySelector('.wrap > .brand');
         if (b) b.style.display = 'none';
-      });
-    })();
+      }
+    });
   </script>
   <div class="wrap">
     <div class="brand">
@@ -528,7 +536,7 @@ fbq('track','PageView');
       <button class="choice sel" id="comfortRow" type="button">
         <span class="tick" id="comfortTick">✓</span>
         <span><span class="t">Max 2 in the back</span>
-        <span class="d">Think comfort — no one in a middle seat. A sedan offers 3 this way, a 3-row car up to 5. Turn it off to fill every seat (up to 6); the trip's cost-sharing cap is split across more seats, so the max price per seat drops.</span></span>
+        <span class="d">Think comfort — no one in a middle seat. A sedan offers 3 this way, a 3-row car up to 5. Turn it off to fill every seat (up to 6). The cost-sharing cap always assumes at least four riders share the trip, so closing a seat never raises the price.</span></span>
       </button>
       <button class="primary" id="seatsBtn">Continue</button>
     </div>
@@ -755,9 +763,9 @@ fbq('track','PageView');
          screen stays put until all three are on file. -->
     <div class="card hidden" id="gProfile">
       <div class="backrow"><button class="linkbtn" data-back="stReady">← Back to your ride</button></div>
-      <div class="eyebrow">Almost there · Photo, bio &amp; license</div>
+      <div class="eyebrow">Almost there · Photo &amp; license</div>
       <h1>Riders need to know who's driving</h1>
-      <p class="sub">Three quick things, all on this page. Your photo and bio are public; the license is private and never shown to riders.</p>
+      <p class="sub">Two quick things, plus an optional bio, all on this page. Your photo and bio are public; the license is private and never shown to riders.</p>
 
       <div class="profsec" id="secPhoto">
         <div class="profhead"><span class="profst" id="stPhotoOk">○</span><strong>Face photo</strong></div>
@@ -785,7 +793,7 @@ fbq('track','PageView');
         <div class="profhead"><span class="profst" id="stBioOk">○</span><strong>A few words about you</strong></div>
         <p class="hint">Where you're headed and why, what the ride's like. Riders decide largely on this.</p>
         <textarea id="bioInput" maxlength="500" placeholder="e.g. Engineer in San Jose, drive to LA most weekends to see family. Easy-going, music on low."></textarea>
-        <p class="hint"><span id="bioCount">0</span> / 3 words minimum</p>
+        <p class="hint">Optional. <span id="bioCount">0</span> words so far; 3 or more if you add one.</p>
         <button class="primary" id="bioBtn">Save bio</button>
         <div class="msg err hidden" id="bioMsg"></div>
       </div>
@@ -982,6 +990,10 @@ fbq('track','PageView');
     // IRS_RATE: $0.76 = the mid-year increase effective Jul 1 2026 (was 0.725).
     // Keep in step with lib/seat-price-cap.ts IRS_MILEAGE_RATE_USD_PER_MILE.
     const IRS_RATE = 0.76, HARD_CAP = 55, FLOOR = 10, MIN_TRIP_MILES = 15;
+    // The cost-share cap splits the trip across AT LEAST four riders, however
+    // many seats are open (Justin, 2026-09-06: "it should be divided by 4, not
+    // divided by 3"). Mirrors lib/seat-price-cap.ts and _shared/web-posting.ts.
+    const MIN_SHARE_SEATS = 4;
     // 8 → 20 (2026-08-25 pre-launch; matches _shared/web-posting.ts
     // MAX_DATES_PER_DRAFT — change both together).
     const MAX_DATES = 20;
@@ -1110,7 +1122,7 @@ fbq('track','PageView');
     function maxSeatPrice(leg, openSeats, apiCapCents) {
       let cap = HARD_CAP;
       const miles = tripMilesOf(leg);
-      if (miles > 0 && openSeats > 0) cap = Math.min(cap, Math.floor((miles * IRS_RATE) / openSeats));
+      if (miles > 0 && openSeats > 0) cap = Math.min(cap, Math.floor((miles * IRS_RATE) / Math.max(MIN_SHARE_SEATS, openSeats)));
       if (typeof apiCapCents === 'number' && apiCapCents > 0) cap = Math.min(cap, Math.floor(apiCapCents / 100));
       return Math.max(FLOOR, cap);
     }
@@ -1359,7 +1371,7 @@ fbq('track','PageView');
       if (cur.start && cur.end) {
         const miles = haversineMiles(cur.start, cur.end) * 1.25;
         if (isFinite(miles) && miles > 0) {
-          const perSeat = Math.min(55, Math.max(10, (miles * 0.76) / saveSeats));
+          const perSeat = Math.min(55, Math.max(10, (miles * 0.76) / Math.max(MIN_SHARE_SEATS, saveSeats)));
           // Cap at the trip's real shareable cost — floor × seats otherwise
           // overstates short trips (Fable E2).
           const net = Math.round(Math.min(saveSeats * perSeat, miles * 0.76) * 0.95);
@@ -2478,6 +2490,12 @@ fbq('track','PageView');
       $('seatVal').textContent = String(cur.seatCount);
       $('seatMinus').disabled = cur.seatCount <= 1;
       $('seatPlus').disabled = cur.seatCount >= hardMax;
+      // "Max 2 in the back" only matters above 3 seats — comfort already
+      // offers 3 in a sedan, so when the cost-sharing cap (or the layout)
+      // tops out at 1–3 the toggle changes nothing. Hide it (Justin,
+      // 2026-09-06: "if the max is 1 or 2 or 3, remove the max 2 in the
+      // back"). cur.comfort stays as is, so the seat map default is unchanged.
+      $('comfortRow').classList.toggle('hidden', hardMax <= 3);
       $('comfortRow').classList.toggle('sel', cur.comfort);
       $('comfortTick').textContent = cur.comfort ? '✓' : '';
     }
@@ -2565,29 +2583,22 @@ fbq('track','PageView');
       // publish payload); keep the key in step so Back → Continue keeps edits.
       cur.seatCount = cur.openSeats.length;
       cur.seatMapKey = cur.seatCount + '|' + (cur.comfort ? 1 : 0);
-      renderInstant(); show('stInstant');
+      // Instant book retired 2026-09-10: skip the booking-mode step entirely.
+      cur.instant = false; enterPrice();
     });
 
-    // ── Instant book ──────────────────────────────────────────────────────
+    // ── Instant book: RETIRED 2026-09-10 (Justin: "lets remove instant. i
+    // dont want it anymore"; migration 0271 forces false server-side and the
+    // draft minter ignores the flag). The step is skipped on the way to the
+    // price screen; this renderer only runs if someone navigates back into
+    // it, and then it shows the one remaining option.
     function renderInstant() {
-      const locked = cur.stops.size > 0;
-      $('instantRow').classList.toggle('locked', locked);
-      if (locked) {
-        cur.instant = false;
-        $('instantDesc').textContent = 'Unavailable on rides with pickup stops — multi-stop rides need you to confirm each rider.';
-      } else {
-        $('instantDesc').textContent = 'Riders book without waiting for approval. Needs deposits (Stripe) connected — until then, riders send requests you approve.';
-      }
-      $('reviewRow').classList.toggle('sel', !cur.instant);
-      $('reviewTick').textContent = !cur.instant ? '✓' : '';
-      $('instantRow').classList.toggle('sel', cur.instant);
-      $('instantTick').textContent = cur.instant ? '✓' : '';
+      cur.instant = false;
+      $('instantRow').style.display = 'none';
+      $('reviewRow').classList.add('sel');
+      $('reviewTick').textContent = '✓';
     }
     $('reviewRow').addEventListener('click', () => { cur.instant = false; renderInstant(); });
-    $('instantRow').addEventListener('click', () => {
-      if (cur.stops.size > 0) return;
-      cur.instant = true; renderInstant();
-    });
     $('instantBtn').addEventListener('click', () => enterPrice());
 
     // ── Price ─────────────────────────────────────────────────────────────
@@ -2733,7 +2744,7 @@ fbq('track','PageView');
     function legCapUsd(b, a) {
       const legMiles = haversineMiles(b, a) * 1.25;
       const seats = Math.max(1, cur.seatCount || 1);
-      const cap = legMiles > 0 ? Math.floor((legMiles * IRS_RATE) / seats) : HARD_CAP;
+      const cap = legMiles > 0 ? Math.floor((legMiles * IRS_RATE) / Math.max(MIN_SHARE_SEATS, seats)) : HARD_CAP;
       return Math.max(FLOOR, Math.min(HARD_CAP, cap, cur.priceUsd || HARD_CAP));
     }
     // Leg prefill relative to the FULL seat price (Justin, 2026-09-04: "don't
@@ -2821,9 +2832,13 @@ fbq('track','PageView');
       list.innerHTML = '';
       for (const pr of shown) {
         const key = pr.key;
-        const legCap = legCapUsd(pr.a.ll, pr.b.ll);
+        // NO CAP ON LEG PRICES (Justin, 2026-09-09: "leg price cap, dont. keep
+        // it as is. the driver should set it as they wish"). The cap was
+        // removed in the app that day but survived here, and on 9/10 it froze
+        // the box outright: a short leg like LA -> OC has a cost-sharing cap
+        // under $10, so max sat below min and every value, typed or stepped,
+        // snapped back to 10. The suggestion is a prefill only.
         if (!cur.segEdited[key]) cur.segPrices[key] = segSuggestUsd(pr.a.ll, pr.b.ll, trip);
-        if (cur.segPrices[key] != null && cur.segPrices[key] > legCap) cur.segPrices[key] = legCap;
         const row = document.createElement('div');
         row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13.5px;';
         const left = document.createElement('span');
@@ -2835,8 +2850,8 @@ fbq('track','PageView');
         dollar.style.cssText = 'color:#00D4C8;font-weight:700;';
         dollar.textContent = '$';
         const inp = document.createElement('input');
-        inp.type = 'number'; inp.min = '10'; inp.max = String(legCap); inp.step = '1'; inp.inputMode = 'numeric';
-        inp.title = 'Up to $' + legCap + ' for this leg (cost-sharing cap for its distance)';
+        inp.type = 'number'; inp.min = '1'; inp.step = '1'; inp.inputMode = 'numeric';
+        inp.title = 'Your price for this leg. Clear it to charge the full seat.';
         inp.style.cssText = 'width:64px;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);color:#00D4C8;font-weight:700;font-size:14px;text-align:right;';
         inp.value = cur.segPrices[key] != null ? String(cur.segPrices[key]) : '';
         inp.setAttribute('aria-label', 'Seat price ' + pr.a.name + ' to ' + pr.b.name);
@@ -2844,10 +2859,10 @@ fbq('track','PageView');
           cur.segEdited[key] = true;
           const v = Math.round(Number(inp.value));
           if (!inp.value.trim() || !isFinite(v) || v <= 0) { delete cur.segPrices[key]; inp.value = ''; return; }
-          const clamped = Math.min(legCap, Math.max(10, v));
-          cur.segPrices[key] = clamped;
-          inp.value = String(clamped);
-          if (v > legCap) { inp.title = 'Capped at $' + legCap + ' — the cost-sharing limit for this leg'; }
+          // Whole dollars, at least $1, otherwise exactly what the driver typed.
+          const price = Math.max(1, v);
+          cur.segPrices[key] = price;
+          inp.value = String(price);
         });
         money.appendChild(dollar); money.appendChild(inp);
         const per = document.createElement('span');
@@ -2945,7 +2960,10 @@ fbq('track','PageView');
       ret.toAddress = cur.fromAddress; ret.end = cur.start;
       // Same stops are valid in reverse; carry seats/comfort/price/instant.
       ret.stopSuggestions = cur.stopSuggestions;
-      ret.stops = new Set(cur.stops);
+      // Reversed like the endpoints, so the return leg lists its stops in the
+      // order the car reaches them (timing sweep, 2026-09-10; the app's
+      // round-trip flow already did this).
+      ret.stops = new Set([...cur.stops].reverse());
       // Same road in reverse: geometry flipped, measurement identical.
       ret.routeGeom = cur.routeGeom ? [...cur.routeGeom].reverse() : null;
       ret.roadMiles = cur.roadMiles; ret.roadMinutes = cur.roadMinutes;
@@ -3095,7 +3113,9 @@ fbq('track','PageView');
           try {
             const { data: u } = await supabase.auth.getUser();
             if (u && u.user) {
-              try { await supabase.auth.updateUser({ data: { role: (u.user.user_metadata && u.user.user_metadata.role) || 'driver' } }); } catch (_) {}
+              // surface:'web' so 0261's trigger stamps profiles.web_seen_at for
+              // OAuth sign-ups too (only the OTP path set it at signUp).
+              try { await supabase.auth.updateUser({ data: { role: (u.user.user_metadata && u.user.user_metadata.role) || 'driver', surface: 'web' } }); } catch (_) {}
               try {
                 const created = u.user.created_at ? new Date(u.user.created_at).getTime() : 0;
                 if (created && Date.now() - created < 10 * 60 * 1000 && window.ssTrack) {
@@ -3342,21 +3362,21 @@ fbq('track','PageView');
     }
 
     // ── Ready screen + gates ──────────────────────────────────────────────
-    // Photo + bio + license are ONE step (2026-09-02) and all three block
-    // go-live, matching the app (photo + bio required since 1.0.8) and the
+    // Photo + bio + license are ONE step (2026-09-02); photo + license block
+    // go-live and the bio is optional (2026-09-06), matching the app and the
     // server's gatesClear. Car and deposits stay optional.
     const GATE_DEFS = [
       { key: 'phone', title: 'Confirm your phone', doneTitle: 'Phone confirmed',
         unlock: 'Riders need a real number at pickup. Required to go live.', screen: 'gPhone', blocking: true },
-      { key: 'profile', title: 'Photo, bio & driver\u2019s license', doneTitle: 'Photo, bio & license on file',
-        unlock: 'Riders see your photo and bio; the license stays private. Required to go live.', screen: 'gProfile', blocking: true },
+      { key: 'profile', title: 'Photo & driver\u2019s license', doneTitle: 'Photo & license on file',
+        unlock: 'Riders see your photo; the license stays private. Required to go live. A short bio is optional but helps riders pick you.', screen: 'gProfile', blocking: true },
       { key: 'car', title: 'Add your car', doneTitle: 'Car added',
         unlock: 'Shows riders what to look for at pickup.', screen: 'gCar', blocking: false },
       { key: 'payouts', title: 'Set up deposits', doneTitle: 'Deposits connected',
-        unlock: 'Unlocks accepting bookings and Instant Book — Stripe sends riders’ cost share to your bank.', screen: null, blocking: false },
+        unlock: 'Unlocks accepting bookings. Stripe sends riders’ cost share to your bank.', screen: null, blocking: false },
     ];
     const gateDone = (key) => key === 'profile'
-      ? !!(gateState.photo && gateState.bio && gateState.license)
+      ? !!(gateState.photo && gateState.license) /* bio optional since 2026-09-06 */
       : !!gateState[key];
     let gateState = { phone: false, photo: false, license: false, bio: false, car: false, payouts: false };
     let reviewHold = false;
@@ -3517,7 +3537,7 @@ fbq('track','PageView');
         if (!gateState.phone) missing.push('confirm your phone');
         const prof = [];
         if (!gateState.photo) prof.push('a photo');
-        if (!gateState.bio) prof.push('a short bio');
+        /* bio is optional (2026-09-06): never listed as missing */
         if (!gateState.license) prof.push('your license');
         if (prof.length) missing.push('add ' + (prof.length === 1 ? prof[0] : prof.slice(0, -1).join(', ') + ' and ' + prof[prof.length - 1]));
         line.textContent = blockingLeft === 0
@@ -3719,6 +3739,14 @@ fbq('track','PageView');
           return;
         }
       } catch (_) { /* proceed */ }
+      // REAL-PHOTO gate (2026-09-07): illustrations / AI portraits are a hard
+      // no; any failure falls open. Shared helper: /js/ss-photo-check.js.
+      try {
+        const { checkRealPhoto, NOT_REAL_PHOTO_MESSAGE } = await import('/js/ss-photo-check.js');
+        const { data: sess } = await supabase.auth.getSession();
+        const rp = await checkRealPhoto(candidate, sess && sess.session && sess.session.access_token);
+        if (rp.realPhoto === false) { setMsg('photoMsg', NOT_REAL_PHOTO_MESSAGE); return; }
+      } catch (_) { /* fail open */ }
       photoBlob = candidate;
       const prev = $('photoPrev');
       prev.src = URL.createObjectURL(photoBlob);
@@ -3942,7 +3970,7 @@ fbq('track','PageView');
       set('secPhoto', 'stPhotoOk', !!gateState.photo);
       set('secBio', 'stBioOk', !!gateState.bio);
       set('secLicense', 'stLicenseOk', !!gateState.license);
-      const all = !!(gateState.photo && gateState.bio && gateState.license);
+      const all = !!(gateState.photo && gateState.license); /* bio optional since 2026-09-06 */
       $('profileDoneBtn').classList.toggle('hidden', !all);
       void renderEmailSection();
       // Google sign-ins: one-tap "Use my Google photo" (face-checked like any
@@ -4288,7 +4316,7 @@ fbq('track','PageView');
                 if (!cur.openSeats.length) cur.openSeats = null;
                 cur.seatMapKey = cur.seatCount + '|' + (cur.comfort ? 1 : 0);
               }
-              cur.instant = r.instant === true;
+              cur.instant = false; // retired 0271: re-posting an old instant ride is request-to-book
               const prices = open.map((s) => Number(s.price)).filter((n) => n > 0);
               if (prices.length) cur.priceUsd = Math.round(Math.min.apply(null, prices));
               if (r.dep_time) cur.time = String(r.dep_time).slice(0, 5);
@@ -4342,5 +4370,6 @@ fbq('track','PageView');
       $(inp).addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); $(btn).click(); } });
     }
   </script>
+  <script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

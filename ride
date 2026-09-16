@@ -29,6 +29,10 @@ window.ssTrack=function(name,opts){
   try{if(window.rdt)window.rdt('track',rname);}catch(_){}
   try{if(window.fbq)window.fbq('track',name,{},{eventID:id});}catch(_){}
   if(name==='Lead'){try{if(window.gtag)window.gtag('event','conversion',{'send_to':'AW-18365966554/3zU4CJqiouAcENrRybVE'});}catch(_){}}
+  /* Web sign-up -> Google Ads (2026-09-11). SS_GADS_SIGNUP is the 'AW-18365966554/<label>' of the Web sign-up conversion action; empty = no-op until it exists. */
+  window.SS_GADS_SIGNUP='AW-18365966554/WY7_CPzJufQcENrRybVE';
+  /* ONCE PER BROWSER, EVER. A sign-up is not a repeatable event, and the created_at<10min heuristic that guards the call sites fires on every auth event inside that window. Belt (per page) and braces (localStorage), so adding this tag to more sign-up surfaces can never double-count (bug sweep, 2026-09-11). */
+  if(name==='CompleteRegistration'&&window.SS_GADS_SIGNUP&&!window.__ssSignupCounted){var _k='ss_signup_counted';var _seen=false;try{_seen=!!localStorage.getItem(_k);}catch(_){}if(!_seen){window.__ssSignupCounted=1;try{localStorage.setItem(_k,String(Date.now()));}catch(_){}try{if(window.gtag)window.gtag('event','conversion',{'send_to':window.SS_GADS_SIGNUP});}catch(_){}}}
   try{
     var p={event_name:name,event_id:id,event_source_url:location.href,fbp:ck('_fbp'),fbc:ck('_fbc')};
     if(opts.em)p.em=opts.em;
@@ -182,10 +186,11 @@ fbq('track','PageView');
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+  <!-- Shared app bar (signed-out public tabs / signed-in console tabs);
+       replaced the lone wordmark — Justin, 2026-09-06: "every screen
+       should have a nav". Outside .wrap so it spans the viewport. -->
+  <div id="ssAppBar"></div>
   <div class="wrap">
-    <div class="brand">
-      <svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>
-    </div>
 
     <!-- Ride card — populated from the URL query params. Hidden if no ride
          info is present (someone hit /ride directly). -->
@@ -303,7 +308,20 @@ fbq('track','PageView');
       var web = true;
       if (web && id) {
         var wb = document.getElementById('webBook');
-        wb.href = '/book?id=' + encodeURIComponent(id);
+        // Forward a leg preselect from /rides (2026-09-08): the search card
+        // showed the driver's price for THIS leg, so the booking page has to
+        // open on the same pair or the price changes on click-through. Only
+        // plain stop ids pass through; the booking page validates them
+        // against the ride.
+        var legQ = '';
+        try {
+          var lp = new URLSearchParams(location.search);
+          ['board', 'alight'].forEach(function (k) {
+            var v = lp.get(k);
+            if (v && /^[a-z0-9-]{1,40}$/.test(v)) legQ += '&' + k + '=' + encodeURIComponent(v);
+          });
+        } catch (_) {}
+        wb.href = '/book?id=' + encodeURIComponent(id) + legQ;
         wb.style.display = 'flex';
         document.getElementById('ctaTitle').textContent = 'Book this carpool ride';
         document.getElementById('ctaSub').textContent = 'Pay securely from your browser — no app needed. You are only charged if the driver accepts.';
@@ -319,8 +337,17 @@ fbq('track','PageView');
       }
 
       // Fetch the ride details by id (short links carry only the id now).
+      // v=ride tells public-ride this is a person on the ride page, so it
+      // logs a ride view (0295); c= and dr= carry the campaign code and the
+      // page's own referrer for the funnel. Link previews send none of these.
       if (id) {
-        fetch(SUPA + '/functions/v1/public-ride?id=' + encodeURIComponent(id),
+        var viewQ = '&v=ride';
+        try {
+          var cq = new URLSearchParams(location.search).get('c');
+          if (cq) viewQ += '&c=' + encodeURIComponent(cq.slice(0, 32));
+          if (document.referrer) viewQ += '&dr=' + encodeURIComponent(document.referrer.slice(0, 200));
+        } catch (e) { /* attribution is optional */ }
+        fetch(SUPA + '/functions/v1/public-ride?id=' + encodeURIComponent(id) + viewQ,
               { headers: { apikey: ANON, Authorization: 'Bearer ' + ANON } })
           .then(function (r) { return r.json(); })
           .then(function (d) {
@@ -418,8 +445,9 @@ fbq('track','PageView');
             if (d.driverFirst) {
               var dLine = d.driverFirst;
               if (typeof d.driverRating === 'number' && d.driverRating > 0) {
-                dLine += ' · ★ ' + Number(d.driverRating).toFixed(1)
-                  + (d.driverRatingCount ? ' (' + d.driverRatingCount + ')' : '');
+                // Rating only, no review count (Justin, 2026-09-10): with the
+                // driven-trips count on the same line, "(2)" reads as a weakness.
+                dLine += ' · ★ ' + Number(d.driverRating).toFixed(1);
               }
               if (typeof d.driverTrips === 'number' && d.driverTrips > 0) {
                 dLine += ' · ' + d.driverTrips + ' trip' + (d.driverTrips === 1 ? '' : 's');
@@ -428,6 +456,11 @@ fbq('track','PageView');
               var badges = [];
               if (d.driverPhoneVerified) badges.push('✓ Phone verified');
               if (d.driverLicenseOnFile) badges.push("✓ Driver's license on file");
+              // School / org badge (0294): the curated name from a verified
+              // school email. textContent below, so the name is never markup.
+              if (d.driverOrg && typeof d.driverOrg.name === 'string' && d.driverOrg.name) {
+                badges.push((d.driverOrg.kind === 'college' ? '🎓 ' : '✓ ') + d.driverOrg.name);
+              }
               document.getElementById('driverBadges').textContent = badges.join(' · ');
               if (d.driverPhotoUrl && /^https:\/\//.test(d.driverPhotoUrl)) {
                 var dp = document.getElementById('driverPhoto');
@@ -615,8 +648,21 @@ fbq('track','PageView');
               // total too — omitting it is exactly the SB 478 drip-pricing pattern.
               var bps = typeof d.serviceFeeBps === 'number' ? d.serviceFeeBps : 500;
               var bookFee = typeof d.bookingFeeCents === 'number' ? d.bookingFeeCents : 0;
-              var total = (Number(d.minPrice) + (Math.floor(Number(d.minPrice) * 100 * bps / 10000) + bookFee) / 100).toFixed(2);
-              document.getElementById('price').textContent = 'from $' + total;
+              // 0256: the $2 minimum when public-ride says it applies to this ride.
+              var minC = typeof d.serviceFeeMinCents === 'number' ? d.serviceFeeMinCents : 0;
+              var total = (Number(d.minPrice) + (Math.max(Math.floor(Number(d.minPrice) * 100 * bps / 10000), minC) + bookFee) / 100).toFixed(2);
+              // "from $X" only when the bookable seats actually differ in price
+              // (Justin, 2026-09-08: "if all prices are the same now, it
+              // shouldn't say from $36, just $36"). Compare the same set the
+              // server used for minPrice — seats still available — so a cheap
+              // seat that has already been taken can't leave a stale "from".
+              var bookableSeats = (d.seats || []).filter(function (s) {
+                return s && s.avail !== false && !s.booked && typeof s.price === 'number';
+              });
+              var distinct = {};
+              bookableSeats.forEach(function (s) { distinct[s.price] = 1; });
+              var varies = Object.keys(distinct).length > 1;
+              document.getElementById('price').textContent = (varies ? 'from $' : '$') + total;
               shareTotal = total;
             } else {
               document.querySelector('.footer-row').style.display = 'none';
@@ -791,5 +837,9 @@ fbq('track','PageView');
     } catch (e) {}
   })();
 </script>
+<script src="/js/ss-menu.js"></script>
+<script src="/js/ss-appbar.js"></script>
+<script>if (window.SS_APPBAR) SS_APPBAR.mount({ active: 'rides' });</script>
+<script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

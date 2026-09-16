@@ -55,7 +55,7 @@
     .pasthead {
       display: flex; align-items: center; gap: 10px; width: 100%;
       background: none; border: none; cursor: pointer; font-family: inherit;
-      color: #adadb8; font-size: 13px; font-weight: 700; letter-spacing: 1.2px;
+      color: #adadb8; font-size: 14px; font-weight: 700; letter-spacing: 1.2px;
       text-transform: uppercase; padding: 20px 2px 10px; text-align: left;
     }
     .pasthead:hover { color: #cfcfd6; }
@@ -84,7 +84,7 @@
     .meta { font-size: 14px; color: #b9b9c6; margin-top: 6px; }
 
     h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
-    h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #adadb8; margin: 26px 0 12px; }
+    h2 { font-size: 14px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #adadb8; margin: 26px 0 12px; }
     p.sub { font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
     label { display: block; font-size: 12px; color: #adadb8; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
     input, textarea {
@@ -159,7 +159,12 @@
     .stat {
       background: #141417; border: 1px solid #232329; border-radius: 14px;
       padding: 14px 16px; text-align: left;
+      /* The unread tile is a <button>, and buttons don't inherit the page's
+         text colour — the "0" rendered near-black on the dark tile (Justin,
+         2026-09-04: "black on grey is not good on the very right"). */
+      color: #f5f5f7; font: inherit;
     }
+    .stat .n { color: #f5f5f7; }
     .stat .n { font-size: 25px; font-weight: 800; letter-spacing: -0.6px; line-height: 1.1;
       font-variant-numeric: tabular-nums; }
     .stat .k { font-size: 12px; color: #a3a3ae; margin-top: 4px; font-weight: 600; }
@@ -188,7 +193,7 @@
     .ridecard .cardfoot {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.07);
-      font-size: 13px; color: #adadb8;
+      font-size: 14px; color: #adadb8;
     }
     /* Status chip. Semantic colour, separate from the teal accent. */
     .chip {
@@ -225,7 +230,7 @@
     .bookingtop { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .ridernote {
       background: #0E0E10; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
-      padding: 10px 12px; font-size: 13px; color: #b9b9c6; line-height: 1.5; margin-top: 10px;
+      padding: 10px 12px; font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-top: 10px;
       white-space: pre-wrap; overflow-wrap: anywhere;
     }
     .actrow { display: flex; gap: 10px; margin-top: 12px; }
@@ -274,7 +279,7 @@
     .carshell .seattile { padding: 12px 6px; min-height: 86px; border-radius: 12px; }
     .carshell .seattile .sl { font-size: 11px; letter-spacing: .5px; }
     .carshell .seattile .ss { font-size: 12px; margin-top: 4px; }
-    .carshell .seattile .sp { font-size: 13px; }
+    .carshell .seattile .sp { font-size: 14px; }
     .windshield { width: 86%; height: 6px; border-radius: 999px; background: rgba(0,212,200,.14); }
     .rowdiv { width: 60%; height: 1px; background: #2C2C38; }
     .drvbadge { width: 26px; height: 26px; border-radius: 50%; background: #2C2C38; color: #E8E8EC; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 3px; font-size: 12px; }
@@ -293,12 +298,12 @@
     .priceedit input { width: 100px; margin: 0; }
     .priceedit .primary { width: auto; padding: 10px 18px; margin: 0; }
     .seatsum { font-size: 12px; color: #8888A8; padding: 2px 4px 4px; }
-    .managerow .linkbtn { border: 1px solid #2C2C38; border-radius: 999px; padding: 8px 14px; background: #18181C; color: #E8E8EC; }
+    .managerow .linkbtn { border: 1px solid #2C2C38; border-radius: 999px; padding: 12px 16px; background: #18181C; color: #E8E8EC; }
     .managerow .linkbtn:hover { border-color: rgba(0,212,200,.5); color: #00D4C8; }
     .managerow .linkbtn.danger { color: #ff8a8a; border-color: rgba(255,138,138,.35); }
     .seattile:disabled { cursor: default; }
     .seattile.saving { opacity: .6; }
-    .rowmsg { font-size: 13px; line-height: 1.5; margin-top: 10px; }
+    .rowmsg { font-size: 14px; line-height: 1.5; margin-top: 10px; }
     .rowmsg.err { color: #ff8a8a; }
     .rowmsg.ok { color: #4ade80; }
 
@@ -335,7 +340,7 @@
     }
     .brow.me .bubble { background: #00D4C8; color: #04201e; border-bottom-right-radius: 5px; }
     .brow.them .bubble { background: #1f1f23; color: #fff; border-bottom-left-radius: 5px; }
-    .brow.sys .bubble { background: none; color: #adadb8; font-size: 13px; text-align: center; max-width: 92%; }
+    .brow.sys .bubble { background: none; color: #adadb8; font-size: 14px; text-align: center; max-width: 92%; }
     .bubble.sending { opacity: 0.55; }
     .bubble.failed { background: #3a1c1f; color: #ffb3b3; }
     .btime { font-size: 10px; color: #8f8f98; margin: 2px 4px 0; text-align: right; }
@@ -343,7 +348,7 @@
     .composer { display: flex; gap: 10px; align-items: flex-end; margin-top: 14px; }
     .composer textarea { min-height: 46px; max-height: 140px; margin-bottom: 0; padding: 12px 14px; font-size: 15px; }
     .composer button { width: auto; flex-shrink: 0; padding: 13px 18px; }
-    .emptythread { text-align: center; color: #adadb8; font-size: 13px; line-height: 1.6; padding: 22px 8px; }
+    .emptythread { text-align: center; color: #adadb8; font-size: 14px; line-height: 1.6; padding: 22px 8px; }
     .consolenav {
       display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
       margin: 14px 0 4px;
@@ -445,8 +450,13 @@
     if (window.SS_APPBAR) SS_APPBAR.mount({
       active: 'driving', id: 'consoleNav', startHidden: true,
       extra: [
-        { label: 'Wallet', id: 'navWallet', onClick: function () {} },
-        { label: 'Car & license', id: 'navAccount', onClick: function () {} },
+        // Calls through window so it works on whichever bar instance is live:
+        // ensure() swaps the signed-out bar for the signed-in one after the
+        // in-page OTP sign-in, and a listener bound by id at parse time would
+        // be on the bar that got removed (bug scan 2026-09-06).
+        { label: 'Wallet', id: 'navWallet', onClick: function () { if (window.__ssRenderWallet) window.__ssRenderWallet(); } },
+        // Car & license now lives under the avatar menu ("Vehicles & license"
+        // → /cars) and on the Profile & account page (Justin, 2026-09-04).
       ],
     });
   </script>
@@ -495,8 +505,24 @@
     // Optional chaining on purpose: these two buttons live in the shared app
     // bar, which does not mount when signed out. An unguarded call here would
     // throw at module top level and take the whole sign-in screen with it.
+    // Exposed for the bar's Wallet button (see the mount() call above): the
+    // bar is re-created after sign-in, so a one-time addEventListener here
+    // would bind to the bar that no longer exists.
+    window.__ssRenderWallet = () => { void renderWallet(); };
     document.getElementById('navWallet')?.addEventListener('click', () => { void renderWallet(); });
     document.getElementById('navAccount')?.addEventListener('click', () => { void renderAccount(); });
+
+    /** Move the app bar's underline to the section actually on screen. Wallet
+     *  and Car & license are in-page states, so the bar can't know from the
+     *  URL — it kept "Driving" lit while the car list was showing (Justin,
+     *  2026-09-04). null = the rides console itself. */
+    function setBarActive(id) {
+      const tabs = document.querySelector('.ss-bar-tabs');
+      if (!tabs) return;
+      tabs.querySelectorAll('a, button').forEach((n) => n.classList.remove('on'));
+      const target = id ? document.getElementById(id) : tabs.querySelector('a[href="/driving"]');
+      if (target) target.classList.add('on');
+    }
 
     /** Open the hosted Stripe Express dashboard (payout history, bank on
      *  file) in a new tab. Tab opened SYNCHRONOUSLY on click — popup blockers
@@ -1496,6 +1522,7 @@
 
     // -- Wallet page: credit + payouts + cost share received ----------------
     async function renderWallet() {
+      setBarActive('navWallet');
       const body = $('walletBody');
       clear(body);
       body.appendChild(backRow('All rides', () => go('/driving')));
@@ -1617,6 +1644,7 @@
     }
 
     async function renderAccount() {
+      setBarActive('navAccount');
       const body = $('accountBody');
       clear(body);
       body.appendChild(backRow('All rides', () => go('/driving')));
@@ -1790,9 +1818,13 @@
             im.style.cssText = 'width:100%;max-height:150px;object-fit:cover;border-radius:10px;margin-top:8px;';
             box.appendChild(im);
           }
+          // Car photos are no longer collected (Justin, 2026-09-07: "remove
+          // that upload option going forward, to make it simpler"). Cars that
+          // already have photos keep showing them above; the "Add photo"
+          // button is gone and the hint no longer nags about missing ones.
           box.appendChild(el('div', 'rowhint',
-            (photos.length ? photos.length + ' photo' + (photos.length === 1 ? '' : 's') : 'No photos — riders book cars they can see')
-            + (v.is_rental ? '' : ' · insurance ' + (v.insurance_uploaded_at ? 'on file' : 'not on file'))));
+            (photos.length ? photos.length + ' photo' + (photos.length === 1 ? '' : 's') + (v.is_rental ? '' : ' · ') : '')
+            + (v.is_rental ? '' : 'insurance ' + (v.insurance_uploaded_at ? 'on file' : 'not on file'))));
           const act = el('div', 'actrow');
           const mkBtn = (label, fn) => {
             const bt = el('button', 'linkbtn', label);
@@ -1802,30 +1834,6 @@
             return bt;
           };
           mkBtn('Edit', () => carForm(v));
-          mkBtn('Add photo', async function () {
-            const file = await pickFile('image/*');
-            if (!file) return;
-            this.disabled = true; this.textContent = 'Uploading…';
-            try {
-              const blob = await dlDownscale(file, 1600);
-              // Same public bucket/path scheme as the app (services/vehicles.ts).
-              const path = me + '/' + v.id + '/car-' + Date.now() + '-' + Math.floor(Math.random() * 1000) + '.jpg';
-              const { error: upErr } = await supabase.storage.from('vehicle-photos')
-                .upload(path, blob, { contentType: 'image/jpeg', upsert: true });
-              if (upErr) throw upErr;
-              const { data: pub } = supabase.storage.from('vehicle-photos').getPublicUrl(path);
-              const next = photos.concat([pub.publicUrl]);
-              const { error: vErr } = await supabase.from('vehicles')
-                .update({ car_photo_urls: next, car_photo_uploaded_at: new Date().toISOString() })
-                .eq('id', v.id);
-              if (vErr) throw vErr;
-              void loadCars();
-            } catch (e) {
-              this.disabled = false; this.textContent = 'Add photo';
-              carMsg.textContent = (e && e.message) || 'Photo upload failed.';
-              carMsg.classList.remove('hidden');
-            }
-          });
           // Rentals are covered by the rental company's policy — the personal
           // insurance ask doesn't apply, so don't offer the upload (0222).
           if (!v.is_rental) mkBtn(v.insurance_uploaded_at ? 'Update insurance' : 'Add insurance', async function () {
@@ -2147,15 +2155,19 @@
           const miles = (typeof ride.road_miles === 'number' && ride.road_miles > 0)
             ? Number(ride.road_miles)
             : (start && end && window.SS_STOPS ? SS_STOPS.haversineMiles(start, end) * 1.25 : 0);
-          const bookedSum = passengerSeats.filter((x) => holder.has(x.id)).reduce((t, x) => t + (Number(x.price) || 0), 0);
+          const bookedSeats = passengerSeats.filter((x) => holder.has(x.id));
+          const bookedSum = bookedSeats.reduce((t, x) => t + (Number(x.price) || 0), 0);
           // No mileage (no coords / stops lib failed to load) → the price can
           // only be held or lowered, never raised toward the $55 ceiling
           // blind (audit 2026-09-04).
+          // Remainder splits across the open seats but never across fewer than
+          // (4 − booked): the trip is always shared by at least four riders
+          // (2026-09-06), so closing seats can't raise the cap here either.
           const cap = miles > 0
-            ? Math.max(10, Math.min(55, Math.floor((miles * 0.76 - bookedSum) / Math.max(1, openSeats.length))))
+            ? Math.max(10, Math.min(55, Math.floor((miles * 0.76 - bookedSum) / Math.max(1, 4 - bookedSeats.length, openSeats.length))))
             : Math.max(10, Math.min(55, Math.round(Number(priceSeat.price) || 10)));
           if (!Number.isFinite(n) || n < 10 || n > cap) {
-            msg.textContent = 'Enter a whole dollar amount between $10 and $' + cap + ' — the cost-sharing cap for this trip at its current open seat count.';
+            msg.textContent = 'Enter a whole dollar amount between $10 and $' + cap + ' — the cost-sharing cap for this trip, split across at least four riders.';
             msg.classList.remove('hidden');
             return;
           }
@@ -2204,6 +2216,26 @@
       const ride = entry.ride;
       const wrap = el('div', 'card');
       wrap.appendChild(el('div', 'eyebrow', 'Manage'));
+
+      // PARITY WITH THE APP (Justin, 2026-09-12: "match the app for web posting
+      // console"). trips.tsx sorts a ride into Past purely on time once it is
+      // PAST_GRACE_MS (12h) past departure, and the Past list passes only
+      // onOpenBooking, onOpenMessages, onStartTrip and onPostAgain. It never
+      // passes onCancelRide or onEditRide, so the app offers NO edit and NO
+      // cancel on a departed ride.
+      //
+      // This console offered all of them forever, because its ride cards open
+      // the detail page for past rides like any other and none of these actions
+      // checked the clock. Kevin M. cancelled ride 425 three days after it
+      // departed; he has never opened the app, so this was his only surface.
+      //
+      // Deliberately NOT gated: viewing, messaging, the late pickup PIN and
+      // Post again. The app keeps all four on past rides, and each has a real
+      // use after the fact (a rider left a jacket; a driver forgot the PIN).
+      const PAST_GRACE_MS = 12 * 60 * 60 * 1000;
+      const depForGate = departureMs(ride);
+      const ridePast = !!depForGate && Date.now() > depForGate + PAST_GRACE_MS;
+
       const active = entry.bookings.filter((b) => {
         const st = effectiveStatus(b, ride);
         return st === 'Pending' || st === 'Confirmed';
@@ -2230,11 +2262,25 @@
 
       const row = el('div', 'managerow');
       row.style.display = 'flex'; row.style.gap = '10px'; row.style.flexWrap = 'wrap';
+      // One "Manage ride" disclosure per card (primary-action audit, Justin
+      // 2026-09-05): five edit/cancel pills on every ride turned the list into
+      // a control panel. The pills still exist, they just wait behind a toggle.
+      // Programmatic editBtn.click() from the cancel flow still works hidden.
+      row.classList.add('hidden');
+      const manageBtn = el('button', 'linkbtn', 'Manage ride ▾');
+      manageBtn.type = 'button';
+      manageBtn.setAttribute('aria-expanded', 'false');
+      manageBtn.style.fontWeight = '700';
+      manageBtn.addEventListener('click', () => {
+        const open = !row.classList.toggle('hidden');
+        manageBtn.textContent = open ? 'Manage ride ▴' : 'Manage ride ▾';
+        manageBtn.setAttribute('aria-expanded', String(open));
+      });
 
       // Edit date & time — zero-bookings only, like the app. Hoisted so the
       // cancel flow below can offer "edit instead" (2026-09-01).
       let editBtn = null;
-      if (active.length === 0) {
+      if (!ridePast && active.length === 0) {
         editBtn = el('button', 'linkbtn', 'Edit date & time');
         editBtn.type = 'button';
         editBtn.addEventListener('click', () => {
@@ -2321,7 +2367,10 @@
         });
         row.appendChild(editRouteBtn);
       } else {
-        wrap.appendChild(el('div', 'rowhint', "Date and time can't change once there are bookings or requests."));
+        // Lives inside the disclosure so it only shows once Manage ride is open.
+        const dtHint = el('div', 'rowhint', "Date and time can't change once there are bookings or requests.");
+        dtHint.style.flexBasis = '100%';
+        row.appendChild(dtHint);
       }
 
       // Edit stops — allowed even WITH bookings (adding stops is how a driver
@@ -2497,7 +2546,7 @@
         panel.appendChild(neverMind());
         panel.classList.remove('hidden');
       });
-      row.appendChild(editStopsBtn);
+      if (!ridePast) row.appendChild(editStopsBtn);
 
       // Cancel ONE confirmed booking.
       if (confirmedActive.length > 0) {
@@ -2541,7 +2590,10 @@
           panel.appendChild(neverMind());
           panel.classList.remove('hidden');
         });
-        row.appendChild(oneBtn);
+        // Not after the ride has run: cancelling a confirmed booking refunds a
+        // trip that already happened. The app offers no such action on a past
+        // ride either.
+        if (!ridePast) row.appendChild(oneBtn);
       }
 
       // Cancel the whole ride.
@@ -2636,8 +2688,11 @@
         panel.appendChild(neverMind());
         panel.classList.remove('hidden');
       }
-      row.appendChild(cancelBtn);
+      // Departed rides get no cancel link. See the ridePast note at the top of
+      // manageSection for why, and for what is deliberately still allowed.
+      if (!ridePast) row.appendChild(cancelBtn);
 
+      wrap.appendChild(manageBtn);
       wrap.appendChild(row);
       wrap.appendChild(panel);
       wrap.appendChild(msg);
@@ -3384,7 +3439,7 @@
             for (const b of confirmed) {
               b._ratingsChecked = true;
               const r = (myRs || []).find((x) => x.booking_id === b.id);
-              if (r) b._myRating = r.stars;
+              if (r) { b._myRating = r.stars; ratedByMe.add(b.id); }
             }
           }
         } catch (_) {}
@@ -3447,6 +3502,19 @@
     // pauses while hidden).
     const MSG_SELECT = 'id, booking_id, sender_id, body, created_at, read_at, is_system';
     let chatMsgs = new Map();
+    // Booking ids THIS driver has already rated — filled by the ride-card
+    // ratings lookup, read by paintThread to hide the shared 24h rate card
+    // (Justin, 2026-09-05: "don't show to the party that has already rated").
+    const ratedByMe = new Set();
+    // The page-level rating gate (/js/ss-rating-gate.js) may rate a passenger
+    // over this console; re-render so that trip's card flips to "You rated"
+    // instead of offering the form again (review 2026-09-08).
+    window.addEventListener('ss:rated', (e) => {
+      const d = e && e.detail;
+      if (!d || !d.bookingId) return;
+      ratedByMe.add(d.bookingId);
+      try { render(); } catch (_) { /* not on a view that needs it */ }
+    });
     let chatSince = null;
     let composerFocused = false;
 
@@ -3490,6 +3558,8 @@
       for (const m of rows) {
         const mine = m.sender_id === me;
         const sys = m.is_system === true;
+        // One shared bubble; hide it once this driver has rated that rider.
+        if (sys && /^\u2b50 How was your trip\?/.test(String(m.body || '')) && ratedByMe.has(m.booking_id)) continue;
         const row = el('div', 'brow ' + (sys ? 'sys' : mine ? 'me' : 'them'));
         const bub = el('div', 'bubble' + (m._state === 'sending' ? ' sending' : m._state === 'failed' ? ' failed' : ''));
         bub.textContent = m.body || '';
@@ -3566,7 +3636,7 @@
       callBtn.type = 'button';
       callBtn.style.cssText = 'border:1px solid #00a8a0;color:#00a8a0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;';
       const callMsg = el('div', 'msg hidden');
-      callMsg.style.cssText = 'font-size:13px;color:#6b7280;margin:0;';
+      callMsg.style.cssText = 'font-size:14px;color:#6b7280;margin:0;';
       callRow.appendChild(callBtn);
       callRow.appendChild(callMsg);
       card.appendChild(callRow);
@@ -3738,6 +3808,7 @@
 
     // -- Render -------------------------------------------------------------
     async function render() {
+      setBarActive(null);
       clearTimers();
       if (chatListenerCleanup) { chatListenerCleanup(); chatListenerCleanup = null; }
       actionBusy = false;
@@ -3774,6 +3845,16 @@
         $('nfEmail').textContent = myEmail;
 
         if (!payout.loaded) await loadPayoutState();
+
+        // /cars (vercel rewrite → /driving?view=account) and ?view=wallet open
+        // the in-page sections directly. Vehicles & license moved under
+        // "Profile & account" in the avatar menu (Justin, 2026-09-04); the
+        // driving bar no longer carries it as a tab.
+        // A Vercel rewrite keeps the browser on /cars (no query string), so
+        // the path itself has to select the view.
+        const viewParam = qp.get('view') || (/^\/cars\/?$/.test(location.pathname) ? 'account' : null);
+        if (viewParam === 'account') { await renderAccount(); return; }
+        if (viewParam === 'wallet') { await renderWallet(); return; }
 
         // bookingId → ride resolution (RLS: the driver can read bookings on
         // their own rides; a bogus/foreign id just falls through to the list).
@@ -3865,5 +3946,6 @@
       render();
     })();
   </script>
+  <script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

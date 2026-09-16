@@ -83,6 +83,10 @@ fbq('track','PageView');
   nav .wrap{display:flex;justify-content:space-between;align-items:center}
   .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
   .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+.navlinks{display:flex;align-items:center;gap:18px;margin-left:auto;margin-right:16px}
+.navlinks a{color:#adadb8;font-weight:600;font-size:14px;text-decoration:none}
+.navlinks a:hover{color:#fff}
+@media(max-width:640px){.navlinks{gap:12px;margin-right:10px}.navlinks a.lo{display:none}}
   .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
   h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
   .meta{color:#888;font-size:14px;margin-bottom:24px}
@@ -117,7 +121,7 @@ fbq('track','PageView');
 </style>
 </head>
 <body>
-<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><a class="navcta" href="/#get">Get the app</a></div></nav>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><div class="navlinks"><a href="/rides">Find a ride</a><a class="lo" href="/requests">Ride requests</a><a class="lo" href="/signin">Sign in</a></div><a class="navcta" href="/#get">Get the app</a></div></nav>
 
 <article class="wrap">
   <div class="crumb"><a href="/">Home</a> › <a href="/compare">Compare</a> › Best carpool apps in California and Nevada for long-distance trips</div>
@@ -137,7 +141,7 @@ fbq('track','PageView');
       <tr><td>Scoop / commute apps</td><td data-l="Covers CA / NV intercity?">Daily commute matching, not intercity</td><td data-l="Driver verification">Varies</td><td data-l="Payment">In app</td><td data-l="Price">Commute rates</td></tr>
       <tr><td>BlaBlaCar</td><td data-l="Covers CA / NV intercity?">No, never launched in the US</td><td colspan="3">See <a href="/guides/blablacar-usa">BlaBlaCar in the USA</a></td></tr>
       <tr><td>Waze Carpool</td><td data-l="Covers CA / NV intercity?">No, shut down in 2022</td><td colspan="3">See <a href="/guides/waze-carpool-alternative">Waze Carpool alternatives</a></td></tr>
-      <tr><td>Zimride</td><td data-l="Covers CA / NV intercity?">Campus and employer networks only</td><td colspan="3">See <a href="/guides/zimride-alternative">Zimride alternatives</a></td></tr>
+      <tr><td>Zimride</td><td data-l="Covers CA / NV intercity?">No, campus networks shut down in 2020</td><td colspan="3">See <a href="/guides/zimride-alternative">Zimride alternatives</a></td></tr>
       <tr><td>Hitch</td><td data-l="Covers CA / NV intercity?">No, Texas and nearby states</td><td colspan="3">See <a href="/guides/hitch-rideshare-california">Hitch in California</a></td></tr>
     </tbody>
   </table></div>

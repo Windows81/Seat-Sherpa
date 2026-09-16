@@ -7,6 +7,29 @@
        has enough supply-side response to be shown off. Same playbook as
        /rides?web=1 and /post. -->
   <meta name="robots" content="noindex, nofollow" />
+  <!-- Google Ads sign-up conversion ONLY (bug sweep, 2026-09-11). This page
+       mints real accounts and reported nothing, so the Web sign-up action was
+       undercounting while the driver waitlist was overcounting. Google tag
+       alone, deliberately: no Meta, no Reddit, no Conversions API beacon on a
+       sign-in page. Honours Global Privacy Control, and ssSignup fires at most
+       once per browser, ever. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18365966554"></script>
+  <script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if(!navigator.globalPrivacyControl){gtag('config','AW-18365966554');}
+  window.SS_GADS_SIGNUP='AW-18365966554/WY7_CPzJufQcENrRybVE';
+  window.ssSignup=function(){
+    if(navigator.globalPrivacyControl)return;
+    if(window.__ssSignupCounted)return;
+    var k='ss_signup_counted';var seen=false;
+    try{seen=!!localStorage.getItem(k);}catch(_){}
+    if(seen)return;
+    window.__ssSignupCounted=1;
+    try{localStorage.setItem(k,String(Date.now()));}catch(_){}
+    try{if(window.gtag)window.gtag('event','conversion',{'send_to':window.SS_GADS_SIGNUP});}catch(_){}
+  };
+  </script>
   <title>Ride requests — Seat Sherpa</title>
   <!-- The CSS below asks for Outfit; without this link it silently fell back
        to the system font for everyone who doesn't have Outfit installed. -->
@@ -85,10 +108,12 @@
   </style>
 </head>
 <body>
+  <!-- Shared app bar (signed-out: Find a ride · Ride requests · How it
+       works · Sign in; signed-in: the console tabs). Replaced the lone
+       wordmark — Justin, 2026-09-06: "every screen should have a nav".
+       Sits OUTSIDE .wrap so it spans the viewport, not the 560px column. -->
+  <div id="ssAppBar"></div>
   <div class="wrap">
-    <div class="brand">
-      <svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>
-    </div>
 
     <!-- BOARD -->
     <div class="card" id="stBoard">
@@ -628,6 +653,14 @@
         if (error) throw error;
         const token = data.session?.access_token;
         if (!token) throw new Error('Sign-in did not complete — try again.');
+        // This page signs people up with shouldCreateUser:true and reported
+        // nothing. Count a genuinely new account only; ssSignup is
+        // once-per-browser (bug sweep, 2026-09-11).
+        try {
+          const created = data.user && data.user.created_at
+            ? new Date(data.user.created_at).getTime() : 0;
+          if (created && Date.now() - created < 10 * 60 * 1000 && window.ssSignup) window.ssSignup();
+        } catch (_) {}
         // Tag brand-new accounts as passengers (book.html does the same) so
         // downstream role-based flows (dormant-driver nudges etc.) don't
         // misread them. Never overwrites an existing role — a driver signing
@@ -665,5 +698,9 @@
     loadBoard();
     loadMine();
   </script>
+  <script src="/js/ss-menu.js"></script>
+  <script src="/js/ss-appbar.js"></script>
+  <script>if (window.SS_APPBAR) SS_APPBAR.mount({ active: 'requests' });</script>
+  <script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

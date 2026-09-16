@@ -111,7 +111,8 @@
       ['Messages', '/messages'],
       ['Post a ride', '/post'],
       ['Find a ride', '/rides'],
-      ['Account settings', '/account'],
+      ['Profile & account', '/account'],
+      ['Vehicles & license', '/cars'],
     ].forEach(function (item) {
       var a = document.createElement('a');
       a.href = item[1];
