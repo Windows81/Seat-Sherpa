@@ -203,6 +203,33 @@ fbq('track','PageView');
              only way to ask a driver about timing was to book and be charged
              either way. Placed FIRST because it is the question that stops
              people from booking at all. -->
+        <details class="faq-item" id="keep-it-on-seat-sherpa">
+          <summary>Why keep messages and payment on Seat Sherpa?</summary>
+          <div class="body">
+            <p>
+              Everything that protects you on a ride only works while the ride stays on Seat Sherpa. Drivers and riders are verified here, your payment is held until pickup, and if someone doesn't show, support can act because the whole conversation and the payment are on record.
+            </p>
+            <p><strong>What you get by staying on the app</strong></p>
+            <ul>
+              <li><strong>Verification.</strong> Drivers have a checked license and photo; riders have a verified phone. Off the app you're dealing with a stranger.</li>
+              <li><strong>Payment protection.</strong> You pay through the app and the driver is paid after pickup. If the ride doesn't happen, you're refunded. Cash, Venmo, or Zelle outside the app has none of that.</li>
+              <li><strong>No-show protection.</strong> If a driver cancels last minute or doesn't show, we can see it, refund you, and act on the driver's account. We can only do that for rides booked here.</li>
+              <li><strong>Support.</strong> Pickup plans, running late, a stop change: when it's in the chat, support can step in. A text thread we can't see is invisible to us.</li>
+            </ul>
+            <p><strong>What to watch for</strong></p>
+            <ul>
+              <li>A driver or rider asking for your phone number, WhatsApp, or email before the booking is confirmed.</li>
+              <li>Anyone asking you to pay or "hold" a seat with cash, Venmo, Zelle, or a gift card, or to pay a deposit that isn't in the price shown at booking.</li>
+              <li>A request to cancel on the app and "just do it directly."</li>
+            </ul>
+            <p>
+              You don't need to trade numbers: once a booking is confirmed, you can call each other from the chat starting the day before the ride, and every message reaches the other person whether they use the app, the website, or email.
+            </p>
+            <p>
+              Our system flags messages that share contact details or ask for off-app payment, and we may reach out to either side. If someone pressures you to go off the app, keep the conversation in the chat and email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>; that's usually all it takes.
+            </p>
+          </div>
+        </details>
         <details class="faq-item">
           <summary>Do I get charged when I request a ride?</summary>
           <div class="body">

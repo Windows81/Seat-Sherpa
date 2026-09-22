@@ -61,8 +61,8 @@ fbq('track','PageView');
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Browse Carpool Rides — California &amp; Nevada | Seat Sherpa</title>
-<meta name="description" content="Browse live carpool rides across California and Nevada — SF, LA, San Diego, Las Vegas, Sacramento and more. See prices, times and seats, then grab yours in the app." />
+<title>Browse Carpool Rides in California and Nevada | Seat Sherpa</title>
+<meta name="description" content="Browse live carpool rides across California and Nevada: SF, LA, San Diego, Las Vegas, Sacramento and more. See prices, times and seats, then book one from your browser." />
 <link rel="canonical" href="https://seatsherpa.app/rides" />
 <link rel="icon" href="/favicon.ico" sizes="48x48" />
 <link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
@@ -87,9 +87,36 @@ fbq('track','PageView');
   h1{font-size:32px;font-weight:800;letter-spacing:-.5px;margin:30px 0 6px}
   .sub{color:#bbb;margin-bottom:20px}
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-  select{background:#161619;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:12px 14px;font-size:15px;font-family:inherit;flex:1;min-width:150px}
-  .swap{background:#161619;border:1px solid rgba(255,255,255,.14);color:#00D4C8;border-radius:10px;padding:0 14px;font-size:18px;cursor:pointer}
-  .count{color:#8a8a92;font-size:13px;margin-bottom:12px}
+  .swap{background:#161619;border:1px solid rgba(255,255,255,.14);color:#00D4C8;border-radius:12px;padding:0 14px;display:flex;align-items:center;cursor:pointer;flex:none}
+  /* Search controls (2026-09-16): fields + chips instead of native select /
+     date / checkbox widgets. Type scale on this page: 32 h1, 17 card, 16
+     body, 14 secondary, 12 captions. */
+  .pick{position:relative;display:flex;gap:10px;align-items:stretch;margin-bottom:12px}
+  .field{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:#161619;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 14px;color:#fff;font-family:inherit;cursor:pointer;text-align:left}
+  .field:hover,.field.open{border-color:rgba(0,212,200,.6)}
+  .field .k{font-size:12px;color:#8a8a92}
+  .field .v{font-size:16px;font-weight:700;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .field.set .v{color:#00D4C8}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:none;background:#161619;border:1px solid rgba(255,255,255,.14);color:#d7d7de;border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;line-height:1.2}
+  .chip.on{background:rgba(0,212,200,.14);border-color:rgba(0,212,200,.6);color:#00D4C8}
+  .chip.sep{width:1px;padding:0;margin:6px 2px;background:rgba(255,255,255,.14);border:0;border-radius:0;cursor:default}
+  .morelink{display:inline-block;background:none;border:0;padding:0;margin:0 0 16px;font-family:inherit;font-size:14px;color:#8a8a92;cursor:pointer}
+  .morelink:hover{color:#00D4C8}
+  .hiddenctl{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
+  .hidden{display:none}
+  .filters.hidden{display:none}
+  .picker{position:absolute;top:calc(100% + 6px);left:0;z-index:40;width:min(360px,100%);max-height:60vh;overflow:auto;background:#161619;border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+  .picker.right{left:auto;right:0}
+  .picker input{width:100%;background:#0E0E10;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:10px 12px;font-size:16px;font-family:inherit;margin-bottom:6px;outline:none}
+  .picker input:focus{border-color:#00D4C8}
+  .picker .grp{font-size:12px;color:#8a8a92;margin:8px 8px 2px}
+  .picker .opt{display:block;width:100%;text-align:left;background:none;border:0;color:#e8e8ee;font-family:inherit;font-size:16px;padding:9px 8px;border-radius:8px;cursor:pointer}
+  .picker .opt:hover,.picker .opt.on{background:rgba(0,212,200,.12);color:#00D4C8}
+  @media(max-width:680px){.picker,.picker.right{position:fixed;left:16px;right:16px;bottom:16px;top:auto;width:auto;max-height:70vh}}
+  .count{color:#8a8a92;font-size:14px;margin-bottom:12px}
+  .ini{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(0,212,200,.14);color:#00D4C8;font-size:11px;font-weight:800;vertical-align:-5px;margin-right:5px}
   .ride{display:block;background:#161619;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 18px;margin-bottom:12px;transition:border-color .15s}
   .ride:hover{border-color:rgba(0,212,200,.4)}
   .ride .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
@@ -121,33 +148,35 @@ fbq('track','PageView');
 <nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><span style="display:flex;align-items:center;"><a class="navcta" id="navCta" href="/signin">Sign in</a><span id="ssMenuMount"></span></span></div></nav>
 <div class="wrap">
   <h1>Browse rides</h1>
-  <p class="sub" id="subLine">Live carpools across California &amp; Nevada. Find yours and book right from your browser.</p>
-  <div class="filters">
-    <select id="from"></select>
-    <button class="swap" id="swap" title="Swap" aria-label="Swap origin and destination">⇄</button>
-    <select id="to"></select>
+  <p class="sub" id="subLine">Live carpools across California and Nevada. Book a seat right here.</p>
+  <!-- Search controls (2026-09-16): two tappable city fields, a date chip
+       row, and filter chips. The native select / date / checkbox controls
+       still hold the state (all the filtering code reads them) but are
+       visually hidden; the UI writes into them and fires change. -->
+  <div class="pick" id="pickRow">
+    <button type="button" class="field" id="fromBtn" aria-haspopup="listbox"><span class="k">From</span><span class="v" id="fromV">Anywhere</span></button>
+    <button class="swap" id="swap" title="Swap" aria-label="Swap origin and destination"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg></button>
+    <button type="button" class="field" id="toBtn" aria-haspopup="listbox"><span class="k">To</span><span class="v" id="toV">Anywhere</span></button>
+    <div class="picker hidden" id="cityPicker" role="listbox"></div>
   </div>
-  <!-- Refinements (2026-08-28, parity with the app's search tab): date,
-       sort, hide-sold-out — all client-side over the fetched list. -->
-  <div class="filters" style="margin-top:-10px">
-    <input type="date" id="dateF" style="background:#161619;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;flex:1;min-width:140px" aria-label="Filter by date" />
-    <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:#bbb;cursor:pointer;padding:0 4px" title="Include rides up to 3 days either side">
-      <input type="checkbox" id="flexF" checked style="accent-color:#00D4C8;width:20px;height:20px" /> ±3 days
-    </label>
-    <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:#bbb;cursor:pointer;padding:0 4px">
-      <input type="checkbox" id="availF" style="accent-color:#00D4C8;width:20px;height:20px" /> Open seats only
-    </label>
+  <div class="chips" id="dateChips" aria-label="Date"></div>
+  <button type="button" class="morelink" id="addrToggle">Near an address</button>
+  <div class="hiddenctl" aria-hidden="true">
+    <select id="from" tabindex="-1"></select>
+    <select id="to" tabindex="-1"></select>
+    <input type="date" id="dateF" tabindex="-1" />
+    <input type="checkbox" id="flexF" tabindex="-1" />
+    <input type="checkbox" id="availF" tabindex="-1" />
   </div>
-  <!-- Address search (2026-08-28, app parity: 60-mile radius on both ends).
-       Optional refinement over the metro dropdowns. -->
-  <div class="filters" style="margin-top:-10px;position:relative">
+  <div class="filters hidden" id="addrRow" style="margin-top:-4px;position:relative">
     <input type="text" id="addrF" placeholder="Near address… (e.g. Caltrain Station, San Jose)" autocomplete="off"
       style="background:#161619;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;flex:1;min-width:220px" />
-    <button type="button" id="addrClear" class="swap hidden" title="Clear address">✕</button>
+    <button type="button" id="addrClear" class="swap hidden" title="Clear address" aria-label="Clear address"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
     <div id="addrSugg" class="hidden" style="position:absolute;top:100%;left:0;right:0;z-index:30;background:#161619;border:1px solid rgba(255,255,255,.18);border-radius:10px;margin-top:4px;overflow:hidden"></div>
   </div>
   <div class="count" id="count"></div>
   <div id="list"><div class="loading">Loading rides…</div></div>
+  <p id="listFoot" style="display:none;color:#8a8a92;font-size:14px;margin:18px 0 0;">Driving one of these routes? <a href="/post">Post your ride</a>. Need a ride nobody posted? <a href="/requests">Request it</a>.</p>
 </div>
 
 <!-- App store buttons (ss-store-badges) -->
@@ -165,11 +194,17 @@ fbq('track','PageView');
     sfba:{n:'SF Bay Area',e:'🌉'}, sanjose:{n:'San Jose',e:'💻'}, la:{n:'LA Metro',e:'🌴'}, sd:{n:'San Diego',e:'🌮'},
     sacramento:{n:'Sacramento',e:'🏛️'}, vegas:{n:'Las Vegas',e:'🎲'}, palm:{n:'Palm Springs',e:'☀️'},
     napasonoma:{n:'Napa / Sonoma',e:'🍇'}, fresno:{n:'Fresno',e:'🐄'}, santabarbara:{n:'Santa Barbara',e:'🌊'},
-    slo:{n:'San Luis Obispo',e:'🌊'}, oc:{n:'Orange County',e:'🍊'}, tahoereno:{n:'Tahoe / Reno',e:'🏂'}
+    slo:{n:'San Luis Obispo',e:'🌊'}, oc:{n:'Orange County',e:'🍊'}, tahoereno:{n:'Tahoe / Reno',e:'🏂'},
+    // 2026-09-21 (a Monterey County rider: "Monterey County is not available"):
+    // ONE picker option covers both tags (public-rides expands santacruz to
+    // santacruz + monterey). No ride has ever been tagged monterey, so a
+    // separate option would always come back empty. `monterey` stays in this
+    // map only to label a ride tagged with it.
+    santacruz:{n:'Santa Cruz / Monterey',e:'🌊'}, monterey:{n:'Monterey',e:'🌊'}
   };
-  var order=['sfba','sanjose','la','sd','sacramento','vegas','palm','napasonoma','oc','santabarbara','slo','fresno','tahoereno'];
+  var order=['sfba','sanjose','la','sd','sacramento','vegas','palm','napasonoma','oc','santacruz','santabarbara','slo','fresno','tahoereno'];
   var fromS=document.getElementById('from'), toS=document.getElementById('to'), list=document.getElementById('list'), countEl=document.getElementById('count');
-  function opts(sel,label){var h='<option value="">'+label+'</option>';order.forEach(function(k){h+='<option value="'+k+'">'+M[k].e+' '+M[k].n+'</option>';});sel.innerHTML=h;}
+  function opts(sel,label){var h='<option value="">'+label+'</option>';order.forEach(function(k){h+='<option value="'+k+'">'+M[k].n+'</option>';});sel.innerHTML=h;}
   opts(fromS,'Anywhere (from)'); opts(toS,'Anywhere (to)');
   var qp=new URLSearchParams(location.search);
   // Hidden web-booking funnel: /rides?web=1 keeps the rider in the browser —
@@ -183,7 +218,7 @@ fbq('track','PageView');
   if(qp.get('to')&&M[qp.get('to')])toS.value=qp.get('to');
   // Web mode is the BOOKABLE surface — "grab a seat in the app" was the
   // app-funnel line leaking through (benchmark fix 8/26).
-  if(webMode){document.getElementById('subLine').textContent='Live carpools across California & Nevada. Book your seat right here — no app needed.';}
+  if(webMode){document.getElementById('subLine').textContent='Live carpools across California and Nevada. Book a seat right here.';}
 
   // Pacific wall-clock, shown as posted (time audit 2026-09-03): the old
   // Date(date+'T'+time) re-read the time in the VIEWER's zone, so a rider in
@@ -228,9 +263,10 @@ fbq('track','PageView');
     // Driver line with FACE (benchmark 8/26): avatar + name + rating with
     // review count + trip count. Riders book people; a faceless card was our
     // single biggest trust gap vs BlaBlaCar.
+    // Photo, or initials (2026-09-16): never a nameless gap or an empty ring.
     var dAvatar=(r.driverPhotoUrl&&/^https:\/\//.test(r.driverPhotoUrl))
-      ?'<img src="'+esc(r.driverPhotoUrl)+'" alt="" style="width:22px;height:22px;border-radius:50%;object-fit:cover;object-position:50% 25%;vertical-align:-5px;margin-right:5px;border:1px solid rgba(0,212,200,0.45);" loading="lazy" />'
-      :'';
+      ?'<img src="'+esc(r.driverPhotoUrl)+'" alt="" style="width:22px;height:22px;border-radius:50%;object-fit:cover;object-position:50% 25%;vertical-align:-5px;margin-right:5px;" loading="lazy" />'
+      :(r.driverFirst?'<span class="ini">'+esc(String(r.driverFirst).trim().charAt(0).toUpperCase())+'</span>':'');
     // Preferred medal: same lucide "medal" glyph and gold ring as the app's
     // ride card, top-right of the photo. Only for drivers this viewer rated 5
     // stars (see loadPreferred); the title carries the meaning for screen
@@ -239,11 +275,8 @@ fbq('track','PageView');
       var medal='<span title="You rated this driver 5 stars" style="position:absolute;top:-6px;right:-6px;width:14px;height:14px;border-radius:50%;background:#0E0E10;border:1px solid #FFD60A;display:flex;align-items:center;justify-content:center;">'
         +'<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00D4C8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
         +MEDAL_PATHS+'</svg></span>';
-      dAvatar=dAvatar
-        ?'<span style="position:relative;display:inline-block;margin-right:5px;">'+dAvatar.replace('margin-right:5px;','')+medal+'</span>'
-        // No photo: the app still draws the medal on its initials avatar, so
-        // give it an empty ring to sit on here rather than dropping it.
-        :'<span style="position:relative;display:inline-block;width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,212,200,0.45);vertical-align:-5px;margin-right:5px;">'+medal+'</span>';
+      // The medal sits on the photo or on the initials, same as the app.
+      dAvatar='<span style="position:relative;display:inline-block;margin-right:5px;">'+dAvatar.replace('margin-right:5px;','')+medal+'</span>';
     }
     var dRating=r.driverRating
       ?(' <span class="star">★</span> '+Number(r.driverRating).toFixed(1))
@@ -331,42 +364,42 @@ fbq('track','PageView');
         var hint='';
         if(dv2&&!document.getElementById('flexF').checked){
           var nearby=allRides.filter(function(r){return r.depDate&&dateDelta(r.depDate,dv2)<=3;}).length;
-          if(nearby>0) hint=nearby+' ride'+(nearby===1?'':'s')+' on nearby dates — tick ±3 days. Or ';
+          if(nearby>0) hint=nearby+' ride'+(nearby===1?'':'s')+' within 3 days of that date. Turn on flexible dates, or ';
         }
         list.innerHTML='<div class="empty">No rides match those refinements. '+hint+'<a href="#" id="clearF">clear the refinements</a> to see all '+allRides.length+'.</div>';
         var cf=document.getElementById('clearF');
-        if(cf) cf.addEventListener('click',function(e){e.preventDefault();document.getElementById('dateF').value='';document.getElementById('availF').checked=false;addrCoords=null;document.getElementById('addrF').value='';document.getElementById('addrClear').classList.add('hidden');renderRides();});
+        if(cf) cf.addEventListener('click',function(e){e.preventDefault();var dF=document.getElementById('dateF'),aF=document.getElementById('availF');dF.value='';aF.checked=false;addrCoords=null;document.getElementById('addrF').value='';document.getElementById('addrClear').classList.add('hidden');/* change events repaint the chips as well as the list */dF.dispatchEvent(new Event('change',{bubbles:true}));aF.dispatchEvent(new Event('change',{bubbles:true}));});
         return;
       }
       // Searching a date more than 5 days out (Justin, 2026-09-02): most rides
       // are posted the week of the trip, so "nothing yet" is usually "not yet".
       var farOut = (function(){ try { var d = document.getElementById('dateF').value; if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return false; var t = new Date(); t.setHours(0,0,0,0); var target = new Date(d + 'T00:00:00'); return (target - t) / 86400000 > 5; } catch (_) { return false; } })();
-      var checkBack = farOut ? '<b>Check back closer to the date</b> — drivers usually post the week of the trip, and the request board emails you the moment a match goes up.<br><br>' : '';
+      var checkBack = farOut ? 'Drivers usually post the week of the trip, so check back closer to the date.<br><br>' : '';
       list.innerHTML = webMode
         ? '<div class="empty">No rides match that yet.<br><br>'
           + checkBack
-          + '<a href="/requests">Tell drivers you need this ride →</a><br>'
-          + 'Drivers who’ve driven the route get notified, and you’ll get an email the moment one posts it.<br><br>'
+          + '<a href="/requests">Tell drivers you need this ride</a><br>'
+          + 'Drivers on this route get notified, and you get an email the moment one posts it.<br><br>'
           + 'Driving this route yourself? <a href="/post">Post the ride</a>.</div>'
-        : '<div class="empty">No rides match that yet.<br><br>' + checkBack + 'Be the first — <a href="/#get">post or request one in the app</a>, or try different cities.</div>';
+        : '<div class="empty">No rides match that yet.<br><br>' + checkBack + 'Be the first: <a href="/#get">post or request one in the app</a>, or try different cities.</div>';
       countEl.textContent='';
       return;
     }
     var exactN=rides.filter(function(r){return !r.adjacent;}).length;
     var nearN=rides.length-exactN;
     countEl.textContent=exactN+' upcoming ride'+(exactN===1?'':'s')+(nearN?' · '+nearN+' nearby':'');
-    if(webMode){
-      countEl.innerHTML=esc(countEl.textContent)
-        +' &nbsp;·&nbsp; <a href="/post" style="color:#00D4C8;text-decoration:none;">Driving one of these routes? Post your ride →</a>'
-        +' &nbsp;·&nbsp; <a href="/requests" style="color:#7dd3fc;text-decoration:none;">Need a ride nobody posted? Request it →</a>';
-    }
+    // The post-a-ride and request prompts used to run on from this count as
+    // a line of arrow links (2026-09-16: "growth clutter"). They live in one
+    // quiet line under the list now (#listFoot).
+    var lf=document.getElementById('listFoot');
+    if(lf) lf.style.display=webMode?'block':'none';
     // Adjacent-region rides render under a divider so nobody mistakes a
     // Santa Barbara ride for the Orange County ride they searched.
     var exact=rides.filter(function(r){return !r.adjacent;});
     var near=rides.filter(function(r){return r.adjacent;});
     var html=exact.map(card).join('');
     if(near.length){
-      html+='<div style="grid-column:1/-1;color:#8a8a92;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin:14px 0 2px;">Nearby routes &mdash; close to what you searched</div>';
+      html+='<div style="grid-column:1/-1;color:#b9b9c6;font-size:16px;font-weight:700;margin:18px 0 4px;">Nearby routes</div>';
       html+=near.map(card).join('');
     }
     list.innerHTML=html;
@@ -374,6 +407,95 @@ fbq('track','PageView');
   ['dateF','availF','flexF'].forEach(function(id){
     document.getElementById(id).addEventListener('change',renderRides);
   });
+  // ── Search controls UI (2026-09-16) ─────────────────────────────────────
+  // City fields open a picker; date and filter chips replace the native date
+  // input and checkboxes. Everything writes into the hidden controls above
+  // and fires 'change', so the filtering and URL logic is untouched.
+  (function(){
+    var GROUPS=[['Bay Area',['sfba','sanjose','napasonoma']],['Sacramento and the Sierra',['sacramento','tahoereno']],['Central Coast',['santacruz','slo','santabarbara']],['Central Valley',['fresno']],['Southern California',['la','oc','sd','palm']],['Nevada',['vegas']]];
+    var picker=document.getElementById('cityPicker'), fromBtn=document.getElementById('fromBtn'), toBtn=document.getElementById('toBtn');
+    var openFor=null;
+    function labelFor(sel){return sel.value&&M[sel.value]?M[sel.value].n:'Anywhere';}
+    function paintFields(){
+      document.getElementById('fromV').textContent=labelFor(fromS);
+      document.getElementById('toV').textContent=labelFor(toS);
+      fromBtn.classList.toggle('set',!!fromS.value); toBtn.classList.toggle('set',!!toS.value);
+    }
+    function closePicker(){picker.classList.add('hidden');picker.innerHTML='';fromBtn.classList.remove('open');toBtn.classList.remove('open');openFor=null;}
+    function pick(sel,val){sel.value=val;sel.dispatchEvent(new Event('change',{bubbles:true}));paintFields();closePicker();}
+    function renderPicker(sel,q){
+      picker.innerHTML='';
+      var s=document.createElement('input');s.type='search';s.placeholder='Search a city';s.value=q||'';s.setAttribute('autocomplete','off');
+      s.addEventListener('input',function(){var v=s.value;renderPicker(sel,v);var n=picker.querySelector('input');if(n){n.focus();try{n.setSelectionRange(n.value.length,n.value.length);}catch(_){}}});
+      picker.appendChild(s);
+      var any=document.createElement('button');any.type='button';any.className='opt'+(sel.value?'':' on');any.textContent='Anywhere';any.addEventListener('click',function(){pick(sel,'');});
+      picker.appendChild(any);
+      var ql=(q||'').trim().toLowerCase();
+      GROUPS.forEach(function(g){
+        var ks=g[1].filter(function(k){return !ql||M[k].n.toLowerCase().indexOf(ql)>=0||g[0].toLowerCase().indexOf(ql)>=0;});
+        if(!ks.length)return;
+        var h=document.createElement('div');h.className='grp';h.textContent=g[0];picker.appendChild(h);
+        ks.forEach(function(k){var b=document.createElement('button');b.type='button';b.className='opt'+(sel.value===k?' on':'');b.textContent=M[k].n;b.setAttribute('role','option');b.addEventListener('click',function(){pick(sel,k);});picker.appendChild(b);});
+      });
+      if(!ql)return; else if(picker.querySelectorAll('.opt').length<=1){var n=document.createElement('div');n.className='grp';n.textContent='No city matches that';picker.appendChild(n);}
+    }
+    function openPicker(which){
+      var sel=which==='from'?fromS:toS, btn=which==='from'?fromBtn:toBtn;
+      if(openFor===which){closePicker();return;}
+      closePicker();openFor=which;btn.classList.add('open');
+      picker.classList.toggle('right',which==='to');
+      picker.classList.remove('hidden');
+      renderPicker(sel,'');
+      var s=picker.querySelector('input');if(s&&window.matchMedia('(pointer: fine)').matches)s.focus();
+    }
+    fromBtn.addEventListener('click',function(){openPicker('from');});
+    toBtn.addEventListener('click',function(){openPicker('to');});
+    document.addEventListener('click',function(e){if(openFor&&!picker.contains(e.target)&&e.target!==fromBtn&&e.target!==toBtn&&!fromBtn.contains(e.target)&&!toBtn.contains(e.target))closePicker();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closePicker();});
+    document.getElementById('swap').addEventListener('click',function(){setTimeout(paintFields,0);});
+    fromS.addEventListener('change',paintFields);toS.addEventListener('change',paintFields);
+    paintFields();
+
+    // Date chips: Any date, Today, Tomorrow, the next three days, Pick a date.
+    // Flexible (±3 days) and Open seats are chips too; flexible only shows
+    // once a date is chosen, since it means nothing without one.
+    var dateF=document.getElementById('dateF'), flexF=document.getElementById('flexF'), availF=document.getElementById('availF'), host=document.getElementById('dateChips');
+    function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+    function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x;}
+    function shortDay(v){var p=v.split('-').map(Number);return new Date(p[0],p[1]-1,p[2]).toLocaleDateString('en-US',{weekday:'short',month:'numeric',day:'numeric'});}
+    function chip(label,on,fn,extra){var b=document.createElement('button');b.type='button';b.className='chip'+(on?' on':'')+(extra?' '+extra:'');b.textContent=label;b.setAttribute('aria-pressed',on?'true':'false');b.addEventListener('click',fn);return b;}
+    function setDate(v){dateF.value=v;dateF.dispatchEvent(new Event('change',{bubbles:true}));renderChips();}
+    function renderChips(){
+      host.innerHTML='';
+      // "Today" is Pacific, like every date on the site, not the viewer's zone.
+      var pt=new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'}).split('-').map(Number);
+      var today=new Date(pt[0],pt[1]-1,pt[2]);
+      var dv=dateF.value||'';
+      var items=[['Any date',''],['Today',ymd(today)],['Tomorrow',ymd(addDays(today,1))]];
+      for(var i=2;i<=4;i++){var d=addDays(today,i);items.push([shortDay(ymd(d)),ymd(d)]);}
+      var listed=items.some(function(it){return it[1]===dv;});
+      if(dv&&!listed)items.push([shortDay(dv),dv]);
+      items.forEach(function(it){host.appendChild(chip(it[0],dv===it[1],function(){setDate(it[1]);}));});
+      host.appendChild(chip('Pick a date',false,function(){
+        try{ if(dateF.showPicker){dateF.showPicker();return;} }catch(_){}
+        dateF.style.cssText='position:absolute;opacity:0;width:1px;height:1px;';dateF.focus();dateF.click();
+      }));
+      var sep=document.createElement('span');sep.className='chip sep';host.appendChild(sep);
+      if(dv)host.appendChild(chip('Flexible, 3 days either way',flexF.checked,function(){flexF.checked=!flexF.checked;flexF.dispatchEvent(new Event('change',{bubbles:true}));renderChips();}));
+      host.appendChild(chip('Open seats',availF.checked,function(){availF.checked=!availF.checked;availF.dispatchEvent(new Event('change',{bubbles:true}));renderChips();}));
+    }
+    dateF.addEventListener('change',renderChips);
+    renderChips();
+
+    // Address search stays, one link away: it is a power filter, not the
+    // first thing every visitor should meet.
+    var addrRow=document.getElementById('addrRow'), addrToggle=document.getElementById('addrToggle');
+    addrToggle.addEventListener('click',function(){
+      var open=addrRow.classList.toggle('hidden');
+      addrToggle.textContent=open?'Near an address':'Hide address search';
+      if(!open){var inp=document.getElementById('addrF');if(inp)inp.focus();}
+    });
+  })();
   // ── Address autocomplete (Mapbox forward geocode, CA/NV bbox) ──────────
   (function(){
     var MB='pk.eyJ1IjoiamR0MjYyIiwiYSI6ImNtcDhnb3pvNzBkbGYyenBpN2psY3g2bGsifQ.sqsxq8sjfLaq978oqGExHg';
@@ -459,7 +581,7 @@ fbq('track','PageView');
       logSearch(rides.filter(function(r){return !r.adjacent;}).length); // exact matches only - nearby top-ups are not met demand
       renderRides();
       loadPreferred(rides);
-    }).catch(function(){ list.innerHTML='<div class="empty">Could not load rides right now — refresh to try again.</div>'; });
+    }).catch(function(){ list.innerHTML='<div class="empty">Could not load rides right now. Refresh to try again.</div>'; });
   }
   // Preferred medal (Justin, 2026-09-14: "lets have it on web too"): drivers
   // this signed-in rider has rated 5 stars get the app's small teal medal on

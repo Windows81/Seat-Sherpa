@@ -60,11 +60,11 @@ fbq('track','PageView');
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book a seat — Seat Sherpa</title>
+  <title>Book a seat · Seat Sherpa</title>
   <!-- Transactional per-ride page — never index. -->
   <meta name="robots" content="noindex" />
   <meta property="og:title" content="Book a seat on Seat Sherpa" />
-  <meta property="og:description" content="Request a seat on this carpool right from your browser — no app needed. You're only charged if the driver accepts." />
+  <meta property="og:description" content="Request a seat on this carpool from your browser. You're only charged if the driver accepts." />
   <meta property="og:image" content="https://seatsherpa.app/icon.png" />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0E0E10" />
@@ -91,33 +91,25 @@ fbq('track','PageView');
     /* Desktop: the 440px mobile column reads cramped on a laptop. */
     @media (min-width: 720px) { .wrap { max-width: 560px; } }
 
-    .brand {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; margin-bottom: 28px;
-    }
-    .navghost{color:#00D4C8;border:1px solid rgba(0,212,200,.4);padding:7px 13px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;margin-left:8px;white-space:nowrap}
-    .navghost:hover{border-color:#00D4C8}
-    @media (max-width:560px){.navghost{padding:6px 10px;font-size:12px;margin-left:6px}}
+    /* Type scale (2026-09-16 de-vibe pass): 22 headings, 16 body, 14
+       secondary, 12 legal. No eyebrows, no letter-spaced caps, one back link
+       (the shared app bar carries the logo and the tabs). */
 
     /* Ride summary card (persistent above the step card) */
     .card {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: #141416;
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 18px;
       padding: 24px;
       margin-bottom: 20px;
     }
-    .card .eyebrow {
-      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-      color: #888; margin-bottom: 12px;
-    }
-    .route { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
-    .meta { font-size: 14.5px; color: #b9b9c6; margin-top: 6px; }
+    .route { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
+    .meta { font-size: 16px; color: #b9b9c6; margin-top: 6px; }
 
     /* Step card */
     h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
-    p.sub { font-size: 15px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
-    label { display: block; font-size: 12.5px; color: #9a9aa4; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    p.sub { font-size: 16px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 14px; color: #b9b9c6; margin-bottom: 6px; }
     input, textarea, select {
       width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
       border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
@@ -132,7 +124,8 @@ fbq('track','PageView');
       width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
       padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
     }
-    button.primary:disabled { opacity: 0.5; cursor: default; }
+    /* Disabled reads as "not yet", not as a faded copy of the real button. */
+    button.primary:disabled { background: transparent; border: 1px solid rgba(255,255,255,0.14); color: #8a8a92; cursor: default; }
     .linkbtn {
       background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
       cursor: pointer; padding: 0; font-family: inherit;
@@ -145,7 +138,8 @@ fbq('track','PageView');
     .msg.ok { color: #4ade80; }
     .hidden { display: none !important; }
     .center { text-align: center; }
-    .icon { font-size: 44px; margin-bottom: 12px; }
+    .icon { display: flex; justify-content: center; margin-bottom: 14px; }
+    .icon svg { width: 44px; height: 44px; }
     .hint { font-size: 14px; color: #9a9aa4; margin: -8px 0 14px; line-height: 1.5; }
     .infobtn { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; margin-left:6px; padding:0; border-radius:50%; border:1px solid #6b6b78; background:transparent; color:#9a9aa4; font:600 12px/1 Georgia, serif; font-style:italic; cursor:pointer; vertical-align:-2px; }
     .infobtn:hover, .infobtn:focus-visible { color:#00D4C8; border-color:#00D4C8; outline:none; }
@@ -295,16 +289,14 @@ fbq('track','PageView');
     });
   </script>
   <div class="wrap">
-    <div class="brand">
-      <a href="/rides?web=1" class="navghost" style="margin-right:auto;">← Back to rides</a>
-      <a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a>
-      <span id="bookNav" style="display:none;align-items:center;"></span>
-    </div>
+    <!-- The shared app bar carries the logo and tabs; the page's own second
+         logo and "Back to rides" pill came out 2026-09-16 (three navigation
+         elements before the content). The one back link is #backRow. -->
+    <span id="bookNav" style="display:none;align-items:center;"></span>
 
     <!-- Persistent ride summary — stays visible above every booking step so
          the visitor never loses sight of what they're booking. -->
     <div class="card hidden" id="rideCard">
-      <div class="eyebrow">You're requesting a seat on</div>
       <div class="route" id="rideRoute"></div>
       <div class="meta" id="rideMeta"></div>
       <div class="meta" id="rideDriver"></div>
@@ -325,11 +317,10 @@ fbq('track','PageView');
 
     <!-- Ride gone / full / departs too soon -->
     <div class="card center hidden" id="stGone">
-      <div class="icon">🚗</div>
       <h1 id="goneTitle">That ride is no longer available</h1>
-      <p class="sub" id="goneSub">It was cancelled or has already left — but drivers post new rides every day.</p>
+      <p class="sub" id="goneSub">It was cancelled or has already left. Drivers post new rides every day.</p>
       <a class="store-badge" href="/rides?web=1" style="justify-content:center;" aria-label="Browse current rides">
-        <div class="label"><span class="big">See current rides →</span></div>
+        <div class="label"><span class="big">See current rides</span></div>
       </a>
       <p class="sub" style="margin:14px 0 0;">or <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=book">get the app</a></p>
     </div>
@@ -337,20 +328,18 @@ fbq('track','PageView');
     <!-- Online booking not available for this ride (public-ride predates the
          seats payload — should clear itself on the next deploy). -->
     <div class="card center hidden" id="stAppOnly">
-      <div class="icon">📱</div>
       <h1>Book this ride in the app</h1>
-      <p class="sub">Online booking isn't available for this ride yet — grab the app to request this seat in a couple of taps.</p>
+      <p class="sub">Online booking isn't available for this ride yet. The app can request this seat in a couple of taps.</p>
       <a class="store-badge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=book" style="justify-content:center;" aria-label="Get the Seat Sherpa app">
-        <div class="label"><span class="big">Get the Seat Sherpa app →</span></div>
+        <div class="label"><span class="big">Get the Seat Sherpa app</span></div>
       </a>
     </div>
 
     <!-- STEP: email (+ Google/Apple via js/ss-oauth.js) -->
     <div class="card hidden" id="stEmail">
-      <div class="eyebrow">Book online · Sign in</div>
       <h1>Sign in to book your seat</h1>
       <div id="oauthMount" style="margin-top:14px;"></div>
-      <p class="sub">We'll email you a sign-in code — no password needed.</p>
+      <p class="sub">We'll email you a sign-in code. No password needed.</p>
       <label for="email">Email</label>
       <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
       <button class="primary" id="emailBtn">Email me a code</button>
@@ -360,9 +349,8 @@ fbq('track','PageView');
 
     <!-- STEP: email code -->
     <div class="card hidden" id="stCode">
-      <div class="eyebrow">Book online · Verify email</div>
       <h1>Enter the code we emailed you</h1>
-      <p class="sub">We sent it to <strong id="codeEmailEcho"></strong>. It can take a minute — check spam too.</p>
+      <p class="sub">Sent to <strong id="codeEmailEcho"></strong>. It can take a minute, and it may land in spam.</p>
       <input id="emailCode" class="codeinput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="••••••" />
       <button class="primary" id="codeBtn">Verify</button>
       <div class="rowlinks">
@@ -377,10 +365,9 @@ fbq('track','PageView');
          photo" (face-checked like any upload); phones get a direct selfie
          button next to the file picker. -->
     <div class="card hidden" id="stProfile">
-      <div class="eyebrow">Book online · Your profile</div>
       <div class="gate-pick hidden" id="gatePickProfile"></div>
       <h1>Tell the driver who you are</h1>
-      <p class="sub">Your name, a few words, and a face photo are what the driver sees when deciding on your request.</p>
+      <p class="sub">Your name, a few words, and a photo of your face are what the driver sees.</p>
 
       <div class="photo-row">
         <img id="photoPrev" class="avatar-prev hidden" alt="Your photo" />
@@ -388,14 +375,14 @@ fbq('track','PageView');
           <img id="googlePhotoImg" alt="Your Google photo" />
           <div>
             <div class="google-offer-title">Use your Google photo?</div>
-            <div class="google-offer-sub">Saves a step — your driver just needs to recognize you.</div>
+            <div class="google-offer-sub">Your driver just needs to recognize you.</div>
             <button type="button" class="primary small" id="googlePhotoUse">Use this photo</button>
           </div>
         </div>
         <div class="photo-btns">
-          <label class="filebtn" for="photoSelfie" id="photoSelfieLabel">🤳 Take a selfie</label>
+          <label class="filebtn" for="photoSelfie" id="photoSelfieLabel">Take a selfie</label>
           <input id="photoSelfie" type="file" accept="image/*" capture="user" class="hidden" />
-          <label class="filebtn" for="photoFile" id="photoFileLabel">📷 Choose a photo</label>
+          <label class="filebtn" for="photoFile" id="photoFileLabel">Choose a photo</label>
           <input id="photoFile" type="file" accept="image/*" class="hidden" />
         </div>
         <div class="msg err hidden" id="photoMsg"></div>
@@ -404,12 +391,12 @@ fbq('track','PageView');
       <label for="pfName">Your name</label>
       <input id="pfName" type="text" autocomplete="name" placeholder="First Last" />
       <label for="pfBio">A few words about you</label>
-      <p class="sub" style="margin:0 0 8px;font-size:14px;">No phone numbers or emails — you and your driver chat and call right in Seat Sherpa once booked.</p>
+      <p class="sub" style="margin:0 0 8px;font-size:14px;">No phone numbers or emails. You'll chat in Seat Sherpa once booked.</p>
       <textarea id="pfBio" maxlength="500" placeholder="e.g. Grad student heading home for the weekend. Quiet rider, one small bag."></textarea>
       <p class="hint"><span id="bioCount">0</span> / 3 words minimum</p>
       <div class="profsec hidden" id="secEmail">
         <div class="profhead"><span class="profst" id="stEmailOk">○</span><strong>Email for confirmations</strong></div>
-        <p class="hint">This account signed in without an email address, so receipts, confirmations and pickup details have nowhere to go. Add one and we'll send a link to confirm it.</p>
+        <p class="hint">Confirmations and pickup details go here. We'll send a link to confirm it.</p>
         <input id="acctEmail" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
         <button class="primary" id="acctEmailBtn">Save email</button>
         <div class="msg err hidden" id="acctEmailMsg"></div>
@@ -420,10 +407,9 @@ fbq('track','PageView');
 
     <!-- STEP: phone -->
     <div class="card hidden" id="stPhone">
-      <div class="eyebrow">Book online · Verify phone</div>
       <div class="gate-pick hidden" id="gatePickPhone"></div>
       <h1>Verify your phone</h1>
-      <p class="sub">So your driver can reach you about pickup. Your number stays private until ride day &mdash; it's only shared starting 24 hours before departure, and never used for marketing. We'll text you a 6-digit code.</p>
+      <p class="sub">So your driver can reach you on ride day. Your number stays private until 24 hours before departure. We'll text you a 6-digit code.</p>
       <div id="phoneEntry">
         <div style="display:flex; gap:10px;">
           <div style="width:88px;">
@@ -452,9 +438,7 @@ fbq('track','PageView');
 
     <!-- STEP: seat pick -->
     <div class="card hidden" id="stSeats">
-      <div class="eyebrow">Book online · Pick your seat</div>
       <h1>Pick your seat</h1>
-      <p class="sub">Tap one or more open seats.</p>
       <!-- Segment booking (2026-08-28): board/alight at a route-fill stop —
            the price prorates to the share of the trip you ride. Hidden unless
            the ride has stops. -->
@@ -484,7 +468,7 @@ fbq('track','PageView');
         <!-- Typed code at checkout (2026-09-03): applying one refreshes the
              credit line above. Same applier as sign-in and the account page. -->
         <details id="codeBox" style="margin:0 0 14px;">
-          <summary style="cursor:pointer;font-size:14px;color:#7dd3fc;">Have an invite or promo code?</summary>
+          <summary style="cursor:pointer;font-size:14px;color:#00D4C8;">Have an invite or promo code?</summary>
           <div style="display:flex;gap:8px;margin-top:10px;">
             <input id="webCode" placeholder="e.g. TAYLOR5" autocapitalize="characters" autocomplete="off" maxlength="12" style="flex:1;min-width:0;" />
             <button class="outline muted" id="webCodeBtn" type="button" style="width:auto;padding:0 18px;margin:0;">Apply</button>
@@ -495,12 +479,12 @@ fbq('track','PageView');
              trips.html's POLICY_DETAILS so pre- and post-booking never
              disagree. Populated from public-ride's cancellationPolicy. -->
         <details id="policyBox" style="margin:0 0 14px;">
-          <summary style="cursor:pointer;font-size:14px;color:#7dd3fc;">Cancellation policy</summary>
+          <summary style="cursor:pointer;font-size:14px;color:#00D4C8;">Cancellation policy</summary>
           <ul id="policyList" style="margin:8px 0 0 18px;font-size:14px;color:#9a9aa8;line-height:1.6;"></ul>
         </details>
       </div>
-      <button class="primary" id="bookBtn" disabled>Request seat</button>
-      <p class="hint" style="margin-top:10px; text-align:center;">You're only charged if the driver accepts. Payments handled by Stripe.</p>
+      <button class="primary" id="bookBtn" disabled>Pick a seat to continue</button>
+      <p class="hint" style="margin-top:10px; text-align:center;">You're only charged if the driver accepts. Payment is handled by Stripe.</p>
       <div class="msg err hidden" id="bookMsg"></div>
       <div class="signedin hidden" id="signedIn">Signed in as <span id="signedInEmail"></span> · <button class="linkbtn" id="signOutBtn">Not you?</button></div>
     </div>
@@ -516,14 +500,14 @@ fbq('track','PageView');
     <div class="card center hidden" id="stFinalizing">
       <div class="spinner"></div>
       <h1>Finalizing your payment…</h1>
-      <p class="sub" style="margin-bottom:0;">Hang tight — this usually takes a few seconds.</p>
+      <p class="sub" style="margin-bottom:0;">This usually takes a few seconds.</p>
     </div>
 
     <div class="card center hidden" id="stSuccess">
-      <div class="icon">✅</div>
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00D4C8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
       <h1 id="successTitle">Your request is in</h1>
       <div class="refcode hidden" id="successRef"></div>
-      <p class="sub" id="successSub">The driver has been notified. Your card is authorized but only charged when they accept — we'll email you as soon as they respond.</p>
+      <p class="sub" id="successSub">The driver has been notified. Your card is only charged when they accept, and we'll email you as soon as they respond.</p>
       <!-- Web-first (2026-08-28): a web booker's home is the browser console,
            not the app stores. Soft app line only. -->
       <!-- One filled button (primary-action audit, Justin 2026-09-05):
@@ -808,9 +792,28 @@ fbq('track','PageView');
       if (EMAIL_RE.test(t) || EMAIL_RE.test(deobEmail(t))) return 'email';
       return null;
     };
+    // Booking note ("Message to the driver"): it becomes the first chat
+    // message and goes out BEFORE the driver accepts, so it gets the chat
+    // rule (warn, never block) with the app's BOOKING_NOTE_WARNING copy.
+    // Phone (incl. spaced/interleaved forms) via bioContact; emails, @handles
+    // and off-platform apps via the app's HANDLE_RE (lib/off-platform-guard.ts).
+    const NOTE_HANDLE_RE = /\b(whats\s?app|telegram|signal|snapchat|venmo|zelle|cash\s?app)\b|@[a-z0-9_.]{3,}/i;
+    const noteContact = (t) => {
+      if (!t) return null;
+      const c = bioContact(t);
+      if (c === 'phone') return 'phone';
+      if (c === 'email' || NOTE_HANDLE_RE.test(t)) return 'handle';
+      return null;
+    };
+    const NOTE_WARN_MSG = {
+      // 0306: a booking note is always sent before acceptance, so the server
+      // hides the contact detail. Say so.
+      phone: "Phone numbers and emails stay hidden until your driver accepts your request, so this one will be removed from your message. Your driver can reply to you in Seat Sherpa, and once you're confirmed, you can call each other through Seat Sherpa starting the day before the ride.",
+      handle: "Handles and emails stay hidden until your driver accepts your request, so this one will be removed from your message. Your driver can reply to you in Seat Sherpa, and once you're confirmed, you can call each other through Seat Sherpa starting the day before the ride.",
+    };
     const BIO_CONTACT_MSG = {
-      phone: "Please take the phone number out of your bio — your profile is public to everyone browsing rides. Once your booking is confirmed you can call your driver from the app.",
-      email: "Please take the email address out of your bio — your profile is public to everyone browsing rides. Once your booking is confirmed you can message your driver in the app.",
+      phone: "Please take the phone number out of your bio. Your profile is public to everyone browsing rides, and you can call your driver from the app once the booking is confirmed.",
+      email: "Please take the email address out of your bio. Your profile is public to everyone browsing rides, and you can message your driver in the app once the booking is confirmed.",
     };
 
     // lib/phone.ts stripLeadingCountryCode — drop a doubled country code so we
@@ -835,7 +838,7 @@ fbq('track','PageView');
       const msg = (error.message || '').toLowerCase();
       if (msg.includes('rate limit')) return 'Too many requests. Try again in an hour.';
       if (msg.includes('already') || msg.includes('exists'))
-        return 'This number already has a Seat Sherpa account. Sign out, then sign back in with the email or Apple/Google you used before — your history is there.';
+        return 'This number already has a Seat Sherpa account. Sign out, then sign back in with the email or Apple/Google you used before. Your history is there.';
       if (msg.includes('invalid') && (msg.includes('phone') || msg.includes('number') || msg.includes("'to'") || msg.includes('21211')))
         return "That doesn't look like a valid phone number. Please double-check it and try again.";
       return "We couldn't send your code. Please check your number and try again.";
@@ -894,7 +897,7 @@ fbq('track','PageView');
 
     // ── Ride card render ──────────────────────────────────────────────────
     function renderRideCard(d) {
-      $('rideRoute').textContent = '🚗 ' + (d.fromArea || 'A city') + ' → ' + (d.toArea || 'destination');
+      $('rideRoute').textContent = (d.fromArea || 'A city') + ' → ' + (d.toArea || 'destination');
       // Pacific wall-clock, shown as posted (time audit 2026-09-03): the old
       // Date(depDate + 'T' + depTime) re-read the time in the VIEWER's zone.
       $('rideMeta').textContent = rideWhen(d.depDate, d.depTime);
@@ -908,24 +911,26 @@ fbq('track','PageView');
         if (d.driverPrefs) {
           var pc = [];
           var pp = d.driverPrefs;
-          if (pp.conversation === 'chatty') pc.push('💬 Chatty');
-          else if (pp.conversation === 'depends') pc.push('💬 Happy either way');
-          else if (pp.conversation === 'quiet') pc.push('🤫 Quiet ride');
-          if (pp.musicOk === true) pc.push('🎵 Music');
-          if (pp.smokingOk === false) pc.push('🚭 No smoking');
-          if (pp.petsOk === true) pc.push('🐾 Pets ok');
+          if (pp.conversation === 'chatty') pc.push('Chatty');
+          else if (pp.conversation === 'depends') pc.push('Happy either way');
+          else if (pp.conversation === 'quiet') pc.push('Quiet ride');
+          if (pp.musicOk === true) pc.push('Music');
+          if (pp.smokingOk === false) pc.push('No smoking');
+          if (pp.petsOk === true) pc.push('Pets ok');
           if (pc.length) $('rideDriver').textContent += ' · ' + pc.join(' · ');
         }
         // Trust badges (benchmark 8/26): we enforce phone OTP + license on
         // file before any ride goes live — now we finally SAY so, exactly
         // where the booking decision happens.
+        // One "Verified" line in the brand color, not typed checkmarks in
+        // green (2026-09-16); the ride page carries the tap-to-expand pill.
         var trustBits = [];
-        if (d.driverPhoneVerified) trustBits.push('✓ Phone verified');
-        if (d.driverLicenseOnFile) trustBits.push("✓ Driver's license on file");
+        if (d.driverPhoneVerified) trustBits.push('phone');
+        if (d.driverLicenseOnFile) trustBits.push("driver's license on file");
         if (trustBits.length) {
           var tb = document.createElement('div');
-          tb.style.cssText = 'font-size:12px;color:#4ade80;margin-top:3px;';
-          tb.textContent = trustBits.join(' · ');
+          tb.style.cssText = 'font-size:14px;color:#00D4C8;margin-top:4px;';
+          tb.textContent = 'Verified: ' + trustBits.join(', ');
           $('rideDriver').insertAdjacentElement('afterend', tb);
         }
       }
@@ -934,24 +939,24 @@ fbq('track','PageView');
       // after booking (POLICY_DETAILS) — terms belong before money.
       var POLICY_DETAILS = {
         standard: [
-          '✓ Cancel 24+ hours before departure → 100% of the seat price back',
-          '~ Cancel 2 – 24 hours before → 50% of the seat price back',
-          '✗ Cancel within 2 hours of departure → no refund',
-          'ⓘ The booking fee is non-refundable when you cancel',
-          '✓ If the DRIVER cancels: 100% refund including the booking fee',
+          'Cancel 24 hours or more before departure: full refund of the seat price',
+          'Cancel 2 to 24 hours before departure: half the seat price back',
+          'Cancel within 2 hours of departure: no refund',
+          'The booking fee is not refunded when you cancel',
+          'If the driver cancels: full refund, booking fee included',
         ],
         free: [
-          '✓ Cancel 2+ hours before departure → 100% refund',
-          '✗ Cancel within 2 hours of departure → no refund',
+          'Cancel 2 hours or more before departure: full refund',
+          'Cancel within 2 hours of departure: no refund',
         ],
         moderate: [
-          '✓ Cancel 48+ hours before departure → 100% refund',
-          '~ Cancel 2 – 48 hours before departure → 50% refund',
-          '✗ Cancel within 2 hours of departure → no refund',
+          'Cancel 48 hours or more before departure: full refund',
+          'Cancel 2 to 48 hours before departure: half back',
+          'Cancel within 2 hours of departure: no refund',
         ],
         strict: [
-          '~ Cancel 7+ days before departure → 50% refund',
-          '✗ Cancel within 7 days of departure → no refund',
+          'Cancel 7 days or more before departure: half back',
+          'Cancel within 7 days of departure: no refund',
         ],
       };
       var polLines = POLICY_DETAILS[d.cancellationPolicy];
@@ -966,7 +971,7 @@ fbq('track','PageView');
       } else {
         $('policyBox').style.display = 'none';
       }
-      document.title = (d.fromArea || 'Ride') + ' → ' + (d.toArea || '') + ' — Book a seat — Seat Sherpa';
+      document.title = (d.fromArea || 'Ride') + ' → ' + (d.toArea || '') + ' · Book a seat · Seat Sherpa';
     }
 
     // ── Funnel routing: jump to the first incomplete step ─────────────────
@@ -1112,7 +1117,7 @@ fbq('track','PageView');
       const { data: sd } = await supabase.auth.getSession();
       const uid = sd && sd.session && sd.session.user ? sd.session.user.id : null;
       if (!uid) {
-        $('goneTitle').textContent = 'This ride is full — get first dibs';
+        $('goneTitle').textContent = 'This ride is full';
         $('goneSub').innerHTML = 'We’ll email you the moment a seat opens. ' +
           '<a href="#" id="wlSignIn" style="font-weight:700;">Sign in with your email to join the waitlist →</a>';
         show('stGone');
@@ -1126,13 +1131,72 @@ fbq('track','PageView');
       const { error } = await supabase.from('ride_waitlist').insert({ ride_id: rideId, user_id: uid });
       if (error && !/duplicate|unique/i.test(error.message || '')) {
         $('goneTitle').textContent = 'This ride is full';
-        $('goneSub').textContent = 'Every seat has been taken — and the waitlist hiccuped. Refresh to try again.';
+        $('goneSub').textContent = 'Every seat has been taken, and the waitlist did not respond. Refresh to try again.';
         show('stGone');
         return;
       }
       $('goneTitle').textContent = "You're on the list 🔔";
       $('goneSub').textContent = "We'll email you the moment a seat opens on this ride. No need to keep checking.";
       show('stGone');
+      void offerAlternative();
+    }
+
+    // Full is not a dead end (Justin, 2026-09-17): a live ride within a day
+    // whose route passes within 50 miles of this ride's start and then its end
+    // (RPC alt_rides_for_full_ride, migration 0302) is offered under the
+    // waitlist confirmation so the person can lock a seat in instead of
+    // waiting. The join above stands either way; any error means no offer.
+    const ALT_METRO = {
+      sfba: 'San Francisco Bay Area', sanjose: 'San Jose', napasonoma: 'Napa / Sonoma', sacramento: 'Sacramento',
+      tahoereno: 'Tahoe / Reno', la: 'Los Angeles', oc: 'Orange County', sd: 'San Diego', palm: 'Palm Springs',
+      inlandempire: 'Riverside / Inland Empire', vegas: 'Las Vegas', manteca: 'Manteca', fresno: 'Fresno',
+      santacruz: 'Santa Cruz', monterey: 'Monterey', bakersfield: 'Bakersfield', slo: 'San Luis Obispo',
+      santabarbara: 'Santa Barbara', burningman: 'Burning Man', redding: 'Redding',
+    };
+    function altCity(area, fallback) {
+      var parts = String(area || '').split(',').map(function (s) { return s.trim(); }).filter(function (s) {
+        return s && !/^(california|nevada|ca|nv|usa|united states)(\s+\d{5})?$/i.test(s) && !/^\d{5}$/.test(s);
+      });
+      var city = parts[parts.length - 1];
+      return city && city.length <= 28 && !/\d/.test(city) ? city : fallback;
+    }
+    function altEsc(s) {
+      return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    function altWhen(depDate, depTime) {
+      var day = String(depDate || '');
+      var p = day.split('-').map(Number);
+      var dt = new Date(Date.UTC(p[0], (p[1] || 1) - 1, p[2] || 1));
+      if (isFinite(dt.getTime()) && p[0] > 2000) {
+        day = dt.toLocaleDateString('en-US', { timeZone: 'UTC', weekday: 'short', month: 'numeric', day: 'numeric' });
+      }
+      var t = String(depTime || '').split(':').map(Number);
+      if (!isFinite(t[0])) return day;
+      var h12 = t[0] % 12 === 0 ? 12 : t[0] % 12;
+      var mm = isFinite(t[1]) ? t[1] : 0;
+      return day + ' at ' + h12 + ':' + (mm < 10 ? '0' : '') + mm + ' ' + (t[0] >= 12 ? 'PM' : 'AM');
+    }
+    async function offerAlternative() {
+      try {
+        const { data, error } = await supabase.rpc('alt_rides_for_full_ride', { p_ride_id: rideId });
+        if (error || !Array.isArray(data) || !data.length) return;
+        const a = data[0];
+        const from = altCity(a.departure_area, ALT_METRO[a.from_dest] || a.from_dest);
+        const to = altCity(a.arrival_area, ALT_METRO[a.to_dest] || a.to_dest);
+        const seats = a.open_seats + ' seat' + (a.open_seats === 1 ? '' : 's') + ' open';
+        // All-in like the marketplace: seat + service fee (5%, $2 minimum), whole
+        // dollars, never the bare seat price (Justin, 2026-09-17).
+        const seatCents = Math.round(Number(a.price_from) * 100);
+        const feeCents = Math.max(Math.floor(seatCents * 0.05), 200);
+        const price = a.price_from != null ? ', from $' + Math.ceil((seatCents + feeCents) / 100) : '';
+        const more = data.length > 1 ? ' ' + (data.length - 1) + ' more like it on the marketplace.' : '';
+        $('goneSub').innerHTML =
+          "We'll email you if a seat opens. " +
+          '<strong>' + altEsc(a.driver_name) + '</strong> is driving ' + altEsc(from) + ' to ' + altEsc(to) + ' ' +
+          altEsc(altWhen(a.dep_date, a.dep_time)) + altEsc(price) + ', ' + altEsc(seats) + '. ' +
+          '<a href="/book?id=' + encodeURIComponent(a.ride_id) + '" style="font-weight:700;">Lock that one in instead</a>.' +
+          altEsc(more);
+      } catch (_) { /* no offer */ }
     }
 
     function showGone(kind) {
@@ -1140,7 +1204,7 @@ fbq('track','PageView');
       if (kind === 'full') {
         if (qp.get('waitlist') === '1' && rideId) { void waitlistFlow(); return; }
         $('goneTitle').textContent = 'This ride is full';
-        $('goneSub').innerHTML = 'Every seat has been taken — <a href="?id=' + encodeURIComponent(rideId) + '&waitlist=1" style="font-weight:700;">join the waitlist</a> and we’ll email you if one opens.';
+        $('goneSub').innerHTML = 'Every seat has been taken. <a href="?id=' + encodeURIComponent(rideId) + '&waitlist=1" style="font-weight:700;">Join the waitlist</a> and we’ll email you if one opens.';
       } else if (kind === 'own_ride') {
         $('goneTitle').textContent = 'This is your ride';
         $('goneSub').innerHTML = 'You can’t book a seat on a ride you’re driving. <a href="/driving" style="font-weight:700;">Open your driving console</a> to manage seats and riders, or share the link to fill it.';
@@ -1153,7 +1217,7 @@ fbq('track','PageView');
         // Reachable only if the ride departs mid-session now that booking runs
         // right up to departure (2026-08-28) — so say what actually happened.
         $('goneTitle').textContent = 'This ride has just departed';
-        $('goneSub').innerHTML = 'It left while you were booking — but drivers post new rides every day. <a href="/rides?web=1" style="font-weight:700;">See what’s live now</a>.';
+        $('goneSub').innerHTML = 'It left while you were booking. Drivers post new rides every day. <a href="/rides?web=1" style="font-weight:700;">See what’s live now</a>.';
       } else if (kind === 'offline') {
         // A failed fetch is NOT a cancelled ride (audit 8/28): telling a rider
         // on a flaky phone connection that the ride is gone kills a live sale.
@@ -1165,7 +1229,7 @@ fbq('track','PageView');
         return;
       } else {
         $('goneTitle').textContent = 'That ride is no longer available';
-        $('goneSub').textContent = 'It was cancelled or has already left — but drivers post new rides every day.';
+        $('goneSub').textContent = 'It was cancelled or has already left. Drivers post new rides every day.';
       }
       show('stGone');
     }
@@ -1216,7 +1280,7 @@ fbq('track','PageView');
           var spR = rideData.segmentPrices || null;
           var vR = spR ? spR[(segBoardingId || 'origin') + '|end'] : undefined;
           segLegUsd = typeof vR === 'number' && isFinite(vR) && vR > 0 ? Math.round(vR) : null;
-          note.textContent = 'That drop-off comes before your pickup on the route — reset to the final stop.';
+          note.textContent = 'That drop-off comes before your pickup on the route, so it was reset to the final stop.';
           note.classList.remove('hidden');
         } else {
           // Driver-set leg price (0226): the driver priced this exact pair
@@ -1502,7 +1566,7 @@ function rideWhen(dateStr, timeStr) {
       if (n === 0 || !t) {
         $('priceSummary').classList.add('hidden');
         bookBtn.disabled = true;
-        bookBtn.textContent = 'Request seat';
+        bookBtn.textContent = 'Pick a seat to continue';
         return;
       }
       const { bps, minLifted, seatCents, feeCents } = t;
@@ -1670,12 +1734,12 @@ function rideWhen(dateStr, timeStr) {
       const name = $('pfName').value.trim();
       const bio = $('pfBio').value.trim();
       if (!name) { setMsg('profileMsg', 'Please enter your name.'); return; }
-      if (name.includes('@')) { setMsg('profileMsg', "Names can't contain @ — your driver just needs your real name."); return; }
-      if (nameLooksLikeHandle(name)) { setMsg('profileMsg', 'That looks like a username — riders and drivers need your real first and last name.'); return; }
-      if (!bioOk(bio)) { setMsg('profileMsg', 'Tell the driver a little more — at least ' + BIO_MIN_WORDS + ' words.'); return; }
+      if (name.includes('@')) { setMsg('profileMsg', "Names can't contain @. Your driver just needs your real name."); return; }
+      if (nameLooksLikeHandle(name)) { setMsg('profileMsg', 'That looks like a username. Riders and drivers need your real first and last name.'); return; }
+      if (!bioOk(bio)) { setMsg('profileMsg', 'Tell the driver a little more, at least ' + BIO_MIN_WORDS + ' words.'); return; }
       const bioHit = bioContact(bio);
       if (bioHit) { setMsg('profileMsg', BIO_CONTACT_MSG[bioHit]); return; }
-      if (!currentPhotoUrl && !photoBlob) { setMsg('photoMsg', 'Add a face photo — take a selfie or choose one. Your driver uses it to recognize you at pickup.'); return; }
+      if (!currentPhotoUrl && !photoBlob) { setMsg('photoMsg', 'Add a photo of your face, a selfie or one you already have. Your driver uses it to recognize you at pickup.'); return; }
       const btn = $('profileBtn');
       btn.disabled = true; btn.textContent = 'Saving…';
       try {
@@ -1700,7 +1764,7 @@ function rideWhen(dateStr, timeStr) {
           ({ data, error } = await supabase.from('profiles')
             .update(patch).eq('id', myUid).select('id'));
         }
-        if (error || !data || data.length === 0) throw error || new Error('Profile not ready — please try again.');
+        if (error || !data || data.length === 0) throw error || new Error('Profile not ready. Please try again.');
         if (patch.photo_url) { currentPhotoUrl = patch.photo_url; photoBlob = null; }
         // Keep auth user_metadata.name in sync (same as updateMyProfile) so
         // the app shows the right name if they install it later. Best-effort.
@@ -1739,7 +1803,7 @@ function rideWhen(dateStr, timeStr) {
       setMsg('phoneMsg', '');
       const cc = $('phoneCc').value, num = $('phoneNum').value;
       const e164 = toE164(cc, num);
-      if (!plausibleE164(e164)) { setMsg('phoneMsg', 'Enter a valid US or Canada number (10 digits) — other countries are supported in the app.'); return; }
+      if (!plausibleE164(e164)) { setMsg('phoneMsg', 'Enter a valid US or Canada number (10 digits). Other countries are supported in the app.'); return; }
       pendingPhone = { cc: cc.replace(/\D/g, ''), num, e164 };
       const btn = $('phoneSendBtn');
       btn.disabled = true; btn.textContent = 'Sending…';
@@ -1843,7 +1907,7 @@ function rideWhen(dateStr, timeStr) {
       try {
         candidate = await downscale(fileOrBlob);
       } catch (_) {
-        setMsg('photoMsg', "That image format isn't supported — try a different photo.");
+        setMsg('photoMsg', "That image format isn't supported. Try a different photo.");
         return false;
       }
       // Face gate (2026-08-28) — a car photo went through as an avatar.
@@ -1854,8 +1918,8 @@ function rideWhen(dateStr, timeStr) {
         const fr = await checkFace(candidate);
         if (fr.ok && fr.faces === 0) {
           setMsg('photoMsg', sourceLabel === 'google'
-            ? "We couldn't spot a face in your Google photo — take a selfie or choose a clear photo of yourself instead."
-            : "We couldn't spot a face in that photo. Your driver uses it to recognize you at pickup — please use a clear photo of yourself.");
+            ? "We couldn't spot a face in your Google photo. Take a selfie or choose a clear photo of yourself instead."
+            : "We couldn't spot a face in that photo. Your driver uses it to recognize you at pickup, so please use a clear photo of yourself.");
           return false;
         }
       } catch (_) { /* detector unavailable — proceed */ }
@@ -1872,7 +1936,7 @@ function rideWhen(dateStr, timeStr) {
       prev.src = URL.createObjectURL(photoBlob);
       prev.classList.remove('hidden');
       $('googlePhotoOffer').classList.add('hidden');
-      $('photoFileLabel').textContent = '📷 Choose a different photo';
+      $('photoFileLabel').textContent = 'Choose a different photo';
       return true;
     }
     for (const inputId of ['photoFile', 'photoSelfie']) {
@@ -1894,7 +1958,7 @@ function rideWhen(dateStr, timeStr) {
         sec.classList.toggle('hidden', !missing);
         if (u && (u.new_email || '').trim()) {
           $('stEmailOk').textContent = '✓';
-          setMsg('acctEmailMsg', 'Confirmation sent to ' + u.new_email + ' — tap the link in that email to finish.', 'ok');
+          setMsg('acctEmailMsg', 'Confirmation sent to ' + u.new_email + '. Tap the link in that email to finish.', 'ok');
         }
       } catch (_) { sec.classList.add('hidden'); }
     }
@@ -1907,7 +1971,7 @@ function rideWhen(dateStr, timeStr) {
         const { error } = await supabase.auth.updateUser({ email }, { emailRedirectTo: 'https://seatsherpa.app/email-changed' });
         if (error) throw error;
         $('stEmailOk').textContent = '✓';
-        setMsg('acctEmailMsg', 'Confirmation sent to ' + email + ' — tap the link in that email to finish. You can keep going here meanwhile.', 'ok');
+        setMsg('acctEmailMsg', 'Confirmation sent to ' + email + '. Tap the link in that email to finish; you can keep going here meanwhile.', 'ok');
       } catch (e) {
         setMsg('acctEmailMsg', (e && e.message) || 'Could not save that email. Try again.');
       }
@@ -1923,7 +1987,7 @@ function rideWhen(dateStr, timeStr) {
         const blob = await res.blob();
         await acceptPhotoCandidate(blob, 'google');
       } catch (_) {
-        setMsg('photoMsg', "Couldn't load your Google photo here — take a selfie or choose a photo instead.");
+        setMsg('photoMsg', "Couldn't load your Google photo here. Take a selfie or choose a photo instead.");
       }
       btn.disabled = false; btn.textContent = 'Use this photo';
     });
@@ -1933,6 +1997,43 @@ function rideWhen(dateStr, timeStr) {
       setMsg('bookMsg', '');
       if (selectedSeats.length === 0) return;
       const btn = $('bookBtn');
+      // Off-platform contact in the note: warn once per note text; a second
+      // tap with the same text sends it (web chat uses the same pattern).
+      {
+        const note = $('drvMsg').value.trim();
+        const hit = noteContact(note);
+        // 0305: log the warning and the send-anyway. A rider who is not signed
+        // in yet cannot write the row (RLS needs auth.uid()), and the 'shown'
+        // row used to be fired anyway and silently lost, so every brand-new
+        // rider's warning vanished from the record (found 2026-09-20 while
+        // checking whether a rider had been warned). Now it is QUEUED and
+        // written the moment they are signed in, further down.
+        const logNoteWarn = (action) => {
+          const row = { surface: 'web_booking_note', hit: ['phone', 'handle', 'email'].includes(hit) ? hit : 'phone', action, ride_id: Number(rideId) || null };
+          try {
+            supabase.auth.getSession().then(({ data }) => {
+              if (data && data.session) {
+                supabase.from('offplatform_warnings').insert(row).then(() => {}, () => {});
+              } else {
+                const q = (window.__ssNoteWarnQueue = window.__ssNoteWarnQueue || []);
+                if (q.length < 10) q.push(row);
+              }
+            }, () => {});
+          } catch (_) {}
+        };
+        // Only promise a removal the server really does (0306/0307): numbers,
+        // emails and @handles. An app name alone ("venmo") is warned, not removed.
+        const willMask = hit === 'phone' || /@[A-Za-z0-9_.]{3,}/.test(note);
+        if (hit && btn.dataset.noteWarned !== note) {
+          btn.dataset.noteWarned = note;
+          logNoteWarn('shown');
+          setMsg('bookMsg', willMask ? NOTE_WARN_MSG[hit] : 'Your message moves things off Seat Sherpa. Payment and no-show protection only cover rides kept here.');
+          return;
+        }
+        window.__ssNoteSentAnyway = (hit && btn.dataset.noteWarned === note && btn.dataset.noteLogged !== note)
+          ? () => { btn.dataset.noteLogged = note; logNoteWarn('sent_anyway'); }
+          : null;
+      }
       btn.disabled = true;
       const prevLabel = btn.textContent;
       btn.textContent = 'Requesting…';
@@ -1940,6 +2041,16 @@ function rideWhen(dateStr, timeStr) {
         const { data: sessionData } = await supabase.auth.getSession();
         const token = sessionData.session?.access_token;
         if (!token) { show('stEmail'); return; }
+        // Logged only once signed in: before that RLS refuses the row and it
+        // was never retried (review 2026-09-18).
+        // Flush any 'warning shown' rows queued while they were signed out.
+        // Before the send-anyway row, so the record reads in the order it
+        // happened.
+        if (Array.isArray(window.__ssNoteWarnQueue) && window.__ssNoteWarnQueue.length) {
+          const queued = window.__ssNoteWarnQueue.splice(0, window.__ssNoteWarnQueue.length);
+          for (const row of queued) { try { supabase.from('offplatform_warnings').insert(row).then(() => {}, () => {}); } catch (_) {} }
+        }
+        if (typeof window.__ssNoteSentAnyway === 'function') { window.__ssNoteSentAnyway(); window.__ssNoteSentAnyway = null; }
         // Re-read the booking-fee waiver RIGHT BEFORE creating the booking.
         // It is read once at sign-in, but a checkout-lapse waiver can end one
         // hour before departure, and these riders are by definition slow to
@@ -1985,7 +2096,7 @@ function rideWhen(dateStr, timeStr) {
             // (audit P1 - the one case where charge could exceed display).
             try {
               var rp = document.querySelector('#stRedirect .sub, #stRedirect p');
-              if (rp) rp.textContent = 'Resuming the request you already started — ' + fmt$((body.amountCents || 0) / 100) + ' total. It replaces what you just selected. Taking you to secure checkout…';
+              if (rp) rp.textContent = 'Resuming the request you already started: ' + fmt$((body.amountCents || 0) / 100) + ' total. It replaces what you just selected. Taking you to secure checkout…';
             } catch (_) {}
           }
           show('stRedirect');
@@ -2054,13 +2165,13 @@ function rideWhen(dateStr, timeStr) {
               try { initSegment(); recomputeSegment(); } catch (_) {}
             }
           } catch (_) {}
-          setMsg('bookMsg', 'Someone grabbed that seat first — pick another.');
+          setMsg('bookMsg', 'Someone grabbed that seat first. Pick another.');
           return;
         }
         case 'INVALID_STOP':
           segBoardingId = null; segAlightingId = null;
           try { $('segBoard').value = ''; $('segAlight').value = ''; recomputeSegment(); } catch (_) {}
-          setMsg('bookMsg', "Those pickup/drop-off stops don't match this route — reset to the full trip. Try again.");
+          setMsg('bookMsg', "Those pickup and drop-off stops don't match this route, so it was reset to the full trip. Try again.");
           return;
         case 'ALREADY_BOOKED':
           setMsg('bookMsg', 'You already have a request on this ride' +
@@ -2069,13 +2180,13 @@ function rideWhen(dateStr, timeStr) {
             (body.refCode ? '?ref=' + encodeURIComponent(body.refCode) : '') + '.');
           return;
         case 'INVALID_SEATS':
-          setMsg('bookMsg', 'One of those seats is no longer offered — refresh and pick again.');
+          setMsg('bookMsg', 'One of those seats is no longer offered. Refresh and pick again.');
           return;
         case 'INVALID_AMOUNT':
-          setMsg('bookMsg', "This ride's pricing looks off — try again in a minute.");
+          setMsg('bookMsg', "This ride's pricing looks off. Try again in a minute.");
           return;
         case 'CHECKOUT_CREATE_FAILED':
-          setMsg('bookMsg', "Couldn't start the payment page. Nothing was charged — try again.");
+          setMsg('bookMsg', "Couldn't start the payment page. Nothing was charged. Try again.");
           return;
         default:
           setMsg('bookMsg', (body && (body.message || body.error)) || 'Something went wrong. Try again.');
@@ -2094,7 +2205,7 @@ function rideWhen(dateStr, timeStr) {
         // Session didn't survive (cleared storage / different browser). The
         // webhook still stamps + notifies regardless — reassure and stop.
         $('successTitle').textContent = 'Payment received';
-        $('successSub').textContent = "Your request is being finalized — you'll get an email as soon as the driver responds. Your card is only charged if they accept.";
+        $('successSub').textContent = "Your request is being finalized. You'll get an email as soon as the driver responds, and your card is only charged if they accept.";
         show('stSuccess');
         return;
       }
@@ -2114,7 +2225,7 @@ function rideWhen(dateStr, timeStr) {
             if (b.status === 'Confirmed') {
               $('successTitle').textContent = "You're booked!";
               if (b.ref_code) { $('successRef').textContent = b.ref_code; $('successRef').classList.remove('hidden'); }
-              $('successSub').textContent = 'The driver accepted — check your email for the details. Chat about pickup any time at seatsherpa.app/trips.';
+              $('successSub').textContent = 'The driver accepted. Check your email for the details, and chat about pickup any time at seatsherpa.app/trips.';
               show('stSuccess');
               return;
             }
@@ -2128,7 +2239,7 @@ function rideWhen(dateStr, timeStr) {
               $('successTitle').textContent = 'Your request is in';
               if (b.ref_code) { $('successRef').textContent = b.ref_code; $('successRef').classList.remove('hidden'); }
               const drv = rideData && rideData.driverFirst ? rideData.driverFirst : 'The driver';
-              $('successSub').textContent = drv + " has been notified. Your card is authorized but only charged when they accept — we'll email you as soon as they respond.";
+              $('successSub').textContent = drv + " has been notified. Your card is only charged when they accept, and we'll email you as soon as they respond.";
               show('stSuccess');
               return;
             }
@@ -2141,7 +2252,7 @@ function rideWhen(dateStr, timeStr) {
       $('successTitle').textContent = 'Payment is processing';
       // No email promise here — nothing mails the rider at this moment (the
       // next email is the driver's response). My trips is the live truth.
-      $('successSub').textContent = "Your payment went through and your request is being finalized — it'll show in My trips within a few minutes. Your card is only charged if the driver accepts, and we'll email you the moment they respond.";
+      $('successSub').textContent = "Your payment went through and your request is being finalized. It'll show in My trips within a few minutes. Your card is only charged if the driver accepts, and we'll email you the moment they respond.";
       show('stSuccess');
     }
 
@@ -2195,7 +2306,7 @@ function rideWhen(dateStr, timeStr) {
           if (body && body.declined) {
             const bank = String(body.declineMessage || 'Your card was declined.').trim().replace(/([^.!?])$/, '$1.');
             $('stCancelled').querySelector('h1').textContent = 'Your card was declined';
-            $('stCancelled').querySelector('.sub').textContent = bank + ' Nothing was charged and your seat request is still held open — tap Finish booking to try a different card.';
+            $('stCancelled').querySelector('.sub').textContent = bank + ' Nothing was charged and your seat request is still held open. Tap Finish booking to try a different card.';
             $('retryLink').textContent = 'Try a different card';
           }
         } catch (_) { /* leave the generic card */ }
@@ -2208,7 +2319,7 @@ function rideWhen(dateStr, timeStr) {
       setMsg('cancelMsg', '');
       try {
         const { data: sessionData } = await supabase.auth.getSession();
-        if (!sessionData.session) throw new Error('Please use the device you booked on, or just leave it — an unpaid request expires on its own.');
+        if (!sessionData.session) throw new Error('Please use the device you booked on, or just leave it. An unpaid request expires on its own.');
         // Withdraw through web-cancel-booking (same path as /trips) so the
         // Stripe side is actually cleaned up — the old raw status flip left a
         // completed authorization dangling on the rider's card and never
@@ -2233,14 +2344,14 @@ function rideWhen(dateStr, timeStr) {
           // server hiccup just asks the rider to try again; an unpaid request
           // is cleared by the sweeps anyway.
           if (wcRes.status >= 500 || wcRes.status === 0) {
-            throw new Error("Couldn't withdraw just now — please try again in a moment.");
+            throw new Error("Couldn't withdraw just now. Please try again in a moment.");
           } else {
-            throw new Error((out && out.error) || "This request can't be withdrawn here — it may already be accepted. Manage it in the app.");
+            throw new Error((out && out.error) || "This request can't be withdrawn here. It may already be accepted; manage it in the app.");
           }
         }
         $('retryLink').classList.add('hidden');
         btn.classList.add('hidden');
-        setMsg('cancelMsg', 'Request withdrawn — the seats are open again and your card was never charged.', 'ok');
+        setMsg('cancelMsg', 'Request withdrawn. The seats are open again and your card was never charged.', 'ok');
       } catch (e) {
         setMsg('cancelMsg', (e && e.message) || 'Could not withdraw. Try again.');
         btn.disabled = false;

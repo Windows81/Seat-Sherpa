@@ -61,12 +61,12 @@ fbq('track','PageView');
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grab a seat — Seat Sherpa</title>
+  <title>Grab a seat · Seat Sherpa</title>
 
   <!-- Social link preview (static — same for every ride since this is a static
        host; the live ride details render on the page itself from the URL). -->
   <meta property="og:title" content="Grab a seat on Seat Sherpa" />
-  <meta property="og:description" content="A driver shared their ride with you. Gas is expensive — carpool to share the cost. Book a seat right from your browser." />
+  <meta property="og:description" content="A driver shared their ride with you. Book a seat from your browser and share the cost of the drive." />
   <meta property="og:image" content="https://seatsherpa.app/icon.png" />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0E0E10" />
@@ -108,19 +108,24 @@ fbq('track','PageView');
     .brand .name .accent { color: #00D4C8; }
 
     /* Ride card */
+    /* Type scale for this page (2026-09-16 de-vibe pass): 22 route, 20 price,
+       16 body, 14 secondary, 12 legal. Nothing else. No eyebrows, no
+       letter-spaced caps: the content says what each block is. */
     .card {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: #141416;
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 18px;
       padding: 24px;
       margin-bottom: 28px;
     }
-    .card .eyebrow {
-      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-      color: #888; margin-bottom: 12px;
-    }
     .route { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
-    .meta { font-size: 15px; color: #b9b9c6; margin-top: 8px; }
+    .meta { font-size: 16px; color: #b9b9c6; margin-top: 8px; }
+    /* Driver row: photo or initials, then one Verified pill that opens the
+       detail of what was checked. Typed checkmarks are gone. */
+    .avatar { width: 44px; height: 44px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: rgba(0,212,200,0.14); color: #00D4C8; font-weight: 800; font-size: 16px; }
+    .tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 14px; font-weight: 600; border: 1px solid rgba(255,255,255,0.14); color: #d7d7de; background: transparent; font-family: inherit; cursor: default; line-height: 1.3; }
+    .tag.verified { border-color: rgba(0,212,200,0.45); color: #00D4C8; cursor: pointer; }
+    .tag svg { width: 14px; height: 14px; }
     .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 18px 0; }
     .footer-row { display: flex; align-items: center; justify-content: space-between; }
     .seats { font-size: 14px; color: #b9b9c6; }
@@ -132,11 +137,10 @@ fbq('track','PageView');
 
     /* CTA */
     .cta-head { text-align: center; margin-bottom: 18px; }
-    .cta-head h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
-    .cta-head p { font-size: 15px; color: #b9b9c6; line-height: 1.5; }
+    .cta-head h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+    .cta-head p { font-size: 16px; color: #b9b9c6; line-height: 1.5; }
 
     .share-section { margin-top: 28px; text-align: center; }
-    .share-title { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8a8a92; margin-bottom: 10px; }
     .share-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .share-btn { display: inline-block; padding: 10px 18px; border-radius: 10px; border: 1px solid #2a2a33; background: #17171d; color: #e8e8ee; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: inherit; }
     .share-btn:hover { border-color: rgba(0,212,200,0.4); }
@@ -195,18 +199,19 @@ fbq('track','PageView');
     <!-- Ride card — populated from the URL query params. Hidden if no ride
          info is present (someone hit /ride directly). -->
     <div class="card" id="rideCard" style="display:none;">
-      <div class="eyebrow">A driver shared this ride</div>
-      <div class="route" id="route">🚗</div>
+      <div class="route" id="route"></div>
       <div class="meta" id="meta"></div>
       <div class="meta" id="stops" style="display:none;color:#00D4C8;"></div>
       <!-- Driver block (BlaBlaCar benchmark 2026-08-26): riders book PEOPLE.
            We were the only carpool site hiding the driver on the ride page —
            while ALSO verifying more than the competition and saying nothing. -->
       <div id="driverRow" style="display:none;align-items:center;gap:12px;margin-top:16px;">
-        <img id="driverPhoto" alt="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(0,212,200,0.45);" />
+        <img id="driverPhoto" alt="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none;" />
+        <div id="driverInitials" class="avatar" style="display:none;" aria-hidden="true"></div>
         <div>
-          <div id="driverLine" style="font-size:15px;font-weight:700;"></div>
-          <div id="driverBadges" style="font-size:12px;color:#9a9aa8;margin-top:2px;"></div>
+          <div id="driverLine" style="font-size:16px;font-weight:700;"></div>
+          <div id="driverBadges" style="display:none;gap:6px;flex-wrap:wrap;margin-top:6px;"></div>
+          <div id="driverVerifiedDetail" style="display:none;font-size:14px;color:#9a9aa8;margin-top:6px;"></div>
         </div>
       </div>
       <div class="divider"></div>
@@ -219,12 +224,12 @@ fbq('track','PageView');
     </div>
 
     <div id="refNudge" style="display:none;background:#141d1c;border:1px solid rgba(0,212,200,0.3);border-radius:12px;padding:14px 18px;margin-bottom:22px;text-align:center;font-size:14px;color:#d7d7d7;">
-      🎁 New here? Sign up with code <strong id="refCode" style="color:#00D4C8;letter-spacing:1px;">CODE</strong> for <strong>$5 off</strong> your first ride.
+      New here? Sign up with code <strong id="refCode" style="color:#00D4C8;">CODE</strong> for <strong>$5 off</strong> your first ride.
     </div>
 
     <div class="cta-head">
       <h1 id="ctaTitle">Grab a seat with Seat Sherpa</h1>
-      <p id="ctaSub">Gas is expensive. Carpool to share the cost. Book this seat, message the driver, and pay securely &mdash; right from your browser, or in the app.</p>
+      <p id="ctaSub">Book this seat, message the driver, and pay from your browser or in the app.</p>
     </div>
 
     <!-- Android smart CTA — revealed by JS on Android user agents. Opens the
@@ -233,12 +238,12 @@ fbq('track','PageView');
     <!-- Web-booking funnel (?web=1): book right in the browser, no app.
          Hidden by default so the public share page stays app-first. -->
     <a class="open-app" id="webBook" style="display:none" href="/book">
-      💺 Book this carpool ride
+      Book this seat
     </a>
 
     <a class="open-app" id="openApp"
        href="https://seatsherpa.onelink.me/cGHs?pid=web&c=ride">
-      🚗 Open in the Seat Sherpa app
+      Open in the Seat Sherpa app
     </a>
 
     <!-- Store badges. Google Play is LIVE (2026-07-08); App Store flips to a
@@ -270,16 +275,16 @@ fbq('track','PageView');
 
     <!-- Share this ride — the driver (or anyone) spreading their own link is
          the cheapest distribution we have (Justin, 2026-08-27). -->
+    <!-- One share action (2026-09-16): the phone's share sheet where there
+         is one, a copied message everywhere else. Six buttons here sat
+         under the booking CTA and read as growth chrome, not a ride page. -->
     <div class="share-section">
-      <div class="share-title">Share this ride</div>
       <div class="share-row">
-        <button type="button" class="share-btn" id="shareBtn">Share</button>
-        <button type="button" class="share-btn" id="copyBtn">Copy link</button>
-        <a class="share-btn" id="smsShare" href="#">Text it</a>
+        <button type="button" class="share-btn" id="shareBtn">Share this ride</button>
       </div>
     </div>
 
-    <p class="learn"><a href="/">Learn more at seatsherpa.app →</a></p>
+    <p class="learn"><a href="/">About Seat Sherpa</a></p>
 
     <p class="legal">
       Seat Sherpa is a cost-sharing carpool marketplace, not a ride-hail service.<br />
@@ -323,15 +328,20 @@ fbq('track','PageView');
         } catch (_) {}
         wb.href = '/book?id=' + encodeURIComponent(id) + legQ;
         wb.style.display = 'flex';
-        document.getElementById('ctaTitle').textContent = 'Book this carpool ride';
-        document.getElementById('ctaSub').textContent = 'Pay securely from your browser — no app needed. You are only charged if the driver accepts.';
+        // The button says what to do; a headline repeating it above was
+        // noise. The line under it carries the one fact that matters.
+        document.getElementById('ctaTitle').style.display = 'none';
+        document.getElementById('ctaSub').textContent = 'You are only charged if the driver accepts. Payment is handled by Stripe.';
+        // The reassurance reads under the button, not above it.
+        var ctaHead = document.querySelector('.cta-head');
+        if (ctaHead && wb.parentNode) { wb.parentNode.insertBefore(ctaHead, wb.nextSibling); ctaHead.style.marginTop = '12px'; }
       } else if (web) {
         // No/invalid id (truncated or ancient links): with the store badges
         // gone this page had NO button at all (scan #3) — point the main CTA
         // at the live browse list.
         var wbNoId = document.getElementById('webBook');
         wbNoId.href = '/rides?web=1';
-        wbNoId.textContent = '🔎 See current rides →';
+        wbNoId.textContent = 'See current rides';
         wbNoId.style.display = 'flex';
         document.getElementById('ctaSub').textContent = 'Browse live carpools across California & Nevada and book right from your browser.';
       }
@@ -366,7 +376,7 @@ fbq('track','PageView');
                 var a = document.createElement('a');
                 a.href = href;
                 a.style.cssText = 'color:#00D4C8;text-decoration:none;';
-                a.textContent = '🙋 Tell drivers you still need this trip →';
+                a.textContent = 'Tell drivers you still need this trip';
                 var wrap = document.createElement('div');
                 wrap.style.cssText = 'margin-top:8px;';
                 wrap.appendChild(a);
@@ -380,8 +390,8 @@ fbq('track','PageView');
               // page as if their ride were fine: reframe the CTA so they still
               // funnel into the app to find a current ride.
               document.getElementById('ctaTitle').textContent = 'That ride is no longer available';
-              document.getElementById('ctaSub').textContent =
-                'It was cancelled or has already left — but drivers post new rides every day. See what’s live right now.';
+              document.getElementById('ctaTitle').style.display = '';
+              headAboveButton('It was cancelled or has already left. Drivers post new rides every day.');
               // The optimistic web-mode "Book this seat online" button was
               // shown before this fetch — a teal book CTA under "no longer
               // available" is an embarrassing first click (audit M2). Point
@@ -390,7 +400,7 @@ fbq('track','PageView');
               var wbGone = document.getElementById('webBook');
               if (wbGone && wbGone.style.display !== 'none') {
                 wbGone.href = '/rides?web=1';
-                wbGone.textContent = '🔎 See current rides →';
+                wbGone.textContent = 'See current rides';
               }
               // Cancelled/departed: nothing competes for this moment, and the
               // visitor's trip intent is still unmet — offer the board.
@@ -407,10 +417,10 @@ fbq('track','PageView');
                   // 2026-08-28): capture the demand — notify-waitlist already
                   // emails when a seat frees.
                   wbDead.href = '/book?id=' + encodeURIComponent(id) + '&waitlist=1';
-                  wbDead.textContent = '🔔 Full — email me if a seat opens';
+                  wbDead.textContent = 'Full. Email me if a seat opens';
                 } else {
                   wbDead.href = '/rides?web=1';
-                  wbDead.textContent = '🔎 This ride has departed — see other rides';
+                  wbDead.textContent = 'This ride has departed. See other rides';
                 }
               }
               // No board offer here (Justin, 2026-08-28): rides are bookable
@@ -420,7 +430,7 @@ fbq('track','PageView');
               // the gone/departed path only.
             }
             document.getElementById('rideCard').style.display = 'block';
-            document.getElementById('route').textContent = '🚗 ' + (d.fromArea || 'A city') + ' → ' + (d.toArea || 'destination');
+            document.getElementById('route').textContent = (d.fromArea || 'A city') + ' → ' + (d.toArea || 'destination');
             if (!window.rideWhen) { window.rideWhen = function rideWhen(dateStr, timeStr) {
   var p = String(dateStr || '').split('-').map(Number);
   if (!p[0] || !p[1] || !p[2]) return '';
@@ -437,7 +447,7 @@ fbq('track','PageView');
             document.getElementById('meta').textContent = rideWhen(d.depDate, d.depTime);
             if (d.stops && d.stops.length) {
               var stopsEl = document.getElementById('stops');
-              stopsEl.textContent = '⤷ Also picks up / drops off in ' + d.stops.join(' · ');
+              stopsEl.textContent = 'Also stops in ' + d.stops.join(' · ');
               stopsEl.style.display = 'block';
             }
             // Driver identity + trust badges — the API returned these all
@@ -453,19 +463,45 @@ fbq('track','PageView');
                 dLine += ' · ' + d.driverTrips + ' trip' + (d.driverTrips === 1 ? '' : 's');
               }
               document.getElementById('driverLine').textContent = dLine;
-              var badges = [];
-              if (d.driverPhoneVerified) badges.push('✓ Phone verified');
-              if (d.driverLicenseOnFile) badges.push("✓ Driver's license on file");
-              // School / org badge (0294): the curated name from a verified
-              // school email. textContent below, so the name is never markup.
-              if (d.driverOrg && typeof d.driverOrg.name === 'string' && d.driverOrg.name) {
-                badges.push((d.driverOrg.kind === 'college' ? '🎓 ' : '✓ ') + d.driverOrg.name);
+              // Verification is ONE pill, not typed checkmarks (Justin,
+              // 2026-09-16: "trust shown as text"). Tapping it opens what was
+              // checked. The school badge (0294) is its own neutral pill.
+              // Names and school are textContent, never markup.
+              var checks = [];
+              if (d.driverPhoneVerified) checks.push('Phone verified');
+              if (d.driverLicenseOnFile) checks.push("Driver's license on file");
+              var badgeHost = document.getElementById('driverBadges');
+              var vDetail = document.getElementById('driverVerifiedDetail');
+              if (checks.length) {
+                var vp = document.createElement('button');
+                vp.type = 'button'; vp.className = 'tag verified';
+                vp.setAttribute('aria-expanded', 'false');
+                vp.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+                vp.appendChild(document.createTextNode('Verified'));
+                vp.addEventListener('click', function () {
+                  var open = vDetail.style.display !== 'block';
+                  vDetail.style.display = open ? 'block' : 'none';
+                  vp.setAttribute('aria-expanded', String(open));
+                });
+                badgeHost.appendChild(vp);
+                vDetail.textContent = checks.join(' · ');
               }
-              document.getElementById('driverBadges').textContent = badges.join(' · ');
+              if (d.driverOrg && typeof d.driverOrg.name === 'string' && d.driverOrg.name) {
+                var op = document.createElement('span');
+                op.className = 'tag';
+                op.textContent = d.driverOrg.name;
+                badgeHost.appendChild(op);
+              }
+              if (badgeHost.childNodes.length) badgeHost.style.display = 'flex';
               if (d.driverPhotoUrl && /^https:\/\//.test(d.driverPhotoUrl)) {
                 var dp = document.getElementById('driverPhoto');
                 dp.src = d.driverPhotoUrl;
                 dp.style.display = 'block';
+              } else {
+                // No photo: initials, the same as the app, never an empty ring.
+                var di = document.getElementById('driverInitials');
+                di.textContent = String(d.driverFirst).trim().charAt(0).toUpperCase();
+                di.style.display = 'flex';
               }
               document.getElementById('driverRow').style.display = 'flex';
               // Trust pack (2026-08-28): bio + car + written reviews, same
@@ -485,7 +521,7 @@ fbq('track','PageView');
                 if (d.car && d.car.label) {
                   var carLine = document.createElement('div');
                   carLine.style.cssText = 'font-size:13.5px;color:#8a8a92;margin-top:8px;';
-                  carLine.textContent = '🚘 ' + d.car.label;
+                  carLine.textContent = d.car.label;
                   pack.appendChild(carLine); added = true;
                   if (d.car.photoUrl && /^https:\/\//.test(d.car.photoUrl)) {
                     var ci = document.createElement('img');
@@ -496,7 +532,7 @@ fbq('track','PageView');
                 }
                 if (d.driverReviews && d.driverReviews.length) {
                   var rh = document.createElement('div');
-                  rh.style.cssText = 'font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#888;margin:12px 0 6px;';
+                  rh.style.cssText = 'font-size:14px;font-weight:700;color:#e8e8ee;margin:14px 0 6px;';
                   rh.textContent = 'What riders say';
                   pack.appendChild(rh); added = true;
                   var renderRv = function (rv) {
@@ -532,15 +568,15 @@ fbq('track','PageView');
                 var p = d.driverPrefs;
                 if (!p) return;
                 var chips = [];
-                if (p.conversation === 'chatty') chips.push('💬 Chatty');
-                else if (p.conversation === 'depends') chips.push('💬 Happy either way');
-                else if (p.conversation === 'quiet') chips.push('🤫 Quiet ride');
-                if (p.musicOk === true) chips.push('🎵 Music on');
-                else if (p.musicOk === false) chips.push('🎵 No music');
-                if (p.smokingOk === false) chips.push('🚭 No smoking');
-                else if (p.smokingOk === true) chips.push('🚬 Smoking ok');
-                if (p.petsOk === true) chips.push('🐾 Pets ok');
-                else if (p.petsOk === false) chips.push('🚫🐾 No pets');
+                if (p.conversation === 'chatty') chips.push('Chatty');
+                else if (p.conversation === 'depends') chips.push('Happy either way');
+                else if (p.conversation === 'quiet') chips.push('Quiet ride');
+                if (p.musicOk === true) chips.push('Music on');
+                else if (p.musicOk === false) chips.push('No music');
+                if (p.smokingOk === false) chips.push('No smoking');
+                else if (p.smokingOk === true) chips.push('Smoking ok');
+                if (p.petsOk === true) chips.push('Pets ok');
+                else if (p.petsOk === false) chips.push('No pets');
                 // Languages chip removed (Justin, 2026-08-28) — languages are
                 // no longer part of the public driver profile.
                 if (!chips.length) return;
@@ -618,10 +654,10 @@ fbq('track','PageView');
             // One-liner matching trips.html's POLICY_DETAILS exactly — terms
             // belong BEFORE money, not after (benchmark fix 8/26).
             var POLICY_LINE = {
-              standard: '↩︎ Cancel 24+ hours before departure → 100% of the seat price back',
-              free: '↩︎ Cancel 2+ hours before departure → 100% of the seat price back',
-              moderate: '↩︎ Cancel 48+ hours before departure → 100% of the seat price back',
-              strict: '↩︎ 50% refund if you cancel 7+ days before departure',
+              standard: 'Cancel 24 hours or more before departure for a full refund of the seat price',
+              free: 'Cancel 2 hours or more before departure for a full refund of the seat price',
+              moderate: 'Cancel 48 hours or more before departure for a full refund of the seat price',
+              strict: 'Cancel 7 days or more before departure for a 50% refund',
             };
             if (POLICY_LINE[d.cancellationPolicy]) {
               var pl = document.getElementById('policyLine');
@@ -633,7 +669,7 @@ fbq('track','PageView');
             // shared link and had no other path back to the marketplace.
             if (d.fromArea && d.toArea) {
               var mr = document.getElementById('moreRides');
-              mr.innerHTML = '<a href="/rides?web=1" style="color:#00D4C8;text-decoration:none;">See more rides like this →</a>';
+              mr.innerHTML = '<a href="/rides?web=1" style="color:#00D4C8;text-decoration:none;">See more rides like this</a>';
               mr.style.display = 'block';
             }
             var seatsEl = document.querySelector('.seats');
@@ -671,11 +707,15 @@ fbq('track','PageView');
             // unconditional overwrite reverted 'Book this carpool ride' and
             // sat "Grab this seat" above a Full/closed button).
             if (d.seatsLeft === 0) {
-              document.getElementById('ctaTitle').textContent = 'This ride is full — want the next seat?';
+              document.getElementById('ctaTitle').textContent = 'This ride is full';
+              document.getElementById('ctaTitle').style.display = '';
+              headAboveButton("Join the waitlist and we'll email you if a seat opens.");
             } else if (d.bookable === false) {
               document.getElementById('ctaTitle').textContent = 'This ride has already departed';
+              document.getElementById('ctaTitle').style.display = '';
+              headAboveButton('Drivers post new rides every day.');
             }
-            document.title = (d.fromArea || 'Ride') + ' → ' + (d.toArea || '') + ' — Seat Sherpa';
+            document.title = (d.fromArea || 'Ride') + ' → ' + (d.toArea || '') + ' · Seat Sherpa';
             // Friendly share message (Justin, 2026-08-28): a shared link should
             // read like a pitch, not a bare URL. Consumed by the share buttons.
             try {
@@ -756,70 +796,48 @@ fbq('track','PageView');
       // Lazy: dataset.shareMsg lands after the ride fetch renders.
       const text = () => {
         let m = document.body.dataset.shareMsg
-          || ((document.title.replace(' — Seat Sherpa', '') || 'A ride on Seat Sherpa') + ' — grab a seat:');
+          || ((document.title.replace(' · Seat Sherpa', '') || 'A ride on Seat Sherpa') + ', grab a seat:');
         if (document.body.dataset.refCode) {
           m += ' New to Seat Sherpa? Use my code ' + document.body.dataset.refCode + ' for $5 off your first ride.';
         }
         return m;
       };
+      // ONE button (2026-09-16). On a phone it opens the system share sheet,
+      // which already offers Messages, WhatsApp, Mail and the rest, so the
+      // six hand-built targets that used to sit here were duplicates. On a
+      // desktop, where the share sheet drops the pitch text, it copies the
+      // message plus the link.
       const shareBtn = document.getElementById('shareBtn');
-      const copyBtn = document.getElementById('copyBtn');
-      const smsShare = document.getElementById('smsShare');
-      // Native share only where it reliably CARRIES TEXT — touch devices.
-      // Windows' share sheet hands Gmail a bare URL (title AND text dropped),
-      // so on desktop the Share button copies the full pitch instead.
       const touchShare = !!navigator.share && window.matchMedia('(pointer: coarse)').matches;
-      if (touchShare) {
-        shareBtn.addEventListener('click', () => {
-          navigator.share({ title: text(), text: text(), url: url }).catch(() => {});
-        });
-      } else {
-        shareBtn.textContent = 'Copy message';
-        shareBtn.addEventListener('click', () => {
-          const full = text() + ' ' + url;
-          (navigator.clipboard ? navigator.clipboard.writeText(full) : Promise.reject())
-            .then(() => {
-              shareBtn.textContent = 'Copied — paste anywhere ✓';
-              setTimeout(() => { shareBtn.textContent = 'Copy message'; }, 2500);
-            })
-            .catch(() => { prompt('Copy this message:', full); });
-        });
-      }
-      copyBtn.addEventListener('click', () => {
-        (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject())
-          .then(() => { copyBtn.textContent = 'Copied ✓'; setTimeout(() => { copyBtn.textContent = 'Copy link'; }, 2000); })
-          .catch(() => { prompt('Copy this link:', url); });
-      });
-      // Lazily, on tap: the route lands in document.title AFTER the ride
-      // fetch, and an href baked at load time would text the placeholder
-      // ("Grab a seat — grab a seat:") instead of the route (Fable audit #7).
-      smsShare.addEventListener('pointerdown', () => {
-        smsShare.href = 'sms:?&body=' + encodeURIComponent(text() + ' ' + url);
-      });
-      smsShare.addEventListener('click', () => {
-        smsShare.href = 'sms:?&body=' + encodeURIComponent(text() + ' ' + url);
-      });
-      // Explicit targets (Justin, 2026-08-28: "share via email or social
-      // media") — links WE build, so the pitch text always survives (the OS
-      // share sheet kept stripping it). hrefs are lazy: the message isn't
-      // ready until the ride fetch lands.
-      const row = document.querySelector('.share-row');
-      const addTarget = (label, buildHref, newTab) => {
-        const a = document.createElement('a');
-        a.className = 'share-btn';
-        a.textContent = label;
-        a.href = '#';
-        if (newTab) { a.target = '_blank'; a.rel = 'noopener'; }
-        const set = () => { a.href = buildHref(); };
-        a.addEventListener('pointerdown', set);
-        a.addEventListener('click', set);
-        row.appendChild(a);
+      const copyShare = () => {
+        const full = text() + ' ' + url;
+        (navigator.clipboard ? navigator.clipboard.writeText(full) : Promise.reject())
+          .then(() => {
+            shareBtn.textContent = 'Copied';
+            setTimeout(() => { shareBtn.textContent = 'Share this ride'; }, 2500);
+          })
+          .catch(() => { prompt('Copy this message:', full); });
       };
-      addTarget('Email', () => 'mailto:?subject=' + encodeURIComponent(text()) + '&body=' + encodeURIComponent(text() + '\n\n' + url));
-      addTarget('WhatsApp', () => 'https://wa.me/?text=' + encodeURIComponent(text() + ' ' + url), true);
-      addTarget('Facebook', () => 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url), true);
-      // sms: links are dead weight on most desktops.
-      if (!window.matchMedia('(pointer: coarse)').matches) smsShare.style.display = 'none';
+      shareBtn.addEventListener('click', () => {
+        if (touchShare) {
+          // An in-app browser can expose navigator.share and still refuse it;
+          // fall back to copying unless the person simply closed the sheet.
+          navigator.share({ title: text(), text: text(), url: url })
+            .catch((e) => { if (!e || e.name !== 'AbortError') copyShare(); });
+          return;
+        }
+        copyShare();
+      });
+      // The headline normally sits UNDER the button (reassurance, web mode);
+      // when the ride is gone, full or departed the headline is the news and
+      // has to come first.
+      function headAboveButton(sub) {
+        var ch = document.querySelector('.cta-head');
+        var wb2 = document.getElementById('webBook');
+        if (ch && wb2 && wb2.parentNode) { wb2.parentNode.insertBefore(ch, wb2); ch.style.marginTop = ''; }
+        var cs = document.getElementById('ctaSub');
+        if (cs && typeof sub === 'string') cs.textContent = sub;
+      }
     })();
   </script>
 <!-- ?c= campaign capture, same as the homepage (2026-09-02): scout replies

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your trips — Seat Sherpa</title>
+  <title>Your trips · Seat Sherpa</title>
 
   <!-- Transactional, signed-in-only, and DELIBERATELY UNLINKED (2026-08-20).
        Nothing on index/rides/ride/book, the sitemap, robots.txt, or any app
@@ -609,24 +609,24 @@
     // amount after.
     const POLICY_DETAILS = {
       standard: [
-        '✓ Cancel 24+ hours before departure → 100% of the seat price back',
-        '~ Cancel 2 – 24 hours before → 50% of the seat price back',
-        '✗ Cancel within 2 hours of departure → no refund',
-        'ⓘ The booking fee is non-refundable when you cancel',
-        '✓ If the DRIVER cancels: 100% refund including the booking fee',
+        'Cancel 24 hours or more before departure: full refund of the seat price',
+        'Cancel 2 to 24 hours before departure: half the seat price back',
+        'Cancel within 2 hours of departure: no refund',
+        'The booking fee is not refunded when you cancel',
+        'If the driver cancels: full refund, booking fee included',
       ],
       free: [
-        '✓ Cancel 2+ hours before departure → 100% refund',
-        '✗ Cancel within 2 hours of departure → no refund',
+        'Cancel 2 hours or more before departure: full refund',
+        'Cancel within 2 hours of departure: no refund',
       ],
       moderate: [
-        '✓ Cancel 48+ hours before departure → 100% refund',
-        '~ Cancel 2 – 48 hours before departure → 50% refund',
-        '✗ Cancel within 2 hours of departure → no refund',
+        'Cancel 48 hours or more before departure: full refund',
+        'Cancel 2 to 48 hours before departure: half back',
+        'Cancel within 2 hours of departure: no refund',
       ],
       strict: [
-        '~ Cancel 7+ days before departure → 50% refund',
-        '✗ Cancel within 7 days of departure → no refund',
+        'Cancel 7 days or more before departure: half back',
+        'Cancel within 7 days of departure: no refund',
       ],
     };
     function policyDetails(id) { return POLICY_DETAILS[id] || POLICY_DETAILS.free; }
@@ -1905,6 +1905,21 @@
         }
       });
 
+      // STANDING off-platform line, ALWAYS visible above the chat box, before
+      // anyone types (Justin, 2026-09-20: "make sure that they get warned
+      // before posting/messaging. since tibor was not"). The pop-up below only
+      // fires when the detector recognizes the text; a driver spelled his
+      // number one letter at a time with asterisks and was never told. Same
+      // wording as the app (lib/off-platform-guard.ts offPlatformStandingNotice).
+      const standing = el('div', 'hint');
+      standing.style.margin = '12px 0 0';
+      standing.textContent = (b.status === 'Confirmed' || b.status === 'Completed')
+        ? 'Keep it on Seat Sherpa. Payment and no-show protection only cover rides kept here, and you can call each other from this chat the day before the ride.'
+        : b.status === 'Pending'
+          ? 'Phone numbers, emails and handles stay hidden until your driver accepts. After that you can call each other from this chat.'
+          : "Phone numbers, emails and handles are hidden in this chat because the booking isn't confirmed.";
+      card.appendChild(standing);
+
       const composer = el('div', 'composer');
       const ta = document.createElement('textarea');
       ta.placeholder = 'Message ' + driverFirst(b) + '…';
@@ -1941,6 +1956,14 @@
         if (!text && failed.length) { retryRow = failed[failed.length - 1]; text = retryRow.body; }
         if (!text) return;
         if (text.length > 2000) { cmsg.textContent = 'That message is too long (2000 characters max).'; cmsg.classList.remove('hidden'); return; }
+        // 0305: log that the warning was shown and whether they sent anyway.
+        // Fire and forget; a missing table or a refusal changes nothing here.
+        const logWarn = (action) => { try { supabase.from('offplatform_warnings').insert({ surface: 'web_chat_rider', hit: hitKind, action, booking_id: b.id }).then(() => {}, () => {}); } catch (_) {} };
+        let hitKind = 'phone';
+        // 0306: while the ride is not confirmed the server hides numbers,
+        // emails and @handles; after that only the number warning applies.
+        const hiddenNow = !(b.status === 'Confirmed' || b.status === 'Completed');
+        const confirmedAfterWarning = !retryRow && !!text && sendBtn.dataset.warned === text;
         // Off-platform contact WARNING — never a block (app parity; covers
         // plain numbers and the letter-interleaved evasion, 0216).
         if (!retryRow && sendBtn.dataset.warned !== text) {
@@ -1950,16 +1973,29 @@
             for (let i2 = 0; i2 < text.length; i2++) if (text[i2] >= '0' && text[i2] <= '9') digs.push(i2);
             for (let i2 = 0; i2 + 9 < digs.length; i2++) {
               const win = text.slice(digs[i2], digs[i2 + 9] + 1);
-              if (win.length <= 20 && !/^((19|20)\d\d\D{0,3})+$/.test(win)) { hit = true; break; }
+              // Mirrors the server masker (0307): skip times, dates, prices, prose, coordinates.
+              if (win.length <= 22 && !/[:/$%]/.test(win) && !/^((19|20)\d\d\D{0,3})+$/.test(win) && !/(^|[^A-Za-z0-9])[A-Za-z]{2,}([^A-Za-z0-9]|$)/.test(win) && !/\d\.\d{3,}/.test(win) && !/(^|[^0-9-])((0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01])-(19|20)?\d{2}|(19|20)\d{2}-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01]))([^0-9-]|$)/.test(win)) { hit = true; break; }
             }
+          }
+          if (!hit && hiddenNow) {
+            if (/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(text)) { hit = true; hitKind = 'email'; }
+            else if (/(^|[^A-Za-z0-9_.])@[A-Za-z0-9_.]{3,}/.test(text)) { hit = true; hitKind = 'handle'; }
           }
           if (hit) {
             sendBtn.dataset.warned = text;
-            cmsg.textContent = 'Sharing phone numbers moves you off Seat Sherpa — payment and no-show protection only work here. Tap Send again to share anyway.';
+            logWarn('shown');
+            // 0306: while the ride is not confirmed the server hides the
+            // number, so say that instead of pretending it will arrive.
+            cmsg.textContent = !hiddenNow
+              ? 'Sharing phone numbers moves you off Seat Sherpa. Payment and no-show protection only work here, and you can call each other through Seat Sherpa starting the day before the ride.'
+              : b.status === 'Pending'
+                ? 'Phone numbers, emails and handles stay hidden until this ride is confirmed, so yours will be removed from this message. Once you\'re confirmed, you can call each other through Seat Sherpa starting the day before the ride.'
+                : 'Phone numbers, emails and handles are hidden in this chat because the booking isn\'t confirmed, so yours will be removed from this message.';
             cmsg.classList.remove('hidden');
             return;
           }
         }
+        if (confirmedAfterWarning) logWarn('sent_anyway');
         sendBtn.dataset.warned = '';
         cmsg.classList.add('hidden');
 

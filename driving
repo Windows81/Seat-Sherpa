@@ -2600,7 +2600,7 @@
       // "Just changing the time?" — mirrors lib/cancel-intent.ts in the app;
       // change both together. Empty rides only: with bookings the departure
       // is locked anyway.
-      const TIME_CHANGE_RE = /(time|timing|date|day|earlier|later|sooner|reschedulw*|postponw*|delayw*|push(ed|ing)?s+(its+)?(back|forward|up|to)|mov(e|ed|ing)s+(its+)?(to|up|back)|leav(e|ing)s+(at|earlier|later|sooner)|departw*|tomorrow|tonight|morning|afternoon|evening|noon|(mon|tues?|wed(nes)?|thu(rs)?|fri|sat(ur)?|sun)(day)?|d{1,2}(:d{2})?s*(am|pm))/i;
+      const TIME_CHANGE_RE = /\b(time|timing|date|day|earlier|later|sooner|reschedul\w*|postpon\w*|delay\w*|push(ed|ing)?\s+(it\s+)?(back|forward|up|to)|mov(e|ed|ing)\s+(it\s+)?(to|up|back)|leav(e|ing)\s+(at|earlier|later|sooner)|depart\w*|tomorrow|tonight|morning|afternoon|evening|noon|(mon|tues?|wed(nes)?|thu(rs)?|fri|sat(ur)?|sun)(day)?|\d{1,2}(:\d{2})?\s*(am|pm))\b/i;
       const canEditInstead = () => active.length === 0 && !!editBtn;
       function editInsteadBtn(label) {
         const b = el('button', 'primary', label || 'Edit date & time instead');
@@ -2637,6 +2637,23 @@
         if (active.length > 0) {
           panel.appendChild(el('div', 'rowhint',
             active.length + ' active booking' + (active.length === 1 ? '' : 's') + ' on this ride — cancelling refunds every confirmed rider in full and declines pending requests.'));
+        }
+        // Late-cancel warning, the SAME line the app shows (Justin, 2026-09-18).
+        // Migration 0272 gives the driver an automatic 1-star from each confirmed
+        // rider when a ride is cancelled inside 12 hours. Until today the app
+        // hinted at it only inside 2 hours and this page said nothing, so a
+        // driver could be penalised with no warning at all.
+        {
+          const confirmedNow = active.filter((bk) => effectiveStatus(bk, ride) === 'Confirmed');
+          const msLeft = depForGate ? depForGate - Date.now() : null;
+          // Not after departure: the rating applies only to a cancel BEFORE it.
+          if (confirmedNow.length > 0 && msLeft !== null && msLeft >= 0 && msLeft <= 12 * 3600 * 1000) {
+            const lateWarn = el('div', 'rowhint',
+              'This ride leaves in under 12 hours and has confirmed riders. Cancelling now adds an automatic 1-star rating to your profile.');
+            lateWarn.style.color = '#ff8a80';
+            lateWarn.style.fontWeight = '600';
+            panel.appendChild(lateWarn);
+          }
         }
         const ta = document.createElement('textarea');
         ta.placeholder = 'Reason (riders see this) — at least 10 characters';
@@ -3671,6 +3688,21 @@
         }
       });
 
+      // STANDING off-platform line, ALWAYS visible above the chat box, before
+      // anyone types (Justin, 2026-09-20: "make sure that they get warned
+      // before posting/messaging. since tibor was not"). The pop-up below only
+      // fires when the detector recognizes the text; a driver spelled his
+      // number one letter at a time with asterisks and was never told. Same
+      // wording as the app (lib/off-platform-guard.ts offPlatformStandingNotice).
+      const standing = el('div', 'hint');
+      standing.style.margin = '12px 0 0';
+      standing.textContent = (b.status === 'Confirmed' || b.status === 'Completed')
+        ? 'Keep it on Seat Sherpa. Payment and no-show protection only cover rides kept here, and you can call each other from this chat the day before the ride.'
+        : b.status === 'Pending'
+          ? 'Phone numbers, emails and handles stay hidden until you accept this request. After that you can call each other from this chat.'
+          : "Phone numbers, emails and handles are hidden in this chat because the booking isn't confirmed.";
+      card.appendChild(standing);
+
       const composer = el('div', 'composer');
       const ta = document.createElement('textarea');
       ta.placeholder = 'Message ' + paxFirst(b) + '\u2026';
@@ -3703,6 +3735,14 @@
         if (!text && failed.length) { retryRow = failed[failed.length - 1]; text = retryRow.body; }
         if (!text) return;
         if (text.length > 2000) { cmsg.textContent = 'That message is too long (2000 characters max).'; cmsg.classList.remove('hidden'); return; }
+        // 0305: log that the warning was shown and whether they sent anyway.
+        // Fire and forget; a missing table or a refusal changes nothing here.
+        const logWarn = (action) => { try { supabase.from('offplatform_warnings').insert({ surface: 'web_chat_driver', hit: hitKind, action, booking_id: b.id }).then(() => {}, () => {}); } catch (_) {} };
+        let hitKind = 'phone';
+        // 0306: while the ride is not confirmed the server hides numbers,
+        // emails and @handles; after that only the number warning applies.
+        const hiddenNow = !(b.status === 'Confirmed' || b.status === 'Completed');
+        const confirmedAfterWarning = !retryRow && !!text && sendBtn.dataset.warned === text;
         // Off-platform contact WARNING — never a block (app parity,
         // lib/off-platform-guard.ts: one matched adult telling another how to
         // reach them is their call; we just remind them what they give up).
@@ -3714,16 +3754,28 @@
             for (let i2 = 0; i2 < text.length; i2++) if (text[i2] >= '0' && text[i2] <= '9') digs.push(i2);
             for (let i2 = 0; i2 + 9 < digs.length; i2++) {
               const win = text.slice(digs[i2], digs[i2 + 9] + 1);
-              if (win.length <= 20 && !/^((19|20)\d\d\D{0,3})+$/.test(win)) { hit = true; break; }
+              // Mirrors the server masker (0307): skip times, dates, prices, prose, coordinates.
+              if (win.length <= 22 && !/[:/$%]/.test(win) && !/^((19|20)\d\d\D{0,3})+$/.test(win) && !/(^|[^A-Za-z0-9])[A-Za-z]{2,}([^A-Za-z0-9]|$)/.test(win) && !/\d\.\d{3,}/.test(win) && !/(^|[^0-9-])((0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01])-(19|20)?\d{2}|(19|20)\d{2}-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01]))([^0-9-]|$)/.test(win)) { hit = true; break; }
             }
+          }
+          if (!hit && hiddenNow) {
+            if (/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(text)) { hit = true; hitKind = 'email'; }
+            else if (/(^|[^A-Za-z0-9_.])@[A-Za-z0-9_.]{3,}/.test(text)) { hit = true; hitKind = 'handle'; }
           }
           if (hit) {
             sendBtn.dataset.warned = text;
-            cmsg.textContent = 'Heads up: sharing phone numbers moves things off Seat Sherpa — payments and no-show protection only work in here, and you can call each other from the app once the trip is near. Tap Send again to share it anyway.';
+            logWarn('shown');
+            // 0306: while the request is not accepted the server hides the number.
+            cmsg.textContent = !hiddenNow
+              ? 'Heads up: sharing phone numbers moves things off Seat Sherpa. Payments and no-show protection only work in here, and you can call each other through Seat Sherpa once the trip is near.'
+              : b.status === 'Pending'
+                ? 'Phone numbers, emails and handles stay hidden until you accept this request, so yours will be removed from this message. Once you accept, you can call each other through Seat Sherpa starting the day before the ride.'
+                : 'Phone numbers, emails and handles are hidden in this chat because the booking isn\'t confirmed, so yours will be removed from this message.';
             cmsg.classList.remove('hidden');
             return;
           }
         }
+        if (confirmedAfterWarning) logWarn('sent_anyway');
         sendBtn.dataset.warned = '';
         cmsg.classList.add('hidden');
 

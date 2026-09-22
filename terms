@@ -101,7 +101,7 @@ fbq('track','PageView');
 <body>
   <div id="ssAppBar"></div>
   <h1>Terms of Service</h1>
-  <p class="updated">Last updated: August 10, 2026</p>
+  <p class="updated">Last updated: September 17, 2026</p>
 
   <p>
     These Terms of Service ("Terms") govern your use of the Seat Sherpa
@@ -189,7 +189,8 @@ fbq('track','PageView');
     <li>Harass, threaten, or discriminate against other users.</li>
     <li>Misrepresent your identity, vehicle, or driving record.</li>
     <li>Drive under the influence of alcohol or drugs.</li>
-    <li>Circumvent the in-app payment system (e.g., by collecting cash directly).</li>
+    <li>Circumvent the in-app payment system (e.g., by collecting cash directly), or request, offer, or make any payment, deposit, or fee for a ride outside the Service.</li>
+    <li>Move a conversation off the Service, or ask another user to, before a booking is confirmed, including by sharing or requesting phone numbers, messaging handles, or email addresses in ride requests, booking notes, or chat.</li>
     <li>Use the Service to operate as a commercial carrier or taxi service.</li>
     <li>Solicit passengers for compensation outside the cost-sharing structure described in these Terms.</li>
     <li>Use the Service to compete commercially with Seat Sherpa.</li>
@@ -197,6 +198,13 @@ fbq('track','PageView');
   <p>
     Violations may result in account suspension or termination without
     refund of fees paid.
+  </p>
+  <h3 id="on-platform">3.1 Communication and payment through the Service</h3>
+  <p>
+    Verification, no-show protection, refunds, and support depend on the ride staying on the Service: the booking, the payment, and the conversation between driver and passenger. All charges for a ride are shown in the price breakdown at booking; no other payment may be requested or collected. Once a booking is confirmed, the Service provides in-app calling and messaging for coordination, and messages are delivered to each party through the app, the website, or email according to their settings.
+  </p>
+  <p>
+    Messages sent through the Service may be automatically reviewed for contact details, links, or payment requests that circumvent these Terms. We may contact either party, remove content, decline a booking, or suspend an account as a result. Arrangements made outside the Service are at the users' own risk and are not covered by the protections or support described in these Terms.
   </p>
 
   <!-- ───────────────────────────────────────────────────────────────── -->

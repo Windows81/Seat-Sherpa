@@ -167,7 +167,7 @@
       <select id="seatsSel"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
       <label for="noteInput">Note for drivers (optional)</label>
       <textarea id="noteInput" maxlength="200" placeholder="e.g. Cal student heading home for the weekend, one backpack."></textarea>
-      <p class="hint">No phone numbers or emails — the board is public. Drivers reach you by posting the ride; booking and chat stay in Seat Sherpa.</p>
+      <p class="hint">No phone numbers or emails. The board is public. Drivers reach you by posting the ride, and booking and chat stay in Seat Sherpa.</p>
       <button class="primary" id="askBtn">Post my request</button>
       <div class="msg err hidden" id="askMsg"></div>
     </div>
