@@ -84,18 +84,77 @@ fbq('track','PageView');
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
 
   <style>
+    /* Color tokens + light theme (2026-10-12). Dark values are the page's
+       original colors, unchanged; the light set follows the visitor's own
+       system setting (no toggle). Same palette as /rides, /ride and /book.
+       --link is teal TEXT for things you can tap; teal FILLS (#00D4C8 with
+       dark text) are the same in both themes. --ssbar-* / --ssmenu-* theme
+       the shared signed-in menu and the rating popup. */
+    :root {
+      --bg: #0E0E10; --text: #ffffff; --link: #00D4C8;
+      --navline: rgba(255,255,255,0.06); --secline: rgba(255,255,255,0.04);
+      --navlink: #cccccc; --signin-line: rgba(0,212,200,0.35);
+      --sub: #999; --faqbody: #aaa; --cap: #888; --copy: #666; --disc: #6a6a75;
+      --live: #9aa3ad; --live2: #7c8290;
+      --h1a: #ffffff; --h1b: #e3e3e3;
+      --hero-glow1: rgba(0,212,200,0.12); --hero-glow2: rgba(255,193,7,0.08);
+      --icon-shadow: rgba(0,212,200,0.25);
+      --cta-glow: rgba(0,212,200,0.35); --cta-glow-h: rgba(0,212,200,0.5); --cta2-line: rgba(0,212,200,0.5);
+      --inline-glow: rgba(0,212,200,0.3); --inline-glow-h: rgba(0,212,200,0.45);
+      --badge-bg: #1a1a1d; --badge-line: rgba(255,255,255,0.1); --badge-hover: rgba(0,212,200,0.3);
+      --card-a: #1a1a1d; --card-b: #141416; --card-line: rgba(255,255,255,0.05);
+      --teal-soft: rgba(0,212,200,0.12); --eyebrow-bg: rgba(0,212,200,0.12); --eyebrow-ring: none;
+      --pill-bg: rgba(0,212,200,0.08); --pill-line: rgba(0,212,200,0.2); --pill-text: #00D4C8;
+      --shot-line: rgba(255,255,255,0.10); --shot-shadow: rgba(0,0,0,0.5);
+      --wm-text: #ffffff; --wm-eat: #00D4C8;
+      --banner-bg: #0E1B1A; --banner-line: rgba(0,212,200,0.35); --banner-title: #fff; --banner-sub: #9ba6a5; --banner-x: #888;
+      /* Laptop-only pieces (new 2026-10-12, never drawn on phones). */
+      --art-bg: #141417; --art-line: rgba(255,255,255,0.08); --art-glow: rgba(0,212,200,0.16);
+      --art-road: rgba(255,255,255,0.06); --art-route-under: rgba(0,212,200,0.16); --art-route: #00D4C8;
+      --livecard-bg: #161619; --livecard-line: rgba(255,255,255,0.10); --livecard-shadow: rgba(0,0,0,0.5);
+      --band-bg: rgba(0,212,200,0.06); --band-line: rgba(0,212,200,0.18);
+      color-scheme: dark;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F5F6F5; --text: #121416; --link: #007C76;
+        --navline: rgba(18,22,22,0.10); --secline: rgba(18,22,22,0.10);
+        --navlink: #4B5357; --signin-line: rgba(0,124,118,0.45);
+        --sub: #4B5357; --faqbody: #4B5357; --cap: #687176; --copy: #687176; --disc: #687176;
+        --live: #4B5357; --live2: #687176;
+        --h1a: #121416; --h1b: #23272A;
+        --hero-glow1: rgba(0,212,200,0.10); --hero-glow2: rgba(255,193,7,0.08);
+        --icon-shadow: rgba(0,168,159,0.22);
+        --cta-glow: rgba(0,168,159,0.28); --cta-glow-h: rgba(0,168,159,0.40); --cta2-line: rgba(0,124,118,0.45);
+        --inline-glow: rgba(0,168,159,0.24); --inline-glow-h: rgba(0,168,159,0.36);
+        --badge-bg: #FFFFFF; --badge-line: #D8DCDB; --badge-hover: rgba(0,124,118,0.45);
+        --card-a: #FFFFFF; --card-b: #FFFFFF; --card-line: rgba(18,22,22,0.10);
+        --teal-soft: rgba(0,168,159,0.12); --eyebrow-bg: #FFFFFF; --eyebrow-ring: inset 0 0 0 1px rgba(0,124,118,0.45);
+        --pill-bg: #FFFFFF; --pill-line: #D8DCDB; --pill-text: #23272A;
+        --shot-line: rgba(18,22,22,0.10); --shot-shadow: rgba(0,0,0,0.12);
+        --wm-text: #121416; --wm-eat: #00A89F;
+        --banner-bg: #FFFFFF; --banner-line: rgba(0,124,118,0.45); --banner-title: #121416; --banner-sub: #4B5357; --banner-x: #687176;
+        --art-bg: #FFFFFF; --art-line: rgba(18,22,22,0.10); --art-glow: rgba(0,212,200,0.14);
+        --art-road: rgba(18,22,22,0.07); --art-route-under: rgba(0,168,159,0.16); --art-route: #00A89F;
+        --livecard-bg: #FFFFFF; --livecard-line: rgba(18,22,22,0.10); --livecard-shadow: rgba(0,0,0,0.12);
+        --band-bg: #FFFFFF; --band-line: rgba(18,22,22,0.10);
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+        color-scheme: light;
+      }
+    }
+
     /* Reset + base */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10;
-      color: #ffffff;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
     img { max-width: 100%; height: auto; display: block; }
-    a { color: #00D4C8; text-decoration: none; transition: opacity 0.15s; }
+    a { color: var(--link); text-decoration: none; transition: opacity 0.15s; }
     a:hover { opacity: 0.8; }
 
     /* Layout */
@@ -108,7 +167,7 @@ fbq('track','PageView');
     /* Nav */
     nav {
       padding: 20px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid var(--navline);
     }
     nav .container {
       display: flex;
@@ -121,17 +180,17 @@ fbq('track','PageView');
       gap: 10px;
       font-weight: 700;
       font-size: 17px;
-      color: #fff;
+      color: var(--text);
     }
     nav .brand img { width: 32px; height: 32px; border-radius: 8px; }
     nav .brand .wordmark { height: 30px; width: auto; display: block; }
     nav .links { display: flex; gap: 24px; font-size: 14px; align-items: center; }
-    nav .links a { color: #cccccc; }
+    nav .links a { color: var(--navlink); }
     /* Sign in survives the mobile collapse — it's how returning web drivers
        and riders get back to their dashboards. */
     nav .signin {
-      color: #00D4C8; font-weight: 600; padding: 7px 14px;
-      border: 1px solid rgba(0,212,200,0.35); border-radius: 999px;
+      color: var(--link); font-weight: 600; padding: 7px 14px;
+      border: 1px solid var(--signin-line); border-radius: 999px;
     }
     /* "Offer your ride" chip (2026-08-28, BlaBlaCar-style): the driver-side
        entry lives top-right on every visit, straight into web posting. */
@@ -140,10 +199,29 @@ fbq('track','PageView');
       padding: 7px 14px; border-radius: 999px;
     }
     nav .links a { white-space: nowrap; }
-    nav .offer .short, nav .offer .ic { display: none; }
+    nav .offer .short, nav .offer .ic, nav .signin .short { display: none; }
+    /* A 375px phone can't fit "Sign in or sign up" beside "Post a ride": the
+       header ran 13px past the screen edge (2026-10-12). */
+    @media (max-width: 420px) {
+      nav .signin .long { display: none; }
+      nav .signin .short { display: inline; }
+    }
     nav .offer .ic, .hero-cta-row .ic { vertical-align: -3px; margin-right: 6px; }
+    /* Tablets (601-959px) showed all eight links and the page scrolled
+       sideways to ~990px (bug check 2026-10-12): keep only the two pills
+       until there is room for the full nav. */
+    @media (max-width: 959px) {
+      /* Direct children only: the account menu mounts INSIDE .links and its
+         links were hidden too (bug check 2026-10-12). */
+      nav .links > a:not(.signin):not(.offer) { display: none; }
+      nav .links { gap: 12px; flex-wrap: nowrap; }
+    }
+    @media (max-width: 360px) {
+      nav .brand .wordmark { height: 26px; }
+      nav .links { gap: 6px !important; }
+    }
     @media (max-width: 600px) {
-      nav .links a:not(.signin):not(.offer) { display: none; }
+      nav .links > a:not(.signin):not(.offer) { display: none; }
       nav .links { gap: 8px; flex-wrap: nowrap; }
       nav .offer, nav .signin { padding: 7px 12px; font-size: 14px; }
       nav .offer .long { display: none; }
@@ -155,16 +233,16 @@ fbq('track','PageView');
       padding: 80px 0 64px;
       text-align: center;
       background:
-        radial-gradient(ellipse at top, rgba(0,212,200,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse at bottom right, rgba(255,193,7,0.08) 0%, transparent 50%),
-        #0E0E10;
+        radial-gradient(ellipse at top, var(--hero-glow1) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom right, var(--hero-glow2) 0%, transparent 50%),
+        var(--bg);
     }
     .hero img.icon {
       width: 120px;
       height: 120px;
       border-radius: 26px;
       margin: 0 auto 32px;
-      box-shadow: 0 20px 60px rgba(0,212,200,0.25);
+      box-shadow: 0 20px 60px var(--icon-shadow);
     }
     .hero h1 {
       font-size: 56px;
@@ -172,7 +250,7 @@ fbq('track','PageView');
       letter-spacing: -1.2px;
       font-weight: 800;
       margin-bottom: 20px;
-      background: linear-gradient(180deg, #ffffff 0%, #e3e3e3 100%);
+      background: linear-gradient(180deg, var(--h1a) 0%, var(--h1b) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -184,7 +262,7 @@ fbq('track','PageView');
     }
     .hero p.tagline {
       font-size: 19px;
-      color: #cccccc;
+      color: var(--navlink);
       max-width: 580px;
       margin: 0 auto 28px;
     }
@@ -200,12 +278,12 @@ fbq('track','PageView');
       letter-spacing: -0.2px;
       border-radius: 999px;
       text-decoration: none;
-      box-shadow: 0 8px 28px rgba(0,212,200,0.35);
+      box-shadow: 0 8px 28px var(--cta-glow);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
     .hero-driver-cta:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 36px rgba(0,212,200,0.5);
+      box-shadow: 0 12px 36px var(--cta-glow-h);
     }
     @media (max-width: 600px) {
       .hero-driver-cta { font-size: 16px; padding: 14px 24px; }
@@ -223,20 +301,20 @@ fbq('track','PageView');
     /* Live line under the CTAs (2026-09-02): next bookable ride + all-time CO2.
        Filled by the route-inventory?hero=1 fetch at the bottom; hidden until
        data lands so a cold cache never shows an empty row. */
-    .hero-live { margin: -14px 0 28px; font-size: 15px; color: #9aa3ad; text-align: center; line-height: 1.5; }
+    .hero-live { margin: -14px 0 28px; font-size: 15px; color: var(--live); text-align: center; line-height: 1.5; }
     .hero-live .hero-live-track { display: block; overflow: hidden; }
-    .hero-live a { display: inline-block; color: #00d4c8; text-decoration: none; font-weight: 600; transition: transform .32s ease, opacity .32s ease; will-change: transform, opacity; }
+    .hero-live a { display: inline-block; color: var(--link); text-decoration: none; font-weight: 600; transition: transform .32s ease, opacity .32s ease; will-change: transform, opacity; }
     .hero-live a.is-out { transform: translateX(-28px); opacity: 0; }
     .hero-live a.is-in { transform: translateX(28px); opacity: 0; transition: none; }
     @media (prefers-reduced-motion: reduce) { .hero-live a { transition: none; } .hero-live a.is-out, .hero-live a.is-in { transform: none; opacity: 1; } }
     .hero-live a:hover { text-decoration: underline; }
-    .hero-live .hero-live-co2 { display: block; margin-top: 6px; font-size: 13px; color: #7c8290; }
+    .hero-live .hero-live-co2 { display: block; margin-top: 6px; font-size: 13px; color: var(--live2); }
     .hero-cta-secondary {
       display: inline-block;
       padding: 16px 32px;
       background: transparent;
-      color: #00d4c8;
-      border: 1.5px solid rgba(0,212,200,0.5);
+      color: var(--link);
+      border: 1.5px solid var(--cta2-line);
       font-size: 18px;
       font-weight: 800;
       letter-spacing: -0.2px;
@@ -244,7 +322,7 @@ fbq('track','PageView');
       text-decoration: none;
       transition: transform 0.15s ease, border-color 0.15s ease;
     }
-    .hero-cta-secondary:hover { transform: translateY(-2px); border-color: #00d4c8; }
+    .hero-cta-secondary:hover { transform: translateY(-2px); border-color: var(--link); }
     @media (max-width: 600px) {
       .hero-cta-secondary { font-size: 16px; padding: 14px 24px; }
     }
@@ -277,12 +355,12 @@ fbq('track','PageView');
       letter-spacing: -0.2px;
       border-radius: 999px;
       text-decoration: none;
-      box-shadow: 0 6px 20px rgba(0,212,200,0.3);
+      box-shadow: 0 6px 20px var(--inline-glow);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
     .driver-cta-inline:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(0,212,200,0.45);
+      box-shadow: 0 10px 28px var(--inline-glow-h);
     }
 
     /* Store badges */
@@ -297,8 +375,8 @@ fbq('track','PageView');
       display: flex;
       align-items: center;
       gap: 10px;
-      background: #1a1a1d;
-      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-line);
       border-radius: 12px;
       padding: 12px 20px;
       min-width: 200px;
@@ -307,7 +385,7 @@ fbq('track','PageView');
       position: relative;
     }
     .store-badge:hover {
-      border-color: rgba(0,212,200,0.3);
+      border-color: var(--badge-hover);
       transform: translateY(-1px);
     }
     .store-badge svg {
@@ -324,13 +402,13 @@ fbq('track','PageView');
     }
     .store-badge .label .small {
       font-size: 11px;
-      color: #888;
+      color: var(--cap);
       letter-spacing: 0.3px;
     }
     .store-badge .label .big {
       font-size: 16px;
       font-weight: 600;
-      color: #fff;
+      color: var(--text);
     }
     .store-badge .coming-soon {
       position: absolute;
@@ -349,7 +427,7 @@ fbq('track','PageView');
     /* Sections */
     section.features, section.how-it-works, section.routes, section.trust {
       padding: 80px 0;
-      border-top: 1px solid rgba(255,255,255,0.04);
+      border-top: 1px solid var(--secline);
     }
     @media (max-width: 600px) {
       section.features, section.how-it-works, section.routes, section.trust {
@@ -365,7 +443,7 @@ fbq('track','PageView');
     }
     section h2 + p.section-sub {
       text-align: center;
-      color: #999;
+      color: var(--sub);
       max-width: 540px;
       margin: 0 auto 56px;
     }
@@ -381,8 +459,8 @@ fbq('track','PageView');
       gap: 20px;
     }
     .feature-card {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.05);
+      background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+      border: 1px solid var(--card-line);
       border-radius: 16px;
       padding: 28px 24px;
     }
@@ -397,7 +475,7 @@ fbq('track','PageView');
       margin-bottom: 8px;
     }
     .feature-card p {
-      color: #999;
+      color: var(--sub);
       font-size: 14px;
       line-height: 1.55;
     }
@@ -419,8 +497,8 @@ fbq('track','PageView');
       width: 48px;
       height: 48px;
       border-radius: 24px;
-      background: rgba(0,212,200,0.12);
-      color: #00D4C8;
+      background: var(--teal-soft);
+      color: var(--link);
       font-weight: 800;
       font-size: 20px;
       margin-bottom: 16px;
@@ -431,7 +509,7 @@ fbq('track','PageView');
       margin-bottom: 8px;
     }
     .step p {
-      color: #999;
+      color: var(--sub);
       font-size: 14px;
     }
 
@@ -444,10 +522,12 @@ fbq('track','PageView');
       max-width: 720px;
       margin: 0 auto;
     }
+    /* Route pills are labels, not links: in light they read as plain
+       chips (teal is only for things you can tap). */
     .route-pill {
-      background: rgba(0,212,200,0.08);
-      border: 1px solid rgba(0,212,200,0.2);
-      color: #00D4C8;
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-line);
+      color: var(--pill-text);
       padding: 10px 18px;
       border-radius: 100px;
       font-size: 14px;
@@ -472,7 +552,7 @@ fbq('track','PageView');
       width: 24px;
       height: 24px;
       flex-shrink: 0;
-      color: #00D4C8;
+      color: var(--link);
     }
     .trust-item .body strong {
       display: block;
@@ -480,7 +560,7 @@ fbq('track','PageView');
       margin-bottom: 4px;
     }
     .trust-item .body span {
-      color: #999;
+      color: var(--sub);
       font-size: 13px;
     }
 
@@ -488,8 +568,9 @@ fbq('track','PageView');
        Zero JS, native accessibility, mobile-friendly. */
     section.faq {
       padding: 80px 0;
-      border-top: 1px solid rgba(255,255,255,0.04);
+      border-top: 1px solid var(--secline);
     }
+    section.faq .container { text-align: center; }
     @media (max-width: 600px) {
       section.faq { padding: 56px 0; }
     }
@@ -501,8 +582,8 @@ fbq('track','PageView');
       gap: 12px;
     }
     .faq-item {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.05);
+      background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+      border: 1px solid var(--card-line);
       border-radius: 12px;
       overflow: hidden;
     }
@@ -511,7 +592,7 @@ fbq('track','PageView');
       cursor: pointer;
       font-weight: 600;
       font-size: 15px;
-      color: #fff;
+      color: var(--text);
       list-style: none;
       display: flex;
       justify-content: space-between;
@@ -522,25 +603,25 @@ fbq('track','PageView');
     .faq-item summary::after {
       content: '+';
       font-size: 20px;
-      color: #00D4C8;
+      color: var(--link);
       transition: transform 0.2s;
     }
     .faq-item[open] summary::after { content: '−'; }
     .faq-item .body {
       padding: 0 22px 18px;
-      color: #aaa;
+      color: var(--faqbody);
       font-size: 14px;
       line-height: 1.7;
     }
     .faq-item .body p { margin: 0 0 10px; }
     .faq-item .body p:last-child { margin-bottom: 0; }
-    .faq-item .body strong { color: #fff; font-weight: 600; }
+    .faq-item .body strong { color: var(--text); font-weight: 600; }
 
     /* Footer */
     footer {
       padding: 48px 0 64px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      color: #888;
+      border-top: 1px solid var(--navline);
+      color: var(--cap);
       font-size: 14px;
     }
     footer .container {
@@ -554,25 +635,157 @@ fbq('track','PageView');
       gap: 24px;
       flex-wrap: wrap;
     }
-    footer .links a { color: #cccccc; }
-    footer .copyright { color: #666; font-size: 13px; }
+    footer .links a { color: var(--navlink); }
+    footer .copyright { color: var(--copy); font-size: 13px; }
 
     /* Now in Apple Maps */
-    section.applemaps { padding: 72px 0; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+    section.applemaps { padding: 72px 0; border-top: 1px solid var(--navline); text-align: center; }
     .am-eyebrow {
-      display: inline-block; background: rgba(0,212,200,0.12); color: #00D4C8;
+      display: inline-block; background: var(--eyebrow-bg); color: var(--link);
+      box-shadow: var(--eyebrow-ring);
       font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
       padding: 5px 14px; border-radius: 100px; margin-bottom: 16px;
     }
     .am-shots { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
     .am-shot { margin: 0; width: 400px; max-width: 90vw; }
     .am-shot img {
-      width: 100%; border-radius: 18px; border: 1px solid rgba(255,255,255,0.10);
-      display: block; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      width: 100%; border-radius: 18px; border: 1px solid var(--shot-line);
+      display: block; box-shadow: 0 12px 40px var(--shot-shadow);
     }
     .am-disclaimer {
       margin: 36px auto 0; max-width: 660px; font-size: 12px;
-      color: #6a6a75; line-height: 1.7;
+      color: var(--disc); line-height: 1.7;
+    }
+
+    /* ── Laptop layout (2026-10-12) ────────────────────────────────────
+       Justin: on a laptop the page still read like one phone column. From
+       960px up the page uses the width: hero as copy left + a live ride
+       card right, the Apple Maps and routes sections split into two
+       columns, trust and FAQ as cards, a column footer. Everything here
+       sits behind min-width: 960px, so phones render exactly as before. */
+    .hero-art { display: none; }
+    .hero-live .hl-sep, .hero-live .hl-k, .hero-live .hl-d { display: inline; }
+    @media (min-width: 960px) and (max-width: 1139px) {
+      nav .links { gap: 14px; }
+    }
+    @media (min-width: 960px) {
+      .container { max-width: 1200px; padding: 0 40px; }
+
+      /* Hero: two columns. The art panel, the app icon and the live ride
+         card share the right column; the 1fr rows above and below the copy
+         keep the copy vertically centered against the panel. */
+      .hero { padding: 72px 0 88px; text-align: left; }
+      .hero .container {
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+        grid-template-rows: 1fr auto auto auto auto 1fr;
+        grid-template-areas:
+          ".      art"
+          "h1     art"
+          "tag    art"
+          "cta    art"
+          "badges art"
+          ".      art";
+        column-gap: 64px;
+      }
+      .hero h1 { grid-area: h1; text-wrap: pretty; }
+      .hero p.tagline { grid-area: tag; margin: 0 0 32px; max-width: 34em; }
+      .hero-cta-row { grid-area: cta; justify-content: flex-start; margin-bottom: 28px; }
+      .store-badges { grid-area: badges; justify-content: flex-start; }
+      .hero-art {
+        grid-area: art; display: block; position: relative; z-index: 0;
+        min-height: 500px; border-radius: 28px; overflow: hidden;
+        border: 1px solid var(--art-line);
+        background: radial-gradient(circle at 18% 14%, var(--art-glow) 0%, transparent 55%), var(--art-bg);
+      }
+      .hero-art svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+      .hero-art .road { fill: none; stroke: var(--art-road); stroke-width: 2; }
+      .hero-art .route-under { fill: none; stroke: var(--art-route-under); stroke-width: 14; stroke-linecap: round; }
+      .hero-art .route { fill: none; stroke: var(--art-route); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1 13; }
+      .hero-art .pin { fill: var(--art-route); }
+      .hero-art .pin-ring { fill: var(--art-route-under); }
+      .hero img.icon {
+        grid-area: art; align-self: start; justify-self: start; position: relative; z-index: 1;
+        width: 88px; height: 88px; border-radius: 20px; margin: 36px 0 0 36px;
+      }
+      /* The live line becomes the card. Same element, same data, same link;
+         only its layout changes. */
+      .hero-live { grid-area: art; align-self: end; position: relative; z-index: 1; margin: 0 28px 28px; text-align: left; }
+      .hero-live:not([hidden]) {
+        display: block; padding: 20px 22px 18px; border-radius: 18px;
+        background: var(--livecard-bg); border: 1px solid var(--livecard-line);
+        box-shadow: 0 18px 48px var(--livecard-shadow);
+      }
+      .hero-live a { display: block; }
+      .hero-live .hl-sep { display: none; }
+      .hero-live .hl-k { display: block; font-size: 13px; font-weight: 600; color: var(--live2); margin-bottom: 4px; }
+      .hero-live b { display: block; font-size: 24px; line-height: 1.2; font-weight: 700; letter-spacing: -0.3px; color: var(--text); margin-bottom: 6px; }
+      .hero-live .hl-d { display: block; font-size: 16px; }
+      .hero-live .hero-live-co2 { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--livecard-line); }
+
+      /* Apple Maps: copy left, the two screenshots right. */
+      section.applemaps { padding: 96px 0; text-align: left; }
+      section.applemaps .container {
+        display: grid;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        grid-template-rows: 1fr auto auto auto auto 1fr;
+        grid-template-areas: ". shots" "eyebrow shots" "h2 shots" "sub shots" "disc shots" ". shots";
+        column-gap: 64px;
+      }
+      .am-eyebrow { grid-area: eyebrow; justify-self: start; }
+      section.applemaps h2 { grid-area: h2; text-align: left; }
+      section.applemaps h2 + p.section-sub { grid-area: sub; text-align: left; margin: 0; max-width: 34em; }
+      .am-shots { grid-area: shots; margin-top: 0; flex-wrap: nowrap; gap: 24px; }
+      .am-shot { flex: 1 1 0; width: auto; max-width: none; min-width: 0; }
+      .am-disclaimer { grid-area: disc; margin: 28px 0 0; max-width: 34em; }
+
+      .feature-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+      .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+      section h2 + p.section-sub { max-width: 600px; }
+
+      /* Routes: heading + call to action left, the route list right. */
+      section.routes .container {
+        display: grid;
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        grid-template-rows: 1fr auto auto auto 1fr;
+        grid-template-areas: ". list" "h2 list" "sub list" "cta list" ". list";
+        column-gap: 64px;
+      }
+      section.routes h2 { grid-area: h2; text-align: left; }
+      section.routes h2 + p.section-sub { grid-area: sub; text-align: left; margin: 0 0 28px; }
+      section.routes .driver-cta-band { grid-area: cta; text-align: left; margin-top: 0; }
+      .routes-list { grid-area: list; align-self: center; justify-content: flex-start; max-width: none; margin: 0; gap: 12px; }
+      .route-pill { font-size: 15px; padding: 12px 20px; }
+
+      /* Trust: three cards across the full width. */
+      section.trust h2 { margin-bottom: 40px; }
+      .trust-grid { max-width: none; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+      .trust-item {
+        padding: 26px 24px; border-radius: 16px;
+        background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+        border: 1px solid var(--card-line);
+      }
+      .trust-item .body strong { font-size: 16px; }
+      .trust-item .body span { font-size: 14px; }
+
+      /* FAQ teaser: one band, copy left and the button right. */
+      section.faq .container {
+        display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 48px; align-items: center;
+        text-align: left; max-width: 1120px; padding: 40px 48px; border-radius: 20px;
+        background: var(--band-bg); border: 1px solid var(--band-line);
+      }
+      section.faq h2 { grid-column: 1; text-align: left; margin-bottom: 8px; }
+      section.faq h2 + p.section-sub { grid-column: 1; text-align: left; margin: 0; max-width: 38em; }
+      section.faq .driver-cta-inline { grid-column: 2; grid-row: 1 / span 2; }
+
+      /* Footer: the three link groups as columns, badges + copyright below. */
+      footer .container {
+        display: grid; grid-template-columns: max-content max-content max-content minmax(0, 1fr);
+        column-gap: 96px; row-gap: 28px;
+      }
+      footer .links { flex-direction: column; gap: 10px; align-items: flex-start; }
+      footer .container > .links:nth-of-type(4) { grid-column: 1 / span 3; flex-direction: row; align-items: center; gap: 24px; }
+      footer .copyright { grid-column: 4; justify-self: end; align-self: center; }
     }
   </style>
 
@@ -600,8 +813,8 @@ fbq('track','PageView');
             <path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/>
             <path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/>
           </g>
-          <text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text>
-          <text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text>
+          <text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8" style="fill:var(--wm-eat)">eat</text>
+          <text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff" style="fill:var(--wm-text)">Sherpa</text>
         </svg>
       </a>
       <div class="links">
@@ -612,7 +825,7 @@ fbq('track','PageView');
         <a href="/drive">For drivers</a>
         <a href="/colleges">For organizations</a>
         <a class="offer" href="/post"><span class="long">Offer your ride</span><span class="short">Post a ride</span></a>
-        <a class="signin" href="/signin">Sign in or sign up</a>
+        <a class="signin" href="/signin"><span class="long">Sign in or sign up</span><span class="short">Sign in</span></a>
         <span id="ssMenuMount"></span>
       </div>
     </div>
@@ -688,6 +901,22 @@ fbq('track','PageView');
             <span class="big">Google Play</span>
           </div>
         </a>
+      </div>
+
+      <!-- Laptop-only backdrop for the right column of the hero (2026-10-12):
+           a drawn route, no data and no text. The app icon and the live ride
+           card sit on top of it. Hidden below 960px. -->
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 460 500" preserveAspectRatio="xMidYMin slice" focusable="false">
+          <path class="road" d="M-20 210 C 90 180, 170 250, 290 215 S 430 150, 480 170"/>
+          <path class="road" d="M120 -20 C 140 90, 90 170, 150 260 S 210 400, 190 520"/>
+          <path class="road" d="M330 -20 C 300 70, 360 150, 340 240 S 280 380, 320 520"/>
+          <path class="road" d="M-20 330 C 120 300, 260 360, 480 300"/>
+          <path class="route-under" d="M110 112 C 190 130, 200 210, 270 222 S 360 190, 392 252"/>
+          <path class="route" d="M110 112 C 190 130, 200 210, 270 222 S 360 190, 392 252"/>
+          <circle class="pin-ring" cx="392" cy="252" r="20"/>
+          <circle class="pin" cx="392" cy="252" r="9"/>
+        </svg>
       </div>
     </div>
   </section>
@@ -889,16 +1118,8 @@ fbq('track','PageView');
     </div>
   </section>
 
-  <!-- ─── FAQ teaser (full FAQ lives on its own page: /faq) ───── -->
-  <section class="faq" id="faq">
-    <div class="container" style="text-align:center;">
-      <h2>Questions?</h2>
-      <p class="section-sub">
-        How prices are capped, how we verify drivers, the 4-digit pickup code, refunds, luggage, and more.
-      </p>
-      <a href="/faq" class="driver-cta-inline">Read the FAQ →</a>
-    </div>
-  </section>
+  <!-- FAQ teaser removed 2026-10-19 (Justin: "we already have the faq at the
+       top"); the header and footer link to /faq. -->
 
 
   <!-- ─── Footer ────────────────────────────────────────────── -->
@@ -930,6 +1151,7 @@ fbq('track','PageView');
         <a href="/faq">FAQ</a>
         <a href="/drive">Drive with us</a>
         <a href="/careers">Careers</a>
+        <a href="/ai">Use in your AI</a>
         <a href="/terms.html">Terms of Service</a>
         <a href="/privacy.html">Privacy Policy</a>
         <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>
@@ -984,17 +1206,17 @@ fbq('track','PageView');
     var bar = document.createElement('div');
     bar.setAttribute('style',
       'position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;gap:12px;' +
-      'padding:12px 14px;background:#0E1B1A;border-bottom:1px solid rgba(0,212,200,0.35);' +
+      'padding:12px 14px;background:var(--banner-bg);border-bottom:1px solid var(--banner-line);' +
       'font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;');
     bar.innerHTML =
       '<img src="/icon.png" alt="" style="width:36px;height:36px;border-radius:9px;flex-shrink:0;">' +
       '<div style="flex:1;min-width:0;">' +
-        '<div style="color:#fff;font-weight:700;font-size:14px;">Seat Sherpa</div>' +
-        '<div style="color:#9ba6a5;font-size:12px;">Faster in the app</div>' +
+        '<div style="color:var(--banner-title);font-weight:700;font-size:14px;">Seat Sherpa</div>' +
+        '<div style="color:var(--banner-sub);font-size:12px;">Faster in the app</div>' +
       '</div>' +
       '<a href="' + openUrl + '" style="background:#00D4C8;color:#000;font-weight:800;font-size:14px;' +
         'padding:10px 18px;border-radius:100px;text-decoration:none;flex-shrink:0;">Open</a>' +
-      '<button id="ssBannerX" style="background:none;border:none;color:#888;font-size:20px;line-height:1;' +
+      '<button id="ssBannerX" style="background:none;border:none;color:var(--banner-x);font-size:20px;line-height:1;' +
         'padding:4px 6px;flex-shrink:0;">×</button>';
     document.body.appendChild(bar);
     document.body.style.paddingTop = '64px';
@@ -1071,9 +1293,21 @@ fbq('track','PageView');
       return h12 + ":" + m[2] + " " + ap;
     };
     var render = function (r) {
-      var when = fmtDate(r.depDate) + (fmtTime(r.depTime) ? " · " + fmtTime(r.depTime) : "");
-      link.innerHTML = "Next ride: <b>" + esc(r.fromLabel) + " → " + esc(r.toLabel) + "</b> · " + esc(when) +
-        " · from $" + Math.round(r.priceFrom) + " · " + r.seatsLeft + (r.seatsLeft === 1 ? " seat" : " seats") + " left →";
+      // A stop-based entry (an open stretch, or a ride serving the corridor
+      // through a stop) carries the car's ESTIMATED time at the stop
+      // (timeEstimated, 2026-10-06), never an exact departure.
+      var t = fmtTime(r.depTime);
+      var when = fmtDate(r.depDate) + (t ? " · " + (r.timeEstimated ? "around " + t + " (estimated)" : t) : "");
+      // Same text as ever; the spans only let the laptop layout stack the
+      // parts into a card (2026-10-12). On phones they render inline.
+      // All-in price, booking fee included (2026-10-12): priceFrom is the
+      // bare seat price ("from $50" on a $52.50 checkout). Without the
+      // all-in figure the line names no price rather than a low one.
+      var allIn = typeof r.priceAllIn === "number" && r.priceAllIn > 0
+        ? " · from $" + (r.priceAllIn % 1 === 0 ? r.priceAllIn.toFixed(0) : r.priceAllIn.toFixed(2))
+        : "";
+      link.innerHTML = "<span class=\"hl-k\">Next ride: </span><b>" + esc(r.fromLabel) + " → " + esc(r.toLabel) + "</b><span class=\"hl-sep\"> · </span><span class=\"hl-d\">" + esc(when) +
+        allIn + " · " + r.seatsLeft + (r.seatsLeft === 1 ? " seat" : " seats") + " left →</span>";
       link.href = "/rides?from=" + encodeURIComponent(r.from) + "&to=" + encodeURIComponent(r.to) + "&c=home-live";
     };
     fetch("https://vmfmbntacifqoqxqxgsk.supabase.co/functions/v1/route-inventory?hero=1")
@@ -1117,5 +1351,9 @@ fbq('track','PageView');
       .catch(function () {});
   })();
   </script>
+  <!-- Rate-your-driver popup for signed-in members with an unrated trip
+       (Justin 2026-10-07: the homepage was the one signed-in page without
+       it). Loads nothing extra for signed-out visitors. -->
+  <script type="module" src="/js/ss-rating-gate.js"></script>
 </body>
 </html>

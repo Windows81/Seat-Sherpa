@@ -15,7 +15,8 @@
        search index even if someone pastes the link somewhere public. -->
   <meta name="robots" content="noindex, nofollow" />
   <meta name="referrer" content="no-referrer" />
-  <meta name="theme-color" content="#0E0E10" />
+  <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#F5F6F5" media="(prefers-color-scheme: light)" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
@@ -24,13 +25,106 @@
        post-signup account plumbing, not a conversion funnel. -->
 
   <style>
+    /* Color tokens + light theme (2026-10-12): every color on this page is a
+       token. The dark values are the page's original literals, so dark looks
+       exactly as before; the light set follows the visitor's own system
+       setting (no toggle). --teal is the button FILL; --link is teal TEXT for
+       things you can tap; --link-deep is teal text on a teal-tinted or gray
+       chip (the lighter teal falls under 4.5:1 there in light). --ssbar-* and
+       --ssmenu-* theme the shared header, menu and rating popup. */
+    :root {
+      --bg: #0E0E10; --text: #fff; --text2: #E8E8EC;
+      --sub: #adadb8; --sub2: #b9b9c6; --cap: #8f8f98; --subhover: #cfcfd6;
+      --teal: #00D4C8; --on-teal: #04201e; --link: #00D4C8; --link-deep: #00D4C8; --focus: #00D4C8;
+      --card-a: #1a1a1d; --card-b: #141416; --line: rgba(255,255,255,0.10); --hair: rgba(255,255,255,0.07);
+      --input-bg: #0E0E10; --input-line: rgba(255,255,255,0.14); --outline-line: rgba(255,255,255,0.22);
+      --err: #ff8a8a; --ok: #4ade80; --late: #ff8a80;
+      --danger-fill: #ff5d5d; --danger-ink: #2a0505;
+      --spin-track: rgba(255,255,255,0.15); --spin-top: #00D4C8;
+      --count-bg: rgba(255,255,255,0.08);
+      --soft-line: rgba(0,212,200,0.40); --soft-bg: rgba(0,212,200,0.10);
+      --pend-bg: #24200d; --pend-line: rgba(255,193,7,0.35); --pend-line2: rgba(255,193,7,0.5); --pend-text: #ffc94a;
+      --conf-bg: #0d1f1e; --conf-line: rgba(0,212,200,0.35); --conf-text: #00D4C8;
+      --canc-bg: #241416; --canc-line: rgba(255,138,138,0.3); --canc-text: #ff8a8a;
+      --done-bg: #16181c; --done-line: rgba(255,255,255,0.15); --done-text: #b9b9c6;
+      --stat-bg: #141417; --stat-line: #232329; --stat-text: #f5f5f7; --stat-k: #a3a3ae;
+      --stat-act-line: rgba(255,184,77,0.45); --stat-act-bg: #191509; --amber: #FFB84D; --stat-act-k: #e8c88c;
+      --teal-hover: rgba(0,212,200,0.45); --ride-hover: rgba(0,212,200,0.4); --attn-line: rgba(255,193,7,0.45);
+      --chip-act-bg: rgba(255,184,77,0.16); --chip-full-bg: rgba(61,220,151,0.15); --chip-full-text: #3ddc97;
+      --chip-open-bg: rgba(255,255,255,0.07); --chip-off-bg: rgba(255,255,255,0.05); --chip-off-text: #8e8e99;
+      --idv-bg: rgba(0,212,200,0.12);
+      --pip: rgba(255,255,255,0.14); --pip-on: #00D4C8;
+      --avatar-bg: #0E0E10; --avatar-line: rgba(255,255,255,0.12);
+      --box-bg: rgba(255,255,255,0.02); --req-line: rgba(255,193,7,0.4); --req-bg: #17150c;
+      --note-bg: #0E0E10; --note-line: rgba(255,255,255,0.1);
+      --tile-bg: #18181C; --tile-line: #2C2C38; --tile-dim: #8888A8; --tile-ss: #C0C0D0;
+      --tile-open-line: rgba(0,212,200,.45); --tile-open-bg: rgba(0,212,200,.08);
+      --held-line: rgba(255,214,10,.4); --held-line2: rgba(255,214,10,.35); --held-bg: rgba(255,214,10,.08); --held-text: #FFD60A;
+      --wheel: #26262e; --mirror: #2f2f38; --shell-line: #2a2a33; --shell-bg: #101014; --windshield: rgba(0,212,200,.14);
+      --chip-bg: #18181C; --price-bg: rgba(0,212,200,.06); --hover-line: rgba(0,212,200,.5); --danger-line: rgba(255,138,138,.35);
+      --warn-bg: #241416; --warn-line: rgba(255,138,138,0.3); --warn-text: #ffb3b3;
+      --info-bg: #141d1c; --info-line: rgba(0,212,200,0.3); --info-text: #cfe9e7;
+      --neutral-bg: #16181c; --neutral-line: rgba(255,255,255,0.12);
+      --amber-bg: #24200d; --amber-line: rgba(255,193,7,0.35); --amber-text: #ffe1a3;
+      --them-bg: #1f1f23; --failed-bg: #3a1c1f;
+      --nav-bg: #17171d; --nav-line: #2a2a33; --nav-hover: rgba(0,212,200,0.4);
+      --ac-line: #202027; --ac-bg: #141418; --ac-text: #e8e8ee;
+      --sel-line: rgba(0,212,200,0.6);
+      --star-off: #a3a3ae; --star-on: #FFD75A; --call: #00a8a0; --callmsg: #6b7280;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --bg: #F5F6F5; --text: #121416; --text2: #23272A;
+        --sub: #4B5357; --sub2: #4B5357; --cap: #687176; --subhover: #23272A;
+        --teal: #00D4C8; --on-teal: #04201e; --link: #007C76; --link-deep: #006B65; --focus: #007C76;
+        --card-a: #FFFFFF; --card-b: #FFFFFF; --line: rgba(18,22,22,0.10); --hair: rgba(18,22,22,0.08);
+        --input-bg: #EFF1F0; --input-line: rgba(18,22,22,0.18); --outline-line: rgba(18,22,22,0.18);
+        --err: #C62828; --ok: #1E7B3A; --late: #C62828;
+        --danger-fill: #C62828; --danger-ink: #FFFFFF;
+        --spin-track: rgba(18,22,22,0.12); --spin-top: #00A89F;
+        --count-bg: rgba(18,22,22,0.06);
+        --soft-line: rgba(0,124,118,0.45); --soft-bg: rgba(0,168,159,0.12);
+        --pend-bg: #FFF4DB; --pend-line: rgba(138,90,0,0.30); --pend-line2: rgba(138,90,0,0.45); --pend-text: #8A5A00;
+        --conf-bg: #E3F4F2; --conf-line: rgba(0,124,118,0.35); --conf-text: #00665F;
+        --canc-bg: #FDECEC; --canc-line: rgba(198,40,40,0.28); --canc-text: #C62828;
+        --done-bg: #EFF1F0; --done-line: rgba(18,22,22,0.12); --done-text: #4B5357;
+        --stat-bg: #FFFFFF; --stat-line: rgba(18,22,22,0.10); --stat-text: #121416; --stat-k: #4B5357;
+        --stat-act-line: rgba(138,90,0,0.35); --stat-act-bg: #FFF4DB; --amber: #8A5A00; --stat-act-k: #6B4600;
+        --teal-hover: rgba(0,124,118,0.45); --ride-hover: rgba(0,124,118,0.45); --attn-line: rgba(138,90,0,0.45);
+        --chip-act-bg: #FFF4DB; --chip-full-bg: rgba(30,123,58,0.10); --chip-full-text: #1E7B3A;
+        --chip-open-bg: #EFF1F0; --chip-off-bg: #EFF1F0; --chip-off-text: #5C6569;
+        --idv-bg: rgba(0,168,159,0.12);
+        --pip: rgba(18,22,22,0.16); --pip-on: #00968E;
+        --avatar-bg: #EFF1F0; --avatar-line: rgba(18,22,22,0.12);
+        --box-bg: #FFFFFF; --req-line: rgba(138,90,0,0.35); --req-bg: #FFFAF0;
+        --note-bg: #FFFFFF; --note-line: rgba(18,22,22,0.10);
+        --tile-bg: #FFFFFF; --tile-line: #D8DCDB; --tile-dim: #4B5357; --tile-ss: #4B5357;
+        --tile-open-line: rgba(0,124,118,0.45); --tile-open-bg: rgba(0,168,159,0.08);
+        --held-line: rgba(138,90,0,0.40); --held-line2: rgba(138,90,0,0.35); --held-bg: #FFF8E6; --held-text: #8A5A00;
+        --wheel: #C4CAC8; --mirror: #CDD3D1; --shell-line: #D8DCDB; --shell-bg: #F5F6F5; --windshield: rgba(0,168,159,0.20);
+        --chip-bg: #EFF1F0; --price-bg: rgba(0,168,159,0.06); --hover-line: rgba(0,124,118,0.5); --danger-line: rgba(198,40,40,0.35);
+        --warn-bg: #FDECEC; --warn-line: rgba(198,40,40,0.25); --warn-text: #8E1C1C;
+        --info-bg: #E6F5F3; --info-line: rgba(0,124,118,0.30); --info-text: #1D3B39;
+        --neutral-bg: #EFF1F0; --neutral-line: rgba(18,22,22,0.10);
+        --amber-bg: #FFF4DB; --amber-line: rgba(138,90,0,0.30); --amber-text: #8A5A00;
+        --them-bg: #EFF1F0; --failed-bg: #FDECEC;
+        --nav-bg: #EFF1F0; --nav-line: #D8DCDB; --nav-hover: rgba(0,124,118,0.45);
+        --ac-line: rgba(18,22,22,0.10); --ac-bg: #FFFFFF; --ac-text: #23272A;
+        --sel-line: rgba(0,124,118,0.55);
+        --star-off: #687176; --star-on: #8A5A00; --call: #007C76; --callmsg: #4B5357;
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+      }
+      input::placeholder, textarea::placeholder { color: var(--cap); }
+    }
+
     /* Styling lifted wholesale from trips.html so the driver console feels
        like the same product as the funnel that created the ride. */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       display: flex;
@@ -38,102 +132,117 @@
       align-items: center;
       padding: 32px 20px 48px;
     }
-    a { color: #00D4C8; text-decoration: none; }
+    a { color: var(--link); text-decoration: none; }
 
     /* Desktop is a console, not a phone column (Justin, 2026-08-28). */
     .wrap { width: 100%; max-width: 440px; }
     /* Desktop: the 440px mobile column reads cramped on a laptop. */
     @media (min-width: 720px) { .wrap { max-width: 700px; } }
-    @media (min-width: 1100px) { .wrap { max-width: 980px; } }
-    /* Ride list goes two-up once there's room — a single 980px column of
-       full-width cards is just a wider ribbon (Justin, 2026-08-28). */
-    @media (min-width: 1100px) {
-      .ridegrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
-      .ridegrid > .entry { margin-bottom: 0; }
-    }
     /* Collapsible "Past rides" header. */
     .pasthead {
       display: flex; align-items: center; gap: 10px; width: 100%;
       background: none; border: none; cursor: pointer; font-family: inherit;
-      color: #adadb8; font-size: 14px; font-weight: 700; letter-spacing: 1.2px;
+      color: var(--sub); font-size: 14px; font-weight: 700; letter-spacing: 1.2px;
       text-transform: uppercase; padding: 20px 2px 10px; text-align: left;
     }
-    .pasthead:hover { color: #cfcfd6; }
-    .pasthead .caret { color: #00D4C8; font-size: 12px; }
+    .pasthead:hover { color: var(--subhover); }
+    .pasthead .caret { color: var(--link); font-size: 12px; }
     .pasthead .pastcount {
-      background: rgba(255,255,255,0.08); color: #adadb8; border-radius: 999px;
+      background: var(--count-bg); color: var(--sub); border-radius: 999px;
       padding: 1px 8px; font-size: 11px; letter-spacing: 0;
     }
 
     .brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 28px; }
 
     .card {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+      border: 1px solid var(--line);
       border-radius: 18px;
       padding: 24px;
       margin-bottom: 20px;
     }
     .card .eyebrow {
       font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-      color: #adadb8; margin-bottom: 12px;
+      color: var(--sub); margin-bottom: 12px;
     }
     .route { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
     /* Exact pickup/dropoff, opened-ride view only. */
-    .addr { font-size: 13.5px; color: #adadb8; line-height: 1.5; margin-top: 6px; }
-    .meta { font-size: 14px; color: #b9b9c6; margin-top: 6px; }
+    .addr { font-size: 13.5px; color: var(--sub); line-height: 1.5; margin-top: 6px; }
+    .meta { font-size: 14px; color: var(--sub2); margin-top: 6px; }
 
     h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
-    h2 { font-size: 14px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #adadb8; margin: 26px 0 12px; }
-    p.sub { font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
-    label { display: block; font-size: 12px; color: #adadb8; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    h2 { font-size: 14px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--sub); margin: 26px 0 12px; }
+    p.sub { font-size: 14px; color: var(--sub2); line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 12px; color: var(--sub); letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
     input, textarea {
-      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      width: 100%; background: var(--input-bg); border: 1px solid var(--input-line);
+      border-radius: 12px; padding: 14px 16px; color: var(--text); font-size: 16px; margin-bottom: 14px;
       outline: none; transition: border-color 0.15s; font-family: inherit;
     }
-    input:focus, textarea:focus { border-color: #00D4C8; }
+    input:focus, textarea:focus { border-color: var(--focus); }
     input:disabled, textarea:disabled { opacity: 0.5; }
     textarea { resize: vertical; min-height: 88px; }
     .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
     button.primary {
-      width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
+      width: 100%; background: var(--teal); color: var(--on-teal); border: none; border-radius: 12px;
       padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
       font-family: inherit;
     }
     button.primary:disabled { opacity: 0.5; cursor: default; }
     button.outline {
-      width: 100%; background: none; color: #fff; border: 1px solid rgba(255,255,255,0.22);
+      width: 100%; background: none; color: var(--text); border: 1px solid var(--outline-line);
       border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer;
       font-family: inherit;
     }
     button.outline:disabled { opacity: 0.5; cursor: default; }
     .linkbtn {
-      background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
+      background: none; border: none; color: var(--link); font-size: 14px; font-weight: 600;
       cursor: pointer; padding: 0; font-family: inherit;
     }
-    .linkbtn:disabled { color: #8f8f98; cursor: default; }
-    .linkbtn.danger { color: #ff8a8a; }
+    .linkbtn:disabled { color: var(--cap); cursor: default; }
+    .linkbtn.danger { color: var(--err); }
+    /* "This is a rental car" on the car form (2026-10-12): it had no styles
+       and showed as a bare browser button. A checkbox row instead; the box
+       glyph shows the state and role=switch carries it for screen readers. */
+    .disc {
+      display: inline-flex; align-items: center; gap: 8px; background: none; border: 0;
+      padding: 6px 0; font-family: inherit; font-size: 15px; font-weight: 600; color: var(--text2);
+      cursor: pointer; text-align: left;
+    }
+    .disc .caret { font-size: 20px; line-height: 1; color: var(--sub); }
+    .disc[aria-checked="true"] .caret, .disc:hover .caret { color: var(--link); }
+    .disc:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+    /* "Message all riders" quick picks (0346): tap to fill the box. */
+    .qpicks { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 10px; }
+    .qpick {
+      border: 1px solid var(--soft-line); background: var(--soft-bg); color: var(--link-deep);
+      border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 700; cursor: pointer;
+      font-family: inherit;
+    }
+    .qpick:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    /* "Sent to every booked rider on this drive" under a group message. */
+    .bcast { font-size: 12px; color: var(--cap); margin: 0 4px 6px; text-align: right; }
+    .bcast.them { text-align: left; }
     .rowlinks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 14px; }
     .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
-    .msg.err { color: #ff8a8a; }
-    .msg.ok { color: #4ade80; }
+    .msg.err { color: var(--err); }
+    .msg.ok { color: var(--ok); }
     .hidden { display: none !important; }
     .center { text-align: center; }
     .icon { font-size: 44px; margin-bottom: 12px; }
-    .hint { font-size: 12px; color: #adadb8; margin: -8px 0 14px; line-height: 1.5; }
+    .hint { font-size: 12px; color: var(--sub); margin: -8px 0 14px; line-height: 1.5; }
 
     .spinner {
       width: 28px; height: 28px; margin: 0 auto 16px;
-      border: 3px solid rgba(255,255,255,0.15); border-top-color: #00D4C8;
+      border: 3px solid var(--spin-track); border-top-color: var(--spin-top);
       border-radius: 50%; animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .signedin { text-align: center; font-size: 12px; color: #8f8f98; margin-top: 14px; }
+    .signedin { text-align: center; font-size: 12px; color: var(--cap); margin-top: 14px; }
     .signedin button { font-size: 12px; }
-    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #8f8f98; line-height: 1.6; }
-    .legal a { color: #adadb8; }
+    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: var(--cap); line-height: 1.6; }
+    .legal a { color: var(--sub); }
 
     /* Status pills - booking states plus the driver-side "action needed". */
     .pill {
@@ -141,11 +250,11 @@
       text-transform: uppercase; border-radius: 100px; padding: 5px 11px;
       border: 1px solid transparent;
     }
-    .pill.pending   { background: #24200d; border-color: rgba(255,193,7,0.35);  color: #ffc94a; }
-    .pill.confirmed { background: #0d1f1e; border-color: rgba(0,212,200,0.35);  color: #00D4C8; }
-    .pill.cancelled { background: #241416; border-color: rgba(255,138,138,0.3); color: #ff8a8a; }
-    .pill.completed { background: #16181c; border-color: rgba(255,255,255,0.15);color: #b9b9c6; }
-    .pill.action    { background: #24200d; border-color: rgba(255,193,7,0.5);   color: #ffc94a; }
+    .pill.pending   { background: var(--pend-bg); border-color: var(--pend-line);  color: var(--pend-text); }
+    .pill.confirmed { background: var(--conf-bg); border-color: var(--conf-line);  color: var(--conf-text); }
+    .pill.cancelled { background: var(--canc-bg); border-color: var(--canc-line); color: var(--canc-text); }
+    .pill.completed { background: var(--done-bg); border-color: var(--done-line);color: var(--done-text); }
+    .pill.action    { background: var(--pend-bg); border-color: var(--pend-line2);   color: var(--pend-text); }
 
     /* ── Dashboard header ────────────────────────────────────────────────
        The console opens on a state-of-play strip rather than a raw list —
@@ -153,47 +262,47 @@
        rides already loaded; nothing is a placeholder. */
     .dashhead { margin-bottom: 20px; }
     .dashhead h1 { font-size: 27px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 4px; }
-    .dashhead .said { font-size: 14.5px; color: #adadb8; }
+    .dashhead .said { font-size: 14.5px; color: var(--sub); }
     .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 22px; }
     @media (min-width: 720px) { .stats { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
     .stat {
-      background: #141417; border: 1px solid #232329; border-radius: 14px;
+      background: var(--stat-bg); border: 1px solid var(--stat-line); border-radius: 14px;
       padding: 14px 16px; text-align: left;
       /* The unread tile is a <button>, and buttons don't inherit the page's
          text colour — the "0" rendered near-black on the dark tile (Justin,
          2026-09-04: "black on grey is not good on the very right"). */
-      color: #f5f5f7; font: inherit;
+      color: var(--stat-text); font: inherit;
     }
-    .stat .n { color: #f5f5f7; }
+    .stat .n { color: var(--stat-text); }
     .stat .n { font-size: 25px; font-weight: 800; letter-spacing: -0.6px; line-height: 1.1;
       font-variant-numeric: tabular-nums; }
-    .stat .k { font-size: 12px; color: #a3a3ae; margin-top: 4px; font-weight: 600; }
+    .stat .k { font-size: 12px; color: var(--stat-k); margin-top: 4px; font-weight: 600; }
     /* Only a stat that needs the driver to DO something takes colour. */
-    .stat.act { border-color: rgba(255,184,77,0.45); background: #191509; }
-    .stat.act .n { color: #FFB84D; }
-    .stat.act .k { color: #e8c88c; }
+    .stat.act { border-color: var(--stat-act-line); background: var(--stat-act-bg); }
+    .stat.act .n { color: var(--amber); }
+    .stat.act .k { color: var(--stat-act-k); }
     .stat.link { cursor: pointer; font-family: inherit; width: 100%; }
-    .stat.link:hover { border-color: rgba(0,212,200,0.45); }
+    .stat.link:hover { border-color: var(--teal-hover); }
 
     /* Ride list rows are buttons - navigation is pushState. */
     .ridecard {
       display: block; width: 100%; text-align: left; font-family: inherit;
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.10); border-radius: 16px;
-      padding: 16px 18px; margin-bottom: 12px; cursor: pointer; color: #fff;
+      background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+      border: 1px solid var(--line); border-radius: 16px;
+      padding: 16px 18px; margin-bottom: 12px; cursor: pointer; color: var(--text);
       transition: border-color 0.15s, transform 0.15s;
     }
-    .ridecard:hover { border-color: rgba(0,212,200,0.4); transform: translateY(-1px); }
-    .ridecard.attention { border-color: rgba(255,193,7,0.45); }
+    .ridecard:hover { border-color: var(--ride-hover); transform: translateY(-1px); }
+    .ridecard.attention { border-color: var(--attn-line); }
     .ridecard .cardtop { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
     .ridecard .cardroute { font-size: 17px; font-weight: 700; letter-spacing: -0.25px; line-height: 1.3; }
     /* The departure date is the #1 thing distinguishing one ride card from
        the next (Justin, 2026-08-28) — teal + larger so it scans instantly. */
-    .ridecard .cardmeta { font-size: 15px; font-weight: 600; color: #00D4C8; margin-top: 6px; }
+    .ridecard .cardmeta { font-size: 15px; font-weight: 600; color: var(--link); margin-top: 6px; }
     .ridecard .cardfoot {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.07);
-      font-size: 14px; color: #adadb8;
+      margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--hair);
+      font-size: 14px; color: var(--sub);
     }
     /* Status chip. Semantic colour, separate from the teal accent. */
     .chip {
@@ -201,60 +310,72 @@
       padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700;
       letter-spacing: 0.2px; white-space: nowrap;
     }
-    .chip.act { background: rgba(255,184,77,0.16); color: #FFB84D; }
-    .chip.full { background: rgba(61,220,151,0.15); color: #3ddc97; }
-    .chip.open { background: rgba(255,255,255,0.07); color: #adadb8; }
-    .chip.off { background: rgba(255,255,255,0.05); color: #8e8e99; }
+    .chip.act { background: var(--chip-act-bg); color: var(--amber); }
+    .chip.full { background: var(--chip-full-bg); color: var(--chip-full-text); }
+    .chip.open { background: var(--chip-open-bg); color: var(--sub); }
+    .chip.off { background: var(--chip-off-bg); color: var(--chip-off-text); }
+    /* ID verified (0314): teal because it is a feature, not a status. Sits
+       inline after the rider's name and wraps under it on a narrow phone. */
+    .chip.idv { background: var(--idv-bg); color: var(--link-deep); font-size: 12px;
+      padding: 3px 9px 3px 7px; gap: 4px; }
+    .chip.idv svg { width: 12px; height: 12px; flex: none; }
+    /* Rider ♀ (0376): the app's pink circle, inline. */
+    .femaletag { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px;
+      border-radius: 50%; background: #FF6B9D; color: #fff; font-size: 11px; font-weight: 700; line-height: 1; flex: none; }
+    .paxname.withtag { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
     /* Seat fill, read at a glance — filled pips are sold seats. BlaBlaCar
        shows seat icons for the same reason: "2 of 3" is a sentence, pips
        are a picture. */
     .seatpips { display: inline-flex; align-items: center; gap: 4px; }
     .seatpips i {
       width: 9px; height: 9px; border-radius: 50%; display: block;
-      background: rgba(255,255,255,0.14);
+      background: var(--pip);
     }
-    .seatpips i.on { background: #00D4C8; }
+    .seatpips i.on { background: var(--pip-on); }
     .fillrow { display: flex; align-items: center; gap: 9px; }
 
     .paxrow { display: flex; align-items: center; gap: 12px; }
-    .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; }
-    .avatar.ph { display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #00D4C8; }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; background: var(--avatar-bg); border: 1px solid var(--avatar-line); flex-shrink: 0; }
+    .avatar.ph { display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: var(--link-deep); }
     .paxname { font-size: 15px; font-weight: 700; }
-    .paxsub { font-size: 12px; color: #adadb8; margin-top: 2px; }
+    .paxsub { font-size: 12px; color: var(--sub); margin-top: 2px; }
+    /* 0331 "Ask for ID verification": deliberately quiet, paxsub-styled text link. */
+    .asklink { display: block; background: none; border: none; padding: 0; margin: 4px 0 0; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 400; color: var(--sub); text-decoration: none; }
+    .asklink:disabled { opacity: .6; cursor: default; }
 
     .bookingbox {
-      border: 1px solid rgba(255,255,255,0.10); border-radius: 14px;
-      padding: 14px 16px; margin-bottom: 12px; background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line); border-radius: 14px;
+      padding: 14px 16px; margin-bottom: 12px; background: var(--box-bg);
     }
-    .bookingbox.request { border-color: rgba(255,193,7,0.4); background: #17150c; }
+    .bookingbox.request { border-color: var(--req-line); background: var(--req-bg); }
     .bookingtop { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .ridernote {
-      background: #0E0E10; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
-      padding: 10px 12px; font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-top: 10px;
+      background: var(--note-bg); border: 1px solid var(--note-line); border-radius: 10px;
+      padding: 10px 12px; font-size: 14px; color: var(--sub2); line-height: 1.5; margin-top: 10px;
       white-space: pre-wrap; overflow-wrap: anywhere;
     }
     .actrow { display: flex; gap: 10px; margin-top: 12px; }
     .actrow button { flex: 1; padding: 12px; font-size: 14px; }
-    .rowhint { font-size: 12px; color: #adadb8; margin-top: 8px; line-height: 1.5; }
+    .rowhint { font-size: 12px; color: var(--sub); margin-top: 8px; line-height: 1.5; }
     /* Seats card (2026-09-03): the app's driver seat grid, on the web. One
        tile per passenger seat; open = teal, closed = dashed + dim, held by a
        booking/request = gold and not tappable. The driver tile is decoration. */
     .seatgrid { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
     .seatrow { display: flex; gap: 8px; }
     .seattile {
-      flex: 1; min-width: 0; font: inherit; color: #E8E8EC; text-align: center;
-      background: #18181C; border: 1px solid #2C2C38; border-radius: 12px;
+      flex: 1; min-width: 0; font: inherit; color: var(--text2); text-align: center;
+      background: var(--tile-bg); border: 1px solid var(--tile-line); border-radius: 12px;
       padding: 10px 6px; cursor: pointer; transition: transform .12s, opacity .12s;
     }
     .seattile:active { transform: scale(.97); }
-    .seattile .sl { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: #8888A8; }
+    .seattile .sl { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: var(--tile-dim); }
     .seattile .sp { font-weight: 700; font-size: 15px; margin-top: 2px; font-variant-numeric: tabular-nums; }
-    .seattile .ss { font-size: 12px; margin-top: 4px; color: #C0C0D0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .seattile.open { border-color: rgba(0,212,200,.45); background: rgba(0,212,200,.08); }
-    .seattile.open .ss { color: #00D4C8; }
+    .seattile .ss { font-size: 12px; margin-top: 4px; color: var(--tile-ss); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .seattile.open { border-color: var(--tile-open-line); background: var(--tile-open-bg); }
+    .seattile.open .ss { color: var(--link-deep); }
     .seattile.closed { opacity: .55; border-style: dashed; }
-    .seattile.held { border-color: rgba(255,214,10,.4); background: rgba(255,214,10,.08); cursor: default; }
-    .seattile.held .ss { color: #FFD60A; }
+    .seattile.held { border-color: var(--held-line); background: var(--held-bg); cursor: default; }
+    .seattile.held .ss { color: var(--held-text); }
     .seattile.driver { opacity: .75; cursor: default; }
     /* Seats card v2 (2026-09-03): portrait car on the left (the booking
        page's cabin chrome — wheels flush on the sides, mirrors up front),
@@ -268,62 +389,62 @@
     @media (max-width: 640px) { .seatlayout { flex-direction: column; align-items: center; } .carcol { width: 100%; max-width: 250px; } }
     .carwrap { position: relative; width: 100%; margin: 6px auto 12px; }
     .carshell { min-height: 400px; justify-content: space-evenly; }
-    .carwheel { position: absolute; width: 14px; height: 62px; border-radius: 7px; background: #26262e; z-index: 0; }
+    .carwheel { position: absolute; width: 14px; height: 62px; border-radius: 7px; background: var(--wheel); z-index: 0; }
     .carwheel.wfl { left: -7px; top: 58px; } .carwheel.wfr { right: -7px; top: 58px; }
     .carwheel.wrl { left: -7px; bottom: 48px; } .carwheel.wrr { right: -7px; bottom: 48px; }
-    .carmirror { position: absolute; width: 18px; height: 9px; border-radius: 4px 4px 2px 2px; background: #2f2f38; z-index: 2; top: 36px; }
+    .carmirror { position: absolute; width: 18px; height: 9px; border-radius: 4px 4px 2px 2px; background: var(--mirror); z-index: 2; top: 36px; }
     .carmirror.mml { left: -14px; transform: rotate(-14deg); } .carmirror.mmr { right: -14px; transform: rotate(14deg); }
-    .carshell { position: relative; z-index: 1; border: 2px solid #2a2a33; border-radius: 46px 46px 30px 30px; background: #101014; padding: 38px 14px 32px; display: flex; flex-direction: column; gap: 18px; align-items: center; }
+    .carshell { position: relative; z-index: 1; border: 2px solid var(--shell-line); border-radius: 46px 46px 30px 30px; background: var(--shell-bg); padding: 38px 14px 32px; display: flex; flex-direction: column; gap: 18px; align-items: center; }
     .carrow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
     .carrow.three { grid-template-columns: 1fr 1fr 1fr; }
     .carshell .seattile { padding: 12px 6px; min-height: 86px; border-radius: 12px; }
     .carshell .seattile .sl { font-size: 11px; letter-spacing: .5px; }
     .carshell .seattile .ss { font-size: 12px; margin-top: 4px; }
     .carshell .seattile .sp { font-size: 14px; }
-    .windshield { width: 86%; height: 6px; border-radius: 999px; background: rgba(0,212,200,.14); }
-    .rowdiv { width: 60%; height: 1px; background: #2C2C38; }
-    .drvbadge { width: 26px; height: 26px; border-radius: 50%; background: #2C2C38; color: #E8E8EC; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 3px; font-size: 12px; }
-    .seatchip { display: inline-flex; width: auto; max-width: 100%; align-items: center; gap: 8px; border: 1px solid #2C2C38; border-radius: 999px; padding: 4px 5px 4px 12px; background: #18181C; font-size: 12.5px; }
-    .seatchip .nm { font-weight: 700; color: #E8E8EC; }
-    .seatchip .st { color: #8888A8; white-space: nowrap; }
-    .seatchip.open .st { color: #00D4C8; }
-    .seatchip.held { border-color: rgba(255,214,10,.35); } .seatchip.held .st { color: #FFD60A; }
+    .windshield { width: 86%; height: 6px; border-radius: 999px; background: var(--windshield); }
+    .rowdiv { width: 60%; height: 1px; background: var(--tile-line); }
+    .drvbadge { width: 26px; height: 26px; border-radius: 50%; background: var(--tile-line); color: var(--text2); font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 3px; font-size: 12px; }
+    .seatchip { display: inline-flex; width: auto; max-width: 100%; align-items: center; gap: 8px; border: 1px solid var(--tile-line); border-radius: 999px; padding: 4px 5px 4px 12px; background: var(--chip-bg); font-size: 12.5px; }
+    .seatchip .nm { font-weight: 700; color: var(--text2); }
+    .seatchip .st { color: var(--tile-dim); white-space: nowrap; }
+    .seatchip.open .st { color: var(--link-deep); }
+    .seatchip.held { border-color: var(--held-line2); } .seatchip.held .st { color: var(--held-text); }
     .seatchip.closed { opacity: .75; }
-    .seatchip.price { border-color: rgba(0,212,200,.45); background: rgba(0,212,200,.06); }
-    .seatchip.price .val { font-weight: 800; font-size: 14px; color: #E8E8EC; }
-    .chipact { font: inherit; font-size: 11px; font-weight: 700; color: #00D4C8; background: transparent; border: 1px solid rgba(0,212,200,.45); border-radius: 999px; padding: 3px 9px; cursor: pointer; margin: 0; }
+    .seatchip.price { border-color: var(--tile-open-line); background: var(--price-bg); }
+    .seatchip.price .val { font-weight: 800; font-size: 14px; color: var(--text2); }
+    .chipact { font: inherit; font-size: 11px; font-weight: 700; color: var(--link-deep); background: transparent; border: 1px solid var(--tile-open-line); border-radius: 999px; padding: 3px 9px; cursor: pointer; margin: 0; }
     .chipact:disabled { opacity: .5; cursor: default; }
     .priceedit { display: flex; gap: 8px; align-items: center; margin: -2px 0 4px; }
-    .priceedit .cur { color: #8888A8; }
+    .priceedit .cur { color: var(--tile-dim); }
     .priceedit input { width: 100px; margin: 0; }
     .priceedit .primary { width: auto; padding: 10px 18px; margin: 0; }
-    .seatsum { font-size: 12px; color: #8888A8; padding: 2px 4px 4px; }
-    .managerow .linkbtn { border: 1px solid #2C2C38; border-radius: 999px; padding: 12px 16px; background: #18181C; color: #E8E8EC; }
-    .managerow .linkbtn:hover { border-color: rgba(0,212,200,.5); color: #00D4C8; }
-    .managerow .linkbtn.danger { color: #ff8a8a; border-color: rgba(255,138,138,.35); }
+    .seatsum { font-size: 12px; color: var(--tile-dim); padding: 2px 4px 4px; }
+    .managerow .linkbtn { border: 1px solid var(--tile-line); border-radius: 999px; padding: 12px 16px; background: var(--chip-bg); color: var(--text2); }
+    .managerow .linkbtn:hover { border-color: var(--hover-line); color: var(--link-deep); }
+    .managerow .linkbtn.danger { color: var(--err); border-color: var(--danger-line); }
     .seattile:disabled { cursor: default; }
     .seattile.saving { opacity: .6; }
     .rowmsg { font-size: 14px; line-height: 1.5; margin-top: 10px; }
-    .rowmsg.err { color: #ff8a8a; }
-    .rowmsg.ok { color: #4ade80; }
+    .rowmsg.err { color: var(--err); }
+    .rowmsg.ok { color: var(--ok); }
 
     .banner { border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; font-size: 14px; line-height: 1.55; }
-    .banner.warn { background: #241416; border: 1px solid rgba(255,138,138,0.3); color: #ffb3b3; }
-    .banner.info { background: #141d1c; border: 1px solid rgba(0,212,200,0.3); color: #cfe9e7; }
-    .banner.neutral { background: #16181c; border: 1px solid rgba(255,255,255,0.12); color: #b9b9c6; }
-    .banner.amber { background: #24200d; border: 1px solid rgba(255,193,7,0.35); color: #ffe1a3; }
-    .banner strong { color: #fff; }
+    .banner.warn { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-text); }
+    .banner.info { background: var(--info-bg); border: 1px solid var(--info-line); color: var(--info-text); }
+    .banner.neutral { background: var(--neutral-bg); border: 1px solid var(--neutral-line); color: var(--sub2); }
+    .banner.amber { background: var(--amber-bg); border: 1px solid var(--amber-line); color: var(--amber-text); }
+    .banner strong { color: var(--text); }
     .banner button { margin-top: 12px; }
 
     .backrow { margin-bottom: 14px; }
 
     /* Check-in card - the money moment on this page. */
-    .checkin { border-color: rgba(0,212,200,0.35); }
+    .checkin { border-color: var(--conf-line); }
     .pinwrap { display: flex; gap: 10px; align-items: flex-start; margin-top: 4px; }
     .pinwrap input { text-align: center; letter-spacing: 8px; font-size: 22px; font-weight: 700; margin-bottom: 0; }
     .pinwrap button { width: auto; flex-shrink: 0; padding: 14px 18px; }
-    .checkedrow { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: #b9b9c6; margin-top: 10px; }
-    .checkedrow .ok { color: #4ade80; font-weight: 700; }
+    .checkedrow { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: var(--sub2); margin-top: 10px; }
+    .checkedrow .ok { color: var(--ok); font-weight: 700; }
 
     /* Chat (trips.html verbatim, sides swapped in JS) */
     .thread {
@@ -338,33 +459,121 @@
       max-width: 78%; border-radius: 16px; padding: 10px 14px; font-size: 15px; line-height: 1.45;
       white-space: pre-wrap; overflow-wrap: anywhere;
     }
-    .brow.me .bubble { background: #00D4C8; color: #04201e; border-bottom-right-radius: 5px; }
-    .brow.them .bubble { background: #1f1f23; color: #fff; border-bottom-left-radius: 5px; }
-    .brow.sys .bubble { background: none; color: #adadb8; font-size: 14px; text-align: center; max-width: 92%; }
+    .brow.me .bubble { background: var(--teal); color: var(--on-teal); border-bottom-right-radius: 5px; }
+    .brow.them .bubble { background: var(--them-bg); color: var(--text); border-bottom-left-radius: 5px; }
+    .brow.sys .bubble { background: none; color: var(--sub); font-size: 14px; text-align: center; max-width: 92%; }
     .bubble.sending { opacity: 0.55; }
-    .bubble.failed { background: #3a1c1f; color: #ffb3b3; }
-    .btime { font-size: 10px; color: #8f8f98; margin: 2px 4px 0; text-align: right; }
+    .bubble.failed { background: var(--failed-bg); color: var(--warn-text); }
+    .btime { font-size: 10px; color: var(--cap); margin: 2px 4px 0; text-align: right; }
     .brow.them + .btime { text-align: left; }
     .composer { display: flex; gap: 10px; align-items: flex-end; margin-top: 14px; }
     .composer textarea { min-height: 46px; max-height: 140px; margin-bottom: 0; padding: 12px 14px; font-size: 15px; }
     .composer button { width: auto; flex-shrink: 0; padding: 13px 18px; }
-    .emptythread { text-align: center; color: #adadb8; font-size: 14px; line-height: 1.6; padding: 22px 8px; }
+    .emptythread { text-align: center; color: var(--sub); font-size: 14px; line-height: 1.6; padding: 22px 8px; }
     .consolenav {
       display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
       margin: 14px 0 4px;
     }
     .consolenav a, .consolenav button {
       font-family: inherit; font-size: 13.5px; font-weight: 600;
-      color: #b9b9c6; text-decoration: none; background: #17171d;
-      border: 1px solid #2a2a33; border-radius: 999px; padding: 8px 16px;
+      color: var(--sub2); text-decoration: none; background: var(--nav-bg);
+      border: 1px solid var(--nav-line); border-radius: 999px; padding: 8px 16px;
       cursor: pointer;
     }
-    .consolenav a:hover, .consolenav button:hover { border-color: rgba(0,212,200,0.4); color: #fff; }
+    .consolenav a:hover, .consolenav button:hover { border-color: var(--nav-hover); color: var(--text); }
     .rolepair { display: inline-flex; gap: 6px; }
-    .consolenav a.rolepill { border-color: rgba(0,212,200,0.4); color: #00D4C8; font-weight: 700; }
-    .consolenav a.rolepill.active { background: #00D4C8; color: #04201e; border-color: #00D4C8; }
-    .consolenav a.rolepill.active:hover { color: #04201e; }
+    .consolenav a.rolepill { border-color: var(--nav-hover); color: var(--link); font-weight: 700; }
+    .consolenav a.rolepill.active { background: var(--teal); color: var(--on-teal); border-color: var(--teal); }
+    .consolenav a.rolepill.active:hover { color: var(--on-teal); }
+
+    /* ── Laptop layout (2026-10-12, Justin: "when viewing on my laptop its
+       still geared more towards mobile vertical"). Phones and the 720px
+       tablet column are untouched; everything below is >= 960px only.
+       The console widens to a 1160px dashboard (the shared header lines its
+       logo up with .wrap), the ride list goes two-up, one ride becomes main
+       work on the left (requests, check-in, riders, seats) with the ride
+       summary and Manage on the right, the chat becomes a wide conversation
+       pane with the booking details beside it, and Wallet and Car & license
+       sit as two columns. Sign-in and the other one-card states stay a
+       narrow centered card. */
+    @media (min-width: 960px) {
+      .wrap { max-width: 1160px; }
+      .dashhead { margin-bottom: 24px; }
+      .dashhead h1 { font-size: 32px; }
+      .stats { gap: 14px; margin-bottom: 24px; }
+      .ridegrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+      .ridegrid > .ridecard { margin-bottom: 0; }
+      .pasthead { padding-top: 28px; }
+      /* A banner's one action is a button, not a 1100px bar: on its own line
+         under the text, only as wide as its label. */
+      .banner button.primary { display: block; width: fit-content; padding: 13px 28px; margin-top: 14px; }
+
+      /* One-card states: a centered card with some air above it. */
+      #stLoading, #stBoot, #stEmail, #stCode, #stNotFound, #stError {
+        max-width: 480px; margin-left: auto; margin-right: auto; margin-top: 7vh;
+      }
+
+      /* One ride: work on the left, summary + Manage on the right. The
+         wrappers are plain blocks on a phone, in the same order as before. */
+      .ridelayout {
+        display: grid; grid-template-columns: minmax(0, 1fr) 380px; column-gap: 28px;
+        grid-template-rows: auto 1fr; grid-template-areas: "main head" "main side"; align-items: start;
+      }
+      .ridehead { grid-area: head; min-width: 0; }
+      .ridemain { grid-area: main; min-width: 0; }
+      .rideside { grid-area: side; min-width: 0; }
+      .ridemain > :first-child { margin-top: 0; }
+      .ridehead .route { font-size: 22px; }
+      .pinwrap { max-width: 440px; }
+      .pair { display: grid; grid-template-columns: 1fr 1fr; column-gap: 10px; }
+
+      /* Chat: the conversation is the wide pane, with the note and message
+         box straight under the thread. Only short, fixed-size details sit
+         beside it (how messages work, ask for ID, call); the meeting spot
+         button and its picker go under the message box, as on /trips, so
+         opening the picker can never push the message box down. */
+      .chatcard {
+        display: grid; grid-template-columns: minmax(0, 1fr) 300px; column-gap: 36px;
+        grid-template-areas:
+          "eyebrow eyebrow" "name name" "thread sub" "thread ask" "thread call" "thread ."
+          "hint ." "composer ." "msg ." "spot ." "spotpanel .";
+        grid-template-rows: auto auto auto auto auto 1fr auto auto auto auto auto;
+        padding: 28px;
+      }
+      .chatcard > .eyebrow { grid-area: eyebrow; }
+      .chatcard > h1 { grid-area: name; font-size: 26px; margin-bottom: 16px; }
+      .chatcard > p.sub { grid-area: sub; }
+      .chatcard > .chatask { grid-area: ask; margin: -8px 0 14px; }
+      .chatcard > .thread {
+        grid-area: thread; height: clamp(320px, calc(100vh - 380px), 640px); max-height: none;
+        padding: 14px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--box-bg);
+      }
+      .chatcard > .callrow { grid-area: call; margin-top: 0 !important; }
+      .chatcard > .hint { grid-area: hint; }
+      .chatcard > .composer { grid-area: composer; }
+      .chatcard > .msg { grid-area: msg; }
+      .chatcard > .chatspot { grid-area: spot; justify-self: start; }
+      .chatcard > .chatspotpanel { grid-area: spotpanel; max-width: 560px; }
+      .chatcard .bubble { max-width: 70%; }
+
+      /* Wallet and Car & license: two columns, back link and footer across. */
+      #walletBody, #accountBody {
+        display: grid; grid-template-columns: minmax(0, 1fr) 380px; column-gap: 24px; align-items: start;
+      }
+      #walletBody > .backrow, #walletBody > .signedin,
+      #accountBody > .backrow, #accountBody > .signedin { grid-column: 1 / -1; }
+      #walletBody > .card, #accountBody > .card { margin-bottom: 0; }
+      #walletBody .card > .rowhint { margin-top: 18px; padding-bottom: 6px; }
+      #walletBody .card > .rowhint ~ .meta { margin-top: 0 !important; padding: 10px 0; border-top: 1px solid var(--hair); }
+      .caredit:not(.hidden) { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; align-items: center; }
+      .caredit > .disc, .caredit > .linkbtn { justify-self: start; }
+    }
   </style>
+  <!-- Click a rider's photo to see it bigger (2026-10-04). -->
+  <script src="/js/ss-photo-zoom.js"></script>
+  <!-- Meeting spot map cards in chat (0347, 2026-10-04). -->
+  <script src="/js/ss-meeting-spot.js"></script>
+  <script src="/js/ss-chat-links.js"></script>
 </head>
 <body>
   <!-- Shared console app bar (ss-appbar.js), body-level for full bleed. -->
@@ -671,6 +880,128 @@
     // -- Formatting ---------------------------------------------------------
     const fmt$ = (n) => '$' + Number(n || 0).toFixed(2);
 
+    // -- Note to riders + flexible departure (0326 / 0327) ------------------
+    // Client pre-check that mirrors the rides driver_note trigger (phone,
+    // email, link; off-platform payment or contact; asking for extra; 200
+    // chars). The DB is the authority; this only saves a round trip and words
+    // the refusal before the row is touched. Every refusal and every allowed
+    // mention of cash is one offplatform_warnings row for the founder
+    // (logNoteFlag, surface web_ride_note). The same snippet lives in
+    // post.html (standalone pages, no shared module): keep them identical.
+    const NOTE_MAX = 200;
+    const NOTE_SNIPPET_MAX = 160;
+    const NOTE_PHONE_RE = /(^|\D)(\+?1[\s.·-]?)?\(?\d{3}\)?[\s.·-]?\d{3}[\s.·-]?\d{4}(\D|$)/;
+    const NOTE_EMAIL_RE = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i;
+    const NOTE_LINK_RE = /(https?:\/\/|www\.[a-z0-9-]+\.[a-z]{2,}|(^|[^a-z0-9])[a-z0-9-]+\.(com|net|org|io|app|me|co|ly|gg|us|info|biz)(\/|[^a-z0-9]|$))/i;
+    // 0327: ported verbatim from the chat scanner (the app's
+    // supabase/functions/_shared/message-risk.ts). No lookbehind.
+    const NOTE_PAYMENT_RE = /\b(venmo|zelle|cash\s?app|cashapp|paypal|western\s?union|wire\s?transfer|crypto|bitcoin)\b/i;
+    const NOTE_CASH_RE = /\b(cash)\s*(only|in\s?hand|when\s+i\s+see\s+you|on\s+arrival|up\s?front|instead|please)\b|\b(pay|give|bring|hand)\s+(me\s+)?(the\s+)?cash\b/i;
+    const NOTE_CASH_ANY_RE = /\b(cash|efectivo)\b/i;
+    const NOTE_EXTRA_PAY_RE = /\b(extra|additional|remaining|rest\s+of\s+the|difference|more)\b[^.!?]{0,40}(\b(pay|payment|money|amount|dollars|bucks)\b|\$\s?\d)|\b(gas\s+money|split(ting)?\s+(the\s+)?gas|chip\s+in|pitch\s+in|tip\s+me|pay\s+(me|you|him|her|the\s+driver)\b(?!\s+a\s+visit)|pay(ing)?\s+directly|dinero\s+extra|pagar\s+(m[aá]s|directo|aparte))\b/i;
+    const NOTE_CANCEL_DIRECT_RE = /\b(cancel|refund)\b[^.!?]{0,80}\b(i('| a)?ll\s+(still\s+)?(drive|take|pick)|drive\s+you|take\s+you|pick\s+you\s+up)\b|\b(just\s+)?cancel\s+(it|the\s+\w+)\s+and\s+(i|we)\b/i;
+    const NOTE_OFFAPP_CONTACT_RE = /\b(text|call|dm|hit)\s+me\b(\s+(at|on))?(\s+(instead|directly|there|here))?(?![^.!?]{0,20}\bin\s+the\s+app\b)|\b(whats\s?app|telegram|signal\s+app|snapchat|instagram|ig|imessage|wechat|kakao|line\s+id)\b|\boff\s+(the\s+)?app\b|\boutside\s+(the\s+)?app\b/i;
+    const NOTE_COPY = {
+      NOTE_CONTACT: 'Keep contact details out of the note. Your note is public to everyone browsing rides, so phone numbers, emails, and links stay out. Riders can message you on Seat Sherpa once they book.',
+      NOTE_OFFPLATFORM: 'Keep payment and contact on Seat Sherpa. Your note is public to everyone browsing rides, so anything about paying outside Seat Sherpa, cash, or moving the conversation elsewhere stays out. Riders book and pay through Seat Sherpa, and you can chat there once they do.',
+      NOTE_EXTRA: 'The seat price is the whole price. Riders pay the price you posted and nothing more at pickup, so a note cannot ask for gas money, tips, or extra. Set the seat price to what the ride is worth and leave it there.',
+      NOTE_TOO_LONG: 'Keep the note to ' + NOTE_MAX + ' characters.',
+    };
+    /** Machine code each hit refuses under; 'cash' is allowed (logged only). */
+    const NOTE_HIT_CODE = {
+      phone: 'NOTE_CONTACT', email: 'NOTE_CONTACT', link: 'NOTE_CONTACT',
+      offapp_payment: 'NOTE_OFFPLATFORM', offapp_contact: 'NOTE_OFFPLATFORM', cancel_and_direct: 'NOTE_OFFPLATFORM',
+      extra_payment: 'NOTE_EXTRA',
+    };
+    /** Default hit when the SERVER refused a note this page let through. */
+    const NOTE_CODE_HIT = { NOTE_CONTACT: 'phone', NOTE_OFFPLATFORM: 'offapp_payment', NOTE_EXTRA: 'extra_payment' };
+    /** Whitespace-collapsed and trimmed; '' when empty. */
+    function noteNormalize(text) { return String(text || '').replace(/\s+/g, ' ').trim(); }
+    /** First 160 characters of the normalized note, for the founder's log. */
+    function noteSnippet(text) { return noteNormalize(text).slice(0, NOTE_SNIPPET_MAX); }
+    /** The hit a refusal is logged under, in rule order (contact, then
+     *  off-platform, then extra), or null when no rule fires. */
+    function noteHitFor(text) {
+      const t = noteNormalize(text);
+      if (!t) return null;
+      // Second pass with digit separators collapsed ("4 1 5 . 5 5 5 . 1 2 3 4").
+      const collapsed = t.replace(/(\d)[\s.·()-]+(?=\d)/g, '$1');
+      if (NOTE_PHONE_RE.test(t) || NOTE_PHONE_RE.test(collapsed)) return 'phone';
+      if (NOTE_EMAIL_RE.test(t)) return 'email';
+      if (NOTE_LINK_RE.test(t)) return 'link';
+      if (NOTE_PAYMENT_RE.test(t) || NOTE_CASH_RE.test(t)) return 'offapp_payment';
+      if (NOTE_OFFAPP_CONTACT_RE.test(t)) return 'offapp_contact';
+      if (NOTE_CANCEL_DIRECT_RE.test(t)) return 'cancel_and_direct';
+      if (NOTE_EXTRA_PAY_RE.test(t)) return 'extra_payment';
+      return null;
+    }
+    /** A note that passed but still deserves a row: a plain mention of cash. */
+    function noteNotifyHit(text) { return NOTE_CASH_ANY_RE.test(noteNormalize(text)) ? 'cash' : null; }
+    /** null when the note is fine, else the machine code. */
+    function noteProblem(text) {
+      const t = noteNormalize(text);
+      if (!t) return null;
+      const hit = noteHitFor(t);
+      if (hit) return NOTE_HIT_CODE[hit];
+      if (t.length > NOTE_MAX) return 'NOTE_TOO_LONG';
+      return null;
+    }
+    /** The machine code inside a code or a Postgres message, or null. */
+    function noteCodeOf(codeOrMessage) {
+      const m = String(codeOrMessage || '').match(/NOTE_(CONTACT|OFFPLATFORM|EXTRA|TOO_LONG)/);
+      return m ? m[0] : null;
+    }
+    /** Refusal copy for a machine code, or a Postgres message that contains
+     *  one. Empty string for anything else. */
+    function noteErrorCopy(codeOrMessage) {
+      const code = noteCodeOf(codeOrMessage);
+      return code ? NOTE_COPY[code] : '';
+    }
+    /** Hit to log for a server-side refusal: this page's own detectors first,
+     *  else the code's default. null for NOTE_TOO_LONG or a non-note error. */
+    function noteRefusalHit(codeOrMessage, text) {
+      const code = noteCodeOf(codeOrMessage);
+      if (!code || !NOTE_CODE_HIT[code]) return null;
+      return noteHitFor(text) || NOTE_CODE_HIT[code];
+    }
+    /** One offplatform_warnings row for the founder (0327): a refused note
+     *  (action 'blocked') or an allowed cash mention ('allowed'). Fire and
+     *  forget: never awaited, never throws, and skipped when nobody is signed
+     *  in (the insert policy needs auth.uid(); post.html pre-checks before
+     *  sign-in). A null hit is a no-op so call sites need no guard. */
+    function logNoteFlag(a) {
+      try {
+        const hit = a && a.hit;
+        if (!hit) return;
+        const row = { surface: 'web_ride_note', hit: hit, action: a.action === 'allowed' ? 'allowed' : 'blocked' };
+        const rideId = Number(a.rideId);
+        row.ride_id = Number.isFinite(rideId) && rideId > 0 ? rideId : null;
+        const snip = String(a.snippet || '').slice(0, NOTE_SNIPPET_MAX);
+        if (snip) row.snippet = snip;
+        supabase.auth.getSession().then(({ data }) => {
+          if (!data || !data.session) return;
+          supabase.from('offplatform_warnings').insert(row).then(() => {}, () => {});
+        }, () => {});
+      } catch (_) {}
+    }
+    const FLEX_CHOICES = [
+      { v: 0, label: 'Exact time' },
+      { v: 60, label: 'About 1 hour' },
+      { v: 120, label: 'About 2 hours' },
+      { v: 720, label: 'Half a day' },
+      // About a day (0352, Justin 2026-10-05: "add the flexible by a day option").
+      { v: 1440, label: 'About a day' },
+    ];
+    /** Rider-facing chip text; empty for an exact-time ride. */
+    function flexChipLabel(n) {
+      const m = Number(n) || 0;
+      if (m === 60) return 'Flexible, about 1 h';
+      if (m === 120) return 'Flexible, about 2 h';
+      if (m === 720) return 'Flexible, half a day';
+      if (m === 1440) return 'Flexible, about a day';
+      return '';
+    }
+
     /** lib/format-name.ts abbreviateName. name_public is already "First L."
      *  server-side (0203); this is the belt-and-braces second pass and is
      *  idempotent on already-short values. */
@@ -697,6 +1028,22 @@
      *  San Francisco" instead of a full postal address (Justin, 2026-08-28).
      *  Same helper as trips.html. Exact addresses still show once a ride is
      *  opened \u2014 the list is for scanning, the detail is for driving to. */
+    // Mapbox sometimes puts a REGION where the city belongs ("Westwood, The
+    // Westside, California": Vladimir's rides 518 and 519, 2026-10-02), and the
+    // last non-state part is then a district, not a city. Known Los Angeles
+    // districts resolve to Los Angeles; other regional labels (South Bay, East
+    // Bay, ...) step back to the part before them, or to nothing so the caller
+    // falls back to the metro name. We go by city name (Justin).
+    function ssPickCity(cleaned) {
+      if (!cleaned || !cleaned.length) return '';
+      var last = String(cleaned[cleaned.length - 1]);
+      var key = last.toLowerCase().replace(/^the\s+/, '');
+      var CITY = { 'westside': 'Los Angeles', 'san fernando valley': 'Los Angeles', 'valley': 'Los Angeles', 'south los angeles': 'Los Angeles', 'east los angeles': 'Los Angeles' };
+      var SKIP = ['south bay', 'east bay', 'peninsula', 'silicon valley', 'north bay', 'inland empire', 'central valley', 'orange county', 'bay area', 'san francisco bay area', 'los angeles county', 'san diego county', 'wine country'];
+      if (CITY[key]) return CITY[key];
+      if (SKIP.indexOf(key) >= 0) return cleaned.length >= 2 ? String(cleaned[cleaned.length - 2]) : '';
+      return last;
+    }
     function cityOf(area) {
       if (!area) return '';
       const parts = String(area).split(',').map((s) => s.trim()).filter(Boolean);
@@ -705,7 +1052,7 @@
       const ZIP = /^\d{5}(-\d{4})?$/;
       const cleaned = parts.filter((p) => !/^\d/.test(p) && !STATE.test(p) && !ZIP.test(p));
       if (!cleaned.length) return parts[0];
-      return cleaned[cleaned.length - 1];
+      return ssPickCity(cleaned);
     }
     function routeLabel(ride) {
       const from = cityOf(ride.departure_area) || ((window.SS_STOPS && SS_STOPS.STOP_BY_ID[ride.from_dest] && SS_STOPS.STOP_BY_ID[ride.from_dest].name) || 'Origin');
@@ -776,7 +1123,7 @@
         return true;
       });
       if (cleaned.length === 0) return parts[0];
-      return cleaned[cleaned.length - 1];
+      return ssPickCity(cleaned);
     }
     // buildRideDescriptor (bookings.ts:558). The app's fallback chain includes
     // the destinations map (lib/destinations.ts) - not available here, so the
@@ -799,23 +1146,60 @@
       'dep_date, dep_time, dep_timezone, instant, seats, cancelled_at, created_at',
       // Stops editor (2026-08-28): current stops + endpoints for the
       // suggester + road miles for the distance-aware stop cap.
-      'route_stops, start_lat, start_lng, end_lat, end_lng, road_miles',
+      // road_minutes: how long a later stop stays boardable (Seats card).
+      'route_stops, start_lat, start_lng, end_lat, end_lng, road_miles, road_minutes',
       // Driver-set leg prices (0226) — re-keyed when stops are edited.
       'segment_prices',
+      // Note to riders + flexible departure (0326). Both are driver-written
+      // and shown verbatim on the public ride page.
+      'driver_note, depart_flex_minutes',
     ].join(', ');
 
-    const BOOKING_SELECT = [
+    const BOOKING_COLS = [
       'id, ride_id, passenger_id, passenger_name, seat_ids, total_price, status',
       'driver_message, cancel_reason, ref_code, created_at',
       'pickup_code_entered_at, no_show_reported_at, no_show_disputed_at',
       'boarding_stop, alighting_stop, source, stripe_payment_intent_id',
-      'passenger:profiles!bookings_passenger_profile_fkey(name:name_public, photo_url)',
+      // 0331: when the driver asked this rider for ID verification (null until asked).
+      'id_verify_requested_at',
+      // Chat window after a decline (0395): when it was accepted (null for a
+      // request that never was), declined or withdrawn, cancelled, and by whom.
+      'cancelled_by, declined_at, cancelled_at, accepted_at',
     ].join(', ');
+    // Chat window after a decline / withdrawal (0395, 2026-10-16): a request
+    // that was never accepted and is now Cancelled keeps its chat for 60
+    // minutes from declined_at (withdrawals stamp it too; cancelled_at is the
+    // sweep's fallback), then the server refuses new messages. Confirmed-
+    // then-cancelled bookings keep the 30-day window. Mirrors
+    // booking_chat_closes_at() and lib/chat-window.ts; null = no clock.
+    function chatClosesAt(b) {
+      if (!b || b.status !== 'Cancelled' || b.accepted_at) return null;
+      const t = Date.parse(b.declined_at || b.cancelled_at || '');
+      return Number.isFinite(t) ? t + 60 * 60 * 1000 : null;
+    }
+    // ID verified badge (0314, Get verified). profiles.id_verified is the
+    // client-readable boolean; id_verified_at is never selected. Until 0314
+    // has run, PostgREST rejects the WHOLE select over the unknown column
+    // (42703), which would take the driver console down with it, so the first
+    // such error drops the column for the rest of this page's life.
+    let paxIdVerifiedCol = true;
+    function bookingSelect() {
+      // org_name (0294, granted since 0291): the rider's school badge, so the
+      // driver sees it before accepting (Justin, 2026-10-05).
+      // gender: the rider ♀ for anyone female (Justin, 2026-10-08); readable
+      // since long before 0314, so it is outside the id_verified fallback.
+      return BOOKING_COLS + ', passenger:profiles!bookings_passenger_profile_fkey(name:name_public, photo_url, org_name, gender'
+        + (paxIdVerifiedCol ? ', id_verified' : '') + ')';
+    }
 
     let me = null;          // auth uid
     let myEmail = '';
     let myName = '';        // name_public - already "First L."
     let payout = { loaded: false, started: false, enabled: false, credit: false };
+    // DORMANT (0323, Justin 2026-09-29): set when mark-dormant-drivers paused
+    // this driver's seats after a week of unanswered requests. See
+    // dormantBanner() for the way back.
+    let dormant = { loaded: false, at: null };
 
     async function loadMyRides() {
       // RLS: rides_select_all lets any authenticated user read rides, but this
@@ -850,11 +1234,16 @@
     async function loadBookingsForRides(rideIds) {
       if (!rideIds.length) return [];
       // RLS bookings_select_driver_rides (0002) scopes rows to rides I drive.
-      const { data, error } = await supabase
+      const fetchRows = () => supabase
         .from('bookings')
-        .select(BOOKING_SELECT)
+        .select(bookingSelect())
         .in('ride_id', rideIds)
         .order('created_at', { ascending: true });
+      let { data, error } = await fetchRows();
+      if (error && paxIdVerifiedCol && /id_verified/i.test(String(error.message || ''))) {
+        paxIdVerifiedCol = false;
+        ({ data, error } = await fetchRows());
+      }
       if (error) throw error;
       // UNPAID WEB REQUESTS (2026-09-02): a browser booking is inserted Pending
       // before Stripe Checkout and only gets its PaymentIntent when the card is
@@ -872,26 +1261,24 @@
     async function loadRiderRep(ids) {
       const want = [...new Set((ids || []).filter((x) => x && !riderRep.has(x)))];
       if (!want.length) return;
-      const { data, error } = await supabase
-        .from('ratings')
-        .select('ratee_id, stars')
-        .in('ratee_id', want);
+      // The profile's star rating, the same number the app shows: Seat Sherpa
+      // ratings minus any a moderator hid, or a matched rating (0348) until
+      // the first real one (review 2026-10-05; this used to average the raw
+      // ratings rows, hidden ones included).
+      const { data, error } = await supabase.from('profiles').select('id, overall_rating').in('id', want);
       if (error) return;
-      const acc = new Map();
-      for (const r of data || []) {
-        const cur = acc.get(r.ratee_id) || { sum: 0, n: 0 };
-        cur.sum += Number(r.stars) || 0; cur.n += 1;
-        acc.set(r.ratee_id, cur);
-      }
+      const byId = new Map((data || []).map((p) => [p.id, Number(p.overall_rating)]));
       for (const id of want) {
-        const a = acc.get(id);
-        riderRep.set(id, a && a.n ? { avg: a.sum / a.n, n: a.n } : null);
+        const v = byId.get(id);
+        riderRep.set(id, Number.isFinite(v) && v >= 1 ? { avg: v } : null);
       }
     }
     function riderRepLabel(b) {
       const r = b && b.passenger_id ? riderRep.get(b.passenger_id) : null;
-      if (!r || !r.n) return 'New rider';
-      return '★ ' + r.avg.toFixed(1) + ' (' + r.n + ')';
+      if (!r) return 'New rider';
+      // Score only, never the review count (standing rule, 2026-09-10).
+      // Rounded DOWN to one decimal (2026-10-05): 4.95 shows 4.9.
+      return '★ ' + (Math.floor(Math.round(r.avg * 1000) / 100) / 10).toFixed(1);
     }
 
     async function loadUnreadCounts(bookingIds) {
@@ -1062,6 +1449,7 @@
       try { await S.signOut(); } catch (_) {}
       me = null; myEmail = ''; myName = '';
       payout = { loaded: false, started: false, enabled: false, credit: false };
+      dormant = { loaded: false, at: null };
       go('/driving');
     }
     $('nfSignOut').addEventListener('click', doSignOut);
@@ -1073,17 +1461,47 @@
     //    public token post.html ships. One billable session per pick.
     const MAPBOX_TOKEN = 'pk.eyJ1IjoiamR0MjYyIiwiYSI6ImNtcDhnb3pvNzBkbGYyenBpN2psY3g2bGsifQ.sqsxq8sjfLaq978oqGExHg';
     function ssUuid() { try { return crypto.randomUUID(); } catch (_) { return String(Date.now()) + Math.random().toString(16).slice(2); } }
+    /** Drivable route through ordered points (start, stops…, end): the line,
+     *  miles and minutes saved on the ride, so every map and stop pickup-time
+     *  estimate follows the road the driver set (Justin, 2026-10-05: "it
+     *  should just always be the map the driver sets"). Same Directions call
+     *  and limits as the app's lib/road-route.ts mapboxDirections. Null on any
+     *  failure; never throws. */
+    async function roadThrough(points) {
+      if (!Array.isArray(points) || points.length < 2 || points.length > 25) return null;
+      if (points.some((p) => !Number.isFinite(p.lat) || !Number.isFinite(p.lng))) return null;
+      const coords = points.map((p) => p.lng.toFixed(5) + ',' + p.lat.toFixed(5)).join(';');
+      const ctl = new AbortController();
+      const timer = setTimeout(() => ctl.abort(), 6000);
+      try {
+        const res = await fetch('https://api.mapbox.com/directions/v5/mapbox/driving/' + coords
+          + '?overview=simplified&geometries=polyline&alternatives=false&access_token=' + MAPBOX_TOKEN, { signal: ctl.signal });
+        if (!res.ok) return null;
+        const body = await res.json();
+        const r = body && body.routes && body.routes[0];
+        if (!r || !(r.distance > 0) || typeof r.geometry !== 'string' || r.geometry.length < 2 || r.geometry.length > 8000) return null;
+        return {
+          geom: r.geometry,
+          miles: Math.round((r.distance / 1609.344) * 10) / 10,
+          minutes: r.duration > 0 ? Math.round(r.duration / 60) : null,
+        };
+      } catch (_) {
+        return null;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
     function stripCountry(s) { return (s || '').replace(/,?\s*(United States|USA|US)\s*$/i, ''); }
     function wireRouteAc(input, list, onPick) {
       let session = ssUuid(); let timer = null; let seq = 0;
-      list.style.cssText = 'display:none;border:1px solid #202027;border-radius:10px;overflow:hidden;margin:-4px 0 10px;background:#141418;';
+      list.style.cssText = 'display:none;border:1px solid var(--ac-line);border-radius:10px;overflow:hidden;margin:-4px 0 10px;background:var(--ac-bg);';
       function render(items) {
         list.innerHTML = '';
         if (!items.length) { list.style.display = 'none'; return; }
         for (const s of items) {
           const b = document.createElement('button');
           b.type = 'button';
-          b.style.cssText = 'display:block;width:100%;text-align:left;padding:9px 12px;border:0;border-bottom:1px solid #202027;background:transparent;color:#e8e8ee;cursor:pointer;font-size:14px;';
+          b.style.cssText = 'display:block;width:100%;text-align:left;padding:9px 12px;border:0;border-bottom:1px solid var(--ac-line);background:transparent;color:var(--ac-text);cursor:pointer;font-size:14px;';
           b.textContent = (s.name || '') + (s.place_formatted ? ' · ' + stripCountry(s.place_formatted) : '');
           b.addEventListener('click', async () => {
             list.style.display = 'none';
@@ -1235,6 +1653,11 @@
       if (code === 'SEAT_TAKEN') {
         return msg || "You've already confirmed another rider for that seat — each seat can only be confirmed once. Decline this request, or ask the rider to book a different seat.";
       }
+      // The request moved to another seat and waits for the rider's OK (0373):
+      // "Sophie hasn't OK'd the new seat yet. We'll tell you when they do."
+      if (code === 'SEAT_CHANGE_PENDING') {
+        return msg || "The rider hasn't OK'd the new seat yet. We'll tell you when they do.";
+      }
       if (code === 'AUTH_NOT_CAPTURABLE') {
         return 'This request expired before it could be accepted \u2014 card holds only last about 7 days. The seat is open again; ask the rider to book again.';
       }
@@ -1265,8 +1688,9 @@
      *    - push 'booking_declined' to the rider (bookings.ts:1066).
      *    - stripe-cancel-payment-intent releases the hold (bookings.ts:1083).
      *    - email 'declined' - rider only (bookings.ts:1095).
-     *    - reason (if given) auto-posts to chat as a system notice
-     *      (bookings.ts:1099).
+     *    - a system notice ALWAYS posts to chat, the reason as a second
+     *      sentence when given (bookings.ts declineBooking; the web posted
+     *      only with a reason until the 2026-10-05 decline fixes).
      * Returns 'declined' | 'already-confirmed' | 'already-cancelled'.
      */
     async function doDecline(booking, ride, reason) {
@@ -1292,19 +1716,23 @@
         return 'already-cancelled';
       }
 
-      // Attribution (fire-and-forget; failure lands on today's null behavior).
-      supabase.from('bookings')
-        .update({ cancelled_by: 'driver', declined_at: new Date().toISOString() })
-        .eq('id', booking.id)
-        .then(() => {}, () => {});
+      // Attribution, after the flip. Awaited (2026-10-05) because the rider's
+      // "Declined" label reads it; a failure still lands on plain "Cancelled".
+      try {
+        await supabase.from('bookings')
+          .update({ cancelled_by: 'driver', declined_at: new Date().toISOString() })
+          .eq('id', booking.id);
+      } catch (_) { /* label falls back to Cancelled */ }
 
       const p = pushDeclined(ride, booking.id);
       firePush(booking.passenger_id, p.title, p.body, p.data);
       fireCancelPaymentIntent(booking.id);
       fireBookingEmail(booking.id, 'declined');
-      if (trimmed.length > 0) {
-        fireSystemChat(booking.id, "The driver wasn't able to accept this request. Reason: " + trimmed);
-      }
+      // Always, like the app: with no note the rider's thread used to show
+      // nothing but their own request, as if it had been ignored.
+      fireSystemChat(booking.id, trimmed.length > 0
+        ? "The driver wasn't able to accept this request. Reason: " + trimmed
+        : "The driver wasn't able to accept this request.");
       return 'declined';
     }
 
@@ -1427,15 +1855,219 @@
         img.addEventListener('error', () => {
           if (img.parentNode) img.parentNode.replaceChild(initial, img);
         });
+        // Click to see it bigger (2026-10-04, /js/ss-photo-zoom.js).
+        if (window.SSPhotoZoom) SSPhotoZoom.mark(img, paxDisplay(b));
         row.appendChild(img);
       } else {
         row.appendChild(initial);
       }
       const col = el('div');
-      col.appendChild(el('div', 'paxname', paxDisplay(b)));
+      const nameLine = el('div', 'paxname', paxDisplay(b));
+      if (b.passenger && b.passenger.id_verified === true) {
+        nameLine.classList.add('withtag');
+        nameLine.appendChild(idVerifiedTag());
+      }
+      // ♀ for anyone whose gender is female (Justin, 2026-10-08), ID verified or not.
+      if (b.passenger && b.passenger.gender === 'female') {
+        nameLine.classList.add('withtag');
+        nameLine.appendChild(riderFemaleTag());
+      }
+      // School badge (0294): the rider's school, as text only, next to the name.
+      const paxSchool = b.passenger && typeof b.passenger.org_name === 'string' ? b.passenger.org_name.trim() : '';
+      if (paxSchool) {
+        nameLine.classList.add('withtag');
+        nameLine.appendChild(schoolTag(paxSchool));
+      }
+      col.appendChild(nameLine);
       if (subText) col.appendChild(el('div', 'paxsub', subText));
       row.appendChild(col);
       return row;
+    }
+
+    /** "Ask for ID verification" (0331). On the OPENED booking (the chat
+     *  panel), never in the rider list rows (Justin, 2026-10-02). A driver can
+     *  ask a rider without the badge once per booking: request-id-verification
+     *  posts a system line in this chat, pushes and emails the rider, and
+     *  stamps bookings.id_verify_requested_at. Pending/Confirmed, ride not
+     *  departed. Quiet paxsub-styled text; on success it simply becomes
+     *  "Asked". Server text lands via textContent only. */
+    function askIdVerificationLine(b, ride) {
+      if (!b || !ride) return null;
+      if (b.passenger && b.passenger.id_verified === true) return null;
+      if (b.status !== 'Pending' && b.status !== 'Confirmed') return null;
+      if (b.id_verify_requested_at) return el('div', 'paxsub', 'Asked');
+      const dep = departureMs(ride);
+      if (!dep || dep <= Date.now()) return null;
+      const wrap = el('div');
+      const btn = el('button', 'asklink', 'Ask for ID verification');
+      btn.type = 'button';
+      const msg = el('div', 'msg err hidden');
+      msg.style.cssText = 'font-size:12px;margin:4px 0 0;';
+      // Ask first (Justin, 2026-10-22): one stray tap used to message, push
+      // and email the rider. The link now opens a confirm line; nothing is
+      // sent until "Send request".
+      const first = paxFirst(b);
+      const First = first.charAt(0).toUpperCase() + first.slice(1);
+      const confirmBox = el('div', 'hidden');
+      confirmBox.appendChild(el('div', 'paxsub', 'Ask ' + first + ' to get ID verified? ' + First + ' gets a message in this chat, a notification and an email. You can only ask once per booking.'));
+      const row = el('div');
+      row.style.cssText = 'display:flex;gap:18px;align-items:center;';
+      const sendBtn = el('button', 'asklink', 'Send request');
+      sendBtn.type = 'button';
+      sendBtn.style.fontWeight = '600';
+      const never = el('button', 'asklink', 'Never mind');
+      never.type = 'button';
+      row.appendChild(sendBtn);
+      row.appendChild(never);
+      confirmBox.appendChild(row);
+      btn.addEventListener('click', () => {
+        msg.classList.add('hidden');
+        btn.classList.add('hidden');
+        confirmBox.classList.remove('hidden');
+      });
+      never.addEventListener('click', () => {
+        confirmBox.classList.add('hidden');
+        btn.classList.remove('hidden');
+      });
+      sendBtn.addEventListener('click', async () => {
+        sendBtn.disabled = true;
+        never.disabled = true;
+        msg.classList.add('hidden');
+        let out;
+        try {
+          out = await callFn('request-id-verification', { bookingId: b.id });
+        } catch (e) {
+          const code = e && e.body && e.body.code;
+          msg.textContent = (e && e.status === 401)
+            ? 'Your sign-in expired. Refresh the page and sign in again.'
+            : (code === 'MIGRATION_PENDING')
+              ? 'Not available yet. Try again later.'
+              : ((e && e.message) || 'Could not send the request just now. Try again.');
+          msg.classList.remove('hidden');
+          sendBtn.disabled = false;
+          never.disabled = false;
+          return;
+        }
+        if (out && out.ok) {
+          // Both a fresh ask and "already asked" end in the same quiet state.
+          b.id_verify_requested_at = b.id_verify_requested_at || new Date().toISOString();
+          wrap.replaceChild(el('div', 'paxsub', 'Asked'), confirmBox);
+          if (btn.parentNode) btn.parentNode.removeChild(btn);
+          return;
+        }
+        // ok:false reasons (not live, cancelled, departed, already verified)
+        // are all terminal for this booking, so the link goes away.
+        msg.textContent = (out && out.reason) || 'Not available right now.';
+        msg.classList.remove('hidden');
+        if (confirmBox.parentNode) confirmBox.parentNode.removeChild(confirmBox);
+        if (btn.parentNode) btn.parentNode.removeChild(btn);
+      });
+      wrap.appendChild(btn);
+      wrap.appendChild(confirmBox);
+      wrap.appendChild(msg);
+      return wrap;
+    }
+
+    /** "ID verified" tag (0314). Only an admin can set profiles.id_verified,
+     *  so this is shown to every driver, not gated like the Get verified
+     *  entry point. Built with DOM calls, not innerHTML. */
+    function idVerifiedTag() {
+      const tag = el('span', 'chip idv');
+      const NS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '3');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      svg.setAttribute('aria-hidden', 'true');
+      const path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', 'M20 6 9 17l-5-5');
+      svg.appendChild(path);
+      tag.appendChild(svg);
+      tag.appendChild(document.createTextNode('ID verified'));
+      return tag;
+    }
+
+    /** Rider ♀: the pink circle the app draws, inline in the name line, for
+     *  anyone whose gender is female (Justin, 2026-10-08). */
+    function riderFemaleTag() {
+      const tag = el('span', 'femaletag', '♀');
+      tag.setAttribute('role', 'img');
+      tag.setAttribute('aria-label', 'Female');
+      tag.title = 'Female';
+      return tag;
+    }
+
+    /** School tag (0294): the same teal chip with a graduation cap, text set
+     *  with createTextNode so a school name can never inject markup. */
+    function schoolTag(name) {
+      const tag = el('span', 'chip idv');
+      const NS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '2.5');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
+      svg.setAttribute('aria-hidden', 'true');
+      const cap = document.createElementNS(NS, 'path');
+      cap.setAttribute('d', 'M22 10 12 5 2 10l10 5 10-5z');
+      const tassel = document.createElementNS(NS, 'path');
+      tassel.setAttribute('d', 'M6 12v5c3 3 9 3 12 0v-5');
+      svg.appendChild(cap);
+      svg.appendChild(tassel);
+      tag.appendChild(svg);
+      tag.appendChild(document.createTextNode(String(name).slice(0, 40)));
+      return tag;
+    }
+
+    // DORMANT DRIVER (0323, Justin 2026-09-29): a driver whose booking
+    // requests went a week unanswered has every open seat closed until they
+    // reactivate. The email carries a one-click link; this is the same button
+    // for someone who lands here instead. my_dormant_state() reads only the
+    // caller's own row; reactivate_my_rides() reopens the seats the pause
+    // closed (never one a confirmed rider holds) and clears the flag.
+    async function loadDormantState() {
+      dormant = { loaded: true, at: null };
+      try {
+        const { data, error } = await supabase.rpc('my_dormant_state');
+        if (!error && data && data.dormant_at) dormant.at = data.dormant_at;
+      } catch (_) { /* pre-0323 database or a blip: no banner */ }
+    }
+
+    function dormantBanner() {
+      if (!dormant.loaded || !dormant.at) return null;
+      const bn = el('div', 'banner warn');
+      bn.appendChild(el('strong', null, 'Your rides are paused. '));
+      bn.appendChild(document.createTextNode(
+        'Booking requests went a week without an answer, so riders can only join your waitlists. '
+        + 'Reactivate to open your seats again; anyone waiting hears that seats opened.'));
+      const btn = el('button', 'primary', 'Reactivate my rides');
+      btn.type = 'button';
+      const msg = el('div', 'msg err hidden');
+      btn.addEventListener('click', async () => {
+        btn.disabled = true; btn.textContent = 'Reactivating…';
+        msg.classList.add('hidden');
+        try {
+          const { data, error } = await supabase.rpc('reactivate_my_rides');
+          if (error) throw error;
+          if (!data || (data.ok !== true && data.reason !== 'not_dormant')) {
+            throw new Error((data && data.reason) || 'Could not reactivate.');
+          }
+          dormant = { loaded: true, at: null };
+          await render();
+        } catch (e) {
+          btn.disabled = false; btn.textContent = 'Reactivate my rides';
+          msg.textContent = (e && e.message) || 'Could not reactivate. Try again, or use the link in the email we sent.';
+          msg.classList.remove('hidden');
+        }
+      });
+      bn.appendChild(btn);
+      bn.appendChild(msg);
+      return bn;
     }
 
     function payoutBanner() {
@@ -1493,7 +2125,9 @@
       const top = el('div', 'cardtop');
       const left = el('div');
       left.appendChild(el('div', 'cardroute', routeLabel(entry.ride)));
-      left.appendChild(el('div', 'cardmeta', whenLabel(entry.ride)));
+      // Flexible departure (0326) rides along on the time line.
+      const flexLbl = flexChipLabel(entry.ride.depart_flex_minutes);
+      left.appendChild(el('div', 'cardmeta', whenLabel(entry.ride) + (flexLbl ? ' · ' + flexLbl : '')));
       top.appendChild(left);
       top.appendChild(rideChip(entry, isPast));
       btn.appendChild(top);
@@ -1654,7 +2288,7 @@
       vcard.appendChild(el('div', 'eyebrow', 'Your cars'));
       const vList = el('div');
       vcard.appendChild(vList);
-      const carEdit = el('div', 'hidden');
+      const carEdit = el('div', 'caredit hidden'); // caredit: >= 960px pairs the fields
       carEdit.style.marginTop = '10px';
       vcard.appendChild(carEdit);
       const carMsg = el('div', 'rowhint hidden');
@@ -1805,7 +2439,7 @@
           const box = el('div', 'bookingbox');
           const title = el('div', 'meta');
           title.style.fontWeight = '600';
-          title.style.color = '#fff';
+          title.style.color = 'var(--text)';
           title.textContent = [v.year, v.make, v.model].filter(Boolean).join(' ')
             + (v.color ? ' · ' + v.color : '') + (v.is_rental ? ' · 🔑 rental' : '') + (v.is_default ? '  ★ default' : '');
           box.appendChild(title);
@@ -1918,6 +2552,17 @@
       if (error) throw error;
       const started = (rows || []).some((b) => b.status === 'Confirmed' && b.pickup_code_entered_at);
       if (started) throw new Error("A trip on this ride has already started — it can't be cancelled. Email support@seatsherpa.app.");
+      // Flip the ride row FIRST (bug check 2026-09-30, same order as the
+      // app): the dormant-driver triggers (0325) read rides.cancelled_at to
+      // tell a declined request from a cancelled ride, and the seat release
+      // behind each booking cancel must not read as a hand reopen. The ride
+      // ended up cancelled even when a booking cancel failed before this
+      // change, so only the order moved.
+      const { error: upErr } = await supabase
+        .from('rides')
+        .update({ cancelled_at: new Date().toISOString(), cancellation_reason: trimmed })
+        .eq('id', ride.id);
+      if (upErr) throw upErr;
       let failed = 0;
       for (const b of (rows || [])) {
         try {
@@ -1925,28 +2570,21 @@
           else await doDecline(b, ride, trimmed);
         } catch (_) { failed += 1; }
       }
-      const { error: upErr } = await supabase
-        .from('rides')
-        .update({ cancelled_at: new Date().toISOString(), cancellation_reason: trimmed })
-        .eq('id', ride.id);
-      if (upErr) throw upErr;
       return { failed };
     }
 
-    /** Edit departure — mirrors updateRideDateTime (services/rides.ts:640):
-     *  only with ZERO active bookings, ≥15 min out, ≥4h from the
-     *  driver's other rides. All rides are Pacific wall-clock. */
+    /** Edit departure — bookings or not (2026-10-12), through the
+     *  update-ride-time edge function, the same path the app uses. The server
+     *  checks ownership, the 15-minute floor and the 4-hour spacing, writes
+     *  the row, and for every Pending or Confirmed booking posts a system
+     *  line in the chat, pushes or emails the rider, and resets the pickup
+     *  reminders. A rider who booked before the move can cancel for a full
+     *  refund, fee included, until 2 hours before the new departure (0387).
+     *  Returns the server's summary ({ riders, chat, pushed, emailed }). */
     async function doEditDateTime(ride, depDate, depTime) {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(depDate) || !/^\d{2}:\d{2}$/.test(depTime)) {
         throw new Error('Pick a valid date and time.');
       }
-      const { count, error: cErr } = await supabase
-        .from('bookings')
-        .select('id', { count: 'exact', head: true })
-        .eq('ride_id', ride.id)
-        .in('status', ['Confirmed', 'Pending']);
-      if (cErr) throw cErr;
-      if ((count || 0) > 0) throw new Error("You can't change the date or time once there are bookings or requests — cancel them or post a new ride instead.");
       const pacFloor = new Intl.DateTimeFormat('en-CA', {
         timeZone: 'America/Los_Angeles', hour12: false,
         year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
@@ -1955,26 +2593,18 @@
         // as the check-in clock (Fable audit P4).
         .replace('T24', 'T00');
       if ((depDate + 'T' + depTime) <= pacFloor) throw new Error('Pick a date and time at least 15 minutes from now.');
-      // 4h spacing — both sides parsed the same way, so the math is exact.
-      const wall = (d, t) => Date.UTC(+d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8, 10), +t.slice(0, 2), +t.slice(3, 5));
-      const target = wall(depDate, depTime);
-      const { data: others } = await supabase
-        .from('rides')
-        .select('id, dep_date, dep_time')
-        .eq('driver_id', me)
-        .is('cancelled_at', null)
-        .neq('id', ride.id);
-      for (const r of (others || [])) {
-        if (r.dep_date && r.dep_time && Math.abs(wall(r.dep_date, String(r.dep_time).slice(0, 5)) - target) < 4 * 3600 * 1000) {
-          throw new Error('You have another ride within 4 hours of this time — space your rides at least 4 hours apart.');
-        }
-      }
-      const label = new Date(Date.UTC(+depDate.slice(0, 4), +depDate.slice(5, 7) - 1, +depDate.slice(8, 10)))
-        .toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
-      const patch = { dep_date: depDate, dep_time: depTime, date_label: label };
-      if (ride.dep_date !== depDate) patch.fill_nudge_sent_at = null; // re-arm the fill nudge for the new window
-      const { error: uErr } = await supabase.from('rides').update(patch).eq('id', ride.id);
-      if (uErr) throw uErr;
+      const { data: sess } = await supabase.auth.getSession();
+      const token = sess && sess.session ? sess.session.access_token : null;
+      if (!token) throw new Error('Please sign in again.');
+      const res = await fetch(SUPA + '/functions/v1/update-ride-time', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify({ rideId: ride.id, depDate, depTime }),
+      });
+      let out = null;
+      try { out = await res.json(); } catch (_) { out = null; }
+      if (!res.ok) throw new Error((out && (out.message || out.error)) || ('Could not save (HTTP ' + res.status + ').'));
+      return out || {};
     }
 
     /** The Manage card on a ride: edit date/time, cancel one booking, cancel
@@ -1987,13 +2617,13 @@
       return '$' + (Number.isInteger(v) ? String(v) : v.toFixed(2));
     };
 
-    /** Port of updateRideSeats (services/rides.ts:587). MERGE, never a blind
-     *  write: re-read the ride, force-close any seat held by a live booking
-     *  (anything not Cancelled), take the driver's toggle for the rest, and
-     *  keep seats the server has that this snapshot doesn't. 0202's trigger
-     *  is the final word server-side if a booking lands between read and
-     *  write. A driver-CLOSED seat is the driver's to reopen — only a booking
-     *  makes a seat untouchable. */
+    /** Port of updateRideSeats (services/rides.ts:774). MERGE, never a blind
+     *  write: re-read the ride, force-close any seat held by a CONFIRMED (or
+     *  completed) booking, take the driver's toggle for the rest, and keep
+     *  seats the server has that this snapshot doesn't. 0202's trigger is the
+     *  final word server-side if a booking lands between read and write. A
+     *  driver-CLOSED seat is the driver's to reopen — only a booking makes a
+     *  seat untouchable. */
     async function doUpdateSeats(ride, wanted) {
       const [fresh, live] = await Promise.all([
         supabase.from('rides').select('seats').eq('id', ride.id).single(),
@@ -2001,17 +2631,26 @@
       ]);
       if (fresh.error) throw fresh.error;
       if (live.error) throw live.error;
+      // Only a Confirmed (or Completed) booking holds a seat: requests never
+      // do (0217). Forcing avail=false for a Pending request's seat read, since
+      // 0356, as "the driver closed this seat" (closed=true), so after a
+      // decline the seat stayed Closed for good, on every ride (bug check
+      // 2026-10-06; same fix as the app, services/rides.ts:800-807).
       const held = new Set();
-      (live.data || []).forEach((b) => (b.seat_ids || []).forEach((id) => held.add(id)));
+      // The PRICE stays frozen for any live booking (sweep 2026-09-03): a
+      // Pending request authorized the OLD price and the accept captures
+      // exactly that, so the listed price must not drift.
+      const priceFrozen = new Set();
+      (live.data || []).forEach((b) => (b.seat_ids || []).forEach((id) => {
+        priceFrozen.add(id);
+        if (b.status === 'Confirmed' || b.status === 'Completed') held.add(id);
+      }));
       const server = (fresh.data && Array.isArray(fresh.data.seats)) ? fresh.data.seats : [];
       const byId = new Map(server.map((x) => [x.id, x]));
       const merged = wanted.map((w) => {
         if (!byId.has(w.id)) return w;
-        // Price is frozen too while a booking holds the seat (sweep
-        // 2026-09-03): a Pending request authorized the OLD price and the
-        // accept captures exactly that, so the listed price must not drift.
         const cur0 = byId.get(w.id);
-        return Object.assign({}, w, { avail: held.has(w.id) ? false : !!w.avail, price: held.has(w.id) ? cur0.price : w.price });
+        return Object.assign({}, w, { avail: held.has(w.id) ? false : !!w.avail, price: priceFrozen.has(w.id) ? cur0.price : w.price });
       });
       for (const x of server) if (!merged.some((m) => m.id === x.id)) merged.push(x);
       const { error } = await supabase.from('rides').update({ seats: merged }).eq('id', ride.id);
@@ -2019,33 +2658,77 @@
       return merged;
     }
 
+    /** Until when a later stop on this ride can still be boarded, in ms.
+     *  Bookings close at the rider's BOARDING point (2026-10-06,
+     *  _shared/boarding-time.ts), so a ride that has left its origin can still
+     *  sell a stretch from a stop ahead, and the driver needs the Seats card
+     *  to close it. Late, never early: the server's estimate for any stop is
+     *  at most the whole road (road_minutes, else road miles at 62 mph) plus
+     *  its 15% buffer for a stop on the route, the straight line × 1.25 at
+     *  62 mph plus 15% for one off it, or the ride's end (road minutes, else
+     *  12 h) for one it cannot place; plus 5 minutes per stop for rounding
+     *  and its keep-stops-in-order nudge. Rides without stops: departure. */
+    function lastBoardingMs(ride) {
+      const dep = departureMs(ride);
+      const stops = Array.isArray(ride.route_stops) ? ride.route_stops : [];
+      if (!dep || stops.length === 0) return dep;
+      const rm = Number(ride.road_minutes);
+      const roadMin = Number.isFinite(rm) && rm > 0 ? rm : null;
+      const rmi = Number(ride.road_miles);
+      let bound = roadMin != null ? roadMin * 1.15 : (Number.isFinite(rmi) && rmi > 0 ? (rmi / 62) * 60 * 1.15 : 0);
+      const start = (ride.start_lat != null && ride.start_lng != null)
+        ? { lat: Number(ride.start_lat), lng: Number(ride.start_lng) } : null;
+      stops.forEach((s) => {
+        const p = typeof s === 'string' ? (window.SS_STOPS && SS_STOPS.STOP_BY_ID[s]) : s;
+        const placed = start && Number.isFinite(start.lat) && Number.isFinite(start.lng) && window.SS_STOPS
+          && p && typeof p.lat === 'number' && typeof p.lng === 'number';
+        bound = Math.max(bound, placed
+          ? ((SS_STOPS.haversineMiles(start, p) * 1.25) / 62) * 60 * 1.15
+          : (roadMin != null ? roadMin : 12 * 60));
+      });
+      return dep + (bound + 5 * (stops.length + 1)) * 60 * 1000;
+    }
+
     /** The Seats card on a live ride: one tappable tile per passenger seat.
      *  Returns null when there is nothing to show (no passenger seats, or the
-     *  ride has departed). */
+     *  car is past every point a rider can still board: the origin, or on a
+     *  ride with stops the last stop). */
     function seatsSection(entry) {
       const ride = entry.ride;
       const seats = Array.isArray(ride.seats) ? ride.seats : [];
       const passengerSeats = seats.filter((x) => x && !x.isDriver);
       if (passengerSeats.length === 0) return null;
-      const dep = departureMs(ride);
+      const dep = lastBoardingMs(ride);
       if (dep && Date.now() > dep) return null;
 
       // Who holds which seat — same rule as the merge (any non-cancelled
       // booking), shown by first name so the driver sees it at a glance.
+      // Leg-aware seats (0356, parity 2026-10-06): one seat can carry a
+      // confirmed rider for one stretch and another booking for a later one.
+      // The tile keeps the CONFIRMED rider and counts the rest ("+1"); every
+      // booking is still in the riders list below.
       const holder = new Map();
-      entry.bookings.forEach((b) => {
-        if (b.status === 'Cancelled') return;
-        const raw = (b.passenger && b.passenger.name) || b.passenger_name || '';
-        const first = abbreviateName(raw).split(' ')[0] || 'Rider';
-        const st = effectiveStatus(b, ride);
-        (b.seat_ids || []).forEach((id) => holder.set(id, { name: first, pending: st === 'Pending' }));
-      });
+      entry.bookings
+        .slice()
+        .sort((a, b) => (effectiveStatus(a, ride) === 'Confirmed' ? 0 : 1) - (effectiveStatus(b, ride) === 'Confirmed' ? 0 : 1))
+        .forEach((b) => {
+          if (b.status === 'Cancelled') return;
+          const raw = (b.passenger && b.passenger.name) || b.passenger_name || '';
+          const first = abbreviateName(raw).split(' ')[0] || 'Rider';
+          const st = effectiveStatus(b, ride);
+          (b.seat_ids || []).forEach((id) => {
+            const cur = holder.get(id);
+            if (cur) cur.others += 1;
+            else holder.set(id, { name: first, pending: st === 'Pending', others: 0 });
+          });
+        });
+      const holderLabel = (h) => (h.pending ? 'Requested · ' : 'Booked · ') + h.name + (h.others ? ' +' + h.others : '');
 
       const wrap = el('div', 'card');
       wrap.appendChild(el('div', 'eyebrow', 'Seats'));
       wrap.appendChild(el('div', 'rowhint', 'Tap a seat to close or reopen it. One price covers every seat; a seat with a booking or request stays as it is.'));
       const msg = el('div', 'rowhint hidden');
-      msg.style.color = '#ff8a8a';
+      msg.style.color = 'var(--err)';
 
       const unbooked = passengerSeats.filter((x) => !holder.has(x.id));
       const openSeats = unbooked.filter((x) => x.avail);
@@ -2099,8 +2782,8 @@
         // The price lives in the column on the right (one price per ride);
         // a held seat shows what its rider is paying.
         if (h) t.appendChild(el('div', 'sp', seatPrice(seat.price)));
-        t.appendChild(el('div', 'ss', h ? ((h.pending ? 'Requested · ' : 'Booked · ') + h.name) : (seat.avail ? 'Open' : 'Closed')));
-        t.setAttribute('aria-label', (SEAT_SHORT[id] || id) + ' seat, ' + (h ? 'held by ' + h.name : (seat.avail ? 'open, tap to close' : 'closed, tap to reopen')));
+        t.appendChild(el('div', 'ss', h ? holderLabel(h) : (seat.avail ? 'Open' : 'Closed')));
+        t.setAttribute('aria-label', (SEAT_SHORT[id] || id) + ' seat, ' + (h ? 'held by ' + h.name + (h.others ? ' and ' + h.others + ' more' : '') : (seat.avail ? 'open, tap to close' : 'closed, tap to reopen')));
         if (h) { t.disabled = true; return t; }
         t.addEventListener('click', () => toggleSeat(id));
         return t;
@@ -2131,7 +2814,8 @@
         chipcol.appendChild(priceRow);
         const editBox = el('div', 'priceedit hidden');
         const priceInp = inp('number', '', String(priceSeat.price || ''));
-        priceInp.min = '10'; priceInp.max = '55'; priceInp.step = '1';
+        // max = the highest ceiling any trip can have; Save checks this ride's.
+        priceInp.min = '10'; priceInp.max = '60'; priceInp.step = '1';
         const priceSave = el('button', 'primary', 'Save');
         priceSave.type = 'button';
         editBox.appendChild(el('span', 'cur', '$'));
@@ -2149,7 +2833,8 @@
           msg.classList.add('hidden');
           const n = Math.round(Number(priceInp.value));
           // Same cap rule as the app's grid: (drivable miles × $0.76 − what
-          // booked seats already collect) ÷ open seats, floor $10, ceiling $55.
+          // booked seats already collect) ÷ open seats, floor $10, ceiling $55
+          // ($60 from 400 miles, 2026-10-12, lib/seat-price-cap.ts hardCapForMiles).
           const start = (ride.start_lat != null) ? { lat: Number(ride.start_lat), lng: Number(ride.start_lng) } : null;
           const end = (ride.end_lat != null) ? { lat: Number(ride.end_lat), lng: Number(ride.end_lng) } : null;
           const miles = (typeof ride.road_miles === 'number' && ride.road_miles > 0)
@@ -2163,9 +2848,11 @@
           // Remainder splits across the open seats but never across fewer than
           // (4 − booked): the trip is always shared by at least four riders
           // (2026-09-06), so closing seats can't raise the cap here either.
+          // $60 tier on MEASURED road miles only, never on the x1.25 estimate.
+          const ceiling = (typeof ride.road_miles === 'number' && ride.road_miles >= 400) ? 60 : 55;
           const cap = miles > 0
-            ? Math.max(10, Math.min(55, Math.floor((miles * 0.76 - bookedSum) / Math.max(1, 4 - bookedSeats.length, openSeats.length))))
-            : Math.max(10, Math.min(55, Math.round(Number(priceSeat.price) || 10)));
+            ? Math.max(10, Math.min(ceiling, Math.floor((miles * 0.76 - bookedSum) / Math.max(1, 4 - bookedSeats.length, openSeats.length))))
+            : Math.max(10, Math.min(60, Math.round(Number(priceSeat.price) || 10)));
           if (!Number.isFinite(n) || n < 10 || n > cap) {
             msg.textContent = 'Enter a whole dollar amount between $10 and $' + cap + ' — the cost-sharing cap for this trip, split across at least four riders.';
             msg.classList.remove('hidden');
@@ -2191,7 +2878,7 @@
         const h = holder.get(seat.id);
         const chip = el('div', 'seatchip ' + (h ? 'held' : (seat.avail ? 'open' : 'closed')));
         chip.appendChild(el('span', 'nm', SEAT_SHORT[seat.id] || seat.label || seat.id));
-        chip.appendChild(el('span', 'st', h ? ((h.pending ? 'Requested · ' : 'Booked · ') + h.name) : (seat.avail ? 'Open' : 'Closed')));
+        chip.appendChild(el('span', 'st', h ? holderLabel(h) : (seat.avail ? 'Open' : 'Closed')));
         if (!h) {
           const act = el('button', 'chipact', seat.avail ? 'Close' : 'Reopen');
           act.type = 'button';
@@ -2209,6 +2896,198 @@
         wrap.appendChild(el('div', 'rowhint', 'Every seat is closed or taken — riders can\'t book this ride until you reopen one.'));
       }
       wrap.appendChild(msg);
+      return wrap;
+    }
+
+    // "Add to calendar" state lives OUT here, not in the card: the card is
+    // rebuilt on a timer and by other actions, and anything kept in its
+    // closure would be lost or left pointing at a card no longer on screen
+    // (bug sweep 2026-10-03).
+    const rideCalLinks = new Map();    // ride id -> { ics, google }
+    const rideCalRepaint = new Map();  // ride id -> paint(note, moveFocus) of the card on screen now
+    // A one-shot note for a ride's Manage row, painted by the NEXT render of
+    // that ride (a save refreshes the whole ride page, so a note set on the
+    // old row would be lost; review 2026-10-12).
+    const rideNotice = new Map();      // ride id -> text
+    let rideCalBusyId = null;          // the ride with a request in flight
+    // The ride whose "Manage ride" row is open, so a timed redraw does not
+    // fold it shut under the driver (and hide the calendar links with it).
+    let manageOpenRideId = null;
+
+    // Ask the server for one ride's two calendar links. Gives up after 15
+    // seconds so a hung request cannot leave "One moment" up for good; a late
+    // answer still fills the cache.
+    async function requestRideCalendar(rideId) {
+      if (rideCalBusyId !== null) return;
+      rideCalBusyId = rideId;
+      const repaint = (note, moveFocus) => { const fn = rideCalRepaint.get(rideId); if (fn) fn(note, moveFocus); };
+      repaint('', false);
+      let note = '';
+      const ask = callFn('calendar-event', { rideId })
+        .then((out) => {
+          if (out && out.ok && out.ics && out.google) { rideCalLinks.set(rideId, { ics: out.ics, google: out.google }); return ''; }
+          return (out && out.reason) || "The calendar link didn't load. Try again.";
+        })
+        // The shared caller signs the page out on a 401, so "try again" would
+        // be a dead end there.
+        .catch((e) => (e && (e.status === 401 || e.sessionExpired === true)
+          ? 'Your sign-in expired. Refresh the page and sign in again.'
+          : "The calendar link didn't load. Try again."));
+      let timer = null;
+      const gaveUp = new Promise((resolve) => { timer = setTimeout(() => resolve(null), 15000); });
+      const first = await Promise.race([ask, gaveUp]);
+      clearTimeout(timer);
+      if (first === null) {
+        note = "The calendar link didn't load. Try again.";
+        // A late answer: keep the links, and show them if nothing else is going on.
+        ask.then((late) => { if (late === '' && rideCalBusyId === null) repaint('', false); });
+      } else {
+        note = first;
+      }
+      rideCalBusyId = null;
+      repaint(note, true);
+    }
+
+    // "Message all riders" (0346, Justin 2026-10-04: "just confirmed riders,
+    // and show sent to every booked rider on this drive and yes quick picks").
+    // One message, and every CONFIRMED rider gets it in their own chat with
+    // the driver; replies stay one to one. Same edge function and quick picks
+    // as the app (components/ride-broadcast-modal.tsx). Shown with 2+
+    // confirmed riders: with one, their chat is the same thing.
+    const BROADCAST_PICKS = [
+      ['Running 10 min late', 'Running about 10 minutes late. See you soon!'],
+      ["I'm at the pickup spot", "I'm at the pickup spot."],
+      ['Pickup spot changed', 'Pickup spot changed: '],
+    ];
+    function broadcastSection(entry) {
+      const ride = entry.ride;
+      if (ride.cancelled_at) return null;
+      const byRider = new Map();
+      for (const b of entry.bookings) {
+        if (b.status === 'Confirmed' && b.passenger_id && !byRider.has(b.passenger_id)) byRider.set(b.passenger_id, paxDisplay(b));
+      }
+      if (byRider.size < 2) return null;
+      const names = [...byRider.values()];
+
+      const wrap = el('div', 'card');
+      const open = el('button', 'outline', 'Message all riders');
+      open.type = 'button';
+      const panel = el('div', 'hidden');
+      const msg = el('div', 'rowhint hidden');
+      wrap.appendChild(open);
+      wrap.appendChild(panel);
+      wrap.appendChild(msg);
+
+      open.addEventListener('click', () => {
+        // Hold the timed redraw while the box is open (see rideIsLive).
+        actionBusy = true;
+        open.classList.add('hidden');
+        msg.classList.add('hidden');
+        clear(panel);
+        panel.appendChild(el('div', 'eyebrow', 'Message all riders'));
+        panel.appendChild(el('div', 'rowhint', 'To: ' + names.join(', ')));
+        const ta = document.createElement('textarea');
+        ta.maxLength = 2000;
+        ta.placeholder = 'Write a message';
+        ta.setAttribute('aria-label', 'Message to all riders');
+        // Meeting spot (0347): optional, sent to everyone as a map card.
+        let spotPlace = null;
+        const spotWrap = el('div', 'hidden');
+        const spotPreview = el('div');
+        const addSpot = el('button', 'linkbtn', 'Add a meeting spot');
+        addSpot.type = 'button';
+        addSpot.style.margin = '0 0 10px';
+        const showSpot = () => {
+          if (!window.SSMeetingSpot || !spotWrap.classList.contains('hidden')) return;
+          addSpot.classList.add('hidden');
+          const pk = SSMeetingSpot.picker((p) => {
+            spotPlace = p;
+            clear(spotPreview);
+            if (p) spotPreview.appendChild(SSMeetingSpot.card(p, { from: (ride.start_lat != null) ? { lat: Number(ride.start_lat), lng: Number(ride.start_lng) } : null }));
+            sync();
+          });
+          spotWrap.appendChild(pk);
+          spotWrap.appendChild(spotPreview);
+          spotWrap.classList.remove('hidden');
+          pk.focusInput();
+        };
+        addSpot.addEventListener('click', showSpot);
+
+        const picks = el('div', 'qpicks');
+        for (const [label, text] of BROADCAST_PICKS) {
+          const p = el('button', 'qpick', label);
+          p.type = 'button';
+          p.addEventListener('click', () => {
+            ta.value = text;
+            ta.focus();
+            ta.setSelectionRange(ta.value.length, ta.value.length);
+            sync();
+            // "Pickup spot changed" opens the place search too.
+            if (label === 'Pickup spot changed') showSpot();
+          });
+          picks.appendChild(p);
+        }
+        panel.appendChild(picks);
+        panel.appendChild(ta);
+        if (window.SSMeetingSpot) { panel.appendChild(addSpot); panel.appendChild(spotWrap); }
+        panel.appendChild(el('div', 'rowhint', 'Each rider gets this in their own chat with you. Replies come back to you privately.'));
+        const send = el('button', 'primary', 'Send to ' + names.length + ' riders');
+        send.type = 'button';
+        const sync = () => { send.disabled = !ta.value.trim() && !spotPlace; };
+        ta.addEventListener('input', sync);
+        sync();
+        const close = () => {
+          clear(panel);
+          panel.classList.add('hidden');
+          open.classList.remove('hidden');
+          actionBusy = false;
+        };
+        send.addEventListener('click', async () => {
+          let text = ta.value.trim();
+          // The quick pick's bare prefix adds nothing next to a spot card.
+          if (spotPlace && /^Pickup spot changed:?$/.test(text)) text = 'Pickup spot changed';
+          if (!text && !spotPlace) return;
+          // Alone, with no spot picked, the prefix tells riders nothing
+          // (bug check 2026-10-05): ask for the spot instead of sending it.
+          if (!spotPlace && /^Pickup spot changed:?$/.test(text)) {
+            msg.textContent = 'Pick the new spot from the suggestions first.';
+            msg.classList.remove('hidden');
+            return;
+          }
+          msg.classList.add('hidden');
+          send.disabled = true; send.textContent = 'Sending…';
+          // One key per message (bug check 2026-10-05): Send again after a
+          // timeout reuses it and the server answers "already sent" instead
+          // of messaging every rider twice. Editing makes a new key.
+          const sig = text + '|' + (spotPlace ? spotPlace.lat + ',' + spotPlace.lng : '');
+          if (!panel.__sendKey || panel.__sendKey.sig !== sig) panel.__sendKey = { sig: sig, key: ssUuid() };
+          try {
+            const out = await callFn('send-ride-broadcast', Object.assign(
+              { rideId: ride.id, body: text, sendKey: panel.__sendKey.key },
+              spotPlace ? { place: spotPlace } : {}));
+            panel.__sendKey = null; // the next message is a new send
+            close();
+            const n = (out && out.sent) || 0;
+            msg.textContent = 'Sent to ' + n + ' rider' + (n === 1 ? '' : 's') + '. Each one gets it in their own chat with you.';
+            msg.classList.remove('hidden');
+          } catch (e) {
+            send.disabled = false; send.textContent = 'Send to ' + names.length + ' riders';
+            msg.textContent = (e && e.body && e.body.message) || (e && e.status === 401
+              ? 'Your session expired. Sign in again to send this.'
+              : 'Could not send right now. Try again.');
+            msg.classList.remove('hidden');
+          }
+        });
+        panel.appendChild(send);
+        const never = el('button', 'linkbtn', 'Never mind');
+        never.type = 'button';
+        never.style.display = 'block';
+        never.style.marginTop = '6px';
+        never.addEventListener('click', close);
+        panel.appendChild(never);
+        panel.classList.remove('hidden');
+        ta.focus();
+      });
       return wrap;
     }
 
@@ -2243,6 +3122,11 @@
       const confirmedActive = entry.bookings.filter((b) => effectiveStatus(b, ride) === 'Confirmed' && !b.pickup_code_entered_at);
       const panel = el('div', 'hidden');
       const msg = el('div', 'rowhint hidden');
+      if (rideNotice.has(ride.id)) {
+        msg.textContent = rideNotice.get(ride.id);
+        msg.classList.remove('hidden');
+        rideNotice.delete(ride.id);
+      }
 
       // Every panel gets an escape hatch — a destructive flow with no visible
       // way out reads as a trap, and closing also unfreezes the refresh.
@@ -2266,38 +3150,112 @@
       // 2026-09-05): five edit/cancel pills on every ride turned the list into
       // a control panel. The pills still exist, they just wait behind a toggle.
       // Programmatic editBtn.click() from the cancel flow still works hidden.
-      row.classList.add('hidden');
-      const manageBtn = el('button', 'linkbtn', 'Manage ride ▾');
+      const startOpen = manageOpenRideId === ride.id;
+      if (!startOpen) row.classList.add('hidden');
+      const manageBtn = el('button', 'linkbtn', startOpen ? 'Manage ride ▴' : 'Manage ride ▾');
       manageBtn.type = 'button';
-      manageBtn.setAttribute('aria-expanded', 'false');
+      manageBtn.setAttribute('aria-expanded', String(startOpen));
       manageBtn.style.fontWeight = '700';
       manageBtn.addEventListener('click', () => {
         const open = !row.classList.toggle('hidden');
         manageBtn.textContent = open ? 'Manage ride ▴' : 'Manage ride ▾';
         manageBtn.setAttribute('aria-expanded', String(open));
+        if (open) manageOpenRideId = ride.id;
+        else if (manageOpenRideId === ride.id) manageOpenRideId = null;
       });
 
-      // Edit date & time — zero-bookings only, like the app. Hoisted so the
+      // Add to calendar (Justin, 2026-10-03: "the driver should get the drive
+      // on their calendar too"). The driver's own entry for this ride, signed
+      // by the calendar-event function, so nothing about the event is built
+      // here. The links are kept per ride for the life of the page (see the
+      // state above manageSection). An upcoming, live ride only.
+      //
+      // This never touches actionBusy: that flag belongs to whichever edit,
+      // cancel or decline panel is open, and lifting it from here let the next
+      // timed redraw wipe a half-typed panel (bug sweep 2026-10-03). The
+      // answer repaints whichever card is on screen for this ride when it
+      // lands, so the page does not need holding still.
+      if (!ridePast && !ride.cancelled_at) {
+        const calBox = el('span');
+        calBox.style.display = 'contents'; // its pills sit in the row's own flex
+        const paintCal = (note, moveFocus) => {
+          // Only move focus when the person is not busy elsewhere (typing in
+          // another panel): a link that takes focus turns their next Enter
+          // into "open Google Calendar".
+          const focusFree = !document.activeElement || document.activeElement === document.body || calBox.contains(document.activeElement);
+          clear(calBox);
+          // Clear our own earlier note, never another panel's message.
+          if (msg.dataset.cal && msg.textContent === msg.dataset.cal) msg.classList.add('hidden');
+          delete msg.dataset.cal;
+          const links = rideCalLinks.get(ride.id);
+          if (links) {
+            const g = el('a', 'linkbtn', 'Add to Google Calendar');
+            g.href = links.google; g.target = '_blank'; g.rel = 'noopener'; g.style.textDecoration = 'none';
+            const i = el('a', 'linkbtn', 'Add to Apple and Outlook');
+            i.href = links.ics; i.style.textDecoration = 'none';
+            calBox.appendChild(g);
+            calBox.appendChild(i);
+            if (moveFocus && focusFree) g.focus();
+            return;
+          }
+          const busy = rideCalBusyId === ride.id;
+          const b = el('button', 'linkbtn', busy ? 'One moment' : 'Add to calendar');
+          b.type = 'button';
+          b.disabled = busy;
+          b.addEventListener('click', () => { requestRideCalendar(ride.id); });
+          calBox.appendChild(b);
+          if (note) { msg.textContent = note; msg.dataset.cal = note; msg.classList.remove('hidden'); }
+          if (moveFocus && focusFree && !busy) b.focus();
+        };
+        rideCalRepaint.set(ride.id, paintCal);
+        paintCal('', false);
+        row.appendChild(calBox);
+      }
+
+      // Edit date & time — with bookings too since 2026-10-12 (the server
+      // tells every rider; 0387 lets them cancel whole). Hoisted so the
       // cancel flow below can offer "edit instead" (2026-09-01).
       let editBtn = null;
-      if (!ridePast && active.length === 0) {
+      if (!ridePast) {
         editBtn = el('button', 'linkbtn', 'Edit date & time');
         editBtn.type = 'button';
         editBtn.addEventListener('click', () => {
           actionBusy = true;
           clear(panel); msg.classList.add('hidden');
+          // Requests waiting freeze the departure (Justin 10/14): those riders
+          // asked for this time. update-ride-time refuses it too
+          // (PENDING_REQUESTS); this just says so before the form.
+          const waiting = active.filter((b) => effectiveStatus(b, ride) === 'Pending').length;
+          if (waiting > 0) {
+            panel.appendChild(el('div', 'rowhint',
+              'You have ' + waiting + ' pending request' + (waiting === 1 ? '' : 's') + '. ' + (waiting === 1 ? 'That rider' : 'Those riders') + ' asked for the current departure time, so accept or decline ' + (waiting === 1 ? 'it' : 'them') + ' before changing it.'));
+            panel.appendChild(neverMind());
+            panel.classList.remove('hidden');
+            return;
+          }
+          if (active.length > 0) {
+            panel.appendChild(el('div', 'rowhint',
+              active.length + ' rider' + (active.length === 1 ? ' has' : 's have') + ' a seat or request on this ride. Moving the departure keeps their seats: each one is told right away, and anyone the new time does not suit can cancel for a full refund, booking fee included, until 2 hours before it.'));
+          }
           const d = inp('date', '', ride.dep_date || '');
           const t = inp('time', '', String(ride.dep_time || '').slice(0, 5));
           d.style.marginBottom = '8px'; t.style.marginBottom = '8px';
-          panel.appendChild(d); panel.appendChild(t);
+          // .pair: a plain block on a phone; side by side at >= 960px.
+          const dtPair = el('div', 'pair');
+          dtPair.appendChild(d); dtPair.appendChild(t);
+          panel.appendChild(dtPair);
           const save = el('button', 'primary', 'Save new departure');
           save.type = 'button';
           save.addEventListener('click', async () => {
             msg.classList.add('hidden');
             save.disabled = true; save.textContent = 'Saving…';
             try {
-              await doEditDateTime(ride, d.value, t.value);
+              const out = await doEditDateTime(ride, d.value, t.value);
               actionBusy = false;
+              if (out && out.riders > 0) {
+                // Painted by the re-render below (the current msg node is about to be replaced).
+                rideNotice.set(ride.id, 'Departure moved. ' + out.riders + ' rider' + (out.riders === 1 ? ' was' : 's were') + ' told in the chat' + (out.emailed > 0 ? ' and by email' : '') + '.');
+              }
               await refreshRide(ride.id);
             } catch (e) {
               save.disabled = false; save.textContent = 'Save new departure';
@@ -2416,7 +3374,7 @@
             const on = selected.has(s.id);
             const chip = el('button', 'linkbtn', (on ? '✓ ' : '') + s.name);
             chip.type = 'button';
-            chip.style.cssText = 'border:1px solid ' + (on ? 'rgba(0,212,200,0.6)' : '#2a2a33') + ';border-radius:999px;padding:7px 14px;margin:0;color:' + (on ? '#00D4C8' : '#b9b9c6');
+            chip.style.cssText = 'border:1px solid ' + (on ? 'var(--sel-line)' : 'var(--nav-line)') + ';border-radius:999px;padding:7px 14px;margin:0;color:' + (on ? 'var(--link)' : 'var(--sub2)');
             chip.addEventListener('click', () => {
               if (!on && selected.size + keptCustoms.length >= cap) {
                 msg.textContent = 'Max ' + cap + ' stops — more stops means a longer trip for every rider.';
@@ -2432,7 +3390,7 @@
           keptCustoms.forEach((c, i) => {
             const chip = el('button', 'linkbtn', '✓ ' + (c.name || 'Custom stop') + '  ✕');
             chip.type = 'button';
-            chip.style.cssText = 'border:1px solid rgba(0,212,200,0.6);border-radius:999px;padding:7px 14px;margin:0;color:#00D4C8';
+            chip.style.cssText = 'border:1px solid var(--sel-line);border-radius:999px;padding:7px 14px;margin:0;color:var(--link)';
             chip.addEventListener('click', () => { keptCustoms.splice(i, 1); paintChips(); });
             chipRow.appendChild(chip);
           });
@@ -2504,8 +3462,33 @@
               }
             }
             const ordered = options.filter((s) => selected.has(s.id)).map((s) => s.id);
-            const merged = ordered.concat(keptCustoms);
+            // Travel order for catalog stops AND custom ones (custom stops used
+            // to land last whatever their position, unlike the app's editor).
+            const ptOf = (s) => {
+              const p = typeof s === 'string' ? (window.SS_STOPS ? SS_STOPS.STOP_BY_ID[s] : null) : s;
+              return p && Number.isFinite(Number(p.lat)) && Number.isFinite(Number(p.lng))
+                ? { lat: Number(p.lat), lng: Number(p.lng) } : null;
+            };
+            const tOf = (s) => {
+              const p = ptOf(s);
+              return (p && start && end && window.SS_STOPS) ? SS_STOPS.routeT(start, end, p) : 0;
+            };
+            const merged = ordered.concat(keptCustoms)
+              .map((s, i) => ({ s, i, t: tOf(s) }))
+              .sort((a, z) => (a.t - z.t) || (a.i - z.i))
+              .map((x) => x.s);
             const patch = { route_stops: merged };
+            // The saved road follows these stops (2026-10-05). Never blocks the
+            // save: if Mapbox is unreachable the stops still save.
+            if (start && end) {
+              const pts = merged.map(ptOf).filter(Boolean);
+              const road = await roadThrough([start].concat(pts, [end]));
+              if (road) {
+                patch.route_geom = road.geom;
+                patch.road_miles = road.miles;
+                patch.road_minutes = road.minutes;
+              }
+            }
             if (merged.length > 0) patch.instant = false; // multi-stop = request-to-book
             // Driver-set leg prices (0226) key custom stops by POSITION — re-key
             // them to the new order or the wrong leg bills at the old price.
@@ -2548,6 +3531,98 @@
       });
       if (!ridePast) row.appendChild(editStopsBtn);
 
+      // Edit note + flexible departure (0326). Allowed with bookings: the
+      // note is advisory and a wider departure window changes no price. The
+      // DB trigger refuses contact details and over-long notes; noteProblem
+      // words the same refusal before the row is touched.
+      const noteSet = !!String(ride.driver_note || '').trim() || (Number(ride.depart_flex_minutes) || 0) > 0;
+      const editNoteBtn = el('button', 'linkbtn', noteSet ? 'Edit note' : 'Add a note or flexible time');
+      editNoteBtn.type = 'button';
+      editNoteBtn.addEventListener('click', () => {
+        actionBusy = true;
+        clear(panel); msg.classList.add('hidden');
+        let flexSel = FLEX_CHOICES.some((c) => c.v === Number(ride.depart_flex_minutes)) ? Number(ride.depart_flex_minutes) : 0;
+        const sectionLabel = (text, first) => {
+          const l = el('div', null, text);
+          l.style.fontWeight = '600'; l.style.fontSize = '14px'; l.style.color = 'var(--text2)';
+          l.style.marginTop = first ? '0' : '14px';
+          return l;
+        };
+        const helper = (text) => { const h = el('div', 'rowhint', text); h.style.marginTop = '2px'; return h; };
+
+        panel.appendChild(sectionLabel('Departure time', true));
+        panel.appendChild(helper('Can you leave a bit earlier or later if it helps a rider?'));
+        // Same pill toggles as the stops editor above, single-select.
+        const flexRow = el('div');
+        flexRow.style.display = 'flex'; flexRow.style.flexWrap = 'wrap'; flexRow.style.gap = '8px'; flexRow.style.margin = '10px 0 0';
+        flexRow.setAttribute('role', 'radiogroup'); flexRow.setAttribute('aria-label', 'Departure time');
+        const paintFlex = () => {
+          clear(flexRow);
+          for (const c of FLEX_CHOICES) {
+            const on = c.v === flexSel;
+            const chip = el('button', 'linkbtn', c.label);
+            chip.type = 'button';
+            chip.setAttribute('role', 'radio'); chip.setAttribute('aria-checked', String(on));
+            chip.style.cssText = 'border:1px solid ' + (on ? 'var(--sel-line)' : 'var(--nav-line)') + ';border-radius:999px;padding:7px 14px;margin:0;color:' + (on ? 'var(--link)' : 'var(--sub2)');
+            chip.addEventListener('click', () => { flexSel = c.v; paintFlex(); });
+            flexRow.appendChild(chip);
+          }
+        };
+        paintFlex();
+        panel.appendChild(flexRow);
+
+        panel.appendChild(sectionLabel('Note to riders'));
+        const ta = document.createElement('textarea');
+        ta.maxLength = NOTE_MAX; ta.rows = 3;
+        ta.placeholder = 'Pickup options, luggage room, anything riders should know.';
+        ta.value = String(ride.driver_note || '');
+        ta.style.width = '100%'; ta.style.marginTop = '8px'; ta.style.marginBottom = '0';
+        panel.appendChild(ta);
+        const counter = el('span', null, ta.value.length + '/' + NOTE_MAX);
+        const noteHelp = helper('Shown on your ride. No phone numbers, emails, or links. ');
+        noteHelp.appendChild(counter);
+        noteHelp.style.marginBottom = '12px';
+        ta.addEventListener('input', () => { counter.textContent = ta.value.length + '/' + NOTE_MAX; });
+        panel.appendChild(noteHelp);
+
+        const save = el('button', 'primary', 'Save note');
+        save.type = 'button';
+        save.addEventListener('click', async () => {
+          msg.classList.add('hidden');
+          const text = ta.value.trim();
+          const problem = noteProblem(text);
+          if (problem) {
+            // 0327: the refusal is a row for the founder (too_long has no hit, so no row).
+            logNoteFlag({ hit: noteHitFor(text), action: 'blocked', rideId: ride.id, snippet: noteSnippet(text) });
+            msg.textContent = noteErrorCopy(problem);
+            msg.classList.remove('hidden');
+            return;
+          }
+          save.disabled = true; save.textContent = 'Saving…';
+          try {
+            const { error } = await supabase
+              .from('rides')
+              .update({ driver_note: text || null, depart_flex_minutes: flexSel })
+              .eq('id', ride.id);
+            if (error) throw error;
+            actionBusy = false;
+            await refreshRide(ride.id);
+            // 0327: saved, but a plain mention of cash is still logged (allowed).
+            logNoteFlag({ hit: noteNotifyHit(text), action: 'allowed', rideId: ride.id, snippet: noteSnippet(text) });
+          } catch (e) {
+            save.disabled = false; save.textContent = 'Save note';
+            // 0327: a server NOTE_* refusal (a newer trigger than this page) is logged too.
+            logNoteFlag({ hit: noteRefusalHit(e && e.message, text), action: 'blocked', rideId: ride.id, snippet: noteSnippet(text) });
+            msg.textContent = noteErrorCopy(e && e.message) || (e && e.message) || 'Could not save the note.';
+            msg.classList.remove('hidden');
+          }
+        });
+        panel.appendChild(save);
+        panel.appendChild(neverMind());
+        panel.classList.remove('hidden');
+      });
+      if (!ridePast) row.appendChild(editNoteBtn);
+
       // Cancel ONE confirmed booking.
       if (confirmedActive.length > 0) {
         const oneBtn = el('button', 'linkbtn', 'Cancel one booking');
@@ -2567,7 +3642,7 @@
               panel.appendChild(ta);
               const go2 = el('button', 'primary', 'Cancel ' + paxDisplay(b) + "'s booking");
               go2.type = 'button';
-              go2.style.background = '#ff5d5d'; go2.style.color = '#2a0505';
+              go2.style.background = 'var(--danger-fill)'; go2.style.color = 'var(--danger-ink)';
               go2.addEventListener('click', async () => {
                 msg.classList.add('hidden');
                 if (ta.value.trim().length < 10) { msg.textContent = 'Give a reason — at least 10 characters.'; msg.classList.remove('hidden'); return; }
@@ -2598,10 +3673,10 @@
 
       // Cancel the whole ride.
       // "Just changing the time?" — mirrors lib/cancel-intent.ts in the app;
-      // change both together. Empty rides only: with bookings the departure
-      // is locked anyway.
-      const TIME_CHANGE_RE = /\b(time|timing|date|day|earlier|later|sooner|reschedul\w*|postpon\w*|delay\w*|push(ed|ing)?\s+(it\s+)?(back|forward|up|to)|mov(e|ed|ing)\s+(it\s+)?(to|up|back)|leav(e|ing)\s+(at|earlier|later|sooner)|depart\w*|tomorrow|tonight|morning|afternoon|evening|noon|(mon|tues?|wed(nes)?|thu(rs)?|fri|sat(ur)?|sun)(day)?|\d{1,2}(:\d{2})?\s*(am|pm))\b/i;
-      const canEditInstead = () => active.length === 0 && !!editBtn;
+      // change both together. Since 2026-10-12 the departure can move with
+      // bookings too, so the offer stands whenever the ride can be edited.
+      const TIME_CHANGE_RE = /\b(time|timing|date|day|earlier|later|sooner|reschedul\w*|postpon\w*|delay\w*|push(ed|ing)?\s+(it\s+)?(back|forward|up|to)|mov(e|ed|ing)\s+(it\s+)?(to|up|back)|leav(e|ing)\s+(at|early|earlier|late|later|sooner)|depart\w*|tomorrow|tonight|morning|afternoon|evening|noon|(mon|tues?|wed(nes)?|thu(rs)?|fri|sat(ur)?|sun)(day)?|\d{1,2}(:\d{2})?\s*(am|pm))\b/i;
+      const canEditInstead = () => !!editBtn;
       function editInsteadBtn(label) {
         const b = el('button', 'primary', label || 'Edit date & time instead');
         b.type = 'button';
@@ -2617,8 +3692,9 @@
         clear(panel); msg.classList.add('hidden');
         // Empty ride → offer the edit BEFORE asking for a reason, like the app
         // (2026-09-01): editing keeps the listing, its link, its place in
-        // search and every rider alert pointed at it.
-        if (canEditInstead()) {
+        // search and every rider alert pointed at it. A ride with riders gets
+        // the same offer once the typed reason reads like a time change.
+        if (canEditInstead() && active.length === 0) {
           panel.appendChild(el('div', 'rowhint',
             'No one has booked yet. Just changing the time? Edit the departure instead — the ride keeps its link, its place in search, and any rider alerts pointed at it.'));
           panel.appendChild(editInsteadBtn('Edit date & time instead'));
@@ -2650,7 +3726,7 @@
           if (confirmedNow.length > 0 && msLeft !== null && msLeft >= 0 && msLeft <= 12 * 3600 * 1000) {
             const lateWarn = el('div', 'rowhint',
               'This ride leaves in under 12 hours and has confirmed riders. Cancelling now adds an automatic 1-star rating to your profile.');
-            lateWarn.style.color = '#ff8a80';
+            lateWarn.style.color = 'var(--late)';
             lateWarn.style.fontWeight = '600';
             panel.appendChild(lateWarn);
           }
@@ -2661,7 +3737,7 @@
         panel.appendChild(ta);
         const go2 = el('button', 'primary', 'Cancel ride for everyone');
         go2.type = 'button';
-        go2.style.background = '#ff5d5d'; go2.style.color = '#2a0505';
+        go2.style.background = 'var(--danger-fill)'; go2.style.color = 'var(--danger-ink)';
         let timeChangeAcked = false;
         go2.addEventListener('click', async () => {
           msg.classList.add('hidden');
@@ -2669,10 +3745,16 @@
           // chance to edit instead. Second click on the same button proceeds.
           if (!timeChangeAcked && canEditInstead() && TIME_CHANGE_RE.test(ta.value)) {
             timeChangeAcked = true;
-            const hint = el('div', 'rowhint',
-              'Sounds like a time change. You can edit the departure instead of cancelling — or cancel anyway.');
+            // Pending requests freeze the departure (10/14), so do not offer a
+            // move the edit form would then refuse (bug check 10/15).
+            const pendingN = active.filter((b) => effectiveStatus(b, ride) === 'Pending').length;
+            const hint = el('div', 'rowhint', pendingN > 0
+              ? 'Sounds like a time change. You have ' + pendingN + ' pending request' + (pendingN === 1 ? '' : 's') + ': accept or decline ' + (pendingN === 1 ? 'it' : 'them') + ' first, then you can move the departure instead of cancelling (your riders keep their seats and are told right away). Or cancel anyway, which refunds everyone and gives up the ride.'
+              : active.length > 0
+              ? 'Sounds like a time change. You can move the departure instead of cancelling: your riders keep their seats and are told right away, and anyone the new time does not suit can cancel for a full refund, booking fee included. Or cancel anyway, which refunds everyone and gives up the ride.'
+              : 'Sounds like a time change. You can edit the departure instead of cancelling — or cancel anyway.');
             panel.insertBefore(hint, go2);
-            panel.insertBefore(editInsteadBtn('Edit date & time instead'), go2);
+            if (pendingN === 0) panel.insertBefore(editInsteadBtn('Edit date & time instead'), go2);
             go2.textContent = 'Cancel anyway';
             return;
           }
@@ -2725,6 +3807,8 @@
       // wandered in) clicked Set up deposits before posting anything, hit
       // Stripe's SSN/bank form, and left. Deposits are the LAST step: the
       // banner only shows once a ride exists. Wallet still has the button.
+      const dbn = dormantBanner();
+      if (dbn) body.appendChild(dbn);
       if (entries.length > 0) {
         const pb = payoutBanner();
         if (pb) body.appendChild(pb);
@@ -3216,12 +4300,12 @@
         for (let i = 1; i <= 5; i++) {
           const sb = el('button', null, '\u2606');
           sb.type = 'button';
-          sb.style.cssText = 'background:none;border:0;font-size:26px;color:#a3a3ae;cursor:pointer;padding:2px;';
+          sb.style.cssText = 'background:none;border:0;font-size:26px;color:var(--star-off);cursor:pointer;padding:2px;';
           sb.addEventListener('click', () => {
             picked = i;
             starBtns.forEach((x, j) => {
               x.textContent = j < i ? '\u2605' : '\u2606';
-              x.style.color = j < i ? '#FFD75A' : '#a3a3ae';
+              x.style.color = j < i ? 'var(--star-on)' : 'var(--star-off)';
             });
             sendRate.classList.remove('hidden');
           });
@@ -3391,6 +4475,19 @@
 
       body.appendChild(backRow('All rides', () => go('/driving')));
 
+      // Laptop layout (2026-10-12): three plain wrappers holding the cards in
+      // their original order, so a phone stacks exactly as before. At 960px
+      // and up the summary (rideHead) and Manage (rideSide) sit in a right
+      // column beside the requests, check-in, riders and seats (rideMain).
+      const rideLayout = el('div', 'ridelayout');
+      const rideHead = el('div', 'ridehead');
+      const rideMain = el('div', 'ridemain');
+      const rideSide = el('div', 'rideside');
+      rideLayout.appendChild(rideHead);
+      rideLayout.appendChild(rideMain);
+      rideLayout.appendChild(rideSide);
+      body.appendChild(rideLayout);
+
       // Summary card
       const card = el('div', 'card');
       card.appendChild(el('div', 'eyebrow', 'Your ride'));
@@ -3405,21 +4502,47 @@
       card.appendChild(el('div', 'meta',
         entry.bookedSeats + ' of ' + entry.totalSeats + ' seat' + (entry.totalSeats === 1 ? '' : 's') + ' booked'
         + (ride.instant ? ' \u00b7 Instant book' : ' \u00b7 Review each request')));
-      body.appendChild(card);
+      // Note to riders + flexible departure (0326): the driver's own view of
+      // what riders read on the public ride page. Quiet, and only when set.
+      // Note text is textContent through el(), never markup.
+      const flexLbl = flexChipLabel(ride.depart_flex_minutes);
+      const noteText = String(ride.driver_note || '').trim();
+      if (flexLbl || noteText) {
+        const nb = el('div', 'meta');
+        nb.style.marginTop = '14px';
+        const nbl = el('div', null, 'Your note to riders');
+        nbl.style.fontWeight = '600'; nbl.style.color = 'var(--text2)';
+        nb.appendChild(nbl);
+        if (flexLbl) {
+          const chipRow = el('div');
+          chipRow.style.marginTop = '6px';
+          chipRow.appendChild(el('span', 'chip open', flexLbl));
+          nb.appendChild(chipRow);
+        }
+        if (noteText) {
+          const nt = el('div', null, noteText);
+          nt.style.marginTop = '6px'; nt.style.whiteSpace = 'pre-wrap'; nt.style.lineHeight = '1.5';
+          nb.appendChild(nt);
+        }
+        card.appendChild(nb);
+      }
+      rideHead.appendChild(card);
 
       if (ride.cancelled_at) {
         // Raw status on purpose: a Confirmed booking surviving on a cancelled
         // ride means a refund call failed — saying "refunded in full" there
         // would be false (Fable audit #2).
         const unRefunded = entry.bookings.filter((b) => b.status === 'Confirmed').length;
-        body.appendChild(el('div', 'banner warn',
+        rideMain.appendChild(el('div', 'banner warn',
           unRefunded > 0
             ? 'This ride is cancelled, but ' + unRefunded + ' booking' + (unRefunded === 1 ? '' : 's') + " couldn't be refunded automatically — email support@seatsherpa.app and we'll finish it."
             : 'This ride is cancelled. Riders were refunded in full; nothing more to do here.'));
       }
 
+      const dbn = dormantBanner();
+      if (dbn) rideMain.appendChild(dbn);
       const pb = payoutBanner();
-      if (pb) body.appendChild(pb);
+      if (pb) rideMain.appendChild(pb);
 
       const pending = entry.bookings.filter((b) => effectiveStatus(b, ride) === 'Pending');
       const confirmed = entry.bookings.filter((b) => {
@@ -3430,18 +4553,18 @@
 
       // Requests first - the most important thing on the page.
       if (pending.length > 0 && !ride.cancelled_at) {
-        body.appendChild(el('h2', null, 'Requests waiting'));
-        pending.forEach((b) => body.appendChild(requestBox(b, ride)));
+        rideMain.appendChild(el('h2', null, 'Requests waiting'));
+        pending.forEach((b) => rideMain.appendChild(requestBox(b, ride)));
       }
 
       // Check-in card (Confirmed riders, day-of).
       if (!ride.cancelled_at) {
         const ci = checkinCard(entry);
-        if (ci) body.appendChild(ci);
+        if (ci) rideMain.appendChild(ci);
       }
 
       if (confirmed.length > 0) {
-        body.appendChild(el('h2', null, 'Your riders'));
+        rideMain.appendChild(el('h2', null, 'Your riders'));
         // Mark bookings I already rated so the star row doesn't re-offer
         // (fail-soft: an error just re-shows the row; the one-per-rater
         // constraint catches the duplicate).
@@ -3460,17 +4583,58 @@
             }
           }
         } catch (_) {}
-        confirmed.forEach((b) =>
-          body.appendChild(confirmedBox(b, ride, effectiveStatus(b, ride), b._unread || 0)));
+        const boxes = new Map();
+        confirmed.forEach((b) => {
+          const box = confirmedBox(b, ride, effectiveStatus(b, ride), b._unread || 0);
+          boxes.set(b.id, box);
+          rideMain.appendChild(box);
+        });
+        // Meeting spot (0347): the newest spot in each rider's chat, under
+        // their box. Filled in when the lookup lands; never holds the page.
+        const spotIds = confirmed.filter((b) => b.status === 'Confirmed').map((b) => b.id);
+        if (window.SSMeetingSpot && spotIds.length) {
+          supabase.from('messages')
+            .select('booking_id, place, sender_id, created_at, body')
+            .in('booking_id', spotIds)
+            .not('place', 'is', null)
+            .order('created_at', { ascending: false })
+            .then(({ data }) => {
+              // Newest spot per RIDER, shown under each of their boxes (bug
+              // check 2026-10-05): "Message all riders" lands on a rider's
+              // newest booking only, so their other booking showed no spot.
+              const byPax = new Map();
+              for (const row of (data || [])) {
+                const bk = confirmed.find((x) => x.id === row.booking_id);
+                if (!bk || byPax.has(bk.passenger_id) || !SSMeetingSpot.valid(row.place)) continue;
+                // A "Send my location" pin (2026-10-18) is not a meeting spot.
+                if (SSMeetingSpot.isHere && SSMeetingSpot.isHere(row.body)) continue;
+                byPax.set(bk.passenger_id, row);
+              }
+              for (const bk of confirmed) {
+                if (bk.status !== 'Confirmed') continue;
+                const row = byPax.get(bk.passenger_id);
+                const box = boxes.get(bk.id);
+                if (!row || !box || !box.isConnected) continue;
+                const who = row.sender_id === me ? 'you' : paxDisplay(bk);
+                const when = new Date(row.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+                const host = el('div');
+                host.style.marginTop = '10px';
+                host.appendChild(SSMeetingSpot.card(row.place, { from: pickupPointOf(bk, ride), footer: 'Set by ' + who + ' · ' + when }));
+                box.appendChild(host);
+              }
+            }, () => {});
+        }
+        const bc = broadcastSection(entry);
+        if (bc) rideMain.appendChild(bc);
       }
 
       if (pending.length === 0 && confirmed.length === 0 && !ride.cancelled_at) {
-        body.appendChild(el('div', 'banner neutral',
+        rideMain.appendChild(el('div', 'banner neutral',
           'No riders yet. Requests and bookings show up here the moment they land \u2014 you also get an email.'));
       }
 
       if (cancelled.length > 0) {
-        body.appendChild(el('h2', null, 'Cancelled'));
+        rideMain.appendChild(el('h2', null, 'Cancelled'));
         cancelled.forEach((b) => {
           const box = el('div', 'bookingbox');
           const top = el('div', 'bookingtop');
@@ -3480,15 +4644,29 @@
           if (b.cancel_reason && String(b.cancel_reason).trim()) {
             box.appendChild(el('div', 'rowhint', 'Reason: ' + String(b.cancel_reason).trim()));
           }
-          body.appendChild(box);
+          // A declined or withdrawn request keeps its chat for an hour (0395);
+          // before this the thread was reachable only from the email link,
+          // which is how Gi G. lost Kyle C. (booking 465).
+          const closesAt = chatClosesAt(b);
+          if (closesAt !== null) {
+            const open = Date.now() <= closesAt;
+            const msgBtn = el('button', 'linkbtn', open
+              ? 'Messages (open for ' + Math.max(1, Math.ceil((closesAt - Date.now()) / 60000)) + ' min)'
+              : 'View messages');
+            msgBtn.type = 'button';
+            msgBtn.addEventListener('click', () =>
+              go('/driving?ride=' + encodeURIComponent(ride.id) + '&chat=' + encodeURIComponent(b.id)));
+            box.appendChild(msgBtn);
+          }
+          rideMain.appendChild(box);
         });
       }
 
       // Manage (edit / cancel) \u2014 the full flows, in the browser. The old
       // banner here said "do it in the Seat Sherpa app": exactly the funnel
       // the standing rule bans.
-      if (!ride.cancelled_at) { const seatsCard = seatsSection(entry); if (seatsCard) body.appendChild(seatsCard); }
-      if (!ride.cancelled_at) body.appendChild(manageSection(entry));
+      if (!ride.cancelled_at) { const seatsCard = seatsSection(entry); if (seatsCard) rideMain.appendChild(seatsCard); }
+      if (!ride.cancelled_at) rideSide.appendChild(manageSection(entry));
 
       // Post again (2026-08-28, app refill parity): same route/seats/price on
       // a fresh date \u2014 the cheapest supply we have.
@@ -3497,7 +4675,7 @@
         again.href = '/post?refill=' + encodeURIComponent(ride.id);
         again.textContent = 'Post this route again \u2192';
         again.style.cssText = 'display:block;text-align:center;margin:4px 0 10px;font-weight:700;';
-        body.appendChild(again);
+        rideSide.appendChild(again);
       }
 
       body.appendChild(signedInFooter());
@@ -3517,8 +4695,22 @@
     // trips.html's polling chat, sides swapped: here *I* am the driver and the
     // other party is the rider. Same honest trade-offs (up to ~6s latency,
     // pauses while hidden).
-    const MSG_SELECT = 'id, booking_id, sender_id, body, created_at, read_at, is_system';
+    // broadcast_id (0346) marks a "Message all riders" copy; place (0347) is a
+    // meeting spot.
+    const MSG_SELECT = 'id, booking_id, sender_id, body, created_at, read_at, is_system, broadcast_id, place';
     let chatMsgs = new Map();
+    // The open chat's original pickup (the rider's boarding stop, else the
+    // ride's start), for "0.4 mi from the original pickup" on spot cards.
+    let chatSpotFrom = null;
+    // The rider's first name in the open chat, for "Kyle's location" on a
+    // "Send my location" pin (2026-10-18).
+    let chatThemFirst = '';
+    function pickupPointOf(b, ride) {
+      const s = b && b.boarding_stop;
+      if (s && typeof s.lat === 'number' && typeof s.lng === 'number') return { lat: s.lat, lng: s.lng };
+      if (ride && ride.start_lat != null && ride.start_lng != null) return { lat: Number(ride.start_lat), lng: Number(ride.start_lng) };
+      return null;
+    }
     // Booking ids THIS driver has already rated — filled by the ride-card
     // ratings lookup, read by paintThread to hide the shared 24h rate card
     // (Justin, 2026-09-05: "don't show to the party that has already rated").
@@ -3534,6 +4726,7 @@
     });
     let chatSince = null;
     let composerFocused = false;
+    let chatClosedNow = false;  // set by renderChat: the declined request's hour is over (0395)
 
     function uuid() {
       try { return crypto.randomUUID(); } catch (_) {
@@ -3569,25 +4762,47 @@
       clear(box);
       const rows = orderedMsgs();
       if (rows.length === 0) {
-        box.appendChild(el('div', 'emptythread',
-          'No messages yet. Say hi \u2014 riders usually reply quickly.'));
+        box.appendChild(el('div', 'emptythread', chatClosedNow
+          ? 'No messages were sent before this conversation closed.'
+          : 'No messages yet. Say hi \u2014 riders usually reply quickly.'));
       }
       for (const m of rows) {
         const mine = m.sender_id === me;
         const sys = m.is_system === true;
         // One shared bubble; hide it once this driver has rated that rider.
         if (sys && /^\u2b50 How was your trip\?/.test(String(m.body || '')) && ratedByMe.has(m.booking_id)) continue;
-        const row = el('div', 'brow ' + (sys ? 'sys' : mine ? 'me' : 'them'));
-        const bub = el('div', 'bubble' + (m._state === 'sending' ? ' sending' : m._state === 'failed' ? ' failed' : ''));
-        bub.textContent = m.body || '';
-        row.appendChild(bub);
-        box.appendChild(row);
+        // Meeting spot (0347): the note (if any) as a bubble, then the map card.
+        const spot = !sys && m.place && window.SSMeetingSpot && SSMeetingSpot.valid(m.place) ? m.place : null;
+        // "Send my location" pin (2026-10-18): the same card, labeled by whose.
+        const here = !!spot && !!SSMeetingSpot.isHere && SSMeetingSpot.isHere(m.body);
+        const text = spot ? SSMeetingSpot.noteOf(m.body, spot) : (m.body || '');
+        if (!spot || text) {
+          const row = el('div', 'brow ' + (sys ? 'sys' : mine ? 'me' : 'them'));
+          const bub = el('div', 'bubble' + (m._state === 'sending' ? ' sending' : m._state === 'failed' ? ' failed' : ''));
+          // Text nodes only (chat bodies are typed by the other party);
+          // addresses and map links become links (2026-10-18).
+          if (window.SSChatLinks) SSChatLinks.fill(bub, text); else bub.textContent = text;
+          row.appendChild(bub);
+          box.appendChild(row);
+        }
+        if (spot) {
+          const srow = el('div', 'brow ' + (mine ? 'me' : 'them'));
+          srow.style.marginTop = '4px';
+          const hereTitle = mine ? 'Your location' : chatThemFirst ? chatThemFirst + '\u2019s location' : 'Their location';
+          srow.appendChild(SSMeetingSpot.card(spot, { from: chatSpotFrom, here: here ? { title: hereTitle } : null }));
+          box.appendChild(srow);
+        }
         if (!sys) {
           const t = el('div', 'btime', m._state === 'sending' ? 'Sending\u2026'
             : m._state === 'failed' ? 'Not sent \u2014 tap send to retry'
             : new Date(m.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
           if (!mine) t.style.textAlign = 'left';
           box.appendChild(t);
+          // "Message all riders" (0346): the same message went to every
+          // confirmed rider, each in their own chat.
+          if (m.broadcast_id) {
+            box.appendChild(el('div', 'bcast' + (mine ? '' : ' them'), 'Sent to every booked rider on this drive'));
+          }
         }
       }
       if (atBottom) box.scrollTop = box.scrollHeight;
@@ -3622,6 +4837,30 @@
       return Date.now() - new Date(last.created_at).getTime() < 5 * 60 * 1000;
     }
 
+    /** Post a meeting spot (0347) into one rider's chat, then notify them the
+     *  same way as a typed message (push, or the chat email without the app). */
+    async function sendSpotMessage(b, place, note, bodyText) {
+      const id = uuid();
+      // bodyText: a "Send my location" pin's own text (SSMeetingSpot.hereBody).
+      const text = bodyText || SSMeetingSpot.body(note, place);
+      const { data, error } = await supabase
+        .from('messages')
+        .insert({ id, booking_id: b.id, sender_id: me, body: text, place })
+        .select(MSG_SELECT)
+        .single();
+      if (error) throw error;
+      absorb([data]);
+      paintThread();
+      if (b.passenger_id && b.passenger_id !== me) {
+        callFn('send-push', {
+          recipientIds: [b.passenger_id],
+          title: 'Seat Sherpa',
+          body: myName ? 'You have a new message from driver ' + myName : 'You have a new message',
+          data: { type: 'new_message', bookingId: b.id, messageId: id },
+        }).catch(() => {});
+      }
+    }
+
     function renderChat(entry, b) {
       const ride = entry.ride;
       const body = $('chatBody');
@@ -3629,34 +4868,69 @@
       chatMsgs = new Map();
       chatSince = null;
       composerFocused = false;
+      chatSpotFrom = pickupPointOf(b, ride);
+      // A real first name only: firstName() falls back to "your rider".
+      chatThemFirst = paxRawName(b) ? paxFirst(b) : '';
+      // Chat window after a decline / withdrawal (0395, 2026-10-16): while
+      // the hour runs the standing line counts down and points back to a new
+      // request; after it the composer is gone and the server refuses sends.
+      // Same copy as the app (lib/chat-window.ts). A whole-ride cancel gets
+      // the plain "cancelled" lines: there is no ride left to request.
+      const closesAt = chatClosesAt(b);
+      const chatClosed = closesAt !== null && Date.now() > closesAt;
+      chatClosedNow = chatClosed;
+      const endedWord = (b.cancelled_by === 'driver' && b.declined_at && !ride.cancelled_at) ? 'declined'
+        : b.cancelled_by === 'passenger' ? 'withdrawn' : 'cancelled';
+      const countdownCopy = (n) => 'This request was ' + endedWord + ', so messages here close in ' + n + (n === 1 ? ' minute' : ' minutes')
+        + (endedWord === 'cancelled' ? '.' : ". To ride together, the rider can send a new request. Rides arranged outside Seat Sherpa aren't covered, and the booking fee still applies.");
+      const closedCopy = 'This conversation closed an hour after the request was ' + endedWord
+        + (endedWord === 'cancelled' ? '.' : '. A new request from the rider opens messages again.');
+      const minutesLeft = closesAt === null ? null : Math.max(1, Math.ceil((closesAt - Date.now()) / 60000));
 
       body.appendChild(backRow('Back to ride', () => go('/driving?ride=' + encodeURIComponent(ride.id))));
 
-      const card = el('div', 'card');
+      // chatcard / chatask / chatspot / chatspotpanel are layout hooks only
+      // (the >= 960px conversation pane); a phone renders as before.
+      const card = el('div', 'card chatcard');
       card.appendChild(el('div', 'eyebrow', routeLabel(ride) + ' \u00b7 ' + dateLabel(ride.dep_date)));
       card.appendChild(el('h1', null, paxDisplay(b)));
-      card.appendChild(el('p', 'sub',
-        'Messages here reach ' + paxFirst(b) + ' in the Seat Sherpa app (or on their trips page). '
-        + 'This page checks for replies every few seconds while it\u2019s open.'));
+      card.appendChild(el('p', 'sub', chatClosed
+        ? 'This conversation is closed. Earlier messages stay here.'
+        : 'Messages here reach ' + paxFirst(b) + ' right away, wherever they use Seat Sherpa. '
+          + 'This page checks for replies every few seconds while it\u2019s open.'));
+      // 0331: quiet "Ask for ID verification" under the rider's name, only on
+      // this opened booking. The system line the server posts shows up in the
+      // thread below on the next poll.
+      const askIdLine = askIdVerificationLine(b, ride);
+      if (askIdLine) { askIdLine.classList.add('chatask'); card.appendChild(askIdLine); }
 
       const thread = el('div', 'thread');
       thread.id = 'chatThread';
       card.appendChild(thread);
 
       // CALL (2026-09-03, app parity): the number comes from counterparty_phone()
-      // — Confirmed/Completed only, 24h either side of departure, parties only —
+      // — Confirmed only (0381), 24h either side of departure, parties only —
       // and is fetched only when tapped. The pre-checks just give a friendlier
       // message than the RPC's empty result.
       const callRow = el('div', 'callrow');
       callRow.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 10px;';
       const callBtn = el('button', 'linkbtn', 'Call ' + String(paxDisplay(b) || 'your rider').split(' ')[0]);
       callBtn.type = 'button';
-      callBtn.style.cssText = 'border:1px solid #00a8a0;color:#00a8a0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;';
+      callBtn.style.cssText = 'border:1px solid var(--call);color:var(--call);background:transparent;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;';
       const callMsg = el('div', 'msg hidden');
-      callMsg.style.cssText = 'font-size:14px;color:#6b7280;margin:0;';
+      callMsg.style.cssText = 'font-size:14px;color:var(--callmsg);margin:0;';
       callRow.appendChild(callBtn);
       callRow.appendChild(callMsg);
       card.appendChild(callRow);
+      if (chatClosed) callRow.style.display = 'none';
+      // The call window ends when the ride is completed (0381, 2026-10-08).
+      // The REAL status, not the pickup-code display status: calling works for
+      // the whole ride and stops once the booking is Completed.
+      if (b.status === 'Completed') {
+        callBtn.style.display = 'none';
+        callMsg.textContent = 'Calling ended when the ride was completed. Message here instead.';
+        callMsg.classList.remove('hidden');
+      }
       callBtn.addEventListener('click', async () => {
         callMsg.classList.add('hidden');
         const say = (t) => { callMsg.textContent = t; callMsg.classList.remove('hidden'); };
@@ -3679,7 +4953,10 @@
           const row = Array.isArray(data) ? data[0] : data;
           const cc = String((row && row.phone_country_code) || '').replace(/\D/g, '');
           const num = String((row && row.phone) || '').replace(/\D/g, '');
-          if (error || !cc || !num) { say("They haven't added a phone number yet — message here instead."); return; }
+          // No row = the server refused (window closed, ride completed, status
+          // changed while this page was open); a row with no number = no number.
+          if (error || !row) { say("Calling isn't available for this booking right now. Message here instead."); return; }
+          if (!cc || !num) { say("They haven't added a phone number yet. Message here instead."); return; }
           location.href = 'tel:+' + cc + num;
         } catch (_) {
           say("Couldn't get the number just now — try again in a moment.");
@@ -3696,12 +4973,17 @@
       // wording as the app (lib/off-platform-guard.ts offPlatformStandingNotice).
       const standing = el('div', 'hint');
       standing.style.margin = '12px 0 0';
-      standing.textContent = (b.status === 'Confirmed' || b.status === 'Completed')
+      standing.textContent = closesAt !== null && !chatClosed
+        ? countdownCopy(minutesLeft)
+        : b.status === 'Completed'
+        // The call window ended at completion (0381).
+        ? 'Keep it on Seat Sherpa. Payment and no-show protection only cover rides kept here.'
+        : b.status === 'Confirmed'
         ? 'Keep it on Seat Sherpa. Payment and no-show protection only cover rides kept here, and you can call each other from this chat the day before the ride.'
         : b.status === 'Pending'
           ? 'Phone numbers, emails and handles stay hidden until you accept this request. After that you can call each other from this chat.'
           : "Phone numbers, emails and handles are hidden in this chat because the booking isn't confirmed.";
-      card.appendChild(standing);
+      if (!chatClosed) card.appendChild(standing);
 
       const composer = el('div', 'composer');
       const ta = document.createElement('textarea');
@@ -3712,10 +4994,198 @@
       sendBtn.type = 'button';
       composer.appendChild(ta);
       composer.appendChild(sendBtn);
-      card.appendChild(composer);
+      if (chatClosed) {
+        const closedNote = el('div', 'hint');
+        closedNote.style.margin = '12px 0 0';
+        closedNote.textContent = closedCopy;
+        card.appendChild(closedNote);
+      } else {
+        card.appendChild(composer);
+      }
 
       const cmsg = el('div', 'msg err hidden');
       card.appendChild(cmsg);
+
+      // The hour keeps running while the page is open (review 2026-10-16):
+      // refresh the countdown every 30 s and swap the composer for the
+      // closed note when it ends. The interval dies with the card.
+      if (closesAt !== null && !chatClosed) {
+        const tick = setInterval(() => {
+          if (!document.body.contains(card)) { clearInterval(tick); return; }
+          // A send refused as chat_closed already swapped the composer for the
+          // closed copy; adding the note too showed it twice (bug check 2026-10-19).
+          if (chatClosedNow) { clearInterval(tick); return; }
+          if (Date.now() > closesAt) {
+            clearInterval(tick);
+            chatClosedNow = true;
+            standing.remove();
+            composer.remove();
+            const closedNote = el('div', 'hint');
+            closedNote.style.margin = '12px 0 0';
+            closedNote.textContent = closedCopy;
+            cmsg.before(closedNote);
+            return;
+          }
+          standing.textContent = countdownCopy(Math.max(1, Math.ceil((closesAt - Date.now()) / 60000)));
+        }, 30000);
+      }
+
+      // Meeting spot (0347, Justin 2026-10-04): a map card in this chat. The
+      // newest one is the current spot; no accept step. Confirmed bookings
+      // only (before that, the pickup is still the posted stop).
+      if (b.status === 'Confirmed' && window.SSMeetingSpot) {
+        // .chatspot is the wide layout's grid slot: it now holds both buttons.
+        const spotActions = el('div', 'chatspot');
+        spotActions.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;';
+        const spotBtn = el('button', 'linkbtn', 'Share a meeting spot');
+        spotBtn.type = 'button';
+        spotActions.appendChild(spotBtn);
+        // "Send my location" (Justin, 2026-10-18): a one-time pin of where I
+        // am right now, as a map card. Day-of only (the call window, 24 h
+        // either side of departure), so nobody's home shows up days ahead.
+        const depAt = departureMs(ride);
+        const hereOk = Number.isFinite(depAt) && Math.abs(Date.now() - depAt) <= 24 * 3600 * 1000;
+        const hereBtn = hereOk ? el('button', 'linkbtn', 'Send my location') : null;
+        if (hereBtn) { hereBtn.type = 'button'; spotActions.appendChild(hereBtn); }
+        const spotPanel = el('div', 'chatspotpanel hidden');
+        spotPanel.style.marginTop = '10px';
+        card.appendChild(spotActions);
+        card.appendChild(spotPanel);
+        // Which panel owns spotPanel right now (review 2026-10-18): opening the
+        // other panel, or "Never mind", bumps it, so a location request still
+        // in flight can neither send nor close a panel it no longer owns.
+        let panelSeq = 0;
+        if (hereBtn) hereBtn.addEventListener('click', () => {
+          const mySeq = ++panelSeq;
+          hereBtn.classList.add('hidden');
+          spotBtn.classList.remove('hidden');
+          clear(spotPanel);
+          cmsg.classList.add('hidden');
+          const live = () => mySeq === panelSeq;
+          const closeHere = () => {
+            if (!live()) return;
+            panelSeq++;
+            clear(spotPanel); spotPanel.classList.add('hidden');
+            hereBtn.classList.remove('hidden'); spotBtn.classList.remove('hidden');
+          };
+          const who = paxFirst(b);
+          const hint = el('div', 'rowhint', who.charAt(0).toUpperCase() + who.slice(1) + ' will see where you are right now on a map. It\u2019s a one-time pin, not live tracking.');
+          const send = el('button', 'primary', 'Send my location');
+          send.type = 'button';
+          const never = el('button', 'linkbtn', 'Never mind');
+          never.type = 'button';
+          never.style.display = 'block';
+          never.style.marginTop = '6px';
+          never.addEventListener('click', closeHere);
+          send.addEventListener('click', () => {
+            const fail = (t) => {
+              if (!live()) return;
+              send.disabled = false; send.textContent = 'Send my location';
+              cmsg.textContent = t; cmsg.classList.remove('hidden');
+            };
+            if (!navigator.geolocation) { fail('This browser can\u2019t share your location.'); return; }
+            cmsg.classList.add('hidden');
+            send.disabled = true; send.textContent = 'Finding you\u2026';
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+              if (!live()) return; // "Never mind" while it was finding you
+              // An approximate fix (laptop Wi-Fi or IP) would still become an
+              // exact street address, so it is never sent.
+              if (pos.coords.accuracy > 250) {
+                fail('Your location is only approximate right now. Try again from your phone, or share a meeting spot instead.');
+                return;
+              }
+              const lat = pos.coords.latitude;
+              const lng = pos.coords.longitude;
+              const address = await SSMeetingSpot.reverse(lat, lng);
+              if (!live()) return;
+              const place = { name: '', address: address || (lat.toFixed(5) + ', ' + lng.toFixed(5)), lat, lng };
+              try {
+                await sendSpotMessage(b, place, '', SSMeetingSpot.hereBody(place));
+                closeHere();
+              } catch (e) {
+                fail('Location not sent: ' + ((e && e.message) || 'check your connection and try again.'));
+              }
+            }, (err) => {
+              fail(err && err.code === 1
+                ? 'Location is blocked for this site. Allow it in your browser settings, then try again.'
+                : 'Couldn\u2019t find your location. Try again in a moment.');
+            }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+          });
+          spotPanel.appendChild(hint);
+          spotPanel.appendChild(send);
+          spotPanel.appendChild(never);
+          spotPanel.classList.remove('hidden');
+        });
+        spotBtn.addEventListener('click', () => {
+          const spotSeq = ++panelSeq;
+          if (hereBtn) hereBtn.classList.remove('hidden');
+          spotBtn.classList.add('hidden');
+          clear(spotPanel);
+          let picked = null;
+          const preview = el('div');
+          const share = el('button', 'primary', 'Share this spot');
+          share.type = 'button';
+          share.disabled = true;
+          const pick = SSMeetingSpot.picker((p) => {
+            picked = p;
+            clear(preview);
+            if (p) preview.appendChild(SSMeetingSpot.card(p, { from: chatSpotFrom }));
+            share.disabled = !p;
+          });
+          const note = document.createElement('input');
+          note.type = 'text';
+          note.maxLength = 200;
+          note.placeholder = 'Add a note (optional), e.g. "by the front entrance"';
+          note.setAttribute('aria-label', 'Note with the meeting spot');
+          const closeSpot = () => {
+            if (spotSeq !== panelSeq) return; // the location panel took over
+            panelSeq++;
+            clear(spotPanel); spotPanel.classList.add('hidden');
+            spotBtn.classList.remove('hidden'); if (hereBtn) hereBtn.classList.remove('hidden');
+          };
+          share.addEventListener('click', async () => {
+            if (!picked) return;
+            // The chat's off-platform speed bump, for the note too (bug check
+            // 2026-10-05): warn once, a second tap sends it anyway.
+            const noteText = note.value.trim();
+            const spotLog = (action) => { try { supabase.from('offplatform_warnings').insert({ surface: 'web_chat_driver', hit: 'phone', action, booking_id: b.id }).then(() => {}, () => {}); } catch (_) {} };
+            if (noteText && SSMeetingSpot.phoneHit && SSMeetingSpot.phoneHit(noteText)) {
+              if (share.dataset.warned !== noteText) {
+                share.dataset.warned = noteText;
+                spotLog('shown');
+                cmsg.textContent = SSMeetingSpot.PHONE_WARNING;
+                cmsg.classList.remove('hidden');
+                return;
+              }
+              spotLog('sent_anyway');
+            }
+            cmsg.classList.add('hidden');
+            share.disabled = true; share.textContent = 'Sharing…';
+            try {
+              await sendSpotMessage(b, picked, note.value);
+              closeSpot();
+            } catch (e) {
+              share.disabled = false; share.textContent = 'Share this spot';
+              cmsg.textContent = 'Spot not shared: ' + ((e && e.message) || 'check your connection and try again.');
+              cmsg.classList.remove('hidden');
+            }
+          });
+          const never = el('button', 'linkbtn', 'Never mind');
+          never.type = 'button';
+          never.style.display = 'block';
+          never.style.marginTop = '6px';
+          never.addEventListener('click', closeSpot);
+          spotPanel.appendChild(el('div', 'rowhint', 'Pick a place. ' + paxFirst(b) + ' gets a map card they can open in Google Maps or Apple Maps.'));
+          spotPanel.appendChild(pick);
+          spotPanel.appendChild(preview);
+          spotPanel.appendChild(note);
+          spotPanel.appendChild(share);
+          spotPanel.appendChild(never);
+          spotPanel.classList.remove('hidden');
+          pick.focusInput();
+        });
+      }
+
       body.appendChild(card);
       body.appendChild(signedInFooter());
 
@@ -3729,6 +5199,7 @@
 
       async function doSend() {
         cmsg.classList.add('hidden');
+        if (chatClosed) return;
         const failed = orderedMsgs().filter((m) => m._state === 'failed');
         let text = ta.value.trim();
         let retryRow = null;
@@ -3748,12 +5219,22 @@
         // reach them is their call; we just remind them what they give up).
         // Covers plain numbers AND the letter-interleaved evasion (0216).
         if (!retryRow && sendBtn.dataset.warned !== text) {
-          let hit = /(^|\D)(\+?1[\s.\-·]?)?\(?\d{3}\)?[\s.\-·]?\d{3}[\s.\-·]?\d{4}(?!\d)/.test(text);
+          // Spelled-out digits ("five one zero, nine zero one, eight three zero
+          // two", 2026-10-11): a run of three or more number words, seven or
+          // more digits in all, is read as the number it spells. Mirrors
+          // lib/off-platform-guard.ts normalizeNumberWords and migration 0386;
+          // the same snippet lives in trips.html and book.html.
+          const probe = text.replace(/\b(?:zero|one|two|three|four|five|six|seven|eight|nine|oh|o|\d+)(?:[\s,.\-()/·*]{0,3}\b(?:zero|one|two|three|four|five|six|seven|eight|nine|oh|o|\d+)\b){2,}/gi, (run) => {
+            const words = (run.match(/\b(zero|one|two|three|four|five|six|seven|eight|nine)\b/gi) || []).length;
+            const digits = run.toLowerCase().replace(/\b(zero|oh|o)\b/g, '0').replace(/\bone\b/g, '1').replace(/\btwo\b/g, '2').replace(/\bthree\b/g, '3').replace(/\bfour\b/g, '4').replace(/\bfive\b/g, '5').replace(/\bsix\b/g, '6').replace(/\bseven\b/g, '7').replace(/\beight\b/g, '8').replace(/\bnine\b/g, '9').replace(/[^0-9]/g, '');
+            return words >= 3 && digits.length >= 10 ? digits : run;
+          });
+          let hit = /(^|\D)(\+?1[\s.\-·]?)?\(?\d{3}\)?[\s.\-·]?\d{3}[\s.\-·]?\d{4}(?!\d)/.test(probe);
           if (!hit) {
             const digs = [];
-            for (let i2 = 0; i2 < text.length; i2++) if (text[i2] >= '0' && text[i2] <= '9') digs.push(i2);
+            for (let i2 = 0; i2 < probe.length; i2++) if (probe[i2] >= '0' && probe[i2] <= '9') digs.push(i2);
             for (let i2 = 0; i2 + 9 < digs.length; i2++) {
-              const win = text.slice(digs[i2], digs[i2 + 9] + 1);
+              const win = probe.slice(digs[i2], digs[i2 + 9] + 1);
               // Mirrors the server masker (0307): skip times, dates, prices, prose, coordinates.
               if (win.length <= 22 && !/[:/$%]/.test(win) && !/^((19|20)\d\d\D{0,3})+$/.test(win) && !/(^|[^A-Za-z0-9])[A-Za-z]{2,}([^A-Za-z0-9]|$)/.test(win) && !/\d\.\d{3,}/.test(win) && !/(^|[^0-9-])((0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01])-(19|20)?\d{2}|(19|20)\d{2}-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01]))([^0-9-]|$)/.test(win)) { hit = true; break; }
             }
@@ -3765,12 +5246,15 @@
           if (hit) {
             sendBtn.dataset.warned = text;
             logWarn('shown');
-            // 0306: while the request is not accepted the server hides the number.
+            // 0306: while the request is not accepted the server hides the
+            // number. Every version ends with the same fact (Justin,
+            // 2026-10-11): numbers are handed over 24 hours before the ride
+            // on a confirmed booking.
             cmsg.textContent = !hiddenNow
-              ? 'Heads up: sharing phone numbers moves things off Seat Sherpa. Payments and no-show protection only work in here, and you can call each other through Seat Sherpa once the trip is near.'
+              ? 'Heads up: sharing phone numbers moves things off Seat Sherpa. Payments and no-show protection only work in here. Seat Sherpa gives you each other\'s phone numbers 24 hours before the ride, so there\'s no need to exchange them now.'
               : b.status === 'Pending'
-                ? 'Phone numbers, emails and handles stay hidden until you accept this request, so yours will be removed from this message. Once you accept, you can call each other through Seat Sherpa starting the day before the ride.'
-                : 'Phone numbers, emails and handles are hidden in this chat because the booking isn\'t confirmed, so yours will be removed from this message.';
+                ? 'Phone numbers, emails and handles stay hidden until you accept this request, so yours will be removed from this message. Once you accept, Seat Sherpa gives you each other\'s phone numbers 24 hours before the ride, so there\'s no need to exchange them now.'
+                : 'Phone numbers, emails and handles are hidden in this chat because the booking isn\'t confirmed, so yours will be removed from this message. On a confirmed booking, Seat Sherpa gives you each other\'s phone numbers 24 hours before the ride.';
             cmsg.classList.remove('hidden');
             return;
           }
@@ -3813,9 +5297,21 @@
           const row = chatMsgs.get(id);
           if (row) { row._state = 'failed'; chatMsgs.set(id, row); }
           paintThread();
-          cmsg.textContent = (e && e.message)
-            ? 'Message not sent: ' + e.message
-            : 'Message not sent. Check your connection and tap Send to retry.';
+          // The hour ran out while this page was open (0395): say so and
+          // take the box away rather than offer a retry.
+          if (e && /chat_closed/i.test(e.message || '')) {
+            // Drop the optimistic bubble too: there is no Send left to retry.
+            chatMsgs.delete(id);
+            chatClosedNow = true;
+            paintThread();
+            composer.remove();
+            standing.remove();
+            cmsg.textContent = closedCopy;
+          } else {
+            cmsg.textContent = (e && e.message)
+              ? 'Message not sent: ' + e.message
+              : 'Message not sent. Check your connection and tap Send to retry.';
+          }
           cmsg.classList.remove('hidden');
         } finally {
           sendBtn.disabled = false;
@@ -3897,6 +5393,10 @@
         $('nfEmail').textContent = myEmail;
 
         if (!payout.loaded) await loadPayoutState();
+        // Re-read on every render: a trigger can reactivate the driver (an
+        // accept, a reply, a new ride) and the banner must not outlive that
+        // (bug check 2026-09-30). One cheap RPC.
+        await loadDormantState();
 
         // /cars (vercel rewrite → /driving?view=account) and ?view=wallet open
         // the in-page sections directly. Vehicles & license moved under

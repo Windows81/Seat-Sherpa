@@ -79,7 +79,12 @@
     '.ss-oauth-msg.err{color:#ff8a8a;}' +
     '.ss-oauth-msg:empty{display:none;}' +
     '.ss-oauth-or{display:flex;align-items:center;gap:12px;color:#6f6f78;font-size:13px;margin:14px 0;}' +
-    '.ss-oauth-or::before,.ss-oauth-or::after{content:"";flex:1;height:1px;background:#2a2a33;}';
+    '.ss-oauth-or::before,.ss-oauth-or::after{content:"";flex:1;height:1px;background:#2a2a33;}' +
+    // Light theme (2026-10-12): Google stays white, Apple stays black.
+    '@media (prefers-color-scheme: light){' +
+    '.ss-oauth-btn{border-color:#D8DCDB;}' +
+    '.ss-oauth-msg{color:#687176;}.ss-oauth-msg.err{color:#C62828;}' +
+    '.ss-oauth-or{color:#687176;}.ss-oauth-or::before,.ss-oauth-or::after{background:rgba(18,22,22,0.10);}}';
 
   function ensureStyle() {
     if (document.getElementById('ssOauthStyle')) return;

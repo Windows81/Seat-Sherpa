@@ -67,39 +67,85 @@ fbq('track','PageView');
   <link rel="icon" href="/favicon.ico" sizes="48x48" />
 <link rel="icon" type="image/png" href="/icon-96.png" sizes="96x96" />
   <style>
+    /* Theme tokens (2026-10-12). Dark is the default and every dark value is
+       the literal this page used before tokens (placeholders included: the
+       browser's own grey, pinned here so declaring the color scheme cannot
+       move it). Light follows the system setting with the shared palette. */
+    :root {
+      color-scheme: dark;
+      --bg: #0e0e10; --text: #eaeaea; --accent: #00d4c8; --sub: #9a9aa2; --label: #b8b8c0; --optional: #6a6a72;
+      --field: #17171b; --field-line: #2a2a30; --field-text: #eaeaea; --ph: #757575; --focus: #00d4c8;
+      --teal-fill: #00d4c8; --on-teal: #04201e; --ok: #00d4c8; --err: #ff8a80; --link: #00d4c8;
+      --panel: #141416; --panel-line: rgba(255,255,255,0.08); --panel-shadow: none;
+      --badge-bg: #00a8a0; --badge-ink: #ffffff;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --bg: #F5F6F5; --text: #121416; --accent: #121416; --sub: #4B5357; --label: #23272A; --optional: #687176;
+        --field: #FFFFFF; --field-line: rgba(18,22,22,0.18); --field-text: #121416; --ph: #687176; --focus: #007C76;
+        --ok: #1E7B3A; --err: #C62828; --link: #007C76;
+        --panel: #FFFFFF; --panel-line: rgba(18,22,22,0.10); --panel-shadow: 0 1px 2px rgba(0,0,0,0.12), 0 12px 32px -12px rgba(0,0,0,0.12);
+        --badge-bg: #00D4C8; --badge-ink: #04201e;
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+      }
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #0e0e10; color: #eaeaea; min-height: 100vh; padding: 40px 20px 80px;
+      background: var(--bg); color: var(--text); min-height: 100vh; padding: 40px 20px 80px;
     }
     .wrap { max-width: 640px; margin: 0 auto; }
     .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; text-decoration: none; }
     .logo img { width: 40px; height: 40px; border-radius: 9px; }
-    .logo span { color: #eaeaea; font-weight: 800; font-size: 18px; }
+    .logo span { color: var(--text); font-weight: 800; font-size: 18px; }
     h1 { font-size: 32px; margin-bottom: 12px; }
-    h1 em { color: #00d4c8; font-style: normal; }
-    .sub { color: #9a9aa2; font-size: 16px; line-height: 1.6; margin-bottom: 8px; }
+    h1 em { color: var(--accent); font-style: normal; }
+    .sub { color: var(--sub); font-size: 16px; line-height: 1.6; margin-bottom: 8px; }
     .sub + .sub { margin-bottom: 36px; }
     form { display: grid; gap: 16px; }
-    label { display: grid; gap: 6px; font-size: 13px; color: #b8b8c0; font-weight: 600; }
+    label { display: grid; gap: 6px; font-size: 13px; color: var(--label); font-weight: 600; }
     input, select, textarea {
-      background: #17171b; border: 1px solid #2a2a30; border-radius: 10px;
-      color: #eaeaea; padding: 12px 14px; font-size: 15px; font-family: inherit; width: 100%;
+      background: var(--field); border: 1px solid var(--field-line); border-radius: 10px;
+      color: var(--field-text); padding: 12px 14px; font-size: 15px; font-family: inherit; width: 100%;
     }
-    input:focus, select:focus, textarea:focus { outline: 2px solid #00d4c8; border-color: transparent; }
+    input::placeholder, textarea::placeholder { color: var(--ph); }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--focus); border-color: transparent; }
     textarea { min-height: 110px; resize: vertical; }
-    .optional { color: #6a6a72; font-weight: 400; }
+    .optional { color: var(--optional); font-weight: 400; }
     .honeypot { position: absolute; left: -9999px; top: -9999px; }
     button {
-      background: #00d4c8; color: #04201e; font-weight: 800; font-size: 16px;
+      background: var(--teal-fill); color: var(--on-teal); font-weight: 800; font-size: 16px;
       border: none; border-radius: 12px; padding: 14px 20px; cursor: pointer; margin-top: 4px;
     }
     button:disabled { opacity: .6; cursor: default; }
     .msg { font-size: 14px; margin-top: 10px; min-height: 20px; }
-    .msg.ok { color: #00d4c8; }
-    .msg.err { color: #ff8a80; }
+    .msg.ok { color: var(--ok); }
+    .msg.err { color: var(--err); }
     .back { margin-top: 40px; font-size: 14px; }
-    .back a { color: #00d4c8; text-decoration: none; }
+    .back a { color: var(--link); text-decoration: none; }
+
+    /* Laptop (2026-10-12): pitch on the left, the form in a panel on the
+       right, both inside a 1120px column (the shared header aligns to .wrap,
+       so its wordmark lines up with the page). Phones are untouched. */
+    @media (min-width: 960px) {
+      body { padding: 64px 32px 96px; }
+      .wrap {
+        max-width: 1120px; display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 480px); column-gap: 72px;
+        grid-template-rows: auto auto auto auto 1fr; align-items: start;
+      }
+      .wrap > * { grid-column: 1; }
+      .wrap > form {
+        grid-column: 2; grid-row: 1 / -1;
+        background: var(--panel); border: 1px solid var(--panel-line); border-radius: 18px;
+        padding: 28px; box-shadow: var(--panel-shadow);
+      }
+      h1 { font-size: 44px; line-height: 1.12; letter-spacing: -0.5px; margin-bottom: 20px; }
+      .sub { font-size: 17px; max-width: 60ch; margin-bottom: 14px; }
+      .sub + .sub { margin-bottom: 0; }
+      .back { margin-top: 32px; }
+    }
   </style>
 </head>
 <body>
@@ -191,10 +237,10 @@ fbq('track','PageView');
 </script>
 
 <!-- App store buttons (ss-store-badges) -->
-<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<div class="ss-store-badges" style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
-  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=careers" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
-  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=careers" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=careers" style="display:inline-block;background:var(--badge-bg,#00a8a0);color:var(--badge-ink,#ffffff);text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=careers" style="display:inline-block;background:var(--badge-bg,#00a8a0);color:var(--badge-ink,#ffffff);text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
 </div>
 <script src="/js/ss-menu.js"></script>
 <script src="/js/ss-appbar.js"></script>

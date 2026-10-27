@@ -46,8 +46,8 @@
     'fill="url(#ssabg)" stroke="#0B5650" stroke-width="4"/>' +
     '<path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" ' +
     'fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g>' +
-    '<text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text>' +
-    '<text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>';
+    '<text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8" style="fill:var(--ssbar-eat,#00D4C8)">eat</text>' +
+    '<text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff" style="fill:var(--ssbar-strong,#ffffff)">Sherpa</text></svg>';
 
   var STYLE = [
     // Full-bleed bar. Pages keep their own centred content column; only the
@@ -55,12 +55,14 @@
     // width/align-self keep it full-bleed inside account.html's centred flex
     // body as well as the plain block bodies elsewhere.
     '.ss-bar{position:sticky;top:0;z-index:900;margin-bottom:24px;width:100%;align-self:stretch;',
-    'background:rgba(14,14,16,0.88);backdrop-filter:saturate(160%) blur(12px);',
-    '-webkit-backdrop-filter:saturate(160%) blur(12px);border-bottom:1px solid #202027;}',
+    'background:var(--ssbar-bg,rgba(14,14,16,0.88));backdrop-filter:saturate(160%) blur(12px);',
+    '-webkit-backdrop-filter:saturate(160%) blur(12px);border-bottom:1px solid var(--ssbar-line,#202027);}',
     // max-width is overwritten at mount to match the host page's own content
     // column, so the wordmark lines up with the page's left edge instead of
     // floating out in the margin. 1180 is only the fallback.
-    '.ss-bar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;height:62px;}',
+    // position:relative anchors the phone menu panel to the content column,
+    // not the full-width bar (it hung past the column at 600-719px).
+    '.ss-bar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;height:62px;position:relative;}',
     '.ss-bar-logo{display:flex;align-items:center;flex:none;}',
     '.ss-bar-logo svg{height:28px;width:auto;display:block;}',
     // Tab strip. Scrolls rather than wraps — a two-row bar is the thing we
@@ -77,13 +79,13 @@
     '.ss-bar-tabs.over-l.over-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 34px,#000 calc(100% - 34px),transparent);',
     'mask-image:linear-gradient(90deg,transparent,#000 34px,#000 calc(100% - 34px),transparent);}',
     '.ss-bar-tabs a,.ss-bar-tabs button{position:relative;display:inline-flex;align-items:center;gap:7px;',
-    'height:62px;padding:0 13px;font-family:inherit;font-size:14.5px;font-weight:600;color:#adadb8;',
+    'height:62px;padding:0 13px;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ssbar-tab,#adadb8);',
     'text-decoration:none;background:none;border:0;cursor:pointer;white-space:nowrap;flex:none;}',
-    '.ss-bar-tabs a:hover,.ss-bar-tabs button:hover{color:#fff;}',
+    '.ss-bar-tabs a:hover,.ss-bar-tabs button:hover{color:var(--ssbar-strong,#fff);}',
     // The underline IS the active state — no filled pill, no border ring.
     '.ss-bar-tabs a::after,.ss-bar-tabs button::after{content:"";position:absolute;left:13px;right:13px;',
     'bottom:0;height:2px;border-radius:2px 2px 0 0;background:transparent;}',
-    '.ss-bar-tabs a.on,.ss-bar-tabs button.on{color:#fff;font-weight:700;}',
+    '.ss-bar-tabs a.on,.ss-bar-tabs button.on{color:var(--ssbar-strong,#fff);font-weight:700;}',
     '.ss-bar-tabs a.on::after,.ss-bar-tabs button.on::after{background:#00D4C8;}',
     // Count badge (pending requests, unread messages).
     '.ss-bar-badge{display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;',
@@ -94,9 +96,9 @@
     '.ss-bar-cta:hover{background:#25e6da;}',
     '.ss-bar-cta .lbl{display:inline;}',
     // Signed-out: a plain "Sign in" link where the avatar menu would be.
-    '.ss-bar-signin{display:inline-flex;align-items:center;height:38px;padding:0 8px;color:#E8E8EC;',
+    '.ss-bar-signin{display:inline-flex;align-items:center;height:38px;padding:0 8px;color:var(--ssbar-signin,#E8E8EC);',
     'font-size:14.5px;font-weight:600;text-decoration:none;white-space:nowrap;}',
-    '.ss-bar-signin:hover{color:#fff;}',
+    '.ss-bar-signin:hover{color:var(--ssbar-strong,#fff);}',
     // Tighten before truncating: at mid widths the strip fits if the tabs
     // give up some padding, so scrolling stays a last resort.
     '@media (max-width:1100px){.ss-bar-in{gap:12px;}',
@@ -106,7 +108,37 @@
     '.ss-bar-tabs,.ss-bar-tabs a,.ss-bar-tabs button{height:56px;}',
     '.ss-bar-cta{padding:0 13px;}.ss-bar-cta .lbl{display:none;}',
     '.ss-bar-logo svg{height:24px;}}',
+    // PHONE, SIGNED OUT (2026-10-12, Justin: the ride page header cut "Find
+    // a ride" off behind the + button). A visitor's three public sections no
+    // longer squeeze into a ~70px scroll strip: below 560px they fold into a
+    // menu button and open as a small panel under the bar. Same <a> nodes,
+    // just restyled, so active state and hrefs are untouched. The signed-in
+    // console keeps its scrolling strip (its avatar menu already lists every
+    // section, and driving.html binds an in-strip Wallet button by id).
+    '.ss-bar-menu{display:none;align-items:center;justify-content:center;width:38px;height:38px;flex:none;',
+    'border-radius:999px;border:1px solid var(--ssbar-btnline,#2a2a33);background:transparent;color:var(--ssbar-signin,#E8E8EC);cursor:pointer;padding:0;}',
+    '.ss-bar-menu:hover{border-color:var(--ssbar-tab,#3a3a45);color:var(--ssbar-strong,#fff);}',
+    '.ss-bar-menu svg{width:20px;height:20px;display:block;}',
+    // 719px, not 560 (bug check 2026-10-12): a landscape phone between the
+    // two still clipped "How it works" behind the + button.
+    '@media (max-width:719px){',
+    '.ss-bar[data-authed="0"] .ss-bar-menu{display:inline-flex;}',
+    '.ss-bar[data-authed="0"] .ss-bar-right{gap:8px;}',
+    '.ss-bar[data-authed="0"] .ss-bar-signin{padding:0 4px;}',
+    '.ss-bar[data-authed="0"] .ss-bar-tabs{display:none;position:absolute;top:calc(100% + 6px);right:0;',
+    'flex:none;flex-direction:column;align-items:stretch;gap:2px;height:auto;min-width:220px;padding:6px;',
+    'overflow:visible;background:var(--ssbar-panel,#161619);border:1px solid var(--ssbar-btnline,#2a2a33);border-radius:14px;',
+    'box-shadow:0 12px 32px var(--ssbar-shadow,rgba(0,0,0,0.5));-webkit-mask-image:none;mask-image:none;}',
+    '.ss-bar[data-authed="0"].menu-open .ss-bar-tabs{display:flex;}',
+    '.ss-bar[data-authed="0"] .ss-bar-tabs a{height:46px;padding:0 14px;border-radius:10px;font-size:16px;color:var(--ssbar-signin,#E8E8EC);}',
+    '.ss-bar[data-authed="0"] .ss-bar-tabs a::after{display:none;}',
+    '.ss-bar[data-authed="0"] .ss-bar-tabs a.on{background:var(--ssbar-hover,rgba(255,255,255,0.06));color:var(--ssbar-strong,#fff);}}',
   ].join('');
+
+  // lucide "menu"
+  var MENU_ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" ' +
+    'stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>';
 
   function ensureStyle() {
     if (document.getElementById('ssBarStyle')) return;
@@ -205,6 +237,7 @@
     cta.setAttribute('aria-label', 'Post a ride');
     right.appendChild(cta);
     var menuSlot = document.createElement('span');
+    var onDocClick = null, onDocKey = null;
     if (authed) {
       right.appendChild(menuSlot);
     } else {
@@ -213,6 +246,60 @@
       si.href = '/signin?next=' + encodeURIComponent(location.pathname + location.search);
       si.textContent = 'Sign in';
       right.appendChild(si);
+      // Phone-only menu button (CSS shows it below 720px): opens the public
+      // sections as a panel instead of a clipped scroll strip.
+      var mb = document.createElement('button');
+      mb.type = 'button';
+      mb.className = 'ss-bar-menu';
+      mb.setAttribute('aria-label', 'Menu');
+      mb.setAttribute('aria-expanded', 'false');
+      if (!tabs.id) tabs.id = 'ssBarMenuPanel';
+      mb.setAttribute('aria-controls', tabs.id);
+      mb.innerHTML = MENU_ICON;
+      // Keyboard (bug check 2026-10-12): the panel's links come BEFORE the
+      // button in the DOM, so Tab after opening left the menu open and jumped
+      // into the page. Opening now moves focus to the first link, Escape
+      // returns it to the button, and focus leaving the panel closes it.
+      var setOpen = function (open, focusTo) {
+        bar.classList.toggle('menu-open', open);
+        mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open && focusTo === 'first') {
+          var first = tabs.querySelector('a, button');
+          if (first) first.focus();
+        } else if (!open && focusTo === 'button') {
+          mb.focus();
+        }
+      };
+      mb.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var opening = !bar.classList.contains('menu-open');
+        // Keyboard activation (detail 0) moves focus in; a tap does not.
+        setOpen(opening, opening && e.detail === 0 ? 'first' : null);
+      });
+      tabs.addEventListener('focusout', function (e) {
+        if (!bar.classList.contains('menu-open')) return;
+        var to = e.relatedTarget;
+        if (to && (tabs.contains(to) || to === mb)) return;
+        if (window.matchMedia && window.matchMedia('(max-width:719px)').matches) setOpen(false);
+      });
+      onDocClick = function (e) {
+        if (bar.classList.contains('menu-open') && !tabs.contains(e.target)) setOpen(false);
+      };
+      onDocKey = function (e) {
+        if (e.key !== 'Escape' || !bar.classList.contains('menu-open')) return;
+        var inPanel = tabs.contains(document.activeElement);
+        setOpen(false, inPanel ? 'button' : null);
+      };
+      document.addEventListener('click', onDocClick);
+      document.addEventListener('keydown', onDocKey);
+      // A tapped link closes the panel, so Back (served from the browser's
+      // back/forward cache) doesn't return to an open menu (bug check
+      // 2026-10-12); pageshow covers pages restored any other way.
+      tabs.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('a')) setOpen(false);
+      });
+      window.addEventListener('pageshow', function (e) { if (e.persisted) setOpen(false); });
+      right.appendChild(mb);
     }
     inner.appendChild(right);
 
@@ -236,20 +323,35 @@
       bar.style.marginLeft = (-contentLeft) + 'px';
       bar.style.marginRight = '0';
     }
-    if (bodyIsColumn) {
-      placeColumn();
-      window.addEventListener('resize', placeColumn);
-    } else {
-      bar.style.marginLeft = '-' + bp.paddingLeft;
-      bar.style.marginRight = '-' + bp.paddingRight;
+    // Re-run on resize (bug check 2026-10-12): the laptop layouts change the
+    // body's padding at 960px, so values read once at mount went stale when a
+    // tablet rotated or a window resized across it (the bar ran 12px past the
+    // screen, or left gaps and a strip above it). `bp` is live, so each call
+    // reads the current padding.
+    function placeBar() {
+      if (bodyIsColumn) {
+        placeColumn();
+      } else {
+        bar.style.marginLeft = '-' + bp.paddingLeft;
+        bar.style.marginRight = '-' + bp.paddingRight;
+        // width:100% is the body's CONTENT width, so with only the negative
+        // margins the bar started at the left edge but stopped one body
+        // padding short of the right (a 40px gap on ride/book pages, 2026-10-12).
+        // Widen it by both paddings; border-box so its own copied padding
+        // stays inside that width.
+        bar.style.boxSizing = 'border-box';
+        bar.style.width = 'calc(100% + ' + bp.paddingLeft + ' + ' + bp.paddingRight + ')';
+      }
+      // Cancel the body's top padding AND top margin (privacy/terms use
+      // `margin:40px auto`): a first child's negative margin collapses with the
+      // parent's, so the bar reaches the top of the page instead of leaving a
+      // strip of page background above it.
+      bar.style.marginTop = '-' + (parseFloat(bp.paddingTop || '0') + parseFloat(bp.marginTop || '0')) + 'px';
+      bar.style.paddingLeft = bp.paddingLeft;
+      bar.style.paddingRight = bp.paddingRight;
     }
-    // Cancel the body's top padding AND top margin (privacy/terms use
-    // `margin:40px auto`): a first child's negative margin collapses with the
-    // parent's, so the bar reaches the top of the page instead of leaving a
-    // strip of page background above it.
-    bar.style.marginTop = '-' + (parseFloat(bp.paddingTop || '0') + parseFloat(bp.marginTop || '0')) + 'px';
-    bar.style.paddingLeft = bp.paddingLeft;
-    bar.style.paddingRight = bp.paddingRight;
+    placeBar();
+    window.addEventListener('resize', placeBar);
 
     var target = opts.mountTo || document.getElementById('ssAppBar');
     if (target && target.parentNode) target.parentNode.replaceChild(bar, target);
@@ -263,7 +365,21 @@
     // (.wrap), so the wordmark and the page's first heading share a left edge.
     // Both are media-query driven, so re-sync on resize rather than once.
     var col = opts.alignTo || document.querySelector('.wrap') || (bodyIsColumn ? document.body : null);
+    // A body with no side padding (/rides: the .wrap column pads itself)
+    // gave the bar no gutter, so the wordmark and Sign in sat on the screen
+    // edges. Borrow the column's own padding in that case, 16px at minimum.
+    inner.style.boxSizing = 'border-box';
     function syncWidth() {
+      // Checked on every resize: a page's body padding can change by width.
+      var bodyPadless = !bodyIsColumn && !parseFloat(bp.paddingLeft || '0') && !parseFloat(bp.paddingRight || '0');
+      if (bodyPadless) {
+        var cs = col && col !== document.body ? window.getComputedStyle(col) : null;
+        inner.style.paddingLeft = Math.max(16, cs ? parseFloat(cs.paddingLeft) || 0 : 0) + 'px';
+        inner.style.paddingRight = Math.max(16, cs ? parseFloat(cs.paddingRight) || 0 : 0) + 'px';
+      } else {
+        inner.style.paddingLeft = '';
+        inner.style.paddingRight = '';
+      }
       if (!col) return;
       var mw = window.getComputedStyle(col).maxWidth;
       inner.style.maxWidth = (mw && mw !== 'none') ? mw : '1180px';
@@ -284,6 +400,9 @@
     bar._ssCleanup = function () {
       window.removeEventListener('resize', syncWidth);
       window.removeEventListener('resize', placeColumn);
+      window.removeEventListener('resize', placeBar);
+      if (onDocClick) document.removeEventListener('click', onDocClick);
+      if (onDocKey) document.removeEventListener('keydown', onDocKey);
     };
 
     // On a phone the strip starts scrolled to "Trips", so the tab you are

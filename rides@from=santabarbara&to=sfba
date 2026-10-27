@@ -71,68 +71,109 @@ fbq('track','PageView');
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
 <style>
+  /* Color tokens + light theme (2026-10-12, Justin approved): the light set
+     follows the phone's or computer's own setting. Teal fills (--teal) are
+     buttons; --link is teal TEXT for things you can tap. Same palette as
+     /ride and /book; --ssbar-* / --ssmenu-* theme the shared header. */
+  :root{--bg:#0E0E10;--card:#161619;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--text:#fff;--text2:#e8e8ee;--sub:#bbb;--sub2:#b9b9c6;--cap:#8a8a92;--faint:#666;--foot:#999;--link:#00D4C8;--teal-soft:rgba(0,212,200,.14);--teal-line:rgba(0,212,200,.6);--teal-hover:rgba(0,212,200,.4);--pill:rgba(255,255,255,.07);--pilltext:#cfcfcf;--chiptext:#d7d7de;--input:#101014;--gold:#FFD75A;--okmsg:#9fe8e2;--shadow:rgba(0,0,0,.5);--chipon:#00D4C8;--soldout:#8a8a92;color-scheme:dark}
+  @media (prefers-color-scheme: light){:root{--bg:#F5F6F5;--card:#FFFFFF;--line:rgba(18,22,22,.10);--line2:rgba(18,22,22,.18);--text:#121416;--text2:#23272A;--sub:#4B5357;--sub2:#4B5357;--cap:#687176;--faint:#687176;--foot:#4B5357;--link:#007C76;--teal-soft:rgba(0,168,159,.12);--teal-line:rgba(0,124,118,.55);--teal-hover:rgba(0,124,118,.45);--pill:rgba(18,22,22,.06);--pilltext:#3A4246;--chiptext:#3A4246;--input:#FFFFFF;--gold:#8A5A00;--okmsg:#00665F;--shadow:rgba(0,0,0,.12);--chipon:#00665F;--soldout:#4B5357;color-scheme:light;
+    --ssbar-bg:rgba(255,255,255,0.9);--ssbar-line:rgba(18,22,22,0.10);--ssbar-tab:#5B6368;--ssbar-strong:#121416;--ssbar-signin:#23272A;--ssbar-btnline:#D8DCDB;--ssbar-panel:#FFFFFF;--ssbar-hover:rgba(18,22,22,0.06);--ssbar-shadow:rgba(0,0,0,0.12);--ssbar-eat:#00A89F;--ssmenu-btnbg:#EFF1F0;--ssmenu-ini:#007C76;--ssmenu-cap:#687176;--ssmenu-danger:#C62828}}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.5;-webkit-font-smoothing:antialiased}
-  a{color:#00D4C8;text-decoration:none}
+  /* Form controls don't inherit the page font by default (2026-10-12). */
+  button,input,select,textarea{font-family:inherit}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--link);text-decoration:none}
   .wrap{max-width:760px;margin:0 auto;padding:0 22px}
-  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav{border-bottom:1px solid var(--line);padding:18px 0}
   nav .wrap{display:flex;justify-content:space-between;align-items:center}
-  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:var(--link)}
   .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
   /* Signed-in nav extras (2026-08-28): outlined pills beside My trips + the
      avatar. Hidden on narrow screens — the avatar dropdown carries them. */
-  .navghost{color:#00D4C8;border:1px solid rgba(0,212,200,.4);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;margin-right:10px;white-space:nowrap}
-  .navghost:hover{border-color:#00D4C8}
+  .navghost{color:var(--link);border:1px solid var(--teal-hover);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;margin-right:10px;white-space:nowrap}
+  .navghost:hover{border-color:var(--link)}
   @media (max-width:680px){.navghost{display:none}}
   h1{font-size:32px;font-weight:800;letter-spacing:-.5px;margin:30px 0 6px}
-  .sub{color:#bbb;margin-bottom:20px}
+  .sub{color:var(--sub);margin-bottom:20px}
   .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-  .swap{background:#161619;border:1px solid rgba(255,255,255,.14);color:#00D4C8;border-radius:12px;padding:0 14px;display:flex;align-items:center;cursor:pointer;flex:none}
+  .swap{background:var(--card);border:1px solid var(--line2);color:var(--link);border-radius:12px;padding:0 14px;display:flex;align-items:center;cursor:pointer;flex:none}
   /* Search controls (2026-09-16): fields + chips instead of native select /
      date / checkbox widgets. Type scale on this page: 32 h1, 17 card, 16
      body, 14 secondary, 12 captions. */
   .pick{position:relative;display:flex;gap:10px;align-items:stretch;margin-bottom:12px}
-  .field{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:#161619;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 14px;color:#fff;font-family:inherit;cursor:pointer;text-align:left}
-  .field:hover,.field.open{border-color:rgba(0,212,200,.6)}
-  .field .k{font-size:12px;color:#8a8a92}
+  .field{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:10px 14px;color:var(--text);font-family:inherit;cursor:pointer;text-align:left}
+  .field:hover,.field.open{border-color:var(--teal-line)}
+  .field .k{font-size:12px;color:var(--cap)}
   .field .v{font-size:16px;font-weight:700;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .field.set .v{color:#00D4C8}
+  .field.set .v{color:var(--link)}
   .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px;scrollbar-width:none}
   .chips::-webkit-scrollbar{display:none}
-  .chip{flex:none;background:#161619;border:1px solid rgba(255,255,255,.14);color:#d7d7de;border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;line-height:1.2}
-  .chip.on{background:rgba(0,212,200,.14);border-color:rgba(0,212,200,.6);color:#00D4C8}
-  .chip.sep{width:1px;padding:0;margin:6px 2px;background:rgba(255,255,255,.14);border:0;border-radius:0;cursor:default}
-  .morelink{display:inline-block;background:none;border:0;padding:0;margin:0 0 16px;font-family:inherit;font-size:14px;color:#8a8a92;cursor:pointer}
-  .morelink:hover{color:#00D4C8}
+  .chip{flex:none;background:var(--card);border:1px solid var(--line2);color:var(--chiptext);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;line-height:1.2}
+  .chip.on{background:var(--teal-soft);border-color:var(--teal-line);color:var(--chipon)}
+  .chip.sep{width:1px;padding:0;margin:6px 2px;background:var(--line2);border:0;border-radius:0;cursor:default}
+  .morelink{display:inline-block;background:none;border:0;padding:0;margin:0 0 16px;font-family:inherit;font-size:14px;color:var(--cap);cursor:pointer}
+  .morelink:hover{color:var(--link)}
+  /* "Near an address" (2026-10-13): a chip at the end of the chip row on
+     wider screens, where the row has room and the lone link under it looked
+     orphaned. Phones keep the link: their chip row scrolls sideways, so a
+     last chip would sit off-screen. Both toggle the same #addrRow. */
+  .chip.addrchip{display:none}
+  @media(min-width:900px){
+    .chip.addrchip{display:block}
+    body>.wrap>.morelink{display:none}
+  }
   .hiddenctl{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
   .hidden{display:none}
   .filters.hidden{display:none}
-  .picker{position:absolute;top:calc(100% + 6px);left:0;z-index:40;width:min(360px,100%);max-height:60vh;overflow:auto;background:#161619;border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+  .picker{position:absolute;top:calc(100% + 6px);left:0;z-index:40;width:min(360px,100%);max-height:60vh;overflow:auto;background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:10px;box-shadow:0 12px 40px var(--shadow)}
   .picker.right{left:auto;right:0}
-  .picker input{width:100%;background:#0E0E10;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:10px 12px;font-size:16px;font-family:inherit;margin-bottom:6px;outline:none}
-  .picker input:focus{border-color:#00D4C8}
-  .picker .grp{font-size:12px;color:#8a8a92;margin:8px 8px 2px}
-  .picker .opt{display:block;width:100%;text-align:left;background:none;border:0;color:#e8e8ee;font-family:inherit;font-size:16px;padding:9px 8px;border-radius:8px;cursor:pointer}
-  .picker .opt:hover,.picker .opt.on{background:rgba(0,212,200,.12);color:#00D4C8}
+  .picker input{width:100%;background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:10px;padding:10px 12px;font-size:16px;font-family:inherit;margin-bottom:6px;outline:none}
+  .picker input:focus{border-color:var(--link)}
+  .picker .grp{font-size:12px;color:var(--cap);margin:8px 8px 2px}
+  .picker .opt{display:block;width:100%;text-align:left;background:none;border:0;color:var(--text2);font-family:inherit;font-size:16px;padding:9px 8px;border-radius:8px;cursor:pointer}
+  .picker .opt:hover,.picker .opt.on{background:var(--teal-soft);color:var(--link)}
   @media(max-width:680px){.picker,.picker.right{position:fixed;left:16px;right:16px;bottom:16px;top:auto;width:auto;max-height:70vh}}
-  .count{color:#8a8a92;font-size:14px;margin-bottom:12px}
-  .ini{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(0,212,200,.14);color:#00D4C8;font-size:11px;font-weight:800;vertical-align:-5px;margin-right:5px}
-  .ride{display:block;background:#161619;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 18px;margin-bottom:12px;transition:border-color .15s}
-  .ride:hover{border-color:rgba(0,212,200,.4)}
+  .count{color:var(--cap);font-size:14px;margin-bottom:12px}
+  .ini{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--teal-soft);color:var(--link);font-size:11px;font-weight:800;vertical-align:-5px;margin-right:5px}
+  /* Inside a medal/female-badge wrapper the WRAPPER owns the 5px gap, so the
+     initials circle must not add its own (bug check 2026-09-29: the badge sat
+     5px off the circle and the name had a 10px gap). */
+  .avwrap .ini{margin-right:0}
+  .ride{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;transition:border-color .15s}
+  .ride:hover{border-color:var(--teal-hover)}
   .ride .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-  .ride .route{font-size:17px;font-weight:700;color:#fff}
-  .ride .price{font-size:17px;font-weight:800;color:#00D4C8;white-space:nowrap}
-  .ride .price small{color:#8a8a92;font-weight:600;font-size:12px}
-  .ride .meta{color:#bbb;font-size:14px;margin-top:5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+  .ride .route{font-size:17px;font-weight:700;color:var(--text)}
+  /* White, not teal: teal is only for things you can tap (2026-10-12). */
+  .ride .price{font-size:17px;font-weight:800;color:var(--text);white-space:nowrap}
+  .ride .price small{color:var(--cap);font-weight:600;font-size:12px}
+  .ride .meta{color:var(--sub);font-size:14px;margin-top:5px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
   .pill{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px}
-  .pill.inst{background:rgba(0,212,200,.14);color:#00D4C8}
-  .pill.seats{background:rgba(255,255,255,.07);color:#cfcfcf}
-  .star{color:#FFD75A}
-  .empty{background:#161619;border:1px dashed rgba(255,255,255,.14);border-radius:14px;padding:30px;text-align:center;color:#bbb}
+  .pill.inst{background:var(--teal-soft);color:var(--link)}
+  .pill.seats{background:var(--pill);color:var(--pilltext)}
+  .pill.flex{background:var(--pill);color:var(--pilltext)}
+  .star{color:var(--gold)}
+  .empty{background:var(--card);border:1px dashed var(--line2);border-radius:14px;padding:30px;text-align:center;color:var(--sub)}
   .empty a{font-weight:700}
-  .loading{color:#8a8a92;padding:20px 0}
-  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:30px;color:#666;font-size:13px}
-  footer a{color:#999;margin-right:16px}
+  .watch{margin:18px auto 0;max-width:420px;text-align:left}
+  .watch label{display:block;font-size:14px;color:var(--text2);margin-bottom:8px}
+  .watch form{display:flex;gap:8px}
+  .watch input[type=email]{flex:1;min-width:0;padding:11px 12px;border-radius:10px;border:1px solid var(--line2);background:var(--input);color:var(--text);font-size:15px}
+  .watch button{padding:11px 16px;border-radius:10px;border:0;background:#00D4C8;color:#06312e;font-weight:700;font-size:15px;cursor:pointer}
+  .watch .msg{font-size:13px;color:var(--okmsg);margin-top:8px;min-height:18px}
+  .watch .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  .loading{color:var(--cap);padding:20px 0}
+  /* Server-rendered list (api/rides-page.js). Only a browser without
+     JavaScript ever paints it: the script after it removes it at once. */
+  #ssrRides:empty{display:none}
+  #ssrRides h2{font-size:20px;font-weight:800;margin:6px 0 4px}
+  #ssrRides h3{font-size:16px;font-weight:700;margin:18px 0 8px;color:var(--sub2)}
+  #ssrRides p{color:var(--sub);font-size:14px;margin-bottom:12px}
+  .ssr-list{list-style:none}
+  .ssr-list li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:10px;color:var(--sub);font-size:14px}
+  .ssr-list li a{display:block;color:var(--text);font-size:17px;font-weight:700}
+  .ssr-list li b{color:var(--text)}
+  footer{border-top:1px solid var(--line);padding:26px 0;margin-top:30px;color:var(--faint);font-size:13px}
+  footer a{color:var(--foot);margin-right:16px}
   @media(max-width:520px){.ride .top{flex-direction:column;gap:2px}}
   /* Desktop: use the width — two-up ride grid instead of a lonely column. */
   @media(min-width:900px){
@@ -141,6 +182,21 @@ fbq('track','PageView');
     #list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     #list .ride{margin-bottom:0}
     #list .loading,#list .empty{grid-column:1/-1}
+  }
+  /* Wide laptops (2026-10-12, Justin: "still geared more towards mobile
+     vertical"): the title and the From/To search share one band instead of
+     two page-wide fields, and rides run three to a row with the price under
+     the route so each card stays tidy at that width. */
+  @media(min-width:1200px){
+    body>.wrap{max-width:1200px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,620px);column-gap:48px;align-items:end}
+    body>.wrap>*{grid-column:1/-1}
+    body>.wrap>h1{grid-column:1;grid-row:1;font-size:40px;margin-top:36px}
+    body>.wrap>.sub{grid-column:1;grid-row:2;margin-bottom:0}
+    body>.wrap>.pick{grid-column:2;grid-row:1/3;margin-bottom:0}
+    body>.wrap>.chips{margin-top:24px}
+    body>.wrap>.morelink{justify-self:start}
+    #list{grid-template-columns:repeat(3,minmax(0,1fr))}
+    #list .ride .top{flex-direction:column;gap:2px}
   }
 </style>
 </head>
@@ -170,22 +226,28 @@ fbq('track','PageView');
   </div>
   <div class="filters hidden" id="addrRow" style="margin-top:-4px;position:relative">
     <input type="text" id="addrF" placeholder="Near address… (e.g. Caltrain Station, San Jose)" autocomplete="off"
-      style="background:#161619;border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;flex:1;min-width:220px" />
+      style="background:var(--card);border:1px solid var(--line2);color:var(--text);border-radius:10px;padding:11px 14px;font-size:15px;font-family:inherit;flex:1;min-width:220px" />
     <button type="button" id="addrClear" class="swap hidden" title="Clear address" aria-label="Clear address"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-    <div id="addrSugg" class="hidden" style="position:absolute;top:100%;left:0;right:0;z-index:30;background:#161619;border:1px solid rgba(255,255,255,.18);border-radius:10px;margin-top:4px;overflow:hidden"></div>
+    <div id="addrSugg" class="hidden" style="position:absolute;top:100%;left:0;right:0;z-index:30;background:var(--card);border:1px solid var(--line2);border-radius:10px;margin-top:4px;overflow:hidden"></div>
   </div>
   <div class="count" id="count"></div>
   <div id="list"><div class="loading">Loading rides…</div></div>
-  <p id="listFoot" style="display:none;color:#8a8a92;font-size:14px;margin:18px 0 0;">Driving one of these routes? <a href="/post">Post your ride</a>. Need a ride nobody posted? <a href="/requests">Request it</a>.</p>
+  <!-- Server-rendered list (2026-10-07): api/rides-page.js fills this for
+       every visitor so crawlers that never run JavaScript see the rides.
+       The script right after it removes it the moment JS runs, so people only
+       ever see the live list above. -->
+  <section id="ssrRides" aria-label="Upcoming rides"><h2>Upcoming rides from Santa Barbara to SF Bay Area</h2><p>0 upcoming rides with open seats · 4 nearby. Times are Pacific; prices are per seat, all-in.</p><h3>Nearby routes</h3><ul class="ssr-list"><li><a href="/ride?id=625">Northridge → San Carlos</a> <span><time datetime="2026-10-30T11:30:00-07:00">Fri, Oct 30 · 11:30 AM PT</time> · 3 seats left · <b>$42</b> a seat, all-in · Driver: Derek</span></li><li><a href="/ride?id=651">Los Angeles → San Francisco</a> <span><time datetime="2026-10-30T07:00:00-07:00">Fri, Oct 30 · 7:00 AM PT</time> · 4 seats left · <b>$57.75</b> a seat, all-in · Driver: Edson</span></li><li><a href="/ride?id=624">Los Angeles → Pleasanton</a> <span><time datetime="2026-11-02T12:00:00-08:00">Mon, Nov 2 · 12:00 PM PT</time> · Flexible, half a day · 4 seats left · <b>$42</b> a seat, all-in · Driver: Jaimin</span></li><li><a href="/ride?id=655">Los Angeles → Redwood City</a> <span><time datetime="2026-11-02T16:00:00-08:00">Mon, Nov 2 · 4:00 PM PT</time> · 3 seats left · <b>$42</b> a seat, all-in · Driver: Jonathan</span></li></ul></section>
+  <script>(function(){var s=document.getElementById('ssrRides');if(s&&s.parentNode)s.parentNode.removeChild(s);})();</script>
+  <p id="listFoot" style="display:none;color:var(--cap);font-size:14px;margin:18px 0 0;">Driving one of these routes? <a href="/post">Post your ride</a>. Need a ride nobody posted? <a href="/requests">Request it</a>.</p>
 </div>
 
 <!-- App store buttons (ss-store-badges) -->
-<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;">
   <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
   <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=rides" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
   <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=rides" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
 </div>
-<footer><div class="wrap"><a href="/">Home</a><a href="/routes">Routes</a><a href="/drive">Drive</a><a href="/privacy">Privacy</a><br><br>© 2026 Seat Sherpa</div></footer>
+<footer><div class="wrap"><a href="/">Home</a><a href="/routes">Routes</a><a href="/drive">Drive</a><a href="/ai">Use in your AI</a><a href="/privacy">Privacy</a><br><br>© 2026 Seat Sherpa</div></footer>
 <script>
 (function(){
   var SUPA='https://vmfmbntacifqoqxqxgsk.supabase.co';
@@ -244,17 +306,31 @@ fbq('track','PageView');
   // legPrice (2026-09-08): when the search matched a leg the driver priced
   // (Santa Barbara → LA on a San Jose → LA ride), that is the seat basis —
   // public-rides already min'd it against the seat the way checkout bills.
-  function allIn(r){var base=(typeof r.legPrice==='number')?r.legPrice:r.minPrice;var b=(typeof r.serviceFeeBps==='number')?r.serviceFeeBps:500;var minC=(typeof r.serviceFeeMinCents==='number')?r.serviceFeeMinCents:0;var bk=(typeof r.bookingFeeCents==='number'?r.bookingFeeCents:0)/100;var fee=Math.max(Math.floor(base*100*b/10000),minC);/* 0256: $2 floor on rides posted after the cutoff */return (base+fee/100+bk).toFixed(2);}
+  function allIn(r){var base=(typeof r.legPrice==='number')?r.legPrice:r.minPrice;var b=(typeof r.serviceFeeBps==='number')?r.serviceFeeBps:500;var minC=(typeof r.serviceFeeMinCents==='number')?r.serviceFeeMinCents:0;var bk=(typeof r.bookingFeeCents==='number'?r.bookingFeeCents:0)/100;var fee=Math.max(Math.floor(base*100*b/10000),minC);/* 0256: $2 floor on rides posted after the cutoff */return (base+fee/100+bk).toFixed(2).split('.00').join('');}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  // Flexible departure chip (0326); exact-time rides get nothing. Same words
+  // as the ride page.
+  function flexLabel(n){n=Number(n)||0;return n===60?'Flexible, about 1 h':n===120?'Flexible, about 2 h':n===720?'Flexible, half a day':n===1440?'Flexible, about a day':'';}
   // lucide "medal" (v1.14.0, ISC), the exact glyph components/ride-card.tsx
   // draws in the app, so the medal reads the same on both surfaces.
   var MEDAL_PATHS='<path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/><path d="M8 7h8"/><circle cx="12" cy="17" r="5"/><path d="M12 18v-2h-.5"/>';
   function card(r){
     var f=M[r.fromDest]||{n:r.fromDest,e:''}, t=M[r.toDest]||{n:r.toDest,e:''};
     var fromLabel=r.fromArea||f.n, toLabel=r.toArea||t.n;
+    // A rider boarding at a stop sees their own trip as the title (2026-10-07):
+    // "Los Angeles → San Diego", never the town the car started from (standing
+    // rule for open stretches; the full route stays on the ride page).
+    if(r.leg&&r.leg.board&&r.leg.board.id!=='origin'){
+      fromLabel=r.leg.board.name||fromLabel;
+      if(r.leg.alight&&r.leg.alight.id!=='end')toLabel=r.leg.alight.name||toLabel;
+      // Stop names carry no state; drop it from the other end so both match.
+      if(!/,\s*[A-Z]{2}$/.test(fromLabel))toLabel=String(toLabel||'').replace(/,\s*[A-Z]{2}$/,'');
+    }
     // Same state on both ends ("Canoga Park, CA → Los Angeles, CA") reads once.
     var st=/,\s*([A-Z]{2})$/, mf=st.exec(fromLabel||''), mt=st.exec(toLabel||'');
-    if(mf&&mt&&mf[1]===mt[1]){fromLabel=fromLabel.replace(st,'');toLabel=toLabel.replace(st,'');}
+    // 2026-10-12: every ride is in CA or NV, so the card drops the state on
+    // both ends, not just when they match (the ride page title does too).
+    if(mf||mt){fromLabel=String(fromLabel||'').replace(st,'');toLabel=String(toLabel||'').replace(st,'');}
     // Just the id. from/to/date/time/price/web were painted-before-fetch
     // hints that ride.html stopped reading long ago, and they turned every
     // copied address into a 180-character wall that wrapped to three lines
@@ -272,18 +348,25 @@ fbq('track','PageView');
     // stars (see loadPreferred); the title carries the meaning for screen
     // readers and hover.
     if(preferredRideIds[String(r.id)]){
-      var medal='<span title="You rated this driver 5 stars" style="position:absolute;top:-6px;right:-6px;width:14px;height:14px;border-radius:50%;background:#0E0E10;border:1px solid #FFD60A;display:flex;align-items:center;justify-content:center;">'
+      var medal='<span title="You rated this driver 5 stars" style="position:absolute;top:-6px;right:-6px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:1px solid #FFD60A;display:flex;align-items:center;justify-content:center;">'
         +'<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#00D4C8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
         +MEDAL_PATHS+'</svg></span>';
       // The medal sits on the photo or on the initials, same as the app.
-      dAvatar='<span style="position:relative;display:inline-block;margin-right:5px;">'+dAvatar.replace('margin-right:5px;','')+medal+'</span>';
+      dAvatar='<span class="avwrap" style="position:relative;display:inline-block;margin-right:5px;">'+dAvatar.replace('margin-right:5px;','')+medal+'</span>';
+    }
+    // Female-driver badge (2026-09-24): the pink ♀ ring the app has always
+    // drawn bottom-right of the avatar, now on the website too. The feed
+    // sends only a boolean for "female"; nothing else about gender is public.
+    if(r.driverFemale===true){
+      var fem='<span title="Female driver" aria-label="Female driver" style="position:absolute;bottom:-4px;right:-4px;width:13px;height:13px;border-radius:50%;background:#FF6B9D;border:1px solid var(--card);color:#fff;font-size:9px;line-height:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">&#9792;</span>';
+      dAvatar='<span class="avwrap" style="position:relative;display:inline-block;margin-right:5px;">'+dAvatar.replace('margin-right:5px;','')+fem+'</span>';
     }
     var dRating=r.driverRating
-      ?(' <span class="star">★</span> '+Number(r.driverRating).toFixed(1))
+      ?(' <span class="star">★</span> '+(Math.floor(Math.round(Number(r.driverRating)*1000)/100)/10).toFixed(1))
       :'';
     var dTrips=(typeof r.driverTrips==='number'&&r.driverTrips>0)?(' · '+r.driverTrips+' trip'+(r.driverTrips===1?'':'s')):'';
     var driver=r.driverFirst?(dAvatar+esc(r.driverFirst)+dRating+dTrips):'';
-    var stops=(r.stops&&r.stops.length)?'<div class="meta" style="color:#00D4C8;">Also stops in '+r.stops.map(esc).join(' · ')+'</div>':'';
+    var stops=(r.stops&&r.stops.length)?'<div class="meta">Also stops in '+r.stops.map(esc).join(' · ')+'</div>':'';
     // Searched-leg line (2026-09-08): the rider asked for Santa Barbara → LA
     // and this ride serves that pair, so lead with THEIR leg and its price
     // status instead of the generic stop list. The stop ids ride along on the
@@ -291,8 +374,19 @@ fbq('track','PageView');
     // clicked must be the price the next page shows.
     var leg='';
     if(r.leg){
-      leg='<div class="meta" style="color:#00D4C8;">Your leg: '+esc(r.leg.board.name)+' → '+esc(r.leg.alight.name)
-        +(r.leg.priced?' · priced by the driver for this leg':' · full-ride price, this leg is not priced separately')+'</div>';
+      // Open stretch of a ride sold out from its start (leg-aware seats,
+      // 2026-10-05): the card is "Los Angeles → San Diego" in its own right.
+      // It no longer names where the full ride starts (bug check 2026-10-06,
+      // standing rule: stretch copy never describes the trip before the
+      // boarding stop).
+      leg=r.openLeg
+        ?'<div class="meta">Seats open from '+esc(r.leg.board.name)
+          +(r.leg.priced?' · priced by the driver for this leg':'')+'</div>'
+        :(r.leg.board.id!=='origin'
+          // The title already is the rider's leg (see card()); just the price note.
+          ?'<div class="meta">'+(r.leg.priced?'Priced by the driver for this leg':'Full-ride price, this leg is not priced separately')+'</div>'
+          :'<div class="meta">Your leg: '+esc(r.leg.board.name)+' → '+esc(r.leg.alight.name)
+            +(r.leg.priced?' · priced by the driver for this leg':' · full-ride price, this leg is not priced separately')+'</div>');
       if(r.leg.board.id!=='origin') link+='&board='+encodeURIComponent(r.leg.board.id);
       if(r.leg.alight.id!=='end') link+='&alight='+encodeURIComponent(r.leg.alight.id);
     }
@@ -303,18 +397,20 @@ fbq('track','PageView');
     // own departure stays on the detail page.
     var when=fmt(r.depDate,r.depTime);
     if(r.leg&&r.leg.board&&r.leg.board.eta&&r.leg.board.id!=='origin'){
-      when=fmt(r.leg.board.etaDate||r.depDate,r.leg.board.eta)+' <small style="color:#8a8a92;">est. pickup, '+esc(r.leg.board.name)+'</small>';
+      when=fmt(r.leg.board.etaDate||r.depDate,r.leg.board.eta)+' <small style="color:var(--cap);">est. pickup, '+esc(r.leg.board.name)+'</small>';
     }
     return '<a class="ride" href="'+link+'">'
       +'<div class="top"><div class="route">'+esc(fromLabel)+' → '+esc(toLabel)+'</div>'
-      +(r.soldOut
-        ?'<div class="price" style="color:#8a8a92;">$'+(allIn(r))+' <small>/seat</small></div></div>'
-        :'<div class="price">$'+(allIn(r))+' <small>/seat all-in</small></div></div>')
+      // Same "/seat all-in" label sold out or not (2026-10-13): allIn() is the
+      // all-in price either way, and the sold-out card read "/seat" as if it
+      // were the bare seat price. The grey colour already says sold out.
+      +'<div class="price"'+(r.soldOut?' style="color:var(--cap);"':'')+'>$'+(allIn(r))+' <small>/seat all-in</small></div></div>'
       +(r.leg?leg:stops)
       +'<div class="meta"><span>'+when+'</span>'
+      +(flexLabel(r.departFlexMinutes)?'<span class="pill flex">'+esc(flexLabel(r.departFlexMinutes))+'</span>':'')
       +(r.instant&&!r.soldOut?'<span class="pill inst">Instant book</span>':'')
       +(r.soldOut
-        ?'<span class="pill seats" style="color:#8a8a92;">Sold out</span>'
+        ?'<span class="pill seats" style="color:var(--soldout);">Sold out</span>'
         :'<span class="pill seats">'+r.seatsLeft+' seat'+(r.seatsLeft===1?'':'s')+' left</span>')
       +'<span>'+driver+'</span></div></a>';
   }
@@ -351,9 +447,52 @@ fbq('track','PageView');
     }
     if(document.getElementById('availF').checked) out=out.filter(function(r){ return !r.soldOut; });
     // Sort control removed (Justin, 2026-08-28) — the list keeps the
-    // server's soonest-first order.
-    return out;
+    // server's soonest-first order, now with bookable rides first (2026-10-13):
+    // 8 of 26 cards were sold out and scattered through the list, so a rider
+    // scrolled past them to find a seat. Sold-out rides stay listed, after the
+    // open ones, each group still soonest-first. An open stretch of a full
+    // ride (leg-aware seats) arrives with soldOut false, so it counts as open.
+    return out.filter(function(r){ return !r.soldOut; }).concat(out.filter(function(r){ return r.soldOut; }));
   }
+  // "Email me when a ride posts" (2026-10-11): a logged-out searcher who found
+  // nothing used to leave with nothing. 441 of 1,621 anonymous searches in
+  // the previous 30 days came back empty. route-watch stores the address
+  // (no account); notify-route-watchers emails once per matching ride.
+  function watchBox(){
+    if(!fromS.value||!toS.value) return '';
+    return '<div class="watch"><label for="watchEmail">Get an email the moment a driver posts this route:</label>'
+      + '<form id="watchForm" novalidate><input type="email" id="watchEmail" placeholder="you@example.com" autocomplete="email" required>'
+      + '<input type="text" id="watchHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">'
+      + '<button type="submit">Email me</button></form><div class="msg" id="watchMsg"></div></div>';
+  }
+  function wireWatch(){
+    var f=document.getElementById('watchForm'); if(!f) return;
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var email=(document.getElementById('watchEmail').value||'').trim();
+      var msg=document.getElementById('watchMsg');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ msg.textContent='Enter a valid email address.'; return; }
+      var btn=f.querySelector('button'); btn.disabled=true; msg.textContent='';
+      fetch(SUPA+'/functions/v1/route-watch',{method:'POST',headers:{'Content-Type':'application/json',apikey:ANON},body:JSON.stringify({email:email,from:fromS.value,to:toS.value,date:document.getElementById('dateF').value||null,hp:document.getElementById('watchHp').value||''})})
+        .then(function(r){ return r.json().then(function(j){ return {ok:r.ok,j:j}; }); })
+        .then(function(x){
+          if(x.ok&&x.j&&x.j.ok){ msg.textContent='Done. We\'ll email you the moment a ride posts on this route.'; f.querySelector('input[type=email]').disabled=true; }
+          else { msg.textContent=(x.j&&x.j.error)||'Could not save that. Try again.'; btn.disabled=false; }
+        })
+        .catch(function(){ msg.textContent='Could not save that. Try again.'; btn.disabled=false; });
+    });
+  }
+  // The stop link in every watch email lands here (never a GET that mutates:
+  // mail scanners follow links).
+  window.addEventListener('load',function(){
+    try{
+      var t=new URLSearchParams(location.search).get('unwatch');
+      if(!t||!/^[0-9a-f]{32}$/i.test(t)) return;
+      fetch(SUPA+'/functions/v1/route-watch',{method:'POST',headers:{'Content-Type':'application/json',apikey:ANON},body:JSON.stringify({unwatch:t})})
+        .then(function(){ var n=document.createElement('div'); n.className='empty'; n.style.margin='12px 0'; n.textContent='Done. No more emails for that route.'; var host=document.getElementById('list'); if(host&&host.parentNode) host.parentNode.insertBefore(n,host); })
+        .catch(function(){});
+    }catch(_){}
+  });
   function renderRides(){
     var rides=applyRefinements(allRides);
     if(!rides.length){
@@ -378,15 +517,21 @@ fbq('track','PageView');
       list.innerHTML = webMode
         ? '<div class="empty">No rides match that yet.<br><br>'
           + checkBack
-          + '<a href="/requests">Tell drivers you need this ride</a><br>'
+          + watchBox()
+          + '<br><a href="/requests">Tell drivers you need this ride</a><br>'
           + 'Drivers on this route get notified, and you get an email the moment one posts it.<br><br>'
           + 'Driving this route yourself? <a href="/post">Post the ride</a>.</div>'
         : '<div class="empty">No rides match that yet.<br><br>' + checkBack + 'Be the first: <a href="/#get">post or request one in the app</a>, or try different cities.</div>';
       countEl.textContent='';
+      wireWatch();
       return;
     }
+    // Count CARDS, matching what is on screen (Justin, 2026-10-13: "brwose
+    // rides should say 27 upcoming rides" when 27 cards showed under "26").
+    // This reverses the 2026-10-06 rides-not-cards rule: an open stretch of a
+    // full ride is its own bookable card, so it counts as one.
     var exactN=rides.filter(function(r){return !r.adjacent;}).length;
-    var nearN=rides.length-exactN;
+    var nearN=rides.filter(function(r){return r.adjacent;}).length;
     countEl.textContent=exactN+' upcoming ride'+(exactN===1?'':'s')+(nearN?' · '+nearN+' nearby':'');
     // The post-a-ride and request prompts used to run on from this count as
     // a line of arrow links (2026-09-16: "growth clutter"). They live in one
@@ -399,7 +544,7 @@ fbq('track','PageView');
     var near=rides.filter(function(r){return r.adjacent;});
     var html=exact.map(card).join('');
     if(near.length){
-      html+='<div style="grid-column:1/-1;color:#b9b9c6;font-size:16px;font-weight:700;margin:18px 0 4px;">Nearby routes</div>';
+      html+='<div style="grid-column:1/-1;color:var(--sub2);font-size:16px;font-weight:700;margin:18px 0 4px;">Nearby routes</div>';
       html+=near.map(card).join('');
     }
     list.innerHTML=html;
@@ -483,6 +628,10 @@ fbq('track','PageView');
       var sep=document.createElement('span');sep.className='chip sep';host.appendChild(sep);
       if(dv)host.appendChild(chip('Flexible, 3 days either way',flexF.checked,function(){flexF.checked=!flexF.checked;flexF.dispatchEvent(new Event('change',{bubbles:true}));renderChips();}));
       host.appendChild(chip('Open seats',availF.checked,function(){availF.checked=!availF.checked;availF.dispatchEvent(new Event('change',{bubbles:true}));renderChips();}));
+      // Laptop twin of the "Near an address" link (CSS shows one or the
+      // other). On while the address row is open or an address is applied.
+      var addrOn=!document.getElementById('addrRow').classList.contains('hidden')||!!addrCoords;
+      host.appendChild(chip('Near an address',addrOn,function(){document.getElementById('addrToggle').click();renderChips();},'addrchip'));
     }
     dateF.addEventListener('change',renderChips);
     renderChips();
@@ -519,7 +668,7 @@ fbq('track','PageView');
               var b=document.createElement('button');
               b.type='button';
               b.textContent=f.place_name;
-              b.style.cssText='display:block;width:100%;text-align:left;background:none;border:0;color:#e8e8ee;font-family:inherit;font-size:14px;padding:10px 14px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.06)';
+              b.style.cssText='display:block;width:100%;text-align:left;background:none;border:0;color:var(--text2);font-family:inherit;font-size:14px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--line)';
               b.addEventListener('click',function(){
                 inp.value=f.place_name;
                 addrCoords={lat:f.center[1],lng:f.center[0]};
@@ -617,14 +766,15 @@ fbq('track','PageView');
 <script src="/js/ss-menu.js"></script>
 <script src="/js/ss-appbar.js"></script>
 <script>
-// /rides is BOTH a public marketing page and the signed-in marketplace, so
-// the header depends on who's looking:
-//   signed out — keep the marketing nav (wordmark + "Sign in")
-//   signed in  — swap in the shared console app bar, so browsing rides sits
-//                in the same chrome as Trips/Driving/Messages instead of
-//                dropping you out of the console (Justin, 2026-08-28).
+// /rides is BOTH a public marketing page and the signed-in marketplace.
+// Signed in, the shared app bar carries the console tabs, so browsing rides
+// sits in the same chrome as Trips/Driving/Messages (Justin, 2026-08-28).
+// 2026-10-12: signed-out visitors get the shared bar too, so /rides, the ride
+// page and the booking page carry ONE header (it used to switch from logo +
+// "Sign in" here to logo + tabs + "+" one tap later). The marketing <nav>
+// stays in the markup as the no-JS fallback.
 try {
-  if (window.SS_APPBAR && SS_APPBAR.signedIn()) {
+  if (window.SS_APPBAR) {
     SS_APPBAR.mount({
       active: 'rides',
       // Replaces the marketing <nav> outright.

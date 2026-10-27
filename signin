@@ -13,7 +13,8 @@
        offer both dashboards; roles were never separate accounts. -->
   <meta name="robots" content="noindex, nofollow" />
   <meta name="referrer" content="no-referrer" />
-  <meta name="theme-color" content="#0E0E10" />
+  <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#F5F6F5" media="(prefers-color-scheme: light)" />
   <!-- Google Ads sign-up conversion ONLY (bug sweep, 2026-09-11). This page
        mints real accounts and reported nothing, so the Web sign-up action was
        undercounting while the driver waitlist was overcounting. Google tag
@@ -42,11 +43,49 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Theme tokens (2026-10-12). Dark is the default and every dark value is
+       the literal this page used before tokens (placeholders included: the
+       browser's own grey, pinned so declaring the color scheme cannot move
+       it). Light follows the system setting with the shared palette. */
+    :root {
+      color-scheme: dark;
+      --bg: #0E0E10; --text: #fff; --sub: #8a8a92; --label: #8a8a92; --label-2: #adadb8; --legal: #8a8a92;
+      --field: #17171d; --field-line: #2a2a33; --ph: #757575; --focus-line: rgba(0,212,200,0.5);
+      --teal-fill: #00D4C8; --on-teal: #04201e; --link: #00D4C8;
+      --err: #ff8a8a; --ok: #00D4C8;
+      --card: #17171d; --card-line: #2a2a33; --card-hover: rgba(0,212,200,0.5); --card-shadow: none;
+      --wm-eat: #00D4C8; --wm-sherpa: #ffffff;
+      --panel: #141416; --panel-line: rgba(255,255,255,0.08); --panel-shadow: none;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --bg: #F5F6F5; --text: #121416; --sub: #4B5357; --label: #4B5357; --label-2: #4B5357; --legal: #687176;
+        --field: #FFFFFF; --field-line: rgba(18,22,22,0.18); --ph: #687176; --focus-line: rgba(0,124,118,0.45);
+        --link: #007C76;
+        --err: #C62828; --ok: #1E7B3A;
+        --card: #FFFFFF; --card-line: rgba(18,22,22,0.10); --card-hover: rgba(0,124,118,0.45);
+        --card-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        --wm-eat: #00A89F; --wm-sherpa: #121416;
+        --panel: #FFFFFF; --panel-line: rgba(18,22,22,0.10);
+        --panel-shadow: 0 1px 2px rgba(0,0,0,0.12), 0 12px 32px -12px rgba(0,0,0,0.12);
+      }
+      /* Shared Google / Apple block (js/ss-oauth.js) brings its own dark
+         colors; light-only overrides here, dark keeps the module's styles.
+         The Google button is already white and the Apple button stays black. */
+      #oauthMount .ss-oauth-msg { color: var(--sub); }
+      #oauthMount .ss-oauth-msg.err { color: var(--err); }
+      #oauthMount .ss-oauth-or { color: var(--legal); }
+      #oauthMount .ss-oauth-or::before, #oauthMount .ss-oauth-or::after { background: var(--field-line); }
+      /* ss-session.js paints the promo-code result inline in dark colors. */
+      #webCodeMsg.msg.ok { color: var(--ok) !important; }
+      #webCodeMsg.msg.err { color: var(--err) !important; }
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       display: flex;
@@ -59,45 +98,56 @@
     @media (min-width: 720px) { .wrap { max-width: 500px; } }
     .wordmark { height: 34px; width: auto; margin: 0 auto 28px; display: block; }
     h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
-    .sub { font-size: 15px; color: #8a8a92; margin-bottom: 24px; line-height: 1.5; }
+    .sub { font-size: 15px; color: var(--sub); margin-bottom: 24px; line-height: 1.5; }
     .hidden { display: none !important; }
-    label { display: block; text-align: left; font-size: 13px; font-weight: 600; color: #8a8a92; margin: 0 0 6px 2px; }
+    label { display: block; text-align: left; font-size: 13px; font-weight: 600; color: var(--label); margin: 0 0 6px 2px; }
     input {
       width: 100%; padding: 14px 16px; border-radius: 12px;
-      border: 1px solid #2a2a33; background: #17171d; color: #fff;
+      border: 1px solid var(--field-line); background: var(--field); color: var(--text);
       font-size: 16px; font-family: inherit; outline: none; margin-bottom: 14px;
     }
-    input:focus { border-color: rgba(0,212,200,0.5); }
+    input::placeholder { color: var(--ph); }
+    input:focus { border-color: var(--focus-line); }
     .primary {
       width: 100%; padding: 15px; border-radius: 12px; border: 0;
-      background: #00D4C8; color: #04201e; font-size: 16px; font-weight: 700;
+      background: var(--teal-fill); color: var(--on-teal); font-size: 16px; font-weight: 700;
       font-family: inherit; cursor: pointer;
     }
     .primary:disabled { opacity: 0.4; cursor: default; }
-    .linkbtn { background: none; border: 0; color: #00D4C8; font-family: inherit; font-size: 14px; cursor: pointer; margin-top: 14px; }
+    .linkbtn { background: none; border: 0; color: var(--link); font-family: inherit; font-size: 14px; cursor: pointer; margin-top: 14px; }
     .msg { font-size: 14px; margin-top: 12px; line-height: 1.5; }
-    .msg.err { color: #ff8a8a; }
-    .msg.ok { color: #00D4C8; }
+    .msg.err { color: var(--err); }
+    .msg.ok { color: var(--ok); }
     .choice {
       display: block;
-      background: #17171d;
-      border: 1px solid #2a2a33;
+      background: var(--card);
+      border: 1px solid var(--card-line);
       border-radius: 14px;
       padding: 20px 22px;
       margin-bottom: 14px;
       text-align: left;
       text-decoration: none;
       color: inherit;
+      box-shadow: var(--card-shadow);
       transition: border-color 0.15s ease;
     }
-    .choice:hover { border-color: rgba(0,212,200,0.5); }
+    .choice:hover { border-color: var(--card-hover); }
     .choice .t { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-    .choice .d { font-size: 13.5px; color: #8a8a92; line-height: 1.5; }
-    .choice .t .arrow { color: #00D4C8; }
-    .whoami { font-size: 13.5px; color: #8a8a92; margin-bottom: 20px; }
-    .whoami button { background: none; border: 0; color: #00D4C8; font-family: inherit; font-size: 13.5px; cursor: pointer; }
-    .foot { margin-top: 26px; font-size: 13.5px; color: #8a8a92; line-height: 1.7; }
-    .foot a { color: #00D4C8; text-decoration: none; }
+    .choice .d { font-size: 13.5px; color: var(--sub); line-height: 1.5; }
+    .choice .t .arrow { color: var(--link); }
+    .whoami { font-size: 13.5px; color: var(--sub); margin-bottom: 20px; }
+    .whoami button { background: none; border: 0; color: var(--link); font-family: inherit; font-size: 13.5px; cursor: pointer; }
+    .foot { margin-top: 26px; font-size: 13.5px; color: var(--sub); line-height: 1.7; }
+    .foot a { color: var(--link); text-decoration: none; }
+
+    /* Laptop (2026-10-12): the same narrow column, set on a card so it reads
+       as one task in the middle of a wide screen rather than loose text. */
+    @media (min-width: 960px) {
+      .wrap {
+        background: var(--panel); border: 1px solid var(--panel-line); border-radius: 20px;
+        padding: 40px 44px 34px; box-shadow: var(--panel-shadow);
+      }
+    }
   </style>
 </head>
 <body>
@@ -109,8 +159,8 @@
           <path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/>
           <path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/>
         </g>
-        <text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text>
-        <text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text>
+        <text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8" style="fill:var(--wm-eat)">eat</text>
+        <text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff" style="fill:var(--wm-sherpa)">Sherpa</text>
       </svg>
     </a>
 
@@ -122,7 +172,7 @@
       <label for="email">Email</label>
       <input id="email" type="email" autocomplete="email" placeholder="you@example.com" />
       <button class="primary" id="sendBtn">Email me a code</button>
-      <p data-tos-notice style="color:#8a8a92;font-size:12px;margin:10px 0 0;">By continuing you agree to the <a href="/terms" style="color:#00D4C8;text-decoration:none;">Terms of Service</a> and <a href="/privacy" style="color:#00D4C8;text-decoration:none;">Privacy Policy</a>.</p>
+      <p data-tos-notice style="color:var(--legal);font-size:12px;margin:10px 0 0;">By continuing you agree to the <a href="/terms" style="color:var(--link);text-decoration:none;">Terms of Service</a> and <a href="/privacy" style="color:var(--link);text-decoration:none;">Privacy Policy</a>.</p>
       <div class="msg err hidden" id="emailMsg"></div>
     </div>
 
@@ -154,7 +204,7 @@
       <!-- Typed code (2026-09-03): the web's first place to enter an invite or
            promo code. Same applier as checkout and the account page. -->
       <div style="margin:18px 0 6px;">
-        <label for="webCode" style="display:block;font-size:13px;color:#adadb8;margin-bottom:6px;">Have an invite or promo code?</label>
+        <label for="webCode" style="display:block;font-size:13px;color:var(--label-2);margin-bottom:6px;">Have an invite or promo code?</label>
         <div style="display:flex;gap:8px;">
           <input id="webCode" placeholder="e.g. TAYLOR5" autocapitalize="characters" autocomplete="off" maxlength="12" style="flex:1;min-width:0;" />
           <button class="primary" id="webCodeBtn" type="button" style="width:auto;padding:0 18px;">Apply</button>
@@ -196,6 +246,13 @@
     const lastRole = () => { try { return localStorage.getItem(ROLE_KEY); } catch (_) { return null; } };
     const setRole = (r) => { try { localStorage.setItem(ROLE_KEY, r); } catch (_) {} };
     const forceChooser = new URLSearchParams(location.search).get('choose') === '1';
+    // ?next=/verify (bug check 2026-09-30): a page that sent someone here to
+    // sign in gets them back. Same-origin paths only; anything else is ignored
+    // and the role routing below runs as before.
+    const nextPath = (() => {
+      const n = new URLSearchParams(location.search).get('next') || '';
+      return /^\/(?!\/)[A-Za-z0-9_\-./?=&%]*$/.test(n) ? n : '';
+    })();
 
     async function enterSignedIn() {
       const session = await S.getSession();
@@ -209,6 +266,8 @@
           ? new Date(session.user.created_at).getTime() : 0;
         if (created && Date.now() - created < 10 * 60 * 1000 && window.ssSignup) window.ssSignup();
       } catch (_) {}
+      // Counted first, then back to where they came from (review 2026-10-02).
+      if (nextPath) { location.replace(nextPath); return true; }
       if (!forceChooser) {
         const r = lastRole();
         if (r === 'driver') { location.replace('/driving'); return true; }

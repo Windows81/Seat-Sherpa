@@ -63,45 +63,90 @@ fbq('track','PageView');
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seat Sherpa — Terms of Service</title>
   <style>
+    /* Theme tokens (2026-10-12). This page was already a light page in both
+       system themes; the dark-mode values below are its original literals
+       (unchanged: white page under the dark header). Light mode moves it onto
+       the shared light palette and themes the header. */
+    :root {
+      --bg: #fff; --text: #1a1a1a; --cap: #666; --link: #00a8a0; --line: #e0e0e0;
+      --callout-bg: #fff7e6; --callout-edge: #f5a623; --toc-bg: #f6f8fa; --toc-link: #1a1a1a;
+      --badge-bg: #00a8a0; --badge-ink: #ffffff;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --bg: #F5F6F5; --text: #121416; --cap: #687176; --link: #007C76; --line: rgba(18,22,22,0.10);
+        --callout-bg: #FFF4DB; --callout-edge: #f5a623; --toc-bg: #FFFFFF; --toc-link: #4B5357;
+        --badge-bg: #00D4C8; --badge-ink: #04201e;
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+      }
+    }
+    html { background: var(--bg); }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       max-width: 720px;
       margin: 40px auto;
       padding: 0 24px;
-      color: #1a1a1a;
+      color: var(--text);
       line-height: 1.6;
     }
     h1 { font-size: 28px; margin-bottom: 8px; }
-    h2 { font-size: 20px; margin-top: 40px; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; }
+    h2 { font-size: 20px; margin-top: 40px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    h2[id], h3[id] { scroll-margin-top: 86px; }
     h3 { font-size: 16px; margin-top: 24px; }
-    .updated { color: #666; font-size: 14px; margin-bottom: 32px; }
-    a { color: #00a8a0; }
+    .updated { color: var(--cap); font-size: 14px; margin-bottom: 32px; }
+    a { color: var(--link); }
     ul { padding-left: 20px; }
     li { margin-bottom: 6px; }
     .keyword { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .formula { margin-left: 24px; font-family: ui-monospace, monospace; }
     .callout {
-      background: #fff7e6;
-      border-left: 4px solid #f5a623;
+      background: var(--callout-bg);
+      border-left: 4px solid var(--callout-edge);
       padding: 12px 16px;
       margin: 16px 0;
       font-size: 14px;
     }
     nav.toc {
-      background: #f6f8fa;
-      border: 1px solid #e0e0e0;
+      background: var(--toc-bg);
+      border: 1px solid var(--line);
       border-radius: 8px;
       padding: 16px 24px;
       margin: 24px 0 32px;
     }
-    nav.toc h3 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+    nav.toc h3 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--cap); }
     nav.toc ol { margin: 0; padding-left: 18px; }
     nav.toc li { margin-bottom: 2px; }
+
+    /* Laptop (2026-10-12): a ~70 character reading column, and from 1100px
+       the contents list moves beside it and stays in view while reading.
+       The body stays the centered column the shared header aligns to (it
+       reads the body's max-width), so the wordmark lines up with the list. */
+    @media (min-width: 960px) {
+      body { max-width: 70ch; }
+    }
+    @media (min-width: 1100px) {
+      body { max-width: calc(276px + 70ch); }
+      body > :not(.ss-bar):not(.toc) { margin-left: 276px; }
+      body > :not(.ss-bar):not(.toc).formula { margin-left: 300px; }
+      body > .ss-store-badges { margin-left: 276px !important; margin-right: 0 !important; max-width: 70ch !important; box-sizing: border-box; }
+      nav.toc {
+        position: fixed; top: 86px; left: calc(50% - 138px - 35ch);
+        width: 220px; max-height: calc(100vh - 110px); overflow-y: auto; font-size: 16px;
+        margin: 0; padding: 0; background: none; border: 0; border-radius: 0;
+      }
+      nav.toc h3 { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; }
+      nav.toc ol { padding-left: 20px; font-size: 14px; line-height: 1.4; color: var(--cap); }
+      nav.toc li { margin-bottom: 8px; }
+      nav.toc a { color: var(--toc-link); text-decoration: none; }
+      nav.toc a:hover { color: var(--link); text-decoration: underline; }
+    }
   </style>
 </head>
 <body>
   <div id="ssAppBar"></div>
   <h1>Terms of Service</h1>
-  <p class="updated">Last updated: September 17, 2026</p>
+  <p class="updated">Last updated: October 23, 2026</p>
 
   <p>
     These Terms of Service ("Terms") govern your use of the Seat Sherpa
@@ -127,6 +172,7 @@ fbq('track','PageView');
       <li><a href="#sms">SMS Verification Program</a></li>
       <li><a href="#liability">Disclaimers &amp; Limitations of Liability</a></li>
       <li><a href="#disputes">Disputes</a></li>
+      <li><a href="#credits">Promotional Credits, Referrals &amp; Promo Codes</a></li>
       <li><a href="#contact">Contact</a></li>
     </ol>
   </nav>
@@ -205,6 +251,10 @@ fbq('track','PageView');
   </p>
   <p>
     Messages sent through the Service may be automatically reviewed for contact details, links, or payment requests that circumvent these Terms. We may contact either party, remove content, decline a booking, or suspend an account as a result. Arrangements made outside the Service are at the users' own risk and are not covered by the protections or support described in these Terms.
+  </p>
+  <h3 id="off-service-payment">3.2 Payment arranged outside the Service</h3>
+  <p>
+    If a passenger and driver who connected through a booking request agree to pay for that trip outside the Service, the passenger authorizes Seat Sherpa to charge the booking fee shown at checkout to the payment method used for the request, and the driver's processing fee for that trip may be deducted from the driver's next reimbursement. We will email both parties before charging and consider any reply received within 48 hours. These amounts never exceed the fees shown at checkout. The trip itself is not covered by the protections or support described in these Terms. If either party takes a trip off the Service after connecting through it, we may also remove any promotional credits, booking-fee waivers, or referral rewards from that account, as described in Section 12.
   </p>
 
   <!-- ───────────────────────────────────────────────────────────────── -->
@@ -319,7 +369,7 @@ fbq('track','PageView');
     subject to a maximum cap calculated by Seat Sherpa for each route. The
     cap is calculated as:
   </p>
-  <p style="margin-left: 24px; font-family: ui-monospace, monospace;">
+  <p class="formula">
     max_per_seat = (trip_distance × IRS_standard_mileage_rate) ÷ max(4, seats_offered)
   </p>
   <p>
@@ -329,23 +379,25 @@ fbq('track','PageView');
     individual seat prices; we only set the maximum permitted.
   </p>
 
-  <h3>6.2 Passenger Processing Fee</h3>
+  <h3>6.2 Passenger Booking Fee</h3>
   <p>
-    Seat Sherpa adds a <strong>processing fee equal to 5%</strong> of the
-    seat contribution to each booking. This fee is added on top of the
+    Seat Sherpa adds a <strong>booking fee equal to 5%</strong> of the
+    seat contribution to each booking, with a <strong>minimum of $2.00 per
+    booking</strong> on rides posted on or after September 6, 2026. This fee is added on top of the
     seat amount and is clearly shown to the passenger as a separate line
     item <strong>before they confirm payment</strong>. The fee covers
     credit card processing, secure payment infrastructure, fraud
     prevention, customer support, and platform operating costs.
   </p>
   <p>
-    Certain bookings also include a <strong>flat booking fee of $0.99</strong>
+    Certain bookings also include a <strong>flat processing fee of $0.99</strong>
     (for example, bookings placed with promotional ride credits or on
-    specially discounted rides). When it applies, the booking fee is always
+    specially discounted rides). When it applies, the processing fee is always
     shown as its own line item in the price breakdown
     <strong>before you confirm payment</strong> &mdash; the total you see at
-    checkout is the total you are charged. Refunds treat the booking fee the
-    same way as the processing fee.
+    checkout is the total you are charged. Refunds treat the processing fee the
+    same way as the booking fee. (These names match the lines on the checkout
+    screen: "Booking fee" and "Processing fee".)
   </p>
 
   <h3>6.3 Driver Processing Fee</h3>
@@ -386,24 +438,34 @@ fbq('track','PageView');
   <!-- ───────────────────────────────────────────────────────────────── -->
   <h2 id="cancellation">7. Cancellations &amp; Refunds</h2>
   <p>
-    Each ride is posted with a cancellation policy chosen by the driver:
+    Every ride posted on or after July 15, 2026 uses the
+    <strong>Standard</strong> cancellation policy, shown on the ride before
+    you book:
   </p>
   <ul>
-    <li>
-      <strong>Free cancellation</strong> — Passenger receives 100% refund
-      if cancelled at least 2 hours before departure. No refund within 2
-      hours.
-    </li>
-    <li>
-      <strong>Moderate</strong> — Passenger receives 100% refund if
-      cancelled at least 48 hours before departure; 50% refund if cancelled
-      between 2 and 48 hours before; no refund within 2 hours.
-    </li>
+    <li>Cancel 24 hours or more before departure: 100% of the seat price refunded.</li>
+    <li>Cancel 2 to 24 hours before departure: 50% of the seat price refunded.</li>
+    <li>Cancel within 2 hours of departure: no refund.</li>
+    <li>The booking fee is not refunded when a passenger cancels.</li>
   </ul>
+  <p>
+    Rides posted before July 15, 2026 carried a policy chosen by the driver
+    (<strong>Free cancellation</strong>: 100% refund at least 2 hours before
+    departure, none within 2 hours; <strong>Moderate</strong>: 100% refund at
+    least 48 hours before, 50% between 2 and 48 hours before, none within 2
+    hours), and those rides keep the policy they were booked under.
+  </p>
   <p>
     When a driver cancels a ride, all passengers receive a
     <strong>100% refund regardless of the policy</strong>, including the
-    passenger processing fee.
+    booking fee.
+  </p>
+  <p>
+    When a driver changes a ride's departure date or time after a
+    passenger booked, that passenger may cancel for a
+    <strong>100% refund, including the booking fee</strong>, at any time up to
+    2 hours before the new departure. Inside those final 2 hours the ride's
+    policy applies as written above.
   </p>
   <p>
     Refunds are issued to the original payment method via Stripe and
@@ -682,7 +744,11 @@ fbq('track','PageView');
     <li>may be modified, paused, or discontinued at any time, and individual
       codes or credits may be revoked where we reasonably believe they were
       obtained or used fraudulently, through duplicate accounts, or contrary
-      to the promotion&rsquo;s stated purpose.</li>
+      to the promotion&rsquo;s stated purpose;</li>
+    <li>may be removed from an account, together with any booking-fee waiver
+      or referral reward, where a user arranges a trip outside the Service
+      after connecting with the other party through it, or otherwise avoids
+      paying through the Service (see Section 3.2).</li>
   </ul>
 
   <!-- ───────────────────────────────────────────────────────────────── -->
@@ -692,17 +758,17 @@ fbq('track','PageView');
     <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a>.
   </p>
 
-  <p style="margin-top: 48px; color: #666; font-size: 13px;">
+  <p style="margin-top: 48px; color: var(--cap); font-size: 13px;">
     These Terms may be updated from time to time. Material changes will be
     communicated through the app or via email. The "Last updated" date at
     the top of this page reflects the most recent revision.
   </p>
 
 <!-- App store buttons (ss-store-badges) -->
-<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<div class="ss-store-badges" style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
-  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=terms" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
-  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=terms" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=terms" style="display:inline-block;background:var(--badge-bg,#00a8a0);color:var(--badge-ink,#ffffff);text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=terms" style="display:inline-block;background:var(--badge-bg,#00a8a0);color:var(--badge-ink,#ffffff);text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
 </div>
 <script src="/js/ss-menu.js"></script>
 <script src="/js/ss-appbar.js"></script>

@@ -64,20 +64,143 @@ fbq('track','PageView');
   <!-- Transactional per-ride page — never index. -->
   <meta name="robots" content="noindex" />
   <meta property="og:title" content="Book a seat on Seat Sherpa" />
-  <meta property="og:description" content="Request a seat on this carpool from your browser. You're only charged if the driver accepts." />
+  <meta property="og:description" content="Request a seat on this carpool from your browser. The seat is only charged if the driver accepts." />
   <meta property="og:image" content="https://seatsherpa.app/icon.png" />
   <meta property="og:type" content="website" />
+  <!-- Browser chrome follows the page theme: light first (first match wins),
+       then the dark default for everyone else. -->
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F6F5" />
   <meta name="theme-color" content="#0E0E10" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Theme tokens (2026-10-12). Dark is the default, and every dark value
+       below is the exact literal this page used before tokens. Light follows
+       the phone's system setting (founder approved) with the ride page's
+       palette. Status colors keep their hue; error and credit text get a
+       darker shade in light so they stay readable on white. */
+    :root {
+      color-scheme: dark;
+      --bg: #0E0E10;                       /* page */
+      --surface: #141416;                  /* cards */
+      --field: #0E0E10;                    /* inputs, selects, Board / Get off */
+      --raised: #1a1a1d;                   /* store badge */
+      --tint: rgba(255,255,255,0.04);      /* "Your pick" panel */
+      --line: rgba(255,255,255,0.08);
+      --line-2: rgba(255,255,255,0.14);
+      --line-3: rgba(255,255,255,0.25);    /* dashed photo buttons, step circles */
+      --line-4: rgba(255,255,255,0.18);    /* muted outline button */
+      --line-5: rgba(255,255,255,0.1);     /* store badge */
+      --spin-track: rgba(255,255,255,0.15);
+      --text: #fff;
+      --text-2: #e5e7eb;
+      --sub: #b9b9c6;
+      --muted: #c0c0d0;
+      --hint: #9a9aa4;
+      --hint-2: #9aa3ad;
+      --policy: #9a9aa8;
+      --profst: #9aa;
+      --cap: #8a8a92;
+      --field-label: #8a8a92;
+      --legal: #666;
+      --legal-link: #888;
+      --disabled: #666;
+      --badge-small: #888;
+      --icon-line: #6b6b78;
+      --drv: #55555e;
+      --car-body: #101014;
+      --car-line: #2a2a33;
+      --car-wheel: #26262e;
+      --car-mirror: #2f2f38;
+      --seat-bg: #0E0E10;
+      --teal: #00D4C8;                     /* links, focus and selected outlines */
+      --teal-fill: #00D4C8;                /* filled buttons, both themes */
+      --on-teal: #04201e;                  /* text on teal fill, both themes */
+      --teal-sel: #0d1f1e;                 /* selected seat, ref code chip */
+      --sel-cap: #8a8a92;                  /* status line on a selected seat */
+      --offer-bg: rgba(0,212,200,0.06);    /* Google photo offer, backup ride offer */
+      --teal-line: rgba(0,212,200,0.45);
+      --teal-line-2: rgba(0,212,200,0.5);
+      --teal-line-3: rgba(0,212,200,0.35);
+      --teal-line-4: rgba(0,212,200,0.25);
+      --refcode-ink: #00D4C8;
+      --err: #ff8a8a;
+      --ok: #4ade80;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --bg: #F5F6F5;
+        --surface: #FFFFFF;
+        --field: #EFF1F0;
+        --raised: #EFF1F0;
+        --tint: #F5F6F5;
+        --line: rgba(18,22,22,0.10);
+        --line-2: rgba(18,22,22,0.18);
+        --line-3: rgba(18,22,22,0.18);
+        --line-4: #D8DCDB;
+        --line-5: rgba(18,22,22,0.10);
+        --spin-track: rgba(18,22,22,0.10);
+        --text: #121416;
+        --text-2: #23272A;
+        --sub: #4B5357;
+        --muted: #23272A;
+        --hint: #687176;
+        --hint-2: #4B5357;
+        --policy: #4B5357;
+        --profst: #687176;
+        --cap: #687176;
+        --field-label: #4B5357;               /* captions fail 4.5:1 on #EFF1F0 */
+        --legal: #687176;
+        --legal-link: #4B5357;
+        --disabled: #8B9397;
+        --badge-small: #4B5357;
+        --icon-line: #8B9397;
+        --drv: #687176;
+        --car-body: #F5F6F5;
+        --car-line: #D8DCDB;
+        --car-wheel: #D8DCDB;
+        --car-mirror: #D8DCDB;
+        --seat-bg: #FFFFFF;
+        --teal: #007C76;
+        --teal-sel: rgba(0,168,159,0.12);
+        --sel-cap: #4B5357;                   /* captions are 4.1:1 on the tint */
+        --offer-bg: #FFFFFF;                  /* teal links are 4.46:1 on the tint */
+        --teal-line: rgba(0,124,118,0.45);
+        --teal-line-2: rgba(0,124,118,0.45);
+        --teal-line-3: rgba(0,124,118,0.45);
+        --teal-line-4: rgba(0,124,118,0.45);
+        --refcode-ink: #121416;               /* teal text on the tint is under 4.5:1 */
+        --err: #C62828;
+        --ok: #1E7B3A;
+        /* Shared header and account menu (js/ss-appbar.js, js/ss-menu.js read
+           these, with dark fallbacks). */
+        --ssbar-bg: rgba(255,255,255,0.9);
+        --ssbar-line: rgba(18,22,22,0.10);
+        --ssbar-tab: #5B6368;
+        --ssbar-strong: #121416;
+        --ssbar-signin: #23272A;
+        --ssbar-btnline: #D8DCDB;
+        --ssbar-panel: #FFFFFF;
+        --ssbar-hover: rgba(18,22,22,0.06);
+        --ssbar-shadow: rgba(0,0,0,0.12);
+        --ssbar-eat: #00A89F;
+        --ssmenu-btnbg: #EFF1F0;
+        --ssmenu-ini: #007C76;
+        --ssmenu-cap: #687176;
+        --ssmenu-danger: #C62828;
+      }
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Form controls don't inherit the page font by default; the book button
+       was rendering in Arial (2026-10-12). */
+    button, input, select, textarea { font-family: inherit; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       display: flex;
@@ -85,7 +208,7 @@ fbq('track','PageView');
       align-items: center;
       padding: 32px 20px 48px;
     }
-    a { color: #00D4C8; text-decoration: none; }
+    a { color: var(--teal); text-decoration: none; }
 
     .wrap { width: 100%; max-width: 440px; }
     /* Desktop: the 440px mobile column reads cramped on a laptop. */
@@ -97,52 +220,52 @@ fbq('track','PageView');
 
     /* Ride summary card (persistent above the step card) */
     .card {
-      background: #141416;
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--surface);
+      border: 1px solid var(--line);
       border-radius: 18px;
       padding: 24px;
       margin-bottom: 20px;
     }
     .route { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
-    .meta { font-size: 16px; color: #b9b9c6; margin-top: 6px; }
+    .meta { font-size: 16px; color: var(--sub); margin-top: 6px; }
 
     /* Step card */
     h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
-    p.sub { font-size: 16px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
-    label { display: block; font-size: 14px; color: #b9b9c6; margin-bottom: 6px; }
+    p.sub { font-size: 16px; color: var(--sub); line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 14px; color: var(--sub); margin-bottom: 6px; }
     input, textarea, select {
-      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      width: 100%; background: var(--field); border: 1px solid var(--line-2);
+      border-radius: 12px; padding: 14px 16px; color: var(--text); font-size: 16px; margin-bottom: 14px;
       outline: none; transition: border-color 0.15s; font-family: inherit;
     }
-    input:focus, textarea:focus, select:focus { border-color: #00D4C8; }
+    input:focus, textarea:focus, select:focus { border-color: var(--teal); }
     select { cursor: pointer; }
     input:disabled { opacity: 0.5; }
     textarea { resize: vertical; min-height: 88px; }
     .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
     button.primary {
-      width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
+      width: 100%; background: var(--teal-fill); color: var(--on-teal); border: none; border-radius: 12px;
       padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
     }
     /* Disabled reads as "not yet", not as a faded copy of the real button. */
-    button.primary:disabled { background: transparent; border: 1px solid rgba(255,255,255,0.14); color: #8a8a92; cursor: default; }
+    button.primary:disabled { background: transparent; border: 1px solid var(--line-2); color: var(--cap); cursor: default; }
     .linkbtn {
-      background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
+      background: none; border: none; color: var(--teal); font-size: 14px; font-weight: 600;
       cursor: pointer; padding: 0; font-family: inherit;
     }
-    .linkbtn:disabled { color: #666; cursor: default; }
-    .linkbtn.danger { color: #ff8a8a; }
+    .linkbtn:disabled { color: var(--disabled); cursor: default; }
+    .linkbtn.danger { color: var(--err); }
     .rowlinks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 14px; }
     .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
-    .msg.err { color: #ff8a8a; }
-    .msg.ok { color: #4ade80; }
+    .msg.err { color: var(--err); }
+    .msg.ok { color: var(--ok); }
     .hidden { display: none !important; }
     .center { text-align: center; }
     .icon { display: flex; justify-content: center; margin-bottom: 14px; }
     .icon svg { width: 44px; height: 44px; }
-    .hint { font-size: 14px; color: #9a9aa4; margin: -8px 0 14px; line-height: 1.5; }
-    .infobtn { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; margin-left:6px; padding:0; border-radius:50%; border:1px solid #6b6b78; background:transparent; color:#9a9aa4; font:600 12px/1 Georgia, serif; font-style:italic; cursor:pointer; vertical-align:-2px; }
-    .infobtn:hover, .infobtn:focus-visible { color:#00D4C8; border-color:#00D4C8; outline:none; }
+    .hint { font-size: 14px; color: var(--hint); margin: -8px 0 14px; line-height: 1.5; }
+    .infobtn { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; margin-left:6px; padding:0; border-radius:50%; border:1px solid var(--icon-line); background:transparent; color:var(--hint); font-family:inherit; font-size:12px; font-weight:700; line-height:1; cursor:pointer; vertical-align:-2px; }
+    .infobtn:hover, .infobtn:focus-visible { color:var(--teal); border-color:var(--teal); outline:none; }
 
     /* Seat picker */
     .seatgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
@@ -157,7 +280,7 @@ fbq('track','PageView');
     .carwrap { position: relative; width: 230px; margin: 8px auto 20px; grid-column: 1 / -1; justify-self: center; }
     .carwheel {
       position: absolute; width: 13px; height: 48px; border-radius: 7px;
-      background: #26262e; z-index: 0;
+      background: var(--car-wheel); z-index: 0;
     }
     .carwheel.wfl { left: -7px; top: 48px; }
     .carwheel.wfr { right: -7px; top: 48px; }
@@ -165,70 +288,70 @@ fbq('track','PageView');
     .carwheel.wrr { right: -7px; bottom: 48px; }
     .carmirror {
       position: absolute; width: 17px; height: 8px; border-radius: 4px 4px 2px 2px;
-      background: #2f2f38; z-index: 2; top: 30px;
+      background: var(--car-mirror); z-index: 2; top: 30px;
     }
     .carmirror.mml { left: -15px; transform: rotate(-14deg); }
     .carmirror.mmr { right: -15px; transform: rotate(14deg); }
     .carshell {
       position: relative; z-index: 1;
-      border: 2px solid #2a2a33;
+      border: 2px solid var(--car-line);
       border-radius: 34px 34px 26px 26px;
-      background: #101014;
+      background: var(--car-body);
       padding: 24px 12px 20px;
     }
-    .carshell .windshield { border-top: 2px dashed #26262e; margin: 16px 4px; }
+    .carshell .windshield { border-top: 2px dashed var(--car-wheel); margin: 16px 4px; }
     .carrow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .carrow.three { grid-template-columns: 1fr 1fr 1fr; }
     .carrow + .carrow { margin-top: 12px; }
     .carshell .seat { margin: 0; text-align: center; padding: 18px 4px; }
     .carshell .seat .sp { font-size: 15px; }
     .dseat {
-      border: 1px dashed #2a2a33; border-radius: 12px;
+      border: 1px dashed var(--car-line); border-radius: 12px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 4px; color: #55555e; font-size: 12px; font-weight: 600; padding: 12px 6px;
+      gap: 4px; color: var(--drv); font-size: 12px; font-weight: 600; padding: 12px 6px;
     }
     .dseat svg { width: 22px; height: 22px; opacity: 0.5; }
     .seat {
-      background: #0E0E10; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
-      padding: 13px 14px; cursor: pointer; text-align: left; color: #fff; font-size: 14.5px;
+      background: var(--seat-bg); border: 1px solid var(--line-2); border-radius: 12px;
+      padding: 13px 14px; cursor: pointer; text-align: left; color: var(--text); font-size: 14.5px;
       transition: border-color 0.15s, background 0.15s; font-family: inherit;
     }
     .seat .sp { display: block; font-weight: 800; font-size: 16px; margin-top: 3px; }
-    .seat.sel { border-color: #00D4C8; background: #0d1f1e; }
+    .seat.sel { border-color: var(--teal); background: var(--teal-sel); }
     .seat.taken { opacity: 0.35; cursor: not-allowed; }
-    .sumline { display: flex; justify-content: space-between; font-size: 14.5px; color: #b9b9c6; margin-bottom: 6px; }
-    .sumline.total { font-size: 16px; color: #fff; font-weight: 800; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; margin-top: 10px; }
+    .sumline { display: flex; justify-content: space-between; font-size: 14.5px; color: var(--sub); margin-bottom: 6px; }
+    .sumline.total { font-size: 16px; color: var(--text); font-weight: 800; border-top: 1px solid var(--line); padding-top: 10px; margin-top: 10px; }
 
     /* Avatar preview */
     .avatar-prev {
       width: 112px; height: 112px; border-radius: 50%; object-fit: cover; object-position: 50% 25%;
-      display: block; margin: 0 auto 16px; border: 2px solid rgba(0,212,200,0.5); background: #0E0E10;
+      display: block; margin: 0 auto 16px; border: 2px solid var(--teal-line-2); background: var(--bg);
     }
     .filebtn {
-      display: block; text-align: center; border: 1px dashed rgba(255,255,255,0.25); border-radius: 12px;
-      padding: 16px; font-size: 14px; color: #b9b9c6; cursor: pointer; margin-bottom: 14px;
+      display: block; text-align: center; border: 1px dashed var(--line-3); border-radius: 12px;
+      padding: 16px; font-size: 14px; color: var(--sub); cursor: pointer; margin-bottom: 14px;
       transition: border-color 0.15s;
     }
-    .filebtn:hover { border-color: rgba(0,212,200,0.5); }
+    .filebtn:hover { border-color: var(--teal-line-2); }
     .photo-row { margin: 4px 0 18px; }
     .photo-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
     .photo-btns .filebtn { margin: 0; }
-    .google-offer { display: flex; gap: 14px; align-items: center; padding: 12px; border: 1px solid rgba(0,212,200,0.45); border-radius: 12px; background: rgba(0,212,200,0.06); margin-bottom: 10px; }
+    .google-offer { display: flex; gap: 14px; align-items: center; padding: 12px; border: 1px solid var(--teal-line); border-radius: 12px; background: var(--offer-bg); margin-bottom: 10px; }
     .google-offer img { width: 64px; height: 64px; border-radius: 32px; object-fit: cover; flex: none; }
     .google-offer-title { font-weight: 700; margin-bottom: 2px; }
-    .google-offer-sub { font-size: 14px; color: #9aa3ad; margin-bottom: 8px; }
-    .profsec { border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 16px 16px 14px; margin: 14px 0; }
+    .google-offer-sub { font-size: 14px; color: var(--hint-2); margin-bottom: 8px; }
+    .profsec { border: 1px solid var(--line); border-radius: 14px; padding: 16px 16px 14px; margin: 14px 0; }
     .profhead { display: flex; align-items: center; gap: 10px; font-size: 17px; margin-bottom: 4px; }
-    .profst { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; border: 1.5px solid rgba(255,255,255,.25); font-size: 14px; color: #9aa; }
-    .msg.ok { color: #00D4C8; }
+    .profst { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; border: 1.5px solid var(--line-3); font-size: 14px; color: var(--profst); }
+    .msg.ok { color: var(--teal); }
     .primary.small { padding: 8px 14px; font-size: 14px; width: auto; }
-    .gate-pick { font-size: 14px; color: #9aa3ad; margin: -4px 0 14px; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
-    .gate-pick b { color: #e5e7eb; }
-    .gate-pick .step { float: right; color: #00d4c8; font-weight: 700; }
+    .gate-pick { font-size: 14px; color: var(--hint-2); margin: -4px 0 14px; padding: 8px 12px; border-radius: 10px; background: var(--tint); border: 1px solid var(--line); }
+    .gate-pick b { color: var(--text-2); }
+    .gate-pick .step { float: right; color: var(--teal); font-weight: 700; }
 
     .refcode {
-      display: inline-block; background: #0d1f1e; border: 1px solid rgba(0,212,200,0.35);
-      color: #00D4C8; font-weight: 800; letter-spacing: 1.5px; border-radius: 10px;
+      display: inline-block; background: var(--teal-sel); border: 1px solid var(--teal-line-3);
+      color: var(--refcode-ink); font-weight: 800; letter-spacing: 1.5px; border-radius: 10px;
       padding: 8px 16px; margin: 6px 0 14px; font-size: 17px;
     }
 
@@ -236,27 +359,27 @@ fbq('track','PageView');
     .store-badges { display: flex; flex-direction: column; gap: 12px; align-items: stretch; margin-top: 18px; }
     .store-badge {
       display: flex; align-items: center; gap: 12px;
-      background: #1a1a1d; border: 1px solid rgba(255,255,255,0.1);
+      background: var(--raised); border: 1px solid var(--line-5);
       border-radius: 12px; padding: 14px 20px;
       transition: border-color 0.2s, transform 0.2s; cursor: pointer;
     }
-    .store-badge:hover { border-color: rgba(0,212,200,0.5); transform: translateY(-1px); }
+    .store-badge:hover { border-color: var(--teal-line-2); transform: translateY(-1px); }
     .store-badge svg { width: 28px; height: 28px; flex-shrink: 0; }
     .store-badge .label { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
-    .store-badge .label .small { font-size: 11px; color: #888; letter-spacing: 0.3px; }
-    .store-badge .label .big { font-size: 16px; font-weight: 600; color: #fff; }
+    .store-badge .label .small { font-size: 11px; color: var(--badge-small); letter-spacing: 0.3px; }
+    .store-badge .label .big { font-size: 16px; font-weight: 600; color: var(--text); }
 
     .spinner {
       width: 28px; height: 28px; margin: 0 auto 16px;
-      border: 3px solid rgba(255,255,255,0.15); border-top-color: #00D4C8;
+      border: 3px solid var(--spin-track); border-top-color: var(--teal);
       border-radius: 50%; animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .signedin { text-align: center; font-size: 12px; color: #666; margin-top: 14px; }
+    .signedin { text-align: center; font-size: 12px; color: var(--legal); margin-top: 14px; }
     .signedin button { font-size: 12px; }
-    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #666; line-height: 1.6; }
-    .legal a { color: #888; }
+    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: var(--legal); line-height: 1.6; }
+    .legal a { color: var(--legal-link); }
   </style>
   <!-- Vercel Web Analytics — the whole point of this page is conversion; keep
        every visit tracked like the other landing pages. -->
@@ -264,9 +387,131 @@ fbq('track','PageView');
 <style>
   /* Neutral outline for the promo Apply (primary-action audit, 2026-09-05):
      "Request seat" is the one filled button on the booking step. */
-  .outline { background: transparent; border: 1px solid rgba(0,212,200,.45); color: #00D4C8; border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; }
-  .outline.muted { border-color: rgba(255,255,255,.18); color: #c0c0d0; }
+  .outline { background: transparent; border: 1px solid var(--teal-line); color: var(--teal); border-radius: 12px; padding: 13px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; }
+  .outline.muted { border-color: var(--line-4); color: var(--muted); }
   .outline:disabled { opacity: .4; cursor: default; }
+</style>
+<style>
+  /* Booking page redesign (approved 2026-10-12): price stated once, seat
+     tiles name the seat, Board / Get off as labeled fields, compact trip
+     summary. Colors come from the theme tokens at the top of the first
+     <style> block (dark default, light by system setting). */
+
+  /* Compact trip summary: avatar + route + one grey line. */
+  .card.tripcard { padding: 14px 16px; margin-bottom: 16px; }
+  .tripsum { display: flex; align-items: center; gap: 12px; }
+  .tripav { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; flex: none; background: var(--bg); }
+  .tripsum-text { flex: 1; min-width: 0; }
+  .tripcard .route { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; line-height: 1.3; color: var(--text); }
+  .tripcard .meta { font-size: 14px; color: var(--sub); margin-top: 2px; line-height: 1.4; }
+  .tripcard .tripx { font-size: 12.5px; color: var(--cap); margin-top: 3px; line-height: 1.4; }
+
+  /* One price line under "Pick your seat". The amount is white, never teal. */
+  .priceline { font-size: 16px; color: var(--sub); line-height: 1.4; margin: 0 0 12px; }
+  .priceline b { color: var(--text); font-weight: 800; }
+
+  /* Board / Get off: a labeled field whose value WRAPS (a long stop such as
+     "Santa Nella / Los Banos · ~11:25 PM" must never be cut off). The real
+     <select> is a transparent overlay covering the whole field: a tap or
+     click anywhere opens it, it keeps keyboard focus and its label for screen
+     readers, and the wrapper shows the focus ring. The visible text is
+     .segval, kept equal to the selected option by syncSegFields(). */
+  .segq { font-size: 14px; color: var(--cap); margin: 4px 0 8px; }
+  .segfield { position: relative; margin: 0 0 10px; padding: 28px 44px 11px 16px; background: var(--field); border: 1px solid var(--line-2); border-radius: 14px; transition: border-color 0.15s, box-shadow 0.15s; }
+  .segfield:focus-within { border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal); }
+  label.segk { position: absolute; left: 16px; top: 10px; margin: 0; font-size: 12.5px; line-height: 1; color: var(--field-label); pointer-events: none; }
+  .segval { display: block; min-height: 1.3em; font-size: 16.5px; font-weight: 700; line-height: 1.3; color: var(--text); overflow-wrap: anywhere; }
+  .segfield select {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: 0; padding: 0 16px;
+    -webkit-appearance: none; appearance: none; opacity: 0; z-index: 1; cursor: pointer;
+    border: 0; border-radius: 13px; background: var(--field); color: var(--text);
+    font-size: 16px; /* 16px keeps iOS from zooming the page on focus */
+  }
+  .segfield select option { background: var(--surface); color: var(--text); font-weight: 500; }
+  .segfield select option:disabled { color: var(--cap); }
+  .segchev { position: absolute; right: 16px; top: 50%; width: 18px; height: 18px; margin-top: -9px; color: var(--cap); pointer-events: none; }
+  #segNote { color: var(--sub); line-height: 1.45; }
+
+  /* Seat tiles: seat name + a status line (Open / Window / Middle / Closed).
+     The price shows on a tile only when this ride's open seats differ in
+     price (#seatGrid without .oneprice). */
+  .seat .sn { display: block; font-weight: 700; line-height: 1.2; }
+  .seat .seatst { display: block; font-size: 12px; font-weight: 600; color: var(--cap); margin-top: 3px; line-height: 1.2; }
+  .seat.sel .seatst { color: var(--sel-cap); }
+  #seatGrid.oneprice .seat .sp { display: none; }
+  #seatGrid:not(.oneprice) .seat:not(.taken) .seatst { display: none; }
+  .carshell .seat { min-height: 74px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px 4px; }
+  .carshell .seat .sn { font-size: 15px; }
+
+  /* Laptop layout (2026-10-12, founder: the page was "still geared more
+     towards mobile vertical" on a laptop). Nothing here applies under
+     960px. From 960px .wrap widens to 1080px (the shared app bar aligns its
+     inner column to .wrap's max-width, so the wordmark lines up with the
+     content) and lays its children on a grid:
+     - single-task steps (sign-in, codes, profile, phone, unavailable,
+       waitlist, redirect, finalizing, success, cancelled) sit in ONE
+       centered 560px column;
+     - while the seat picker shows, the grid becomes a checkout: trip,
+       Back and the picker on the left, a sticky summary card (total, promo,
+       cancellation policy, Request) on the right, same columns as /ride.
+     The switch reads the picker's own visibility with :has(), so no script
+     decides the layout; a browser without :has() keeps the centered
+     column. Same nodes, ids and handlers either way. */
+  @media (min-width: 960px) {
+    .wrap { max-width: 1080px; display: grid; grid-template-columns: minmax(0, 560px); justify-content: center; align-content: start; }
+    .wrap:not(:has(> #stSeats:not(.hidden))) { padding-top: 24px; }
+    .wrap:has(> #stSeats:not(.hidden)) { grid-template-columns: minmax(0, 1fr) 360px; column-gap: 36px; justify-content: stretch; align-items: start; }
+    .wrap:has(> #stSeats:not(.hidden)) > #rideCard { grid-column: 1; grid-row: 1; }
+    .wrap:has(> #stSeats:not(.hidden)) > #backRow { grid-column: 1; grid-row: 2; }
+    .wrap:has(> #stSeats:not(.hidden)) > #stSeats { display: contents; }
+    .wrap:has(> #stSeats:not(.hidden)) .bookmain,
+    .wrap:has(> #stSeats:not(.hidden)) .bookside {
+      min-width: 0; margin-bottom: 20px; padding: 28px;
+      background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+    }
+    .wrap:has(> #stSeats:not(.hidden)) .bookmain { grid-column: 1; grid-row: 3; }
+    .wrap:has(> #stSeats:not(.hidden)) .bookside { grid-column: 2; grid-row: 1 / span 3; position: sticky; top: 86px; padding: 24px; }
+    .wrap:has(> #stSeats:not(.hidden)) .bookside > .hint { margin-bottom: 0; }
+    .wrap:has(> #stSeats:not(.hidden)) > .legal { grid-column: 1 / -1; grid-row: 4; }
+    .wrap:has(> #stSeats:not(.hidden)) .bookmain h1 { font-size: 26px; }
+    .wrap:has(> #stSeats:not(.hidden)) .tripcard .route { font-size: 19px; }
+    .wrap:has(> #stSeats:not(.hidden)) .carwrap { width: 270px; margin-top: 16px; }
+  }
+  /* Board and Get off side by side once each field has room for a long
+     stop name on two lines. */
+  @media (min-width: 1100px) {
+    .wrap:has(> #stSeats:not(.hidden)) #segWrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 12px; }
+    .wrap:has(> #stSeats:not(.hidden)) #segWrap > .segq,
+    .wrap:has(> #stSeats:not(.hidden)) #segWrap > #segNote { grid-column: 1 / -1; }
+  }
+
+  /* Shared widgets that bring their own dark colors and are drawn on this
+     page: the Google / Apple sign-in block (js/ss-oauth.js), the promo-code
+     message ss-session.js paints inline, and the rate-your-trip sheet
+     (js/ss-rating-gate.js). Light-only overrides from this page; dark keeps
+     the modules' own styles untouched. Drop these once those modules read
+     the theme tokens themselves. The Google button is already white and the
+     Apple button stays black (Apple's guideline allows black on light). */
+  @media (prefers-color-scheme: light) {
+    #oauthMount .ss-oauth-msg { color: var(--cap); }
+    #oauthMount .ss-oauth-msg.err { color: var(--err); }
+    #oauthMount .ss-oauth-or { color: var(--cap); }
+    #oauthMount .ss-oauth-or::before, #oauthMount .ss-oauth-or::after { background: var(--line-2); }
+    #webCodeMsg.msg.ok { color: var(--ok) !important; }
+    #webCodeMsg.msg.err { color: var(--err) !important; }
+    body .ssrg-card { background: var(--surface); color: var(--text); border-color: var(--line); }
+    body .ssrg-eyebrow { color: var(--teal); }
+    body .ssrg-route { color: var(--sub); }
+    body .ssrg-star { color: var(--car-line); }
+    body .ssrg-star.on { color: var(--teal); }
+    body .ssrg-star:focus-visible { outline-color: var(--teal); }
+    body .ssrg-note { background: var(--field); color: var(--text); border-color: var(--line-2); }
+    body .ssrg-note:focus { border-color: var(--teal); }
+    body .ssrg-msg { color: var(--err); }
+    body .ssrg-later { color: var(--sub); }
+    body .ssrg-later:hover { color: var(--text); }
+    body .ssrg-count { color: var(--cap); }
+  }
 </style>
 </head>
 <body>
@@ -296,10 +541,18 @@ fbq('track','PageView');
 
     <!-- Persistent ride summary — stays visible above every booking step so
          the visitor never loses sight of what they're booking. -->
-    <div class="card hidden" id="rideCard">
-      <div class="route" id="rideRoute"></div>
-      <div class="meta" id="rideMeta"></div>
-      <div class="meta" id="rideDriver"></div>
+    <!-- Compact row (2026-10-12): driver photo, route, then one grey line
+         (when · driver, verified); rating, trips and preferences sit in a
+         small caption under it (#rideDriver) when the ride has any. -->
+    <div class="card tripcard hidden" id="rideCard">
+      <div class="tripsum">
+        <img id="rideAvatar" class="tripav hidden" alt="" width="44" height="44" decoding="async" />
+        <div class="tripsum-text">
+          <div class="route" id="rideRoute"></div>
+          <div class="meta" id="rideMeta"></div>
+          <div class="tripx hidden" id="rideDriver"></div>
+        </div>
+      </div>
     </div>
 
     <!-- ── STATES ─────────────────────────────────────────────────────── -->
@@ -327,12 +580,15 @@ fbq('track','PageView');
 
     <!-- Online booking not available for this ride (public-ride predates the
          seats payload — should clear itself on the next deploy). -->
+    <!-- Web first (2026-10-03): this used to say "Book this ride in the app",
+         a dead end for a rider with no app. The cause is on our side and
+         clears itself, so the way forward is a retry, with support behind it;
+         the app is a quiet extra, never the instruction. -->
     <div class="card center hidden" id="stAppOnly">
-      <h1>Book this ride in the app</h1>
-      <p class="sub">Online booking isn't available for this ride yet. The app can request this seat in a couple of taps.</p>
-      <a class="store-badge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=book" style="justify-content:center;" aria-label="Get the Seat Sherpa app">
-        <div class="label"><span class="big">Get the Seat Sherpa app</span></div>
-      </a>
+      <h1>This ride can't be booked here right now</h1>
+      <p class="sub">Something on our side is out of date. Try again in a minute. If it keeps happening, email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a> and we will sort it out.</p>
+      <button class="primary" type="button" onclick="location.reload()">Try again</button>
+      <p class="hint" style="margin-top:14px;">Seat Sherpa is also on the <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=book">App Store and Google Play</a>.</p>
     </div>
 
     <!-- STEP: email (+ Google/Apple via js/ss-oauth.js) -->
@@ -437,22 +693,42 @@ fbq('track','PageView');
 
 
     <!-- STEP: seat pick -->
+    <!-- Two plain wrappers (2026-10-12): on phones they are ordinary blocks
+         and the card reads as one column, exactly as before. From 960px the
+         card dissolves (display: contents) and .bookmain / .bookside become
+         the left column and the sticky right summary card of the checkout. -->
     <div class="card hidden" id="stSeats">
+      <div class="bookmain">
       <h1>Pick your seat</h1>
+      <!-- The price, stated once (2026-10-12): written by seatPriceLine()
+           from tilePriceDollars, the same number the tiles used to carry. -->
+      <p class="priceline hidden" id="seatPriceLine"></p>
       <!-- Segment booking (2026-08-28): board/alight at a route-fill stop —
            the price prorates to the share of the trip you ride. Hidden unless
            the ride has stops. -->
-      <div id="segWrap" class="hidden" style="margin-bottom:14px;">
-        <label for="segBoard">Where are you riding?</label>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <select id="segBoard" style="flex:1;min-width:140px;"></select>
-          <select id="segAlight" style="flex:1;min-width:140px;"></select>
+      <div id="segWrap" class="hidden" style="margin-bottom:14px;" role="group" aria-labelledby="segQ">
+        <p class="segq" id="segQ">Where are you riding?</p>
+        <!-- .segval shows the selected option and wraps; the select on top is
+             transparent but real (focus, keyboard, screen readers). -->
+        <div class="segfield">
+          <label class="segk" for="segBoard">Board</label>
+          <span class="segval" id="segBoardVal" aria-hidden="true"></span>
+          <select id="segBoard"></select>
+          <svg class="segchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="segfield">
+          <label class="segk" for="segAlight">Get off</label>
+          <span class="segval" id="segAlightVal" aria-hidden="true"></span>
+          <select id="segAlight"></select>
+          <svg class="segchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </div>
         <div class="sub hidden" id="segNote" style="margin:8px 0 0;font-size:14px;"></div>
       </div>
       <div class="seatgrid" id="seatGrid"></div>
       <label for="drvMsg" id="drvMsgLabel">Message to the driver (optional)</label>
       <textarea id="drvMsg" maxlength="300" style="min-height:64px;" placeholder="e.g. Hi! I can meet anywhere near downtown."></textarea>
+      </div>
+      <div class="bookside">
       <div id="priceSummary" class="hidden">
         <div class="sumline"><span id="sumSeatsLabel">Seats</span><span id="sumSeats"></span></div>
         <!-- "Booking fee" with an info toggle, never a derived rate in the label
@@ -461,14 +737,14 @@ fbq('track','PageView');
         <div class="sumline"><span id="sumFeeLabel">Booking fee <button type="button" class="infobtn" id="feeInfoBtn" aria-label="About the booking fee" aria-controls="feeInfo" aria-expanded="false">i</button></span><span id="sumFee"></span></div>
         <p class="hint hidden" id="feeInfo" style="margin:2px 0 10px;"></p>
         <div class="sumline hidden" id="sumBookingFeeRow"><span>Processing fee</span><span id="sumBookingFee"></span></div>
-        <div class="sumline hidden" id="sumCreditRow" style="color:#4ade80;"><span>Ride credit</span><span id="sumCredit"></span></div>
+        <div class="sumline hidden" id="sumCreditRow" style="color:var(--ok);"><span>Ride credit</span><span id="sumCredit"></span></div>
         <div class="sumline total"><span>Estimated total</span><span id="sumTotal"></span></div>
         <p class="hint" style="margin:8px 0 14px;">Exact total shown at secure checkout.</p>
         <p class="hint hidden" id="instantNote" style="margin:-6px 0 14px;">This ride is instant-book in the app. In the browser the driver confirms your request, usually within the hour; your card is only charged when they do.</p>
         <!-- Typed code at checkout (2026-09-03): applying one refreshes the
              credit line above. Same applier as sign-in and the account page. -->
         <details id="codeBox" style="margin:0 0 14px;">
-          <summary style="cursor:pointer;font-size:14px;color:#00D4C8;">Have an invite or promo code?</summary>
+          <summary style="cursor:pointer;font-size:14px;color:var(--teal);">Have an invite or promo code?</summary>
           <div style="display:flex;gap:8px;margin-top:10px;">
             <input id="webCode" placeholder="e.g. TAYLOR5" autocapitalize="characters" autocomplete="off" maxlength="12" style="flex:1;min-width:0;" />
             <button class="outline muted" id="webCodeBtn" type="button" style="width:auto;padding:0 18px;margin:0;">Apply</button>
@@ -479,21 +755,26 @@ fbq('track','PageView');
              trips.html's POLICY_DETAILS so pre- and post-booking never
              disagree. Populated from public-ride's cancellationPolicy. -->
         <details id="policyBox" style="margin:0 0 14px;">
-          <summary style="cursor:pointer;font-size:14px;color:#00D4C8;">Cancellation policy</summary>
-          <ul id="policyList" style="margin:8px 0 0 18px;font-size:14px;color:#9a9aa8;line-height:1.6;"></ul>
+          <summary style="cursor:pointer;font-size:14px;color:var(--teal);">Cancellation policy</summary>
+          <ul id="policyList" style="margin:8px 0 0 18px;font-size:14px;color:var(--policy);line-height:1.6;"></ul>
         </details>
       </div>
       <button class="primary" id="bookBtn" disabled>Pick a seat to continue</button>
-      <p class="hint" style="margin-top:10px; text-align:center;">You're only charged if the driver accepts. Payment is handled by Stripe.</p>
+      <!-- Terms 3.2 disclosure (2026-10-14), shown where the card is
+           authorized, in ONE line with the "only charged if accepted"
+           reassurance so that promise is never absolute (bug check 10/14).
+           "Booking fee" is the receipt's own label. Mirrors the app dock. -->
+      <p class="hint" style="margin-top:10px; text-align:center;">You're only charged if the driver accepts. If you and the driver agree to pay outside Seat Sherpa instead, the booking fee is still charged (<a href="/terms#off-service-payment">Terms 3.2</a>). Payment is handled by Stripe.</p>
       <div class="msg err hidden" id="bookMsg"></div>
       <div class="signedin hidden" id="signedIn">Signed in as <span id="signedInEmail"></span> · <button class="linkbtn" id="signOutBtn">Not you?</button></div>
+      </div>
     </div>
 
     <!-- Redirecting to Stripe -->
     <div class="card center hidden" id="stRedirect">
       <div class="spinner"></div>
       <h1>Taking you to secure checkout…</h1>
-      <p class="sub" style="margin-bottom:0;">Payment is handled by Stripe. Your card is only charged if the driver accepts.</p>
+      <p class="sub" style="margin-bottom:0;">Payment is handled by Stripe. The seat is only charged if the driver accepts.</p>
     </div>
 
     <!-- Returned from Stripe: finalizing → request sent -->
@@ -504,7 +785,7 @@ fbq('track','PageView');
     </div>
 
     <div class="card center hidden" id="stSuccess">
-      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#00D4C8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--teal);" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
       <h1 id="successTitle">Your request is in</h1>
       <div class="refcode hidden" id="successRef"></div>
       <p class="sub" id="successSub">The driver has been notified. Your card is only charged when they accept, and we'll email you as soon as they respond.</p>
@@ -513,7 +794,7 @@ fbq('track','PageView');
       <!-- One filled button (primary-action audit, Justin 2026-09-05):
            messaging the driver is what improves the trip, so it's the fill;
            My trips is a link. Emoji dropped per the design rules. -->
-      <a class="primary" id="successMsgBtn" href="/messages" style="display:block;text-align:center;text-decoration:none;padding:15px;border-radius:12px;background:#00D4C8;color:#04201e;font-weight:700;font-size:16px;">Message the driver</a>
+      <a class="primary" id="successMsgBtn" href="/messages" style="display:block;text-align:center;text-decoration:none;padding:15px;border-radius:12px;background:var(--teal-fill);color:var(--on-teal);font-weight:700;font-size:16px;">Message the driver</a>
       <a class="linkbtn" href="/trips" style="display:inline-block;margin-top:14px;font-size:15px;font-weight:600;text-decoration:none;">See it in My trips</a>
       <p class="hint" style="margin-top:14px;text-align:center;">
         Prefer the app on ride day? It's on the
@@ -526,7 +807,7 @@ fbq('track','PageView');
       <div class="icon">💳</div>
       <h1>Checkout cancelled</h1>
       <p class="sub">Your card wasn't charged. Your seat request is held open for a little while if you'd like to finish paying.</p>
-      <a class="primary" id="retryLink" href="#" style="display:block; background:#00D4C8; color:#04201e; border-radius:12px; padding:15px; font-size:16px; font-weight:700; margin-bottom:12px;">Finish booking</a>
+      <a class="primary" id="retryLink" href="#" style="display:block; background:var(--teal-fill); color:var(--on-teal); border-radius:12px; padding:15px; font-size:16px; font-weight:700; margin-bottom:12px;">Finish booking</a>
       <button class="linkbtn danger" id="withdrawBtn" style="font-size:14px;">Withdraw my request</button>
       <div class="msg hidden" id="cancelMsg"></div>
     </div>
@@ -609,6 +890,12 @@ fbq('track','PageView');
     function show(id) {
       currentStep = id;
       STATES.forEach((s) => $(s).classList.toggle('hidden', s !== id));
+      // The sign-in card carries the "By continuing you agree" notice. Mark
+      // that it was actually SEEN (sessionStorage survives the Google/Apple
+      // redirect back to this tab), so ssLogTos only records an acceptance
+      // for someone who saw it (bug check 10/14: a signed-in page load used to
+      // log one with no notice shown).
+      if (id === 'stEmail') { try { sessionStorage.setItem('ss-tos-notice-seen', '1'); } catch (_) {} }
       // Reveal the nav banner only on terminal screens (booking done/cancelled)
       // so the active funnel stays distraction-free (Justin, 2026-08-28).
       var _bn = $('bookNav');
@@ -694,8 +981,24 @@ fbq('track','PageView');
     // fee trigger + the credit preview in updateSummary, mirroring the app.
     let myCreditCents = 0;
     // 0286: does this rider hold a live booking-fee waiver? Display only;
-    // web-create-booking re-reads the same column and is authoritative.
+    // web-create-booking re-reads the same columns and is authoritative.
+    // 0318: it is a PERCENTAGE. 100 = the whole fee off (myFeeWaived, shown
+    // as "Waived"), 50 = half off (the checkout-lapse offer, shown as the
+    // halved amount), 0 = none.
+    let myFeeWaiverPct = 0;
     let myFeeWaived = false;
+    function setWaiverPct(p) {
+      var n = Math.round(Number(p));
+      myFeeWaiverPct = Number.isFinite(n) ? Math.min(100, Math.max(0, n)) : 0;
+      myFeeWaived = myFeeWaiverPct >= 100;
+    }
+    // THE waived-fee formula, identical to the server's feeAfterWaiver: pct
+    // percent off, rounded to the cent (half a cent rounds up).
+    function feeAfterWaiverWeb(feeCents, pct) {
+      if (!(pct > 0)) return feeCents;
+      if (pct >= 100) return 0;
+      return Math.round((feeCents * (100 - pct)) / 100);
+    }
     // Typed code at checkout (2026-09-03). Lazy import keeps this page's own
     // client untouched; both clients share the same stored session.
     (async () => {
@@ -725,11 +1028,12 @@ fbq('track','PageView');
       // less, which reads as a bait-and-switch in reverse and is exactly the
       // kind of number mismatch we have been stamping out all month.
       try {
-        const { data: w } = await supabase.rpc('passenger_fee_waived', { p_user: myUid });
+        const { data: w, error: wErr } = await supabase.rpc('passenger_fee_waiver_pct', { p_user: myUid });
         window.__ssWaiverChecked = true;
-        const nw = w === true;
-        if (nw !== myFeeWaived) {
-          myFeeWaived = nw;
+        // A failed read is 0: never invent a discount the server will not honor.
+        const nw = wErr ? 0 : Math.min(100, Math.max(0, Math.round(Number(w)) || 0));
+        if (nw !== myFeeWaiverPct) {
+          setWaiverPct(nw);
           // The seat TILES carry the fee too and are painted before sign-in
           // resolves, so they must repaint here or a $10 seat reads "$12" over
           // a "$10.00" total (review, 2026-09-11). renderSeats keeps picks.
@@ -798,22 +1102,34 @@ fbq('track','PageView');
     // Phone (incl. spaced/interleaved forms) via bioContact; emails, @handles
     // and off-platform apps via the app's HANDLE_RE (lib/off-platform-guard.ts).
     const NOTE_HANDLE_RE = /\b(whats\s?app|telegram|signal|snapchat|venmo|zelle|cash\s?app)\b|@[a-z0-9_.]{3,}/i;
+    // Spelled-out digits ("five one zero, nine zero one, eight three zero
+    // two", 2026-10-11): a run of three or more number words, seven or more
+    // digits in all, is read as the number it spells. Mirrors
+    // lib/off-platform-guard.ts normalizeNumberWords and migration 0386; the
+    // same snippet lives in trips.html and driving.html. Notes only: the bio
+    // check stays mirrored to migration 0209.
+    const numberWords = (t) => (t || '').replace(/\b(?:zero|one|two|three|four|five|six|seven|eight|nine|oh|o|\d+)(?:[\s,.\-()/·*]{0,3}\b(?:zero|one|two|three|four|five|six|seven|eight|nine|oh|o|\d+)\b){2,}/gi, (run) => {
+      const words = (run.match(/\b(zero|one|two|three|four|five|six|seven|eight|nine)\b/gi) || []).length;
+      const digits = run.toLowerCase().replace(/\b(zero|oh|o)\b/g, '0').replace(/\bone\b/g, '1').replace(/\btwo\b/g, '2').replace(/\bthree\b/g, '3').replace(/\bfour\b/g, '4').replace(/\bfive\b/g, '5').replace(/\bsix\b/g, '6').replace(/\bseven\b/g, '7').replace(/\beight\b/g, '8').replace(/\bnine\b/g, '9').replace(/[^0-9]/g, '');
+      return words >= 3 && digits.length >= 10 ? digits : run;
+    });
     const noteContact = (t) => {
       if (!t) return null;
-      const c = bioContact(t);
+      const c = bioContact(numberWords(t));
       if (c === 'phone') return 'phone';
       if (c === 'email' || NOTE_HANDLE_RE.test(t)) return 'handle';
       return null;
     };
     const NOTE_WARN_MSG = {
       // 0306: a booking note is always sent before acceptance, so the server
-      // hides the contact detail. Say so.
-      phone: "Phone numbers and emails stay hidden until your driver accepts your request, so this one will be removed from your message. Your driver can reply to you in Seat Sherpa, and once you're confirmed, you can call each other through Seat Sherpa starting the day before the ride.",
-      handle: "Handles and emails stay hidden until your driver accepts your request, so this one will be removed from your message. Your driver can reply to you in Seat Sherpa, and once you're confirmed, you can call each other through Seat Sherpa starting the day before the ride.",
+      // hides the contact detail. Say so, and say when numbers are handed
+      // over (Justin, 2026-10-11): 24 hours before the ride, once confirmed.
+      phone: "Phone numbers and emails stay hidden until your driver accepts your request, so this one will be removed from your message. Your driver can reply to you in Seat Sherpa. Once the booking is confirmed, Seat Sherpa gives you each other's phone numbers 24 hours before the ride, so there's no need to exchange them now.",
+      handle: "Handles and emails stay hidden until your driver accepts your request, so this one will be removed from your message. Your driver can reply to you in Seat Sherpa. Once the booking is confirmed, Seat Sherpa gives you each other's phone numbers 24 hours before the ride, so there's no need to exchange them now.",
     };
     const BIO_CONTACT_MSG = {
       phone: "Please take the phone number out of your bio. Your profile is public to everyone browsing rides, and you can call your driver from the app once the booking is confirmed.",
-      email: "Please take the email address out of your bio. Your profile is public to everyone browsing rides, and you can message your driver in the app once the booking is confirmed.",
+      email: "Please take the email address out of your bio. Your profile is public to everyone browsing rides, and you can message your driver on Seat Sherpa once the booking is confirmed.",
     };
 
     // lib/phone.ts stripLeadingCountryCode — drop a doubled country code so we
@@ -844,7 +1160,9 @@ fbq('track','PageView');
       return "We couldn't send your code. Please check your number and try again.";
     }
 
-    const fmt$ = (n) => '$' + Number(n).toFixed(2);
+    const noState = (s) => String(s || '').replace(/,\s*[A-Z]{2}$/, '');
+    // Whole dollars read "$45", not "$45.00" (2026-10-12).
+    const fmt$ = (n) => '$' + Number(n).toFixed(2).replace(/\.00$/, '');
     // What the rider actually pays for one seat: seat price + the service fee,
     // same integer math as the summary (Justin, 2026-08-28 — the seat tile
     // should show $10.50, not the $10 base). The flat booking fee is per-
@@ -852,14 +1170,18 @@ fbq('track','PageView');
     // Minimum service fee (0256): the server says whether the $2 floor applies to
     // THIS ride (serviceFeeMinCents > 0 only for rides posted after the cutoff);
     // the fee is max(bps fee, floor). Same rule web-create-booking charges.
-    function serviceFeeCentsFor(seatCents) {
-      // 0286: a live waiver zeroes the fee for this rider, on every seat tile
-      // as well as the receipt, so the tile price and the total agree.
-      if (myFeeWaived) return 0;
+    // The fee BEFORE any waiver: what the info toggle quotes as "would have been".
+    function serviceFeeBeforeWaiverCentsFor(seatCents) {
       var bps = typeof rideData !== 'undefined' && typeof rideData.serviceFeeBps === 'number' ? rideData.serviceFeeBps : 500;
       var minC = typeof rideData !== 'undefined' && typeof rideData.serviceFeeMinCents === 'number' ? rideData.serviceFeeMinCents : 0;
       var pct = Math.floor((seatCents * bps) / 10000);
       return minC > 0 ? Math.max(pct, minC) : pct;
+    }
+    function serviceFeeCentsFor(seatCents) {
+      // 0286: a live waiver cuts the fee for this rider (0318: by its
+      // percentage), on every seat tile as well as the receipt, so the tile
+      // price and the total agree.
+      return feeAfterWaiverWeb(serviceFeeBeforeWaiverCentsFor(seatCents), myFeeWaiverPct);
     }
     function seatAllIn(dollars) {
       var c = Math.round(Number(dollars) * 100);
@@ -883,57 +1205,75 @@ fbq('track','PageView');
     }
     /** Dollars this tile adds to the total right now. Measured from the total
      *  WITHOUT this seat, so the number reads the same whether or not it is
-     *  already selected. */
-    function tilePriceDollars(seat) {
+     *  already selected. alone=true ignores the selection: what booking this
+     *  one seat by itself costs, which is the "per seat" price line. */
+    function tilePriceDollars(seat, alone) {
       var p = Math.round(segPrice(seat.price) * 100);
       var sel = 0;
-      for (var i = 0; i < selectedSeats.length; i++) {
-        var s = seatById(selectedSeats[i]);
-        if (s) sel += Math.round(segPrice(s.price) * 100);
+      if (!alone) {
+        for (var i = 0; i < selectedSeats.length; i++) {
+          var s = seatById(selectedSeats[i]);
+          if (s) sel += Math.round(segPrice(s.price) * 100);
+        }
       }
-      var without = selectedSeats.indexOf(seat.id) >= 0 ? sel - p : sel;
+      var without = !alone && selectedSeats.indexOf(seat.id) >= 0 ? sel - p : sel;
       return (allInCentsForWeb(without + p) - allInCentsForWeb(without)) / 100;
     }
 
     // ── Ride card render ──────────────────────────────────────────────────
     function renderRideCard(d) {
-      $('rideRoute').textContent = (d.fromArea || 'A city') + ' → ' + (d.toArea || 'destination');
+      // Visible labels drop the state ("Los Angeles → Hayward", 2026-10-12);
+      // the tab title keeps it.
+      $('rideRoute').textContent = (noState(d.fromArea) || 'A city') + ' → ' + (noState(d.toArea) || 'destination');
       // Pacific wall-clock, shown as posted (time audit 2026-09-03): the old
       // Date(depDate + 'T' + depTime) re-read the time in the VIEWER's zone.
-      $('rideMeta').textContent = rideWhen(d.depDate, d.depTime);
+      // Flexible departure (0326) rides along on the same line, same words
+      // as the ride page chip.
+      var bkFlex = Number(d.departFlexMinutes) || 0;
+      var bkFlexLbl = bkFlex === 60 ? 'Flexible, about 1 h'
+        : bkFlex === 120 ? 'Flexible, about 2 h'
+        : bkFlex === 720 ? 'Flexible, half a day'
+        : bkFlex === 1440 ? 'Flexible, about a day' : '';
+      // Compact summary (2026-10-12): one grey line "when · Name, verified";
+      // rating, trips and preferences move to a small caption under it.
+      var bkWho = '';
+      var bkExtras = [];
       if (d.driverFirst) {
-        $('rideDriver').textContent = 'Driven by ' + d.driverFirst +
-          // "New driver" parked 2026-09-07 (Justin) until more drivers carry reviews — unrated shows nothing.
-          (d.driverRating ? ' · ★ ' + Number(d.driverRating).toFixed(1) : '') +
-          (typeof d.driverTrips === 'number' && d.driverTrips > 0 ? ' · ' + d.driverTrips + ' trip' + (d.driverTrips === 1 ? '' : 's') : '');
-        // Preference chips (2026-08-28) — folded into the driver line where
-        // the booking decision happens.
+        // Trust (benchmark 8/26): we enforce phone OTP + license on file
+        // before any ride goes live, and say so where the booking decision
+        // happens. Both checks read "verified"; if only one is on file the
+        // line names that one. Grey, never teal (teal is for taps).
+        var bkPhoneOk = !!d.driverPhoneVerified, bkLicOk = !!d.driverLicenseOnFile;
+        bkWho = d.driverFirst + (bkPhoneOk && bkLicOk ? ', verified'
+          : bkPhoneOk ? ', phone verified'
+          : bkLicOk ? ", driver's license on file" : '');
+        // "New driver" parked 2026-09-07 (Justin) until more drivers carry reviews — unrated shows nothing.
+        // Ratings round DOWN to one decimal (2026-10-05): 4.95 shows 4.9.
+        if (d.driverRating) bkExtras.push('★ ' + (Math.floor(Math.round(Number(d.driverRating) * 1000) / 100) / 10).toFixed(1));
+        if (typeof d.driverTrips === 'number' && d.driverTrips > 0) bkExtras.push(d.driverTrips + ' trip' + (d.driverTrips === 1 ? '' : 's'));
+        // Preference chips (2026-08-28), where the booking decision happens.
         if (d.driverPrefs) {
-          var pc = [];
           var pp = d.driverPrefs;
-          if (pp.conversation === 'chatty') pc.push('Chatty');
-          else if (pp.conversation === 'depends') pc.push('Happy either way');
-          else if (pp.conversation === 'quiet') pc.push('Quiet ride');
-          if (pp.musicOk === true) pc.push('Music');
-          if (pp.smokingOk === false) pc.push('No smoking');
-          if (pp.petsOk === true) pc.push('Pets ok');
-          if (pc.length) $('rideDriver').textContent += ' · ' + pc.join(' · ');
+          if (pp.conversation === 'chatty') bkExtras.push('Chatty');
+          else if (pp.conversation === 'depends') bkExtras.push('Happy either way');
+          else if (pp.conversation === 'quiet') bkExtras.push('Quiet ride');
+          if (pp.musicOk === true) bkExtras.push('Music');
+          if (pp.smokingOk === false) bkExtras.push('No smoking');
+          if (pp.petsOk === true) bkExtras.push('Pets ok');
         }
-        // Trust badges (benchmark 8/26): we enforce phone OTP + license on
-        // file before any ride goes live — now we finally SAY so, exactly
-        // where the booking decision happens.
-        // One "Verified" line in the brand color, not typed checkmarks in
-        // green (2026-09-16); the ride page carries the tap-to-expand pill.
-        var trustBits = [];
-        if (d.driverPhoneVerified) trustBits.push('phone');
-        if (d.driverLicenseOnFile) trustBits.push("driver's license on file");
-        if (trustBits.length) {
-          var tb = document.createElement('div');
-          tb.style.cssText = 'font-size:14px;color:#00D4C8;margin-top:4px;';
-          tb.textContent = 'Verified: ' + trustBits.join(', ');
-          $('rideDriver').insertAdjacentElement('afterend', tb);
+        // Driver photo when public-ride has one (https only); a dead link
+        // just drops the image, never a broken icon.
+        var bkAv = $('rideAvatar');
+        var bkPhoto = typeof d.driverPhotoUrl === 'string' && /^https:\/\//i.test(d.driverPhotoUrl) ? d.driverPhotoUrl : '';
+        if (bkAv && bkPhoto) {
+          bkAv.onerror = function () { bkAv.classList.add('hidden'); };
+          bkAv.src = bkPhoto;
+          bkAv.classList.remove('hidden');
         }
       }
+      $('rideMeta').textContent = rideWhen(d.depDate, d.depTime) + (bkFlexLbl ? ' · ' + bkFlexLbl : '') + (bkWho ? ' · ' + bkWho : '');
+      $('rideDriver').textContent = bkExtras.join(' · ');
+      $('rideDriver').classList.toggle('hidden', bkExtras.length === 0);
       $('rideCard').classList.remove('hidden');
       // Cancellation terms, verbatim from the same table trips.html shows
       // after booking (POLICY_DETAILS) — terms belong before money.
@@ -944,6 +1284,7 @@ fbq('track','PageView');
           'Cancel within 2 hours of departure: no refund',
           'The booking fee is not refunded when you cancel',
           'If the driver cancels: full refund, booking fee included',
+          'If the driver changes the departure time after you book: full refund, booking fee included, up to 2 hours before the new departure',
         ],
         free: [
           'Cancel 2 hours or more before departure: full refund',
@@ -1062,7 +1403,7 @@ fbq('track','PageView');
       let pick = '';
       try {
         if (selectedSeats.length > 0) {
-          const labels = selectedSeats.map((id) => { const st = seatById(id); return st ? (st.label || st.id) : id; });
+          const labels = selectedSeats.map((id) => { const st = seatById(id); return seatName(st ? (st.label || st.id) : id); });
           // Full price including fees (and any credit) — the same number the
           // seat summary and the Request button show (Justin, 2026-09-02).
           const t = computeTotals();
@@ -1128,6 +1469,9 @@ fbq('track','PageView');
         if (a) a.addEventListener('click', (e) => { e.preventDefault(); waitlistMode = true; show('stEmail'); });
         return;
       }
+      // A waitlist sign-in saw the same notice as a booking sign-in (bug
+      // check 10/15: this path skipped route(), so it was never logged).
+      ssLogTos(uid);
       const { error } = await supabase.from('ride_waitlist').insert({ ride_id: rideId, user_id: uid });
       if (error && !/duplicate|unique/i.test(error.message || '')) {
         $('goneTitle').textContent = 'This ride is full';
@@ -1153,11 +1497,27 @@ fbq('track','PageView');
       santacruz: 'Santa Cruz', monterey: 'Monterey', bakersfield: 'Bakersfield', slo: 'San Luis Obispo',
       santabarbara: 'Santa Barbara', burningman: 'Burning Man', redding: 'Redding',
     };
+    // Mapbox sometimes puts a REGION where the city belongs ("Westwood, The
+    // Westside, California": Vladimir's rides 518 and 519, 2026-10-02), and the
+    // last non-state part is then a district, not a city. Known Los Angeles
+    // districts resolve to Los Angeles; other regional labels (South Bay, East
+    // Bay, ...) step back to the part before them, or to nothing so the caller
+    // falls back to the metro name. We go by city name (Justin).
+    function ssPickCity(cleaned) {
+      if (!cleaned || !cleaned.length) return '';
+      var last = String(cleaned[cleaned.length - 1]);
+      var key = last.toLowerCase().replace(/^the\s+/, '');
+      var CITY = { 'westside': 'Los Angeles', 'san fernando valley': 'Los Angeles', 'valley': 'Los Angeles', 'south los angeles': 'Los Angeles', 'east los angeles': 'Los Angeles' };
+      var SKIP = ['south bay', 'east bay', 'peninsula', 'silicon valley', 'north bay', 'inland empire', 'central valley', 'orange county', 'bay area', 'san francisco bay area', 'los angeles county', 'san diego county', 'wine country'];
+      if (CITY[key]) return CITY[key];
+      if (SKIP.indexOf(key) >= 0) return cleaned.length >= 2 ? String(cleaned[cleaned.length - 2]) : '';
+      return last;
+    }
     function altCity(area, fallback) {
       var parts = String(area || '').split(',').map(function (s) { return s.trim(); }).filter(function (s) {
         return s && !/^(california|nevada|ca|nv|usa|united states)(\s+\d{5})?$/i.test(s) && !/^\d{5}$/.test(s);
       });
-      var city = parts[parts.length - 1];
+      var city = ssPickCity(parts);
       return city && city.length <= 28 && !/\d/.test(city) ? city : fallback;
     }
     function altEsc(s) {
@@ -1178,7 +1538,11 @@ fbq('track','PageView');
     }
     async function offerAlternative() {
       try {
-        const { data, error } = await supabase.rpc('alt_rides_for_full_ride', { p_ride_id: rideId });
+        // This card promises nothing about withdrawing a request, so it asks
+        // for the plain one-day window (p_same_need false, migration 0334).
+        // Before that migration the argument is unknown: retry the default.
+        let { data, error } = await supabase.rpc('alt_rides_for_full_ride', { p_ride_id: rideId, p_same_need: false });
+        if (error) ({ data, error } = await supabase.rpc('alt_rides_for_full_ride', { p_ride_id: rideId }));
         if (error || !Array.isArray(data) || !data.length) return;
         const a = data[0];
         const from = altCity(a.departure_area, ALT_METRO[a.from_dest] || a.from_dest);
@@ -1197,6 +1561,60 @@ fbq('track','PageView');
           '<a href="/book?id=' + encodeURIComponent(a.ride_id) + '" style="font-weight:700;">Lock that one in instead</a>.' +
           altEsc(more);
       } catch (_) { /* no offer */ }
+    }
+
+    // Backup request (Justin, 2026-10-02): a request is only a request. Right
+    // after one goes in, the same matcher looks for another live ride within a
+    // day and 50 miles of this one's route; a second ride from the SAME driver
+    // is not a backup, so those rows are dropped. The server withdraws the
+    // other pending request when one driver accepts, so the copy can promise
+    // it. No match or any error = no block at all.
+    async function offerBackup(rid) {
+      try {
+        if (!Number.isFinite(rid)) return;
+        const { data, error } = await supabase.rpc('alt_rides_for_full_ride', { p_ride_id: rid });
+        if (error || !Array.isArray(data)) return;
+        const rows = data.filter(function (r) { return r && !r.same_driver; });
+        if (!rows.length) return;
+        const a = rows[0];
+        const altId = Number(a.ride_id);
+        if (!Number.isFinite(altId)) return;
+        const from = altCity(a.departure_area, ALT_METRO[a.from_dest] || a.from_dest);
+        const to = altCity(a.arrival_area, ALT_METRO[a.to_dest] || a.to_dest);
+        const seats = a.open_seats + ' seat' + (a.open_seats === 1 ? '' : 's') + ' open';
+        // All-in like the marketplace: seat + service fee (5%, $2 minimum), whole
+        // dollars, never the bare seat price (Justin, 2026-09-17).
+        const seatCents = Math.round(Number(a.price_from) * 100);
+        const feeCents = Math.max(Math.floor(seatCents * 0.05), 200);
+        const price = a.price_from != null ? ', from $' + Math.ceil((seatCents + feeCents) / 100) : '';
+        const more = rows.length > 1 ? ' ' + (rows.length - 1) + ' more like it on the marketplace.' : '';
+        const anchor = $('successSub');
+        if (!anchor) return;
+        const old = $('backupOffer');
+        if (old) old.remove();
+        const box = document.createElement('div');
+        box.id = 'backupOffer';
+        box.style.cssText = 'margin:-4px 0 18px;padding:14px 16px;border-radius:12px;background:var(--offer-bg);border:1px solid var(--teal-line-4);';
+        const h = document.createElement('p');
+        h.style.cssText = 'font-size:16px;font-weight:700;margin:0 0 6px;';
+        h.textContent = 'Another ride goes your way';
+        const body = document.createElement('p');
+        body.className = 'sub';
+        body.style.marginBottom = '10px';
+        body.innerHTML =
+          '<strong>' + altEsc(a.driver_name) + '</strong> is also driving ' + altEsc(from) + ' to ' + altEsc(to) + ' ' +
+          altEsc(altWhen(a.dep_date, a.dep_time)) + altEsc(price) + ', with ' + altEsc(seats) + '. ' +
+          'Request that one too and the first driver to accept is yours. We withdraw your other request automatically, so you are never charged twice.' +
+          altEsc(more);
+        const link = document.createElement('a');
+        link.href = '/book?id=' + encodeURIComponent(String(altId));
+        link.textContent = 'See that ride';
+        link.style.cssText = 'font-weight:700;font-size:15px;color:var(--teal);text-decoration:none;';
+        box.appendChild(h);
+        box.appendChild(body);
+        box.appendChild(link);
+        anchor.insertAdjacentElement('afterend', box);
+      } catch (_) { /* no block */ }
     }
 
     function showGone(kind) {
@@ -1252,9 +1670,54 @@ fbq('track','PageView');
       return ((p.lng - start.lng) * dx + (p.lat - start.lat) * dy) / len2;
     }
     function segStopById(id) { return (rideData.routeStops || []).find((s) => s.id === id) || null; }
+    // ── Leg-aware seats (0356, 2026-10-05) ───────────────────────────────
+    // On a leg-aware ride a seat is sold only between its rider's pickup and
+    // drop-off. public-ride sends seatHolds [{seat, from, to}] in stop
+    // positions (origin 0, a stop at route position pos is pos + 1, the
+    // destination routeStopCount + 1) and each seat's closed flag. Elsewhere
+    // the whole-ride avail flag decides, exactly as before.
+    function legPos(id, fallback) {
+      if (!id) return fallback;
+      const st = segStopById(id);
+      if (st && typeof st.pos === 'number') return st.pos + 1;
+      const m = /^cust-(\d+)$/.exec(id);
+      return m ? Number(m[1]) + 1 : fallback;
+    }
+    function seatOpenForLeg(s) {
+      if (!rideData || !rideData.legAware) return s.avail !== false;
+      if (s.closed === true) return false;
+      const n = typeof rideData.routeStopCount === 'number' ? rideData.routeStopCount : (rideData.routeStops || []).length;
+      const b = legPos(segBoardingId, 0), a = legPos(segAlightingId, n + 1);
+      return !(rideData.seatHolds || []).some((h) => h.seat === s.id && h.from < a && b < h.to);
+    }
+    /** Anything bookable on this ride at all: a whole-ride seat, or (leg-aware)
+     *  the open stretch public-ride found (openFrom). */
+    function rideHasOpenSeat(d) {
+      if (!d || !Array.isArray(d.seats)) return false;
+      if (d.seats.some((s) => s.avail !== false) && d.seatsLeft !== 0) return true;
+      return !!(d.legAware && d.openFrom);
+    }
     function segPrice(fullUsd) {
       if (segLegUsd == null || !(fullUsd > 0)) return fullUsd;
       return Math.min(fullUsd, segLegUsd);
+    }
+    // Board / Get off draw their value in a wrapping span (.segval) under a
+    // transparent <select>, so the span must follow the select. Setting
+    // .value, rebuilding options or disabling one in code fires no "change",
+    // so every such path ends here: initSegment (build, preselect, openFrom,
+    // passed-stop move) and recomputeSegment (user changes via onchange, the
+    // drop-off reset below, SEATS_TAKEN and INVALID_STOP recovery).
+    function syncSegFields() {
+      [['segBoard', 'segBoardVal'], ['segAlight', 'segAlightVal']].forEach(function (pair) {
+        var sel = $(pair[0]), out = $(pair[1]);
+        if (!sel || !out) return;
+        var o = sel.selectedIndex >= 0 ? sel.options[sel.selectedIndex] : null;
+        var t = o ? o.textContent : '';
+        // Keep the time in one piece ("~12:20 AM (next day)") so a long
+        // value breaks after the "·", never inside the time.
+        var cut = t.lastIndexOf(' · ');
+        out.textContent = cut >= 0 ? t.slice(0, cut + 3) + t.slice(cut + 3).split(' ').join(' ') : t;
+      });
     }
     function recomputeSegment() {
       const start = rideData.approxStart, end = rideData.approxEnd;
@@ -1289,14 +1752,18 @@ fbq('track','PageView');
           const sp = rideData.segmentPrices || null;
           const v = sp ? sp[(segBoardingId || 'origin') + '|' + (segAlightingId || 'end')] : undefined;
           segLegUsd = typeof v === 'number' && isFinite(v) && v > 0 ? Math.round(v) : null;
+          // No bare leg price here (2026-10-12): it left out the booking fee
+          // and sat under the all-in price line. The line above already
+          // carries this leg's price, fees included.
           note.textContent = segLegUsd != null
-            ? 'Partial trip \u2014 the driver set this leg at $' + segLegUsd + ' per seat.'
+            ? 'Partial trip. The driver set the price for this stretch, shown above.'
             : '';
           note.classList.toggle('hidden', segLegUsd == null);
         }
       } else {
         note.classList.add('hidden');
       }
+      syncSegFields();
       renderSeats();
     }
     function initSegment() {
@@ -1315,45 +1782,154 @@ fbq('track','PageView');
       // reminders; timing sweep 2026-09-10). Estimates, confirmed in chat.
       const to12h = (t) => { const m = /^(\d{1,2}):(\d{2})/.exec(t || ''); if (!m) return ''; const h = Number(m[1]); return (h % 12 || 12) + ':' + m[2] + ' ' + (h >= 12 ? 'PM' : 'AM'); };
       const depLabel = to12h(rideData.depTime);
-      const withEta = (label, st) => label + (st.eta ? ' (' + st.eta + ')' : '');
-      opt(bSel, '', 'Board: ' + (rideData.fromArea || 'Start') + (depLabel ? ' (' + depLabel + ')' : ''));
-      stops.forEach((st) => { if (st.id) opt(bSel, st.id, withEta('Board: ' + st.name, st)); });
-      stops.forEach((st) => { if (st.id) opt(aSel, st.id, withEta('Get off: ' + st.name, st)); });
-      opt(aSel, '', 'Get off: ' + (rideData.toArea || 'End'));
+      // Option text is "Name · time" (2026-10-12): the "Board" / "Get off"
+      // words now sit on each field's own label above the value.
+      const withEta = (label, st) => label + (st.eta ? ' · ' + st.eta : '');
+      // A pickup the car has already reached cannot be chosen (2026-10-06,
+      // reversing 10/5: the ride stays bookable from later stops after it
+      // leaves the origin). public-ride says which points are still ahead.
+      const originOk = rideData.originBoardable !== false;
+      const stopOk = (st) => st.boardable !== false;
+      opt(bSel, '', (noState(rideData.fromArea) || 'Start') + (originOk ? (depLabel ? ' · ' + depLabel : '') : ' (departed)'));
+      if (!originOk) bSel.options[bSel.options.length - 1].disabled = true;
+      stops.forEach((st) => {
+        if (!st.id) return;
+        opt(bSel, st.id, stopOk(st) ? withEta(st.name, st) : st.name + ' (passed)');
+        if (!stopOk(st)) bSel.options[bSel.options.length - 1].disabled = true;
+      });
+      stops.forEach((st) => { if (st.id) opt(aSel, st.id, withEta(st.name, st)); });
+      opt(aSel, '', noState(rideData.toArea) || 'End');
       aSel.value = '';
       // Leg preselect from the search card (2026-09-08): ?board=<stopId>
       // &alight=<stopId>, forwarded by ride.html. Only ids that exist on THIS
       // ride are honoured; recomputeSegment re-validates order and prices the
       // pair exactly as the seat tiles and the server will.
       try {
+        // A re-run (after SEATS_TAKEN) keeps the pair already chosen; the
+        // rebuilt selects used to show the origin while the state, the tiles
+        // and the request still carried the stop (bug check 2026-10-06).
+        if (segBoardingId && segStopById(segBoardingId)) bSel.value = segBoardingId; else segBoardingId = null;
+        if (segAlightingId && segStopById(segAlightingId)) aSel.value = segAlightingId; else segAlightingId = null;
         const pb = qp.get('board'), pa = qp.get('alight');
-        if (pb && segStopById(pb)) { bSel.value = pb; segBoardingId = pb; }
-        if (pa && segStopById(pa)) { aSel.value = pa; segAlightingId = pa; }
+        if (!segBoardingId && pb && segStopById(pb)) { bSel.value = pb; segBoardingId = pb; }
+        if (!segAlightingId && pa && segStopById(pa)) { aSel.value = pa; segAlightingId = pa; }
+        // Leg-aware ride sold out from the start but open from a later stop
+        // (0356): open on that stop, e.g. "Board: Los Angeles", instead of a
+        // grid of Taken seats.
+        if (!segBoardingId && rideData.legAware && rideData.openFrom && rideData.openFrom.stopId
+            && segStopById(rideData.openFrom.stopId)
+            && !(rideData.seats || []).some((s) => s.avail !== false)) {
+          bSel.value = rideData.openFrom.stopId;
+          segBoardingId = rideData.openFrom.stopId;
+        }
+        // Pickup behind the car (origin departed, or a passed stop chosen):
+        // move to the first point still ahead, as public-ride worked it out.
+        const chosen = segBoardingId ? segStopById(segBoardingId) : null;
+        if ((segBoardingId ? !(chosen && stopOk(chosen)) : !originOk) && typeof rideData.boardableFromIndex === 'number') {
+          const ahead = stops.find((st) => st.pos === rideData.boardableFromIndex - 1 && st.id);
+          if (ahead) { bSel.value = ahead.id; segBoardingId = ahead.id; }
+        }
         if (segBoardingId || segAlightingId) recomputeSegment();
       } catch (_) {}
-      bSel.addEventListener('change', () => { segBoardingId = bSel.value || null; recomputeSegment(); });
-      aSel.addEventListener('change', () => { segAlightingId = aSel.value || null; recomputeSegment(); });
+      // Property handlers, not addEventListener: initSegment can run again
+      // after SEATS_TAKEN, and stacked listeners recomputed twice per change.
+      bSel.onchange = () => { segBoardingId = bSel.value || null; recomputeSegment(); };
+      aSel.onchange = () => { segAlightingId = aSel.value || null; recomputeSegment(); };
+      syncSegFields();
       wrap.classList.remove('hidden');
     }
 
     /** Rewrite every open tile's price from the current selection. Open tiles
-     *  carry data-seat; closed ones are disabled and show a word, not a price. */
+     *  carry data-seat and a .sp price; taken and closed tiles show a word,
+     *  never a price. Taken seats ALSO carry data-seat, so .taken is skipped
+     *  explicitly: picking a seat used to repaint a closed tile's "Closed" as
+     *  a price (seen on ride 559, 2026-10-12). */
     function refreshTilePrices() {
       var tiles = document.querySelectorAll('[data-seat]');
       for (var i = 0; i < tiles.length; i++) {
         var el = tiles[i];
-        if (el.disabled) continue;
+        if (el.disabled || el.classList.contains('taken')) continue;
         var seat = seatById(el.dataset.seat);
         var sp = el.querySelector('.sp');
         if (seat && sp) sp.textContent = fmt$(tilePriceDollars(seat));
       }
     }
 
+    // Seat names in sentence case on screen ("Rear Left" -> "Rear left").
+    // Only plain capitalized words are lowered, so a driver's "VIP seat" or
+    // "Seat 2" reads as written.
+    function seatName(t) {
+      return String(t == null ? '' : t).split(' ').map(function (w, i) {
+        return i > 0 && /^[A-Z][a-z]+$/.test(w) ? w.toLowerCase() : w;
+      }).join(' ');
+    }
+    // The status line on an open tile. Same words as the app's seat layout
+    // (booking-sheet CLOSED_LABEL sub), except the front seat says "Open".
+    // public-ride does not send `sub` today; a seat that carries one uses it.
+    const SEAT_STATUS = { fp: 'Open', ml: 'Window', mr: 'Window', rl: 'Window', rc: 'Middle', rr: 'Window' };
+    function seatStatus(s) {
+      if (s.id !== 'fp' && typeof s.sub === 'string' && s.sub.trim()) return s.sub.trim().slice(0, 24);
+      return SEAT_STATUS[s.id] || 'Open';
+    }
+
+    /** The price line under "Pick your seat", stated once instead of on every
+     *  tile. Every number comes from tilePriceDollars(seat, true), the same
+     *  function the tiles use, so it is what checkout charges for one seat
+     *  for the current Board / Get off. If the open seats differ in price the
+     *  tiles keep their own prices and the line reads "From $X". The flat
+     *  processing fee (99c, per booking, inside a lone seat's tile price) is
+     *  split out by name rather than folded into "per seat", because a
+     *  second seat in the same booking does not pay it again. */
+    function seatPriceLine() {
+      var el = $('seatPriceLine'), grid = $('seatGrid');
+      if (!el || !grid || !rideData) return;
+      var seats = Array.isArray(rideData.seats) ? rideData.seats : [];
+      var lo = null, hi = null, flat = 0, openCount = 0, firstP = null;
+      for (var i = 0; i < seats.length; i++) {
+        var s = seats[i];
+        // Same "open" test as seatBtn.
+        if (!(typeof s.price === 'number' && s.price > 0) || !seatOpenForLeg(s)) continue;
+        var c = Math.round(tilePriceDollars(s, true) * 100);
+        var p = Math.round(segPrice(s.price) * 100);
+        flat = c - (p + serviceFeeCentsFor(p));
+        openCount += 1;
+        if (firstP === null) firstP = p;
+        if (lo === null || c < lo) lo = c;
+        if (hi === null || c > hi) hi = c;
+      }
+      if (lo === null) {
+        // Nothing open for this stretch: no price to state; tiles say why.
+        el.classList.add('hidden');
+        grid.classList.remove('oneprice');
+        return;
+      }
+      var one = lo === hi;
+      grid.classList.toggle('oneprice', one);
+      el.textContent = '';
+      if (!one) el.appendChild(document.createTextNode('From '));
+      // ONE seat, all in: the 99c processing fee included, so this matches
+      // the ride page's "$20.99 per seat, all in" (bug check 2026-10-12; it
+      // read "$20 per seat + $0.99 processing fee").
+      var amt = document.createElement('b');
+      amt.textContent = fmt$(lo / 100);
+      el.appendChild(amt);
+      el.appendChild(document.createTextNode(' per seat, all in'));
+      // A second seat can cost less than the first: the $2 minimum fee and the
+      // 99c processing fee are per BOOKING. With tile prices hidden, "$22 per
+      // seat" next to a "$42" button for 2 seats read as a mistake, so say the
+      // exact 2-seat total whenever it is less than double (bug check 10/12).
+      if (one && openCount >= 2 && firstP !== null) {
+        var twoC = 2 * firstP + serviceFeeCentsFor(2 * firstP) + (flat > 0 ? flat : 0);
+        if (twoC < 2 * lo) el.appendChild(document.createTextNode(' (2 seats: ' + fmt$(twoC / 100) + ')'));
+      }
+      el.classList.remove('hidden');
+    }
+
     function seatBtn(s) {
       const btn = document.createElement('button');
       btn.type = 'button';
       const priced = typeof s.price === 'number' && s.price > 0;
-      const open = s.avail !== false && priced;
+      const open = seatOpenForLeg(s) && priced;
       btn.className = 'seat' + (open ? '' : ' taken');
       btn.dataset.seat = s.id;
       // textContent, never innerHTML: seat label/id come from the DRIVER's
@@ -1361,16 +1937,30 @@ fbq('track','PageView');
       // label here would be stored XSS running with the rider's session.
       // (2026-08-20)
       var labelSpan = document.createElement('span');
-      labelSpan.textContent = s.label || s.id;
-      var priceSpan = document.createElement('span');
-      priceSpan.className = 'sp';
+      labelSpan.className = 'sn';
+      labelSpan.textContent = seatName(s.label || s.id);
+      // Status line: "Open" / "Window" / "Middle" on an open seat.
       // Booked-by-a-rider says "Taken"; a seat the driver closed (comfort
       // seat) says "Closed" — different facts (Justin, 2026-08-28). booked is
       // new in the payload: only an explicit false means closed, so a cached
       // pre-field payload still reads "Taken".
-      priceSpan.textContent = open ? fmt$(tilePriceDollars(s)) : (s.booked === false ? 'Closed' : 'Taken');
+      var stateSpan = document.createElement('span');
+      stateSpan.className = 'seatst';
+      stateSpan.textContent = open
+        ? seatStatus(s)
+        : (rideData && rideData.legAware
+          ? (s.closed === true ? 'Closed' : 'Taken')
+          : (s.booked === false ? 'Closed' : 'Taken'));
       btn.appendChild(labelSpan);
-      btn.appendChild(priceSpan);
+      // Price span on open seats only. CSS shows it instead of the status
+      // when the open seats differ in price (#seatGrid without .oneprice).
+      if (open) {
+        var priceSpan = document.createElement('span');
+        priceSpan.className = 'sp';
+        priceSpan.textContent = fmt$(tilePriceDollars(s));
+        btn.appendChild(priceSpan);
+      }
+      btn.appendChild(stateSpan);
       if (open) {
         btn.addEventListener('click', () => {
           const i = selectedSeats.indexOf(s.id);
@@ -1397,14 +1987,15 @@ fbq('track','PageView');
       btn.type = 'button';
       btn.className = 'seat taken closed';
       btn.disabled = true;
-      btn.setAttribute('aria-label', name + ' seat, closed');
+      btn.setAttribute('aria-label', seatName(name) + ' seat, closed');
       var labelSpan = document.createElement('span');
-      labelSpan.textContent = name;
-      var priceSpan = document.createElement('span');
-      priceSpan.className = 'sp';
-      priceSpan.textContent = 'Closed';
+      labelSpan.className = 'sn';
+      labelSpan.textContent = seatName(name);
+      var stateSpan = document.createElement('span');
+      stateSpan.className = 'seatst';
+      stateSpan.textContent = 'Closed';
       btn.appendChild(labelSpan);
-      btn.appendChild(priceSpan);
+      btn.appendChild(stateSpan);
       return btn;
     }
 
@@ -1560,6 +2151,11 @@ function rideWhen(dateStr, timeStr) {
 }
 
     function updateSummary() {
+      // Price line and tile prices first, on every path that changes a price
+      // (seat pick, Board / Get off, sign-in credit, fee waiver, promo code).
+      // Credit used to update only the summary, leaving tiles a 99c
+      // processing fee behind it. Display only: never blocks the button.
+      try { refreshTilePrices(); seatPriceLine(); } catch (_) {}
       const n = selectedSeats.length;
       const bookBtn = $('bookBtn');
       const t = computeTotals();
@@ -1578,9 +2174,11 @@ function rideWhen(dateStr, timeStr) {
       var minTxt = minC % 100 === 0 ? '$' + (minC / 100) : fmt$(minC / 100);
       $('feeInfo').textContent = myFeeWaived
         ? 'Your booking fee is waived. Nothing to do, it is already off this total.'
-        : 'The booking fee is ' + (bps / 100) + '% of the seat price'
-          + (minC > 0 ? ', with a minimum of ' + minTxt + ' for processing and server fees on rides under that amount.' : '.')
-          + (minLifted ? ' The minimum applies to this booking.' : '');
+        : myFeeWaiverPct > 0
+          ? 'Half your booking fee is on us. It would have been ' + fmt$(serviceFeeBeforeWaiverCentsFor(seatCents) / 100) + '; nothing to do, it is already off this total.'
+          : 'The booking fee is ' + (bps / 100) + '% of the seat price'
+            + (minC > 0 ? ', with a minimum of ' + minTxt + ' for processing and server fees on rides under that amount.' : '.')
+            + (minLifted ? ' The minimum applies to this booking.' : '');
       // A waived rider reads "Waived", not "$0.00". A zero dollar amount looks
       // like a bug; the word says a thing was done for them on purpose.
       $('sumFee').textContent = myFeeWaived ? 'Waived' : fmt$(feeCents / 100);
@@ -1623,10 +2221,16 @@ function rideWhen(dateStr, timeStr) {
       // 'passenger' in user_metadata so the app routes correctly if they
       // install it later. 6-digit typed code, no redirect link — immune to
       // mail-scanner link burning.
-      const { error } = await supabase.auth.signInWithOtp({
+      const send = (captchaToken) => supabase.auth.signInWithOtp({
         email,
-        options: { shouldCreateUser: true, data: { role: 'passenger', surface: 'web' } },
+        options: { shouldCreateUser: true, data: { role: 'passenger', surface: 'web' }, captchaToken },
       });
+      let { error } = await send();
+      if (error && (error.code === 'captcha_failed' || /captcha/i.test(error.message || ''))) {
+        // Turnstile only when Supabase asks for it (js/ss-captcha.js).
+        const { solveAndRetry } = await import('/js/ss-captcha.js');
+        ({ error } = await solveAndRetry(send));
+      }
       if (error) {
         const m = (error.message || '').toLowerCase();
         if (m.includes('rate limit')) return 'Too many codes requested. Try again in an hour.';
@@ -1803,7 +2407,7 @@ function rideWhen(dateStr, timeStr) {
       setMsg('phoneMsg', '');
       const cc = $('phoneCc').value, num = $('phoneNum').value;
       const e164 = toE164(cc, num);
-      if (!plausibleE164(e164)) { setMsg('phoneMsg', 'Enter a valid US or Canada number (10 digits). Other countries are supported in the app.'); return; }
+      if (!plausibleE164(e164)) { setMsg('phoneMsg', 'Enter a valid US or Canada number (10 digits). For a number from another country, email support@seatsherpa.app or sign up in the Seat Sherpa app.'); return; }
       pendingPhone = { cc: cc.replace(/\D/g, ''), num, e164 };
       const btn = $('phoneSendBtn');
       btn.disabled = true; btn.textContent = 'Sending…';
@@ -2060,14 +2664,18 @@ function rideWhen(dateStr, timeStr) {
         // 2026-09-11). If it changed, redraw and make them look again.
         if (myUid) {
           try {
-            const { data: wNow } = await supabase.rpc('passenger_fee_waived', { p_user: myUid });
-            if ((wNow === true) !== myFeeWaived) {
-              myFeeWaived = wNow === true;
+            const { data: wNow, error: wNowErr } = await supabase.rpc('passenger_fee_waiver_pct', { p_user: myUid });
+            const pNow = wNowErr ? 0 : Math.min(100, Math.max(0, Math.round(Number(wNow)) || 0));
+            if (pNow !== myFeeWaiverPct) {
+              const shrank = pNow < myFeeWaiverPct;
+              setWaiverPct(pNow);
               try { renderSeats(); } catch (_) {}
               try { updateSummary(); } catch (_) {}
-              setMsg('bookMsg', myFeeWaived
-                ? 'Good news, your booking fee came off. Check the total and tap again.'
-                : 'Your booking fee waiver just ran out, so the total changed. Check it and tap again.');
+              setMsg('bookMsg', shrank
+                ? 'Your booking fee discount just ran out, so the total changed. Check it and tap again.'
+                : pNow >= 100
+                  ? 'Good news, your booking fee came off. Check the total and tap again.'
+                  : 'Good news, half your booking fee came off. Check the total and tap again.');
               return;
             }
           } catch (_) { /* the server is authoritative either way */ }
@@ -2118,10 +2726,15 @@ function rideWhen(dateStr, timeStr) {
       // Consent evidence for the sign-in-wrap notice. Flag only on SUCCESS
       // — a swallowed failure must retry next session (audit P2).
       try {
-        if (localStorage.getItem('ss-tos-web-v1')) return;
+        // Per-user key (bug check 10/15): a second person on the same browser
+        // must be logged too, and an old per-browser flag must not suppress
+        // a genuine acceptance of the 2026-10-23 terms.
+        var tosKey = 'ss-tos-web-v1:' + uid;
+        if (localStorage.getItem(tosKey)) return;
+        if (sessionStorage.getItem('ss-tos-notice-seen') !== '1') return;
         supabase.from('terms_acceptances')
-          .insert({ user_id: uid, terms_version: '2026-05-26', privacy_version: '2026-07-08', platform: 'web' })
-          .then(function (r) { if (!r || !r.error) { try { localStorage.setItem('ss-tos-web-v1', '1'); } catch (_) {} } }, function () {});
+          .insert({ user_id: uid, terms_version: '2026-10-23', privacy_version: '2026-08-08', platform: 'web' })
+          .then(function (r) { if (!r || !r.error) { try { localStorage.setItem(tosKey, '1'); } catch (_) {} } }, function () {});
       } catch (_) {}
     }
     // Server gate bounces → route the visitor to the right step; ride-level
@@ -2160,7 +2773,7 @@ function rideWhen(dateStr, timeStr) {
               // Last seat gone: "pick another" over an all-Taken grid is a
               // dead end (audit M5) — route to the full-ride state, which
               // offers the browse list instead.
-              if (!(d.seats || []).some((s) => s.avail !== false)) { showGone('full'); return; }
+              if (!rideHasOpenSeat(d)) { showGone('full'); return; }
               renderSeats();
               try { initSegment(); recomputeSegment(); } catch (_) {}
             }
@@ -2170,7 +2783,7 @@ function rideWhen(dateStr, timeStr) {
         }
         case 'INVALID_STOP':
           segBoardingId = null; segAlightingId = null;
-          try { $('segBoard').value = ''; $('segAlight').value = ''; recomputeSegment(); } catch (_) {}
+          try { $('segBoard').value = ''; $('segAlight').value = ''; syncSegFields(); recomputeSegment(); } catch (_) {}
           setMsg('bookMsg', "Those pickup and drop-off stops don't match this route, so it was reset to the full trip. Try again.");
           return;
         case 'ALREADY_BOOKED':
@@ -2205,7 +2818,7 @@ function rideWhen(dateStr, timeStr) {
         // Session didn't survive (cleared storage / different browser). The
         // webhook still stamps + notifies regardless — reassure and stop.
         $('successTitle').textContent = 'Payment received';
-        $('successSub').textContent = "Your request is being finalized. You'll get an email as soon as the driver responds, and your card is only charged if they accept.";
+        $('successSub').textContent = "Your request is being finalized. You'll get an email as soon as the driver responds, and the seat is only charged if they accept.";
         show('stSuccess');
         return;
       }
@@ -2231,7 +2844,7 @@ function rideWhen(dateStr, timeStr) {
             }
             if (b.status === 'Cancelled') {
               $('successTitle').textContent = 'This request was cancelled';
-              $('successSub').textContent = "Your card won't be charged. Head back to the ride to try again, or find another ride in the app.";
+              $('successSub').textContent = "Your card won't be charged. Head back to the ride to try again, or find another ride at seatsherpa.app.";
               show('stSuccess');
               return;
             }
@@ -2241,6 +2854,7 @@ function rideWhen(dateStr, timeStr) {
               const drv = rideData && rideData.driverFirst ? rideData.driverFirst : 'The driver';
               $('successSub').textContent = drv + " has been notified. Your card is only charged when they accept, and we'll email you as soon as they respond.";
               show('stSuccess');
+              void offerBackup(rideId);
               return;
             }
           }
@@ -2252,7 +2866,7 @@ function rideWhen(dateStr, timeStr) {
       $('successTitle').textContent = 'Payment is processing';
       // No email promise here — nothing mails the rider at this moment (the
       // next email is the driver's response). My trips is the live truth.
-      $('successSub').textContent = "Your payment went through and your request is being finalized. It'll show in My trips within a few minutes. Your card is only charged if the driver accepts, and we'll email you the moment they respond.";
+      $('successSub').textContent = "Your payment went through and your request is being finalized. It'll show in My trips within a few minutes. The seat is only charged if the driver accepts, and we'll email you the moment they respond.";
       show('stSuccess');
     }
 
@@ -2346,7 +2960,7 @@ function rideWhen(dateStr, timeStr) {
           if (wcRes.status >= 500 || wcRes.status === 0) {
             throw new Error("Couldn't withdraw just now. Please try again in a moment.");
           } else {
-            throw new Error((out && out.error) || "This request can't be withdrawn here. It may already be accepted; manage it in the app.");
+            throw new Error((out && out.error) || "This request can't be withdrawn here. It may already be accepted; manage it at seatsherpa.app/trips.");
           }
         }
         $('retryLink').classList.add('hidden');
@@ -2421,7 +3035,12 @@ function rideWhen(dateStr, timeStr) {
       // Pre-extension public-ride payload (no seats array) can't drive the
       // picker — fall back to the app rather than a broken grid.
       if (!Array.isArray(d.seats)) { show('stAppOnly'); return; }
-      if (d.seatsLeft === 0 || !d.seats.some((s) => s.avail !== false)) { showGone('full'); return; }
+      // "Need the whole ride? Join the waitlist" on a ride that is full from
+      // its start but open from a later stop (0356): ?waitlist=1 must reach
+      // the waitlist, not the open stretch's seat picker (bug check
+      // 2026-10-06). showGone('full') runs waitlistFlow for ?waitlist=1.
+      if (qp.get('waitlist') === '1' && !(d.seats || []).some((s) => s.avail !== false)) { showGone('full'); return; }
+      if (!rideHasOpenSeat(d)) { showGone('full'); return; }
       if (d.bookable === false) { showGone('soon'); return; }
 
       renderSeats();

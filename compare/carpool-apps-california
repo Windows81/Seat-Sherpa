@@ -72,56 +72,91 @@ fbq('track','PageView');
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Best carpool apps in California and Nevada for long-distance trips (2026)","description":"Every real option for a city-to-city carpool in California and Nevada in 2026: Seat Sherpa, Craigslist rideshare, Facebook groups, casual carpool, and why BlaBlaCar, Waze Carpool, Zimride and Hitch do not cover the state.","image":"https://seatsherpa.app/icon.png","author":{"@type":"Organization","name":"Seat Sherpa","url":"https://seatsherpa.app"},"publisher":{"@type":"Organization","name":"Seat Sherpa","logo":{"@type":"ImageObject","url":"https://seatsherpa.app/icon.png"}},"datePublished":"2026-09-02","dateModified":"2026-09-02","mainEntityOfPage":"https://seatsherpa.app/compare/carpool-apps-california","about":{"@type":"Organization","name":"Seat Sherpa","url":"https://seatsherpa.app","sameAs":["https://apps.apple.com/us/app/seat-sherpa-carpool/id6773077112"]}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the best carpool app for San Francisco to Los Angeles?","acceptedAnswer":{"@type":"Answer","text":"Seat Sherpa is the booked-ahead carpool marketplace for California and Nevada, with verified drivers, payment held until pickup and seats capped at $55. Craigslist rideshare and Facebook groups also list the route but have no verification or payment protection."}},{"@type":"Question","name":"Is there a BlaBlaCar in California?","acceptedAnswer":{"@type":"Answer","text":"No. BlaBlaCar has never operated in the United States. Seat Sherpa fills the same role in California and Nevada: drivers post intercity trips they are already taking and passengers share the cost."}},{"@type":"Question","name":"Is Waze Carpool still available?","acceptedAnswer":{"@type":"Answer","text":"No. Google shut down Waze Carpool in 2022. For daily commutes, employer or agency commute programs remain; for city-to-city trips in California and Nevada, Seat Sherpa is the booked-ahead option."}},{"@type":"Question","name":"Does Hitch work in California?","acceptedAnswer":{"@type":"Answer","text":"No. Hitch operates in Texas and neighbouring states. Seat Sherpa covers the California and Nevada corridors."}},{"@type":"Question","name":"How much does a Seat Sherpa seat cost?","acceptedAnswer":{"@type":"Answer","text":"It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat. Riders pay the seat price plus a 5% service fee, shown before you pay. Live prices for each corridor are on the route pages and in the ride browser."}},{"@type":"Question","name":"Is Seat Sherpa safe?","acceptedAnswer":{"@type":"Answer","text":"Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment."}},{"@type":"Question","name":"What is the cancellation policy?","acceptedAnswer":{"@type":"Answer","text":"One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The 5% service fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the best carpool app for San Francisco to Los Angeles?","acceptedAnswer":{"@type":"Answer","text":"Seat Sherpa is the booked-ahead carpool marketplace for California and Nevada, with verified drivers, payment held until pickup and seats capped at $55 ($60 on trips over 400 miles). Craigslist rideshare and Facebook groups also list the route but have no verification or payment protection."}},{"@type":"Question","name":"Is there a BlaBlaCar in California?","acceptedAnswer":{"@type":"Answer","text":"No. BlaBlaCar has never operated in the United States. Seat Sherpa fills the same role in California and Nevada: drivers post intercity trips they are already taking and passengers share the cost."}},{"@type":"Question","name":"Is Waze Carpool still available?","acceptedAnswer":{"@type":"Answer","text":"No. Google shut down Waze Carpool in 2022. For daily commutes, employer or agency commute programs remain; for city-to-city trips in California and Nevada, Seat Sherpa is the booked-ahead option."}},{"@type":"Question","name":"Does Hitch work in California?","acceptedAnswer":{"@type":"Answer","text":"No. Hitch operates in Texas and neighbouring states. Seat Sherpa covers the California and Nevada corridors."}},{"@type":"Question","name":"How much does a Seat Sherpa seat cost?","acceptedAnswer":{"@type":"Answer","text":"It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat ($60 on trips over 400 miles). Riders pay the seat price plus a booking fee (5%, at least $2), and every price we show includes it. Live prices for each corridor are on the route pages and in the ride browser."}},{"@type":"Question","name":"Is Seat Sherpa safe?","acceptedAnswer":{"@type":"Answer","text":"Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment."}},{"@type":"Question","name":"What is the cancellation policy?","acceptedAnswer":{"@type":"Answer","text":"One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The booking fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee, and the same applies if the driver changes the departure time after the rider booked, up to 2 hours before the new departure."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seatsherpa.app/"},{"@type":"ListItem","position":2,"name":"Compare","item":"https://seatsherpa.app/compare"},{"@type":"ListItem","position":3,"name":"Best carpool apps in California and Nevada for long-distance trips","item":"https://seatsherpa.app/compare/carpool-apps-california"}]}</script>
 <style>
+  /* Color tokens + light theme (2026-10-12): the dark values are this page's
+     original colors; the light set follows the visitor's system setting (no
+     toggle). --teal is the button fill (dark text on it in both themes);
+     --link is teal TEXT for things you can tap; --win marks the winning table
+     cell (green in light). build-compare.mjs lifts this whole style block from
+     guides/blablacar-usa.html, and build-guides.mjs copies it from the SF to
+     LA guide, so keep the guides' blocks identical. */
+  :root{--bg:#0E0E10;--text:#fff;--link:#00D4C8;--teal:#00D4C8;--on-teal:#04201e;--brand-t:#00D4C8;--wm-eat:#00D4C8;--wm-sherpa:#ffffff;
+    --line06:rgba(255,255,255,.06);--line08:rgba(255,255,255,.08);--navlink:#adadb8;--crumb:#777;--crumb-a:#999;--meta:#888;--p:#d5d5d5;--lede:#eaeaea;
+    --cap:#8a8a92;--win:#00D4C8;--callout-bg:#141d1c;--callout-line:rgba(0,212,200,.3);--foot:#666;--foot-a:#999;
+    --chip-bg:#161619;--chip-line:rgba(255,255,255,.1);--chip-tx:#eaeaea;--teal-line:rgba(0,212,200,.4);--faint:#71717d;
+    --store-bg:#00a8a0;--store-fg:#ffffff;--card:#161619;--toc-a:#b9b9c6;color-scheme:dark}
+  @media (prefers-color-scheme: light){:root{--bg:#F5F6F5;--text:#121416;--link:#007C76;--teal:#00D4C8;--on-teal:#04201e;--brand-t:#007C76;--wm-eat:#00A89F;--wm-sherpa:#121416;
+    --line06:rgba(18,22,22,.10);--line08:rgba(18,22,22,.10);--navlink:#5B6368;--crumb:#687176;--crumb-a:#4B5357;--meta:#687176;--p:#23272A;--lede:#121416;
+    --cap:#687176;--win:#1E7B3A;--callout-bg:#FFFFFF;--callout-line:rgba(0,124,118,.45);--foot:#687176;--foot-a:#4B5357;
+    --chip-bg:#EFF1F0;--chip-line:#D8DCDB;--chip-tx:#23272A;--teal-line:rgba(0,124,118,.45);--faint:#687176;
+    --store-bg:#00D4C8;--store-fg:#04201e;--card:#FFFFFF;--toc-a:#4B5357;color-scheme:light;
+    --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;}}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0E0E10;color:#fff;line-height:1.7}
-  a{color:#00D4C8;text-decoration:none}
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+  a{color:var(--link);text-decoration:none}
   .wrap{max-width:760px;margin:0 auto;padding:0 22px}
-  nav{border-bottom:1px solid rgba(255,255,255,.06);padding:18px 0}
+  nav{border-bottom:1px solid var(--line06);padding:18px 0}
   nav .wrap{display:flex;justify-content:space-between;align-items:center}
-  .brand{font-weight:800;font-size:18px}.brand .t{color:#00D4C8}
-  .navcta{background:#00D4C8;color:#04201e;font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
+  .brand{font-weight:800;font-size:18px}.brand .t{color:var(--brand-t)}
+  .navcta{background:var(--teal);color:var(--on-teal);font-weight:700;padding:9px 16px;border-radius:999px;font-size:14px}
 .navlinks{display:flex;align-items:center;gap:18px;margin-left:auto;margin-right:16px}
-.navlinks a{color:#adadb8;font-weight:600;font-size:14px;text-decoration:none}
-.navlinks a:hover{color:#fff}
+.navlinks a{color:var(--navlink);font-weight:600;font-size:14px;text-decoration:none}
+.navlinks a:hover{color:var(--text)}
 @media(max-width:640px){.navlinks{gap:12px;margin-right:10px}.navlinks a.lo{display:none}}
-  .crumb{color:#777;font-size:13px;margin:26px 0 8px}.crumb a{color:#999}
+  .crumb{color:var(--crumb);font-size:13px;margin:26px 0 8px}.crumb a{color:var(--crumb-a)}
   h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;font-weight:800;margin:6px 0 8px}
-  .meta{color:#888;font-size:14px;margin-bottom:24px}
+  .meta{color:var(--meta);font-size:14px;margin-bottom:24px}
   h2{font-size:25px;font-weight:800;margin:34px 0 12px;letter-spacing:-.3px}
-  p{color:#d5d5d5;margin-bottom:16px;font-size:17px}
-  .lede{font-size:19px;color:#eaeaea}
+  p{color:var(--p);margin-bottom:16px;font-size:17px}
+  .lede{font-size:19px;color:var(--lede)}
   table{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px}
-  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top}
-  th{color:#8a8a92;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
-  td.win{color:#00D4C8;font-weight:700}
-  .callout{background:#141d1c;border:1px solid rgba(0,212,200,.3);border-radius:14px;padding:20px 22px;margin:26px 0}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line08);vertical-align:top}
+  th{color:var(--cap);font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+  td.win{color:var(--win);font-weight:700}
+  .callout{background:var(--callout-bg);border:1px solid var(--callout-line);border-radius:14px;padding:20px 22px;margin:26px 0}
   .callout h3{font-size:18px;margin-bottom:6px}
-  .btn{display:inline-block;background:#00D4C8;color:#04201e;font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
-  .faq{border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0}.faq:last-child{border-bottom:none}
+  .btn{display:inline-block;background:var(--teal);color:var(--on-teal);font-weight:800;padding:13px 24px;border-radius:999px;font-size:16px;margin-top:8px}
+  .faq{border-bottom:1px solid var(--line06);padding:16px 0}.faq:last-child{border-bottom:none}
   .faq h3{font-size:17px;margin-bottom:5px}.faq p{font-size:16px;margin-bottom:0}
-  footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0;margin-top:36px;color:#666;font-size:13px}
-  footer a{color:#999;margin-right:16px}
+  footer{border-top:1px solid var(--line06);padding:26px 0;margin-top:36px;color:var(--foot);font-size:13px;overflow-x:clip}
+  footer a{color:var(--foot-a);margin-right:16px}
   .scroll{overflow-x:auto}
   @media(max-width:640px){h1{font-size:27px}}
+  /* Laptop layout (2026-10-12). Phones and tablets are unchanged. From
+     1100px the page uses the 1120px column: the article keeps a reading
+     column near 70 characters and the ss-toc script adds an "On this page"
+     card on the right that stays in view while you scroll. */
+  .toc{display:none}
+  @media(min-width:960px){h1{font-size:40px}}
+  @media(min-width:1100px){
+    .wrap{max-width:1120px}
+    article.wrap{position:relative;padding-right:420px}
+    article.wrap>p,.faq p{max-width:35em}
+    .toc{display:block;position:absolute;top:26px;bottom:0;right:22px;width:320px}
+    .toc-in{position:sticky;top:24px;background:var(--card);border:1px solid var(--line08);border-radius:14px;padding:16px 20px 8px}
+    .toc-t{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--cap);margin-bottom:6px}
+    .toc a{display:block;padding:8px 0;border-top:1px solid var(--line06);color:var(--toc-a);font-size:14.5px;line-height:1.4}
+    .toc .toc-t+a{border-top:0}
+    .toc a:hover{color:var(--text)}
+  }
   /* Phones: tables become cards (UX sweep wave 1, 2026-09-02). Each cell
      carries its column label in data-l; the first cell is the row title. */
   @media(max-width:640px){
     table.stack{display:block}
     table.stack thead{display:none}
     table.stack tbody,table.stack tr{display:block}
-    table.stack tr{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    table.stack tr{padding:12px 0;border-bottom:1px solid var(--line08)}
     table.stack td{display:block;border:0;padding:3px 0}
-    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#8a8a92}
+    table.stack td[data-l]::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--cap)}
     table.stack td:first-child{font-size:16px;font-weight:700;padding-bottom:6px}
     table.stack td:first-child::before{display:none}
   }
 </style>
 </head>
 <body>
-<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg></a><div class="navlinks"><a href="/rides">Find a ride</a><a class="lo" href="/requests">Ride requests</a><a class="lo" href="/signin">Sign in</a></div><a class="navcta" href="/#get">Get the app</a></div></nav>
+<nav><div class="wrap"><a href="/" aria-label="Seat Sherpa home" style="text-decoration:none;display:block"><svg style="height:26px;width:auto;display:block" viewBox="0 -22 600 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seat Sherpa"><defs><linearGradient id="wmg2" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg2)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8" style="fill:var(--wm-eat)">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff" style="fill:var(--wm-sherpa)">Sherpa</text></svg></a><div class="navlinks"><a href="/rides">Find a ride</a><a class="lo" href="/requests">Ride requests</a><a class="lo" href="/signin">Sign in</a></div><a class="navcta" href="/#get">Get the app</a></div></nav>
 
 <article class="wrap">
   <div class="crumb"><a href="/">Home</a> › <a href="/compare">Compare</a> › Best carpool apps in California and Nevada for long-distance trips</div>
@@ -134,7 +169,7 @@ fbq('track','PageView');
   <div class="scroll"><table class="stack">
     <thead><tr><th>Option</th><th>Covers CA / NV intercity?</th><th>Driver verification</th><th>Payment</th><th>Price</th></tr></thead>
     <tbody>
-      <tr><td class="win">Seat Sherpa</td><td data-l="Covers CA / NV intercity?">Yes: SF Bay Area, LA, San Diego, Sacramento, Fresno, Santa Barbara, San Luis Obispo, Palm Springs, Napa, Reno/Tahoe, Las Vegas</td><td data-l="Driver verification">Phone, license, vehicle, Stripe identity, ratings</td><td data-l="Payment">In app or browser, held until the pickup code</td><td data-l="Price">Capped at the IRS rate split across seats, max $55 + 5% fee</td></tr>
+      <tr><td class="win">Seat Sherpa</td><td data-l="Covers CA / NV intercity?">Yes: SF Bay Area, LA, San Diego, Sacramento, Fresno, Santa Barbara, San Luis Obispo, Palm Springs, Napa, Reno/Tahoe, Las Vegas</td><td data-l="Driver verification">Phone, license, vehicle, Stripe identity, ratings</td><td data-l="Payment">In app or browser, held until the pickup code</td><td data-l="Price">Capped at the IRS rate split across seats, max $55 a seat ($60 over 400 miles), plus the booking fee</td></tr>
       <tr><td>Craigslist rideshare</td><td data-l="Covers CA / NV intercity?">Yes, nationwide board</td><td data-l="Driver verification">None</td><td data-l="Payment">Cash or Venmo between strangers</td><td data-l="Price">Whatever is posted</td></tr>
       <tr><td>Facebook carpool groups</td><td data-l="Covers CA / NV intercity?">Patchy, group by group</td><td data-l="Driver verification">Profile only</td><td data-l="Payment">None built in</td><td data-l="Price">Whatever is posted</td></tr>
       <tr><td>Bay Area casual carpool</td><td data-l="Covers CA / NV intercity?">Commute only, East Bay to SF</td><td data-l="Driver verification">None</td><td data-l="Payment">Small cash contribution by custom</td><td data-l="Price">A few dollars</td></tr>
@@ -153,27 +188,52 @@ fbq('track','PageView');
     <h3>See live seat prices on your route</h3>
     <p style="margin-bottom:6px">Drivers post trips they are already taking. Book in the browser or the app; no account needed to look.</p>
     <a class="btn" href="/rides?c=compare">Browse rides →</a>
-    <p style="font-size:14px;color:#8a8a92;margin-top:10px">Driving somewhere yourself? <a href="/post">Post the ride</a> and split the cost.</p>
+    <p style="font-size:14px;color:var(--cap);margin-top:10px">Driving somewhere yourself? <a href="/post">Post the ride</a> and split the cost.</p>
   </div>
 
   <h2>FAQ</h2>
-  <div class="faq"><h3>What is the best carpool app for San Francisco to Los Angeles?</h3><p>Seat Sherpa is the booked-ahead carpool marketplace for California and Nevada, with verified drivers, payment held until pickup and seats capped at $55. Craigslist rideshare and Facebook groups also list the route but have no verification or payment protection.</p></div>
+  <div class="faq"><h3>What is the best carpool app for San Francisco to Los Angeles?</h3><p>Seat Sherpa is the booked-ahead carpool marketplace for California and Nevada, with verified drivers, payment held until pickup and seats capped at $55 ($60 on trips over 400 miles). Craigslist rideshare and Facebook groups also list the route but have no verification or payment protection.</p></div>
   <div class="faq"><h3>Is there a BlaBlaCar in California?</h3><p>No. BlaBlaCar has never operated in the United States. Seat Sherpa fills the same role in California and Nevada: drivers post intercity trips they are already taking and passengers share the cost.</p></div>
   <div class="faq"><h3>Is Waze Carpool still available?</h3><p>No. Google shut down Waze Carpool in 2022. For daily commutes, employer or agency commute programs remain; for city-to-city trips in California and Nevada, Seat Sherpa is the booked-ahead option.</p></div>
   <div class="faq"><h3>Does Hitch work in California?</h3><p>No. Hitch operates in Texas and neighbouring states. Seat Sherpa covers the California and Nevada corridors.</p></div>
-  <div class="faq"><h3>How much does a Seat Sherpa seat cost?</h3><p>It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat. Riders pay the seat price plus a 5% service fee, shown before you pay. Live prices for each corridor are on the route pages and in the ride browser.</p></div>
+  <div class="faq"><h3>How much does a Seat Sherpa seat cost?</h3><p>It depends on the route and the driver, but every seat has a hard cap: the IRS standard mileage rate (about $0.76 per mile in 2026) multiplied by the drivable miles, divided across the seats, and never more than $55 a seat ($60 on trips over 400 miles). Riders pay the seat price plus a booking fee (5%, at least $2), and every price we show includes it. Live prices for each corridor are on the route pages and in the ride browser.</p></div>
   <div class="faq"><h3>Is Seat Sherpa safe?</h3><p>Every driver verifies a phone number by SMS, uploads a driver’s license that is checked for expiry, registers the vehicle, and connects a Stripe account that verifies identity and bank details. Riders see the driver’s photo, trip count and reviews before booking, can filter for women drivers, and can block anyone. A 4-digit pickup code confirms the rider got in the car and is what releases payment.</p></div>
-  <div class="faq"><h3>What is the cancellation policy?</h3><p>One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The 5% service fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee.</p></div>
+  <div class="faq"><h3>What is the cancellation policy?</h3><p>One standard policy on every ride: cancel 24 or more hours before departure for a full seat refund, 2 to 24 hours before for 50%, and inside 2 hours there is no refund. The booking fee is non-refundable when the rider cancels. If the driver cancels, the rider gets 100% back including the fee, and the same applies if the driver changes the departure time after the rider booked, up to 2 hours before the new departure.</p></div>
 
   <h2>More comparisons</h2>
   <div style="font-size:16px">
-      <a href="/compare" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">All comparisons →</a>
-      <a href="/guides/blablacar-usa" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Blablacar Usa →</a>
-      <a href="/guides/casual-carpool-bay-area" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Casual Carpool Bay Area →</a>
-      <a href="/guides/waze-carpool-alternative" style="display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)">Waze Carpool Alternative →</a>
+      <a href="/compare" style="display:block;padding:8px 0;border-bottom:1px solid var(--line06)">All comparisons →</a>
+      <a href="/guides/blablacar-usa" style="display:block;padding:8px 0;border-bottom:1px solid var(--line06)">Blablacar Usa →</a>
+      <a href="/guides/casual-carpool-bay-area" style="display:block;padding:8px 0;border-bottom:1px solid var(--line06)">Casual Carpool Bay Area →</a>
+      <a href="/guides/waze-carpool-alternative" style="display:block;padding:8px 0;border-bottom:1px solid var(--line06)">Waze Carpool Alternative →</a>
   </div>
 </article>
 
 <footer><div class="wrap"><a href="/">Home</a><a href="/rides">Live rides</a><a href="/routes">Routes</a><a href="/compare">Compare</a><a href="/faq">FAQ</a><a href="/drive">Drive</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><div style="margin-top:10px">© 2026 Seat Sherpa · California &amp; Nevada carpool marketplace</div></div></footer>
+<script id="ss-toc">
+/* "On this page" for laptops (2026-10-12): a card listing the article's h2s.
+   The CSS only shows it at 1100px and wider, so phones never see it. Headings
+   without an id get one made from their text. build-compare.mjs lifts this
+   script from guides/blablacar-usa.html. */
+(function(){
+  var art=document.querySelector('article.wrap');if(!art||!art.firstChild)return;
+  var hs=[],i,k;
+  for(i=0;i<art.children.length;i++){if(art.children[i].tagName==='H2')hs.push(art.children[i]);}
+  if(hs.length<3)return;
+  var box=document.createElement('aside');box.className='toc';box.setAttribute('aria-label','On this page');
+  var inner=document.createElement('div');inner.className='toc-in';
+  var t=document.createElement('div');t.className='toc-t';t.textContent='On this page';inner.appendChild(t);
+  for(i=0;i<hs.length;i++){
+    var h=hs[i];
+    if(!h.id){
+      var base=(h.textContent||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60)||'section',id=base;
+      for(k=2;document.getElementById(id);k++)id=base+'-'+k;
+      h.id=id;
+    }
+    var a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;inner.appendChild(a);
+  }
+  box.appendChild(inner);art.insertBefore(box,art.firstChild);
+})();
+</script>
 </body>
 </html>

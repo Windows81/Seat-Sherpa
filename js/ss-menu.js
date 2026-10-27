@@ -27,21 +27,24 @@
 
   var STYLE =
     '.ss-menu-wrap{position:relative;display:inline-flex;margin-left:10px;vertical-align:middle;}' +
-    '.ss-menu-btn{width:34px;height:34px;border-radius:50%;border:1px solid #2a2a33;background:#17171d;' +
-    'color:#00D4C8;font-weight:800;font-size:15px;cursor:pointer;display:flex;align-items:center;' +
+    '.ss-menu-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--ssbar-btnline,#2a2a33);background:var(--ssmenu-btnbg,#17171d);' +
+    'color:var(--ssmenu-ini,#00D4C8);font-weight:800;font-size:15px;cursor:pointer;display:flex;align-items:center;' +
     'justify-content:center;padding:0;overflow:hidden;font-family:inherit;flex-shrink:0;}' +
     '.ss-menu-btn:hover{border-color:rgba(0,212,200,0.5);}' +
     '.ss-menu-btn img{width:100%;height:100%;object-fit:cover;display:block;}' +
-    '.ss-menu-pop{position:absolute;top:42px;right:0;min-width:200px;background:#17171d;' +
-    'border:1px solid #2a2a33;border-radius:14px;padding:6px;z-index:1000;box-shadow:0 12px 32px rgba(0,0,0,0.5);}' +
+    '.ss-menu-pop{position:absolute;top:42px;right:0;min-width:200px;background:var(--ssbar-panel,#17171d);' +
+    'border:1px solid var(--ssbar-btnline,#2a2a33);border-radius:14px;padding:6px;z-index:1000;box-shadow:0 12px 32px var(--ssbar-shadow,rgba(0,0,0,0.5));}' +
     '.ss-menu-pop.hidden{display:none;}' +
-    '.ss-menu-who{font-size:12px;color:#8a8a92;padding:8px 12px 6px;border-bottom:1px solid #23232b;' +
+    '.ss-menu-who{font-size:12px;color:var(--ssmenu-cap,#8a8a92);padding:8px 12px 6px;border-bottom:1px solid var(--ssbar-line,#23232b);' +
     'margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px;}' +
     '.ss-menu-pop a,.ss-menu-pop button{display:block;width:100%;text-align:left;padding:9px 12px;' +
-    'border-radius:9px;color:#fff;text-decoration:none;font-size:14.5px;font-weight:600;background:none;' +
+    'border-radius:9px;color:var(--ssbar-strong,#fff);text-decoration:none;font-size:14.5px;font-weight:600;background:none;' +
     'border:0;cursor:pointer;font-family:inherit;box-sizing:border-box;}' +
-    '.ss-menu-pop a:hover,.ss-menu-pop button:hover{background:#20202a;}' +
-    '.ss-menu-pop .ss-menu-out{color:#ff8a8a;}';
+    '.ss-menu-pop a:hover,.ss-menu-pop button:hover{background:var(--ssbar-hover,#20202a);}' +
+    '.ss-menu-pop .ss-menu-out{color:var(--ssmenu-danger,#ff8a8a);}' +
+    // Light: the initial on the pale button needs a step darker teal than
+    // the pages' --ssmenu-ini to clear 4.5:1 (it read 4.47:1).
+    '@media (prefers-color-scheme: light){.ss-menu-btn{color:#006B65;}}';
 
   function ensureStyle() {
     if (document.getElementById('ssMenuStyle')) return;

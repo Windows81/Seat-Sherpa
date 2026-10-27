@@ -13,7 +13,8 @@
        someone pastes the link somewhere public. -->
   <meta name="robots" content="noindex, nofollow" />
   <meta name="referrer" content="no-referrer" />
-  <meta name="theme-color" content="#0E0E10" />
+  <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#F5F6F5" media="(prefers-color-scheme: light)" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
@@ -26,11 +27,69 @@
   <style>
     /* Styling is lifted wholesale from book.html so the post-booking surface
        feels like the same product as the funnel that created the booking. */
+    /* Color tokens + light theme (2026-10-12). Dark values are this page's
+       own colors, unchanged; the light set follows the phone's or computer's
+       setting. --teal is a FILL (buttons, my chat bubbles); --link is teal
+       TEXT, only for things you can tap. --ssbar-* / --ssmenu-* theme the
+       shared header and menu. */
+    :root {
+      --bg: #0E0E10; --text: #fff; --strong: #fff; --link: #00D4C8; --teal: #00D4C8; --on-teal: #04201e;
+      --grad-a: #1a1a1d; --grad-b: #141416; --line: rgba(255,255,255,0.10); --line-soft: rgba(255,255,255,0.08);
+      --line-input: rgba(255,255,255,0.14); --line-av: rgba(255,255,255,0.12); --line-outline: rgba(255,255,255,0.22);
+      --tile: #141417; --tile-line: #232329; --input-bg: #0E0E10; --focus: #00D4C8;
+      --sub: #b9b9c6; --sub2: #adadb8; --sub3: #a3a3ae; --cap: #8f8f98; --cap2: #8b8b95; --hover-text: #cfcfd6;
+      --star-off: #55555f; --star-hover: #8a8a95; --danger: #ff8a8a; --ok: #4ade80;
+      --amber-line: rgba(255,184,77,0.45); --amber-bg: #191509; --amber: #FFB84D; --amber-k: #e8c88c;
+      --count-bg: rgba(255,255,255,0.08); --spin-track: rgba(255,255,255,0.15);
+      --ref-bg: #0d1f1e; --ref-line: rgba(0,212,200,0.35); --ref-text: #00D4C8;
+      --pend-bg: #24200d; --pend-line: rgba(255,193,7,0.35); --pend: #ffc94a;
+      --conf-bg: #0d1f1e; --conf-line: rgba(0,212,200,0.35); --conf: #00D4C8;
+      --canc-bg: #241416; --canc-line: rgba(255,138,138,0.3); --canc: #ff8a8a;
+      --done-bg: #16181c; --done-line: rgba(255,255,255,0.15); --done: #b9b9c6;
+      --teal-hover: rgba(0,212,200,0.4); --pickup-line: rgba(0,212,200,0.35); --code: #00D4C8; --avatar-ini: #00D4C8;
+      --warn-bg: #241416; --warn-line: rgba(255,138,138,0.3); --warn-text: #ffb3b3;
+      --info-bg: #141d1c; --info-line: rgba(0,212,200,0.3); --info-text: #cfe9e7;
+      --neutral-bg: #16181c; --neutral-line: rgba(255,255,255,0.12); --neutral-text: #b9b9c6;
+      --bub-them: #1f1f23; --bub-them-text: #fff; --bub-fail: #3a1c1f; --bub-fail-text: #ffb3b3;
+      --nav-text: #b9b9c6; --nav-bg: #17171d; --nav-line: #2a2a33;
+      --seat-line: rgba(0,212,200,0.45); --cancel-line: rgba(255,138,138,0.3); --done-panel-line: rgba(0,212,200,0.35);
+      --call: #00a8a0; --callmsg: #6b7280;
+      color-scheme: dark;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F5F6F5; --text: #121416; --strong: #121416; --link: #007C76;
+        --grad-a: #FFFFFF; --grad-b: #FFFFFF; --line: rgba(18,22,22,0.10); --line-soft: rgba(18,22,22,0.10);
+        --line-input: rgba(18,22,22,0.18); --line-av: rgba(18,22,22,0.12); --line-outline: rgba(18,22,22,0.18);
+        --tile: #FFFFFF; --tile-line: rgba(18,22,22,0.10); --input-bg: #EFF1F0; --focus: #007C76;
+        --sub: #4B5357; --sub2: #4B5357; --sub3: #4B5357; --cap: #687176; --cap2: #687176; --hover-text: #23272A;
+        --star-off: #8C9498; --star-hover: #687176; --danger: #C62828; --ok: #1E7B3A;
+        --amber-line: rgba(138,90,0,0.35); --amber-bg: #FFF4DB; --amber: #8A5A00; --amber-k: #8A5A00;
+        --count-bg: rgba(18,22,22,0.07); --spin-track: rgba(18,22,22,0.12);
+        --ref-bg: #EFF1F0; --ref-line: rgba(18,22,22,0.18); --ref-text: #23272A;
+        --pend-bg: #FFF4DB; --pend-line: rgba(138,90,0,0.30); --pend: #8A5A00;
+        --conf-bg: #E3F4F2; --conf-line: rgba(0,124,118,0.35); --conf: #00665F;
+        --canc-bg: #FDECEC; --canc-line: rgba(198,40,40,0.28); --canc: #C62828;
+        --done-bg: #EFF1F0; --done-line: rgba(18,22,22,0.14); --done: #4B5357;
+        --teal-hover: rgba(0,124,118,0.45); --pickup-line: rgba(0,124,118,0.35); --code: #121416; --avatar-ini: #007C76;
+        --warn-bg: #FEF2F2; --warn-line: rgba(198,40,40,0.25); --warn-text: #8E1F1F;
+        --info-bg: #EAF6F5; --info-line: rgba(0,124,118,0.30); --info-text: #123F3C;
+        --neutral-bg: #FFFFFF; --neutral-line: rgba(18,22,22,0.12); --neutral-text: #4B5357;
+        --bub-them: #EFF1F0; --bub-them-text: #121416; --bub-fail: #FDECEC; --bub-fail-text: #9B1C1C;
+        --nav-text: #4B5357; --nav-bg: #EFF1F0; --nav-line: #D8DCDB;
+        --seat-line: rgba(0,124,118,0.45); --cancel-line: rgba(198,40,40,0.30); --done-panel-line: rgba(0,124,118,0.35);
+        --call: #007C76; --callmsg: #4B5357;
+        color-scheme: light;
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+      }
+      /* A shade under the caption gray: 4.5:1 on the raised input fill. */
+      input::placeholder, textarea::placeholder { color: #5F686D; }
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       display: flex;
@@ -38,128 +97,124 @@
       align-items: center;
       padding: 32px 20px 48px;
     }
-    a { color: #00D4C8; text-decoration: none; }
+    a { color: var(--link); text-decoration: none; }
 
     .wrap { width: 100%; max-width: 440px; }
     /* Desktop: the 440px mobile column reads cramped on a laptop. */
-    /* Desktop is a console, not a phone column — matches /driving. */
+    /* Desktop is a console, not a phone column — matches /driving. The
+       laptop layout (960px and up) is at the end of this block. */
     @media (min-width: 720px) { .wrap { max-width: 700px; } }
-    @media (min-width: 1100px) { .wrap { max-width: 980px; } }
-    @media (min-width: 1100px) {
-      .tripgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
-      .tripgrid > .trip { margin-bottom: 0; }
-    }
     /* Dashboard header + stat strip, same system as /driving. */
     .dashhead { margin-bottom: 20px; }
     .dashhead h1 { font-size: 27px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 4px; }
-    .dashhead .said { font-size: 14.5px; color: #adadb8; }
+    .dashhead .said { font-size: 14.5px; color: var(--sub2); }
     .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 22px; }
     @media (min-width: 720px) { .stats { grid-template-columns: repeat(4, 1fr); gap: 12px; } }
-    .stat { background: #141417; border: 1px solid #232329; border-radius: 14px; padding: 14px 16px; }
+    .stat { background: var(--tile); border: 1px solid var(--tile-line); border-radius: 14px; padding: 14px 16px; }
     .stat .n { font-size: 25px; font-weight: 800; letter-spacing: -0.6px; line-height: 1.1;
       font-variant-numeric: tabular-nums; }
-    .stat .k { font-size: 12px; color: #a3a3ae; margin-top: 4px; font-weight: 600; }
-    .stat.act { border-color: rgba(255,184,77,0.45); background: #191509; }
-    .stat.act .n { color: #FFB84D; }
-    .stat.act .k { color: #e8c88c; }
+    .stat .k { font-size: 12px; color: var(--sub3); margin-top: 4px; font-weight: 600; }
+    .stat.act { border-color: var(--amber-line); background: var(--amber-bg); }
+    .stat.act .n { color: var(--amber); }
+    .stat.act .k { color: var(--amber-k); }
     /* Collapsible past-trips header, same control as /driving. */
     .pasthead {
       display: flex; align-items: center; gap: 10px; width: 100%;
       background: none; border: none; cursor: pointer; font-family: inherit;
-      color: #a3a3ae; font-size: 14px; font-weight: 700; letter-spacing: 1.2px;
+      color: var(--sub3); font-size: 14px; font-weight: 700; letter-spacing: 1.2px;
       text-transform: uppercase; padding: 20px 2px 10px; text-align: left;
     }
-    .pasthead:hover { color: #cfcfd6; }
-    .pasthead .caret { color: #00D4C8; font-size: 12px; }
-    .unpaidnote { color: #8b8b95; font-size: 13px; line-height: 1.55; margin: 0 0 10px; }
+    .pasthead:hover { color: var(--hover-text); }
+    .pasthead .caret { color: var(--link); font-size: 12px; }
+    .unpaidnote { color: var(--cap2); font-size: 13px; line-height: 1.55; margin: 0 0 10px; }
     .pasthead .pastcount {
-      background: rgba(255,255,255,0.08); color: #a3a3ae; border-radius: 999px;
+      background: var(--count-bg); color: var(--sub3); border-radius: 999px;
       padding: 1px 8px; font-size: 11px; letter-spacing: 0;
     }
 
     .brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 28px; }
 
     .card {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, var(--grad-a) 0%, var(--grad-b) 100%);
+      border: 1px solid var(--line);
       border-radius: 18px;
       padding: 24px;
       margin-bottom: 20px;
     }
     .card .eyebrow {
       font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-      color: #adadb8; margin-bottom: 12px;
+      color: var(--sub2); margin-bottom: 12px;
     }
     .route { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
-    .meta { font-size: 14px; color: #b9b9c6; margin-top: 6px; }
+    .meta { font-size: 14px; color: var(--sub); margin-top: 6px; }
 
     /* Rating stars. Big tap targets - this is used one-handed, often on a
        phone, right after getting out of a car. */
     .starrow { display: flex; gap: 6px; margin: 14px 0 4px; }
     button.star {
       background: none; border: none; padding: 4px 6px; cursor: pointer;
-      font-size: 34px; line-height: 1; color: #55555f; transition: color .12s;
+      font-size: 34px; line-height: 1; color: var(--star-off); transition: color .12s;
     }
-    button.star:hover { color: #8a8a95; }
-    button.star.on { color: #00D4C8; }
+    button.star:hover { color: var(--star-hover); }
+    button.star.on { color: var(--link); }
 
     h1 { font-size: 21px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
-    h2 { font-size: 14px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #adadb8; margin: 26px 0 12px; }
-    p.sub { font-size: 14px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
-    label { display: block; font-size: 12px; color: #adadb8; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    h2 { font-size: 14px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--sub2); margin: 26px 0 12px; }
+    p.sub { font-size: 14px; color: var(--sub); line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 12px; color: var(--sub2); letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
     input, textarea {
-      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      width: 100%; background: var(--input-bg); border: 1px solid var(--line-input);
+      border-radius: 12px; padding: 14px 16px; color: var(--text); font-size: 16px; margin-bottom: 14px;
       outline: none; transition: border-color 0.15s; font-family: inherit;
     }
-    input:focus, textarea:focus { border-color: #00D4C8; }
+    input:focus, textarea:focus { border-color: var(--focus); }
     input:disabled, textarea:disabled { opacity: 0.5; }
     textarea { resize: vertical; min-height: 88px; }
     .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
     button.primary {
-      width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
+      width: 100%; background: var(--teal); color: var(--on-teal); border: none; border-radius: 12px;
       padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
       font-family: inherit;
     }
     button.primary:disabled { opacity: 0.5; cursor: default; }
     button.outline {
-      width: 100%; background: none; color: #fff; border: 1px solid rgba(255,255,255,0.22);
+      width: 100%; background: none; color: var(--text); border: 1px solid var(--line-outline);
       border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer;
       font-family: inherit;
     }
     button.outline:disabled { opacity: 0.5; cursor: default; }
     .linkbtn {
-      background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
+      background: none; border: none; color: var(--link); font-size: 14px; font-weight: 600;
       cursor: pointer; padding: 0; font-family: inherit;
     }
-    .linkbtn:disabled { color: #8f8f98; cursor: default; }
-    .linkbtn.danger { color: #ff8a8a; }
+    .linkbtn:disabled { color: var(--cap); cursor: default; }
+    .linkbtn.danger { color: var(--danger); }
     .rowlinks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 14px; }
     .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
-    .msg.err { color: #ff8a8a; }
-    .msg.ok { color: #4ade80; }
+    .msg.err { color: var(--danger); }
+    .msg.ok { color: var(--ok); }
     .hidden { display: none !important; }
     .center { text-align: center; }
     .icon { font-size: 44px; margin-bottom: 12px; }
-    .hint { font-size: 12px; color: #adadb8; margin: -8px 0 14px; line-height: 1.5; }
+    .hint { font-size: 12px; color: var(--sub2); margin: -8px 0 14px; line-height: 1.5; }
 
     .refcode {
-      display: inline-block; background: #0d1f1e; border: 1px solid rgba(0,212,200,0.35);
-      color: #00D4C8; font-weight: 800; letter-spacing: 1.5px; border-radius: 10px;
+      display: inline-block; background: var(--ref-bg); border: 1px solid var(--ref-line);
+      color: var(--ref-text); font-weight: 800; letter-spacing: 1.5px; border-radius: 10px;
       padding: 8px 16px; margin: 6px 0 0; font-size: 15px;
     }
 
     .spinner {
       width: 28px; height: 28px; margin: 0 auto 16px;
-      border: 3px solid rgba(255,255,255,0.15); border-top-color: #00D4C8;
+      border: 3px solid var(--spin-track); border-top-color: var(--teal);
       border-radius: 50%; animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .signedin { text-align: center; font-size: 12px; color: #8f8f98; margin-top: 14px; }
+    .signedin { text-align: center; font-size: 12px; color: var(--cap); margin-top: 14px; }
     .signedin button { font-size: 12px; }
-    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #8f8f98; line-height: 1.6; }
-    .legal a { color: #adadb8; }
+    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: var(--cap); line-height: 1.6; }
+    .legal a { color: var(--sub2); }
 
     /* ── Trips-specific ──────────────────────────────────────────────────── */
 
@@ -172,53 +227,53 @@
       text-transform: uppercase; border-radius: 100px; padding: 5px 11px;
       border: 1px solid transparent;
     }
-    .pill.pending   { background: #24200d; border-color: rgba(255,193,7,0.35);  color: #ffc94a; }
-    .pill.confirmed { background: #0d1f1e; border-color: rgba(0,212,200,0.35);  color: #00D4C8; }
-    .pill.cancelled { background: #241416; border-color: rgba(255,138,138,0.3); color: #ff8a8a; }
-    .pill.completed { background: #16181c; border-color: rgba(255,255,255,0.15);color: #b9b9c6; }
+    .pill.pending   { background: var(--pend-bg); border-color: var(--pend-line); color: var(--pend); }
+    .pill.confirmed { background: var(--conf-bg); border-color: var(--conf-line); color: var(--conf); }
+    .pill.cancelled { background: var(--canc-bg); border-color: var(--canc-line); color: var(--canc); }
+    .pill.completed { background: var(--done-bg); border-color: var(--done-line); color: var(--done); }
 
     /* List rows are buttons, not anchors — the whole page is one document and
        navigation is pushState, so an <a href> would be a lie. */
     .trip {
       display: block; width: 100%; text-align: left; font-family: inherit;
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.10); border-radius: 16px;
-      padding: 16px 18px; margin-bottom: 12px; cursor: pointer; color: #fff;
+      background: linear-gradient(180deg, var(--grad-a) 0%, var(--grad-b) 100%);
+      border: 1px solid var(--line); border-radius: 16px;
+      padding: 16px 18px; margin-bottom: 12px; cursor: pointer; color: var(--text);
       transition: border-color 0.15s, transform 0.15s;
     }
-    .trip:hover { border-color: rgba(0,212,200,0.4); transform: translateY(-1px); }
+    .trip:hover { border-color: var(--teal-hover); transform: translateY(-1px); }
     .trip .triptop { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
     .trip .triproute { font-size: 16px; font-weight: 700; letter-spacing: -0.2px; line-height: 1.3; }
-    .trip .tripmeta { font-size: 14px; color: #b9b9c6; margin-top: 5px; }
-    .trip .tripfoot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 14px; color: #adadb8; }
+    .trip .tripmeta { font-size: 14px; color: var(--sub); margin-top: 5px; }
+    .trip .tripfoot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 14px; color: var(--sub2); }
 
-    .driverrow { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
-    .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); flex-shrink: 0; }
-    .avatar.ph { display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #00D4C8; }
+    .driverrow { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 25%; background: var(--bg); border: 1px solid var(--line-av); flex-shrink: 0; }
+    .avatar.ph { display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: var(--avatar-ini); }
     .drivername { font-size: 15px; font-weight: 700; }
-    .driversub { font-size: 12px; color: #adadb8; margin-top: 2px; }
+    .driversub { font-size: 12px; color: var(--sub2); margin-top: 2px; }
 
-    .sumline { display: flex; justify-content: space-between; font-size: 14px; color: #b9b9c6; margin-top: 8px; }
-    .sumline.total { font-size: 16px; color: #fff; font-weight: 800; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; margin-top: 12px; }
+    .sumline { display: flex; justify-content: space-between; font-size: 14px; color: var(--sub); margin-top: 8px; }
+    .sumline.total { font-size: 16px; color: var(--strong); font-weight: 800; border-top: 1px solid var(--line-soft); padding-top: 10px; margin-top: 12px; }
 
     /* Pickup code — the single most important thing on this page. It is what
        lets the driver get reimbursed at all (0043 escrow gate). */
-    .pickup { text-align: center; border-color: rgba(0,212,200,0.35); }
-    .pickuplabel { font-size: 14px; color: #b9b9c6; line-height: 1.5; }
+    .pickup { text-align: center; border-color: var(--pickup-line); }
+    .pickuplabel { font-size: 14px; color: var(--sub); line-height: 1.5; }
     .pickupval {
-      font-size: 46px; font-weight: 800; letter-spacing: 6px; color: #00D4C8;
+      font-size: 46px; font-weight: 800; letter-spacing: 6px; color: var(--code);
       margin: 14px 0 12px; font-variant-numeric: tabular-nums;
     }
-    .pickuphint { font-size: 12px; color: #adadb8; line-height: 1.6; }
+    .pickuphint { font-size: 12px; color: var(--sub2); line-height: 1.6; }
 
     .banner { border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; font-size: 14px; line-height: 1.55; }
-    .banner.warn { background: #241416; border: 1px solid rgba(255,138,138,0.3); color: #ffb3b3; }
-    .banner.info { background: #141d1c; border: 1px solid rgba(0,212,200,0.3); color: #cfe9e7; }
-    .banner.neutral { background: #16181c; border: 1px solid rgba(255,255,255,0.12); color: #b9b9c6; }
-    .banner strong { color: #fff; }
+    .banner.warn { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-text); }
+    .banner.info { background: var(--info-bg); border: 1px solid var(--info-line); color: var(--info-text); }
+    .banner.neutral { background: var(--neutral-bg); border: 1px solid var(--neutral-line); color: var(--neutral-text); }
+    .banner strong { color: var(--strong); }
 
     .policy { list-style: none; margin: 8px 0 14px; padding: 0; }
-    .policy li { font-size: 14px; color: #b9b9c6; line-height: 1.6; margin-bottom: 4px; }
+    .policy li { font-size: 14px; color: var(--sub); line-height: 1.6; margin-bottom: 4px; }
 
     /* ── Chat ─────────────────────────────────────────────────────────────── */
     .thread {
@@ -233,32 +288,103 @@
       max-width: 78%; border-radius: 16px; padding: 10px 14px; font-size: 15px; line-height: 1.45;
       white-space: pre-wrap; overflow-wrap: anywhere;
     }
-    .brow.me .bubble { background: #00D4C8; color: #04201e; border-bottom-right-radius: 5px; }
-    .brow.them .bubble { background: #1f1f23; color: #fff; border-bottom-left-radius: 5px; }
-    .brow.sys .bubble { background: none; color: #adadb8; font-size: 14px; text-align: center; max-width: 92%; }
+    .brow.me .bubble { background: var(--teal); color: var(--on-teal); border-bottom-right-radius: 5px; }
+    .brow.them .bubble { background: var(--bub-them); color: var(--bub-them-text); border-bottom-left-radius: 5px; }
+    .brow.sys .bubble { background: none; color: var(--sub2); font-size: 14px; text-align: center; max-width: 92%; }
     .bubble.sending { opacity: 0.55; }
-    .bubble.failed { background: #3a1c1f; color: #ffb3b3; }
-    .btime { font-size: 10px; color: #8f8f98; margin: 2px 4px 0; text-align: right; }
+    .bubble.failed { background: var(--bub-fail); color: var(--bub-fail-text); }
+    .btime { font-size: 10px; color: var(--cap); margin: 2px 4px 0; text-align: right; }
     .brow.them + .btime { text-align: left; }
     .composer { display: flex; gap: 10px; align-items: flex-end; margin-top: 14px; }
     .composer textarea { min-height: 46px; max-height: 140px; margin-bottom: 0; padding: 12px 14px; font-size: 15px; }
     .composer button { width: auto; flex-shrink: 0; padding: 13px 18px; }
-    .emptythread { text-align: center; color: #adadb8; font-size: 14px; line-height: 1.6; padding: 22px 8px; }
+    .emptythread { text-align: center; color: var(--sub2); font-size: 14px; line-height: 1.6; padding: 22px 8px; }
     .consolenav {
       display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
       margin: 14px 0 4px;
     }
     .consolenav a {
       font-family: inherit; font-size: 13.5px; font-weight: 600;
-      color: #b9b9c6; text-decoration: none; background: #17171d;
-      border: 1px solid #2a2a33; border-radius: 999px; padding: 8px 16px;
+      color: var(--nav-text); text-decoration: none; background: var(--nav-bg);
+      border: 1px solid var(--nav-line); border-radius: 999px; padding: 8px 16px;
     }
-    .consolenav a:hover { border-color: rgba(0,212,200,0.4); color: #fff; }
+    .consolenav a:hover { border-color: var(--teal-hover); color: var(--text); }
     .rolepair { display: inline-flex; gap: 6px; }
-    .consolenav a.rolepill { border-color: rgba(0,212,200,0.4); color: #00D4C8; font-weight: 700; }
-    .consolenav a.rolepill.active { background: #00D4C8; color: #04201e; border-color: #00D4C8; }
-    .consolenav a.rolepill.active:hover { color: #04201e; }
+    .consolenav a.rolepill { border-color: var(--teal-hover); color: var(--link); font-weight: 700; }
+    .consolenav a.rolepill.active { background: var(--teal); color: var(--on-teal); border-color: var(--teal); }
+    .consolenav a.rolepill.active:hover { color: var(--on-teal); }
+
+    /* ── Laptop layout (2026-10-12, Justin: "on my laptop it's still geared
+       toward mobile vertical") ───────────────────────────────────────────
+       Below 960px nothing here applies, so phones and tablets keep the single
+       column above. From 960px the page is a desktop console: a 1160px
+       column (the shared header lines up with it), trips as a card grid, a
+       trip as its summary with the code, status and actions beside it, and
+       the chat as a conversation pane with the trip details on the side.
+       Layout only: every node, id and handler is the one the phone uses. */
+    @media (min-width: 960px) {
+      .wrap { max-width: 1160px; }
+      /* Sign in, the code, loading and errors are single tasks: a narrow
+         card, set down from the top rather than stretched across. */
+      #stLoading, #stBoot, #stEmail, #stCode, #stNotFound, #stError,
+      #listBody > .card.center { width: 100%; max-width: 460px; margin: 7vh auto 20px; }
+
+      .dashhead { margin-bottom: 24px; }
+      .dashhead h1 { font-size: 32px; }
+      .dashhead .said { font-size: 16px; }
+      .stats { gap: 14px; margin-bottom: 26px; }
+      .stat { padding: 16px 18px; }
+      .stat .k { font-size: 13px; }
+      /* Trips as a grid of equal-height cards, footers on one line. */
+      .tripgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: stretch; margin-bottom: 6px; }
+      .tripgrid > .trip { margin-bottom: 0; display: flex; flex-direction: column; }
+      .tripgrid > .trip .tripfoot { margin-top: auto; padding-top: 10px; }
+      .tripgrid > .unpaidnote { grid-column: 1 / -1; margin: 0; }
+
+      /* One trip: summary on the left, everything you act on to its right.
+         The 15th row is flexible, so a tall summary card stretches only that
+         row and never pushes apart the cards stacked beside it. */
+      #detailBody {
+        display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+        grid-template-rows: repeat(14, auto) 1fr; column-gap: 24px; align-items: start;
+      }
+      #detailBody > * { grid-column: 2; min-width: 0; }
+      #detailBody > .backrow, #detailBody > .signedin { grid-column: 1 / -1; }
+      #detailBody > .backrow + .card { grid-column: 1; grid-row: 2 / -1; }
+      #detailBody > .backrow + .card .route { font-size: 24px; }
+
+      /* Chat: the conversation fills the pane, the trip sits in a side
+         column. The off-platform line stays right above the message box. */
+      #chatBody > .card:has(> .thread) {
+        display: grid; grid-template-columns: minmax(0, 1fr) 280px;
+        grid-template-rows: auto auto auto auto 1fr; column-gap: 36px; align-items: start;
+        padding: 26px 28px;
+      }
+      #chatBody > .card:has(> .thread) > * { grid-column: 1; min-width: 0; }
+      #chatBody > .card:has(> .thread)::before {
+        content: ''; grid-column: 2; grid-row: 1 / 6; align-self: stretch;
+        margin-left: -18px; border-left: 1px solid var(--line-soft);
+      }
+      #chatBody > .card:has(> .thread) > .eyebrow { grid-column: 2; grid-row: 1; line-height: 1.6; }
+      #chatBody > .card:has(> .thread) > h1 { grid-column: 2; grid-row: 2; font-size: 24px; }
+      #chatBody > .card:has(> .thread) > .sub { grid-column: 2; grid-row: 3; }
+      #chatBody > .card:has(> .thread) > .callrow { grid-column: 2; grid-row: 4; }
+      #chatBody > .card:has(> .thread) > .linkbtn { justify-self: start; }
+      #chatBody > .card:has(> .thread) > .thread {
+        grid-row: 1 / 6; height: clamp(380px, calc(100vh - 330px), 820px); max-height: none;
+        padding: 16px 18px; border: 1px solid var(--line-soft); border-radius: 14px;
+      }
+      .bubble { max-width: min(72%, 560px); }
+    }
+    @media (min-width: 1200px) {
+      .tripgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
   </style>
+  <!-- Click your driver's photo to see it bigger (2026-10-04). -->
+  <script src="/js/ss-photo-zoom.js"></script>
+  <!-- Meeting spot map cards in chat (0347, 2026-10-04). -->
+  <script src="/js/ss-meeting-spot.js"></script>
+  <script src="/js/ss-chat-links.js"></script>
 </head>
 <body>
   <!-- Shared console app bar (ss-appbar.js), body-level for full bleed. -->
@@ -550,6 +676,22 @@
     // City out of a full geocoded address (Justin, 2026-08-28: headers are
     // "city to city — when you click in it will say the address"). Port of
     // notify-waitlist's cityFromAddress.
+    // Mapbox sometimes puts a REGION where the city belongs ("Westwood, The
+    // Westside, California": Vladimir's rides 518 and 519, 2026-10-02), and the
+    // last non-state part is then a district, not a city. Known Los Angeles
+    // districts resolve to Los Angeles; other regional labels (South Bay, East
+    // Bay, ...) step back to the part before them, or to nothing so the caller
+    // falls back to the metro name. We go by city name (Justin).
+    function ssPickCity(cleaned) {
+      if (!cleaned || !cleaned.length) return '';
+      var last = String(cleaned[cleaned.length - 1]);
+      var key = last.toLowerCase().replace(/^the\s+/, '');
+      var CITY = { 'westside': 'Los Angeles', 'san fernando valley': 'Los Angeles', 'valley': 'Los Angeles', 'south los angeles': 'Los Angeles', 'east los angeles': 'Los Angeles' };
+      var SKIP = ['south bay', 'east bay', 'peninsula', 'silicon valley', 'north bay', 'inland empire', 'central valley', 'orange county', 'bay area', 'san francisco bay area', 'los angeles county', 'san diego county', 'wine country'];
+      if (CITY[key]) return CITY[key];
+      if (SKIP.indexOf(key) >= 0) return cleaned.length >= 2 ? String(cleaned[cleaned.length - 2]) : '';
+      return last;
+    }
     function cityOf(area) {
       if (!area) return '';
       const parts = String(area).split(',').map((s) => s.trim()).filter(Boolean);
@@ -558,7 +700,7 @@
       const ZIP = /^\d{5}(-\d{4})?$/;
       const cleaned = parts.filter((p) => !/^\d/.test(p) && !STATE.test(p) && !ZIP.test(p));
       if (!cleaned.length) return parts[0];
-      return cleaned[cleaned.length - 1];
+      return ssPickCity(cleaned);
     }
 
     function routeLabel(ride) {
@@ -614,6 +756,7 @@
         'Cancel within 2 hours of departure: no refund',
         'The booking fee is not refunded when you cancel',
         'If the driver cancels: full refund, booking fee included',
+        'If the driver changes the departure time after you book: full refund, booking fee included, up to 2 hours before the new departure',
       ],
       free: [
         'Cancel 2 hours or more before departure: full refund',
@@ -638,13 +781,32 @@
     const BOOKING_SELECT = [
       'id, ref_code, status, seat_ids, total_price, service_fee_cents, booking_fee_cents, created_at, source',
       'payment_verified_at, refund_amount_cents, credit_restore_cents, cancel_reason',
+      // Decline fixes 2026-10-05: who ended it, and the credit to say came back.
+      'cancelled_by, declined_at, credit_applied_cents',
+      // Chat window after a decline (0395): accepted_at tells a request that
+      // never was from a confirmed booking; cancelled_at is the sweep's stamp.
+      'cancelled_at, accepted_at',
       'pickup_code_entered_at, no_show_reported_at, no_show_disputed_at',
       'boarding_stop, alighting_stop',
+      // Seat moved, waiting for the rider's OK (0373, 2026-10-07).
+      'seat_change_from, seat_change_at, seat_change_ok_at',
       'ride:rides!inner(id, driver_id, driver_name, from_dest, to_dest, departure_area, arrival_area,'
-        + ' dep_date, dep_time, dep_timezone, cancellation_policy, cancelled_at, seats, start_lat, start_lng, end_lat, end_lng,'
+        + ' dep_date, dep_time, dep_timezone, cancellation_policy, cancelled_at, schedule_changed_at, seats, start_lat, start_lng, end_lat, end_lng,'
         // name:name_public (0203/0204) — the surname never leaves the database.
         + ' driver:profiles!rides_driver_profile_fkey(name:name_public, photo_url, driver_rating, driver_trips))',
     ].join(', ');
+
+    // Chat window after a decline / withdrawal (0395, 2026-10-16): a request
+    // that was never accepted and is now Cancelled keeps its chat for 60
+    // minutes from declined_at (withdrawals stamp it too; cancelled_at is the
+    // sweep's fallback), then the server refuses new messages. Confirmed-
+    // then-cancelled bookings keep the 30-day window. Mirrors
+    // booking_chat_closes_at() and lib/chat-window.ts; null = no clock.
+    function chatClosesAt(b) {
+      if (!b || b.status !== 'Cancelled' || b.accepted_at) return null;
+      const t = Date.parse(b.declined_at || b.cancelled_at || '');
+      return Number.isFinite(t) ? t + 60 * 60 * 1000 : null;
+    }
 
     let me = null;         // auth uid
     let myEmail = '';
@@ -727,9 +889,15 @@
     // sendEmailOtp helper) precisely because that flag has to be false here —
     // the module's helper is shaped for book.html's signup funnel.
     async function sendOtp(email) {
-      const { error } = await supabase.auth.signInWithOtp({
-        email, options: { shouldCreateUser: false },
+      const send = (captchaToken) => supabase.auth.signInWithOtp({
+        email, options: { shouldCreateUser: false, captchaToken },
       });
+      let { error } = await send();
+      if (error && (error.code === 'captcha_failed' || /captcha/i.test(error.message || ''))) {
+        // Turnstile only when Supabase asks for it (js/ss-captcha.js).
+        const { solveAndRetry } = await import('/js/ss-captcha.js');
+        ({ error } = await solveAndRetry(send));
+      }
       if (!error) return null;
       const m = (error.message || '').toLowerCase();
       if (m.includes('signups not allowed') || m.includes('not allowed for otp') || m.includes('user not found')) {
@@ -752,6 +920,8 @@
       $('codeEmailEcho').textContent = email;
       $('emailCode').value = '';
       setMsg('codeMsg', '');
+      // Fresh Verify button: a successful sign-in leaves it disabled on purpose.
+      $('codeBtn').disabled = false; $('codeBtn').textContent = 'Verify';
       startEmailCooldown();
       show('stCode');
       $('emailCode').focus();
@@ -775,7 +945,10 @@
       const btn = $('codeBtn');
       btn.disabled = true; btn.textContent = 'Verifying…';
       const { error } = await supabase.auth.verifyOtp({ email: pendingEmail, token: code, type: 'email' });
-      btn.disabled = false; btn.textContent = 'Verify';
+      // Re-enable ONLY on failure (2026-10-14): re-enabling before render() let a
+      // second tap or Enter send the already-used code, which came back
+      // "expired" a second after a successful sign-in.
+      if (error) { btn.disabled = false; btn.textContent = 'Verify'; }
       if (error) {
         const m = (error.message || '').toLowerCase();
         setMsg('codeMsg', (m.includes('expired') || m.includes('invalid'))
@@ -805,13 +978,24 @@
     $('errRetry').addEventListener('click', () => render());
 
     // ── Shared bits ───────────────────────────────────────────────────────
-    function pill(status, unfinished) {
+    // A request the driver turned down (Justin, 2026-10-05: riders saw a
+    // generic "Cancelled" and refund wording for something never charged).
+    // Not when the driver cancelled the whole ride: that has its own banner.
+    function isDeclined(b) {
+      return !!b && b.status === 'Cancelled' && b.cancelled_by === 'driver' && !!b.declined_at
+        && !(b.ride && b.ride.cancelled_at);
+    }
+    // Same rule as the decline email: system-written reasons are not a note.
+    const SYSTEM_REASON = /^(blocked|auto)\b|^payment was cancelled/i;
+
+    function pill(status, unfinished, declined) {
       const map = { Pending: 'pending', Confirmed: 'confirmed', Cancelled: 'cancelled', Completed: 'completed' };
       // An abandoned checkout is not something anyone cancelled, so it must not
       // wear the red Cancelled pill: that contradicts the "Unfinished requests"
       // header and the line under it (Justin, 2026-09-09). Neutral styling, and
       // wording that says what actually happened.
       if (unfinished) return el('span', 'pill completed', 'Not completed');
+      if (declined && status === 'Cancelled') return el('span', 'pill cancelled', 'Declined');
       const label = status === 'Pending' ? 'Awaiting driver' : status;
       return el('span', 'pill ' + (map[status] || 'completed'), label);
     }
@@ -852,6 +1036,8 @@
         img.addEventListener('error', () => {
           if (img.parentNode) img.parentNode.replaceChild(initial, img);
         });
+        // Click to see it bigger (2026-10-04, /js/ss-photo-zoom.js).
+        if (window.SSPhotoZoom) SSPhotoZoom.mark(img, driverDisplay(b));
         row.appendChild(img);
       } else {
         row.appendChild(initial);
@@ -859,7 +1045,8 @@
       const col = el('div');
       col.appendChild(el('div', 'drivername', driverDisplay(b)));
       const rating = d && typeof d.driver_rating === 'number' && d.driver_rating > 0
-        ? '★ ' + Number(d.driver_rating).toFixed(1) + (d.driver_trips ? ' · ' + d.driver_trips + ' trips' : '')
+        // Ratings round DOWN to one decimal (2026-10-05): 4.95 shows 4.9.
+        ? '★ ' + (Math.floor(Math.round(Number(d.driver_rating) * 1000) / 100) / 10).toFixed(1) + (d.driver_trips ? ' · ' + d.driver_trips + ' trips' : '')
         : 'New driver';
       col.appendChild(el('div', 'driversub', 'Your driver · ' + rating));
       row.appendChild(col);
@@ -874,7 +1061,7 @@
 
       const top = el('div', 'triptop');
       top.appendChild(el('div', 'triproute', routeLabel(b.ride)));
-      top.appendChild(pill(st, !!b.__unpaid));
+      top.appendChild(pill(st, !!b.__unpaid, isDeclined(b)));
       btn.appendChild(top);
 
       btn.appendChild(el('div', 'tripmeta', whenLabel(b.ride)));
@@ -1229,6 +1416,9 @@
           if (error) throw error;
           myRatingByBooking[b.id] = { booking_id: b.id, stars: chosen };
           renderDetail(b);                      // swap to the "you rated" state
+          // Fellow riders next (0400): the page gate (js/ss-rating-gate.js)
+          // listens and asks about the others who shared this car.
+          try { window.dispatchEvent(new CustomEvent('ss:driver-rated', { detail: { bookingId: b.id } })); } catch (_) {}
         } catch (e) {
           const raw = (e && e.message) || '';
           msg.textContent =
@@ -1265,7 +1455,7 @@
       const card = el('div', 'card');
       const top = el('div');
       top.style.marginBottom = '12px';
-      top.appendChild(pill(st));
+      top.appendChild(pill(st, false, isDeclined(b)));
       card.appendChild(top);
       card.appendChild(el('div', 'route', routeLabel(ride)));
       card.appendChild(el('div', 'meta', whenLabel(ride)));
@@ -1273,7 +1463,7 @@
       // 2026-08-28: "city to city — click in and it says the address").
       if (ride.departure_area || ride.arrival_area) {
         const addr = el('div', 'meta');
-        addr.style.cssText = 'font-size:13.5px;color:#adadb8;margin-top:4px;line-height:1.5;';
+        addr.style.cssText = 'font-size:13.5px;color:var(--sub2);margin-top:4px;line-height:1.5;';
         addr.textContent = '📍 ' + (ride.departure_area || 'Pickup TBD') + '  →  ' + (ride.arrival_area || 'Drop-off TBD');
         card.appendChild(addr);
       }
@@ -1282,6 +1472,36 @@
       const alighting = stopName(b.alighting_stop);
       if (boarding) card.appendChild(el('div', 'meta', 'Pickup: ' + boarding));
       if (alighting) card.appendChild(el('div', 'meta', 'Drop-off: ' + alighting));
+
+      // Meeting spot (0347): the newest spot shared in this trip's chat, by
+      // either side. Filled in when the lookup lands; nothing shows without one.
+      if (st === 'Confirmed' && window.SSMeetingSpot) {
+        const spotHost = el('div');
+        spotHost.style.marginTop = '10px';
+        card.appendChild(spotHost);
+        // Any of my bookings on this ride (bug check 2026-10-05): "Message all
+        // riders" lands on my newest one only, and the chat groups them.
+        supabase.from('bookings').select('id').eq('ride_id', b.ride.id).eq('passenger_id', me)
+          .in('status', ['Confirmed', 'Completed'])
+          .then(({ data: sibs }) => {
+            const ids = Array.from(new Set([b.id].concat((sibs || []).map((s) => s.id))));
+            return supabase.from('messages')
+              .select('place, sender_id, created_at, body')
+              .in('booking_id', ids)
+              .not('place', 'is', null)
+              .order('created_at', { ascending: false })
+              .limit(50);
+          })
+          .then(({ data }) => {
+            // "Send my location" pins (2026-10-18) carry a place too but are
+            // not meeting spots: the newest REAL spot is the current one.
+            const row = (data || []).find((r) => !(SSMeetingSpot.isHere && SSMeetingSpot.isHere(r.body)));
+            if (!row || !SSMeetingSpot.valid(row.place)) return;
+            const who = row.sender_id === me ? 'you' : (driverDisplay(b) || 'your driver');
+            const when = new Date(row.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+            spotHost.appendChild(SSMeetingSpot.card(row.place, { from: pickupPointOf(b), footer: 'Set by ' + who + ' · ' + when }));
+          }, () => {});
+      }
 
       card.appendChild(driverRow(b));
 
@@ -1313,6 +1533,30 @@
         body.appendChild(el('div', 'banner warn',
           'The driver cancelled this ride. Any payment is refunded in full, including the booking fee — '
           + "it can take 5–10 business days to appear on your statement."));
+      } else if (st === 'Cancelled' && isDeclined(b)) {
+        // A decline was never charged: the card was only authorized, and the
+        // hold is released (by the driver's tap, or the server within minutes).
+        const bn = el('div', 'banner warn');
+        bn.appendChild(document.createTextNode(driverFirst(b) + " couldn't take this request, so you weren't charged. "
+          + 'Any hold on your card has been released, though your bank may take a few days to drop it from your statement.'));
+        const note = String(b.cancel_reason || '').trim();
+        if (note && !SYSTEM_REASON.test(note)) {
+          const p = el('div', null, 'Note from ' + driverFirst(b) + ': “' + note + '”');
+          p.style.marginTop = '8px';
+          bn.appendChild(p);
+        }
+        if (Number(b.credit_applied_cents) > 0 && b.refund_amount_cents == null) {
+          const c = el('div', null, 'The ' + fmtCents(b.credit_applied_cents) + ' of ride credit you used is back in your account.');
+          c.style.marginTop = '8px';
+          bn.appendChild(c);
+        }
+        const more = el('a', null, 'Find another ride');
+        more.href = '/rides';
+        more.style.display = 'inline-block';
+        more.style.marginTop = '8px';
+        more.style.fontWeight = '700';
+        bn.appendChild(more);
+        body.appendChild(bn);
       } else if (st === 'Cancelled') {
         const bn = el('div', 'banner warn');
         bn.appendChild(document.createTextNode('This booking is cancelled. '));
@@ -1457,17 +1701,42 @@
         pay.style.marginBottom = '8px';
         pay.addEventListener('click', () => go('/book?id=' + encodeURIComponent(b.ride.id)));
         body.appendChild(pay);
-        body.appendChild(el('p', 'sub', driverFirst(b) + " won't see this request, and messaging opens, only once your card is authorized. You're only charged if they accept."));
+        body.appendChild(el('p', 'sub', driverFirst(b) + " won't see this request, and messaging opens, only once your card is authorized. The seat is only charged if they accept."));
       } else {
-        const chatBtn = el('button', 'outline', 'Message ' + driverFirst(b));
+        // Read-only once a declined request's hour is over (0395).
+        const chatClosedNow = chatClosesAt(b) !== null && Date.now() > chatClosesAt(b);
+        const chatBtn = el('button', 'outline', chatClosedNow ? 'View messages' : 'Message ' + driverFirst(b));
         chatBtn.type = 'button';
         chatBtn.style.marginBottom = '12px';
         chatBtn.addEventListener('click', () => go('/trips?ref=' + encodeURIComponent(b.ref_code) + '&chat=1'));
         body.appendChild(chatBtn);
       }
 
+      // ── Add to calendar (confirmed and not yet departed)
+      body.appendChild(calendarSection(b, st, departed));
+
+      // ── Seat moved: keep the new seat or withdraw (0373)
+      body.appendChild(seatChangeSection(b, st));
+
       // ── Cancel
       body.appendChild(cancelSection(b, st, departed));
+
+      // From the seat-change email: ?seat=withdraw opens the withdraw panel
+      // (the rider still confirms; a link never acts on its own).
+      try {
+        const qs = new URLSearchParams(location.search);
+        if (qs.has('seat')) {
+          if (st === 'Pending' && qs.get('seat') === 'withdraw') {
+            const w = body.querySelector('[data-withdraw-open]');
+            if (w) setTimeout(() => w.click(), 0);
+          }
+          // Once only: the page refreshes every minute, and a rider who closed
+          // the panel must not see it pop open again.
+          qs.delete('seat');
+          const rest = qs.toString();
+          history.replaceState(history.state, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+        }
+      } catch (_) {}
 
       body.appendChild(signedInFooter());
       show('stDetail');
@@ -1526,6 +1795,181 @@
       }
     }
 
+    // ── ADD TO CALENDAR ───────────────────────────────────────────────────
+    // Justin, 2026-10-03. A confirmed ride that has not left yet. The two
+    // links come from the calendar-event function, signed for this booking,
+    // so nothing about the event is built on this page. Two named choices
+    // rather than a guess at which calendar the person uses.
+    //
+    // The state lives OUTSIDE the section. The detail view repaints itself
+    // every 30 seconds and whenever the pickup code arrives, which used to
+    // snap the two links back to the button and orphan a request in flight
+    // (bug check 2026-10-03). The links are a stable signature of the booking
+    // id, so keeping them for the life of the page is safe.
+    const calLinks = new Map();   // booking id -> { ics, google }
+    let calBusyId = null;         // booking id with a request in flight
+    let calError = null;          // { id, text } from the last failed tap
+    // The section that is on screen right now. An answer repaints THIS one,
+    // and only when it is for the same booking. It used to call renderDetail
+    // with the booking captured at tap time, so going back and opening another
+    // trip before the answer landed jumped the page to the first trip under
+    // the second trip's address (bug sweep 2026-10-03).
+    let calOnScreen = null;       // { id, wrap, paint }
+
+    function calendarSection(b, st, departed) {
+      const wrap = el('div');
+      // Never beside the "driver cancelled this ride" banner either.
+      if (st !== 'Confirmed' || departed || b.pickup_code_entered_at || (b.ride && b.ride.cancelled_at)) return wrap;
+      wrap.style.textAlign = 'center';
+      wrap.style.margin = '0 0 2px';
+      wrap.setAttribute('aria-live', 'polite');
+
+      // A real tap target: the bare .linkbtn is one 18px line of text.
+      const roomy = (n) => { n.style.display = 'inline-block'; n.style.padding = '12px 8px'; n.style.textDecoration = 'none'; };
+      const quiet = (text) => {
+        const s = el('span', null, text);
+        s.style.fontSize = '14px';
+        s.style.color = 'var(--cap)';
+        return s;
+      };
+
+      const paint = (moveFocus) => {
+        // Focus moves only when the person is not busy elsewhere (typing a
+        // cancel reason, say): a link that takes focus would turn their next
+        // Enter into "open Google Calendar".
+        const focusFree = !document.activeElement || document.activeElement === document.body || wrap.contains(document.activeElement);
+        clear(wrap);
+        const links = calLinks.get(b.id);
+        if (links) {
+          const g = el('a', 'linkbtn', 'Google Calendar');
+          g.href = links.google; g.target = '_blank'; g.rel = 'noopener'; roomy(g);
+          const i = el('a', 'linkbtn', 'Apple and Outlook');
+          i.href = links.ics; roomy(i);
+          wrap.appendChild(quiet('Add to'));
+          wrap.appendChild(g);
+          wrap.appendChild(quiet('or'));
+          wrap.appendChild(i);
+          // The button that had focus is gone; hand focus to the first link.
+          if (moveFocus && focusFree) g.focus();
+          return;
+        }
+        const busy = calBusyId === b.id;
+        const btn = el('button', 'linkbtn', busy ? 'One moment' : 'Add to calendar');
+        btn.type = 'button';
+        btn.disabled = busy;
+        roomy(btn);
+        btn.addEventListener('click', onTap);
+        wrap.appendChild(btn);
+        if (calError && calError.id === b.id) {
+          const p = el('p', 'hint', calError.text);
+          p.style.margin = '0 0 8px'; // .hint is built to tuck under an input
+          wrap.appendChild(p);
+        }
+        // After a failed tap the rebuilt button gets focus back, so a keyboard
+        // or screen-reader user is not dropped at the top of the page.
+        if (moveFocus && focusFree && !busy) btn.focus();
+      };
+
+      async function onTap() {
+        if (calBusyId !== null) return;
+        const id = b.id;
+        calBusyId = id;
+        calError = null;
+        paint(false);
+        let giveUp = null;
+        try {
+          // 15 seconds, then give up: a hung request must not leave
+          // calBusyId set, which would swallow every later tap until reload.
+          const out = await Promise.race([
+            callFn('calendar-event', { bookingId: id }),
+            new Promise((_, reject) => { giveUp = setTimeout(() => reject(new Error('')), 15000); }),
+          ]);
+          if (!out || !out.ok || !out.ics || !out.google) {
+            const err = new Error((out && out.reason) || '');
+            err.shown = !!(out && out.reason);
+            throw err;
+          }
+          calLinks.set(id, { ics: out.ics, google: out.google });
+        } catch (e) {
+          // The shared caller signs the page out on a 401, so "try again"
+          // would be a dead end there; say what actually helps.
+          const expired = !!e && (e.status === 401 || e.sessionExpired === true || e.message === 'not signed in');
+          calError = {
+            id,
+            text: expired
+              ? 'Your sign-in expired. Refresh the page and sign in again.'
+              : (e && e.shown && e.message ? e.message : "The calendar link didn't load. Try again."),
+          };
+        } finally {
+          if (giveUp) clearTimeout(giveUp);
+          calBusyId = null;
+        }
+        // Repaint whichever copy of this section is on screen now, and only if
+        // it is still this booking's. Another trip, or the list, gets nothing:
+        // the links are cached and show the next time this trip is opened.
+        const live = calOnScreen;
+        if (live && live.wrap.isConnected) live.paint(live.id === id);
+      }
+
+      calOnScreen = { id: b.id, wrap, paint };
+      paint(false);
+      return wrap;
+    }
+
+    // ── SEAT CHANGED (0373, Justin 2026-10-07) ─────────────────────────────
+    // Another rider was confirmed for the seat this rider asked for, so the
+    // request moved to an open seat at the same price. The driver can't accept
+    // it until the rider keeps the new seat here. Nothing is charged before
+    // that. Withdraw uses the normal withdraw panel below.
+    function seatChangeSection(b, st) {
+      const wrap = el('div');
+      if (st !== 'Pending' || !b.seat_change_at || b.seat_change_ok_at) return wrap;
+      const seats = (b.ride && Array.isArray(b.ride.seats)) ? b.ride.seats : [];
+      const labelOf = (id) => { const x = seats.find((q) => q && q.id === id); return (x && x.label) || id; };
+      const now = Array.isArray(b.seat_ids) ? b.seat_ids : [];
+      const toLabel = now.map(labelOf).join(', ') || 'another seat';
+      const lost = (Array.isArray(b.seat_change_from) ? b.seat_change_from : []).filter((id) => !now.includes(id));
+      const fromLabel = lost.map(labelOf).join(', ');
+      // The whole card hold (seat + fees − credit), the number on their card.
+      const hold = Math.round((Number(b.total_price) || 0) * 100)
+        + (Number(b.service_fee_cents) || 0) + (Number(b.booking_fee_cents) || 0) - (Number(b.credit_applied_cents) || 0);
+      const price = Number.isFinite(hold) && hold > 0 ? ' $' + (hold % 100 === 0 ? String(hold / 100) : (hold / 100).toFixed(2)) + ' total.' : '';
+      const card = el('div', 'card');
+      card.style.borderColor = 'var(--seat-line)';
+      card.appendChild(el('h2', null, fromLabel ? 'The ' + fromLabel.toLowerCase() + ' seat went to another rider' : 'Your seat changed'));
+      card.appendChild(el('p', 'sub', 'Want ' + toLabel + ' instead? Same price.' + price + " The seat isn't charged unless the driver accepts."));
+      const msg = el('p', 'sub');
+      const keep = el('button', 'primary', 'Keep ' + toLabel);
+      keep.type = 'button';
+      keep.style.marginBottom = '8px';
+      keep.addEventListener('click', async () => {
+        keep.disabled = true; keep.textContent = 'Saving…'; msg.textContent = '';
+        try {
+          // The move on screen: if the request moved again since, the server
+          // says so instead of OK'ing a seat the rider hasn't seen.
+          await callFn('confirm-seat-change', { bookingId: b.id, seenSeatChangeAt: b.seat_change_at });
+          clear(card);
+          card.appendChild(el('h2', null, 'You kept ' + toLabel));
+          card.appendChild(el('p', 'sub', "We told the driver. The seat is only charged if they accept."));
+        } catch (e) {
+          keep.disabled = false; keep.textContent = 'Keep ' + toLabel;
+          msg.textContent = (e && e.message) || 'Could not save that just now. Try again in a moment.';
+        }
+      });
+      card.appendChild(keep);
+      const wd = el('button', 'linkbtn danger', 'Withdraw my request');
+      wd.type = 'button';
+      wd.style.display = 'block';
+      wd.addEventListener('click', () => {
+        const w = document.querySelector('[data-withdraw-open]');
+        if (w) { w.click(); try { w.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (_) {} }
+      });
+      card.appendChild(wd);
+      card.appendChild(msg);
+      wrap.appendChild(card);
+      return wrap;
+    }
+
     // ── CANCEL ────────────────────────────────────────────────────────────
     // A proxy call, not a refund path. web-cancel-booking forwards the rider's
     // own JWT to stripe-refund-booking, which owns every gate, the tier math,
@@ -1545,11 +1989,12 @@
       const isPending = st === 'Pending';
       const openBtn = el('button', 'linkbtn danger', isPending ? 'Withdraw my request' : 'Cancel this booking');
       openBtn.type = 'button';
+      openBtn.setAttribute('data-withdraw-open', '1');
       openBtn.style.display = 'block';
       openBtn.style.margin = '4px auto 0';
 
       const panel = el('div', 'card hidden');
-      panel.style.borderColor = 'rgba(255,138,138,0.3)';
+      panel.style.borderColor = 'var(--cancel-line)';
 
       panel.appendChild(el('div', 'eyebrow', isPending ? 'Withdraw request' : 'Cancel booking'));
       panel.appendChild(el('h1', null, isPending ? 'Withdraw this request?' : 'Cancel this booking?'));
@@ -1563,6 +2008,15 @@
           'Departure is about ' + Math.max(0, Math.round(hrs)) + ' hour' + (Math.round(hrs) === 1 ? '' : 's')
           + " away. Here's this ride's cancellation policy:"));
         const ul = el('ul', 'policy');
+        // 0387 (Justin, 2026-10-12): the driver moved the departure after this
+        // rider booked, so a cancel refunds everything, booking fee included,
+        // whatever the tier says. Same rule as stripe-refund-booking's
+        // rescheduledUnderRider branch; this line only tells the rider.
+        const movedAfterBooking = b.status === 'Confirmed' && b.ride.schedule_changed_at && b.created_at
+          && Date.parse(b.ride.schedule_changed_at) > Date.parse(b.created_at);
+        if (movedAfterBooking) {
+          ul.appendChild(el('li', null, 'The driver changed the departure time after you booked: cancel 2 hours or more before the new departure and everything is refunded, booking fee included.'));
+        }
         policyDetails(b.ride.cancellation_policy).forEach((line) => ul.appendChild(el('li', null, line)));
         panel.appendChild(ul);
         panel.appendChild(el('p', 'hint', "We'll show you the exact refund amount as soon as it's processed."));
@@ -1630,7 +2084,7 @@
           // refresh can't repaint this confirmation out from under them; the
           // next real navigation resets it in render().
           clear(panel);
-          panel.style.borderColor = 'rgba(0,212,200,0.35)';
+          panel.style.borderColor = 'var(--done-panel-line)';
           panel.appendChild(el('div', 'icon center', '✓'));
           panel.appendChild(el('h1', 'center', isPending ? 'Request withdrawn' : 'Booking cancelled'));
           let line;
@@ -1719,10 +2173,26 @@
     // The honest cost: up to ~6s of latency, and a web rider gets NO
     // notification when the driver messages them (no push token, and chat
     // messages don't email). That's a real downgrade versus the app.
-    const MSG_SELECT = 'id, booking_id, sender_id, body, created_at, read_at, is_system';
+    // broadcast_id (0346) marks a "Message all riders" copy; place (0347) is
+    // a meeting spot.
+    const MSG_SELECT = 'id, booking_id, sender_id, body, created_at, read_at, is_system, broadcast_id, place';
+    // The open chat's original pickup (my boarding stop, else the ride's
+    // start), for "0.4 mi from the original pickup" on spot cards.
+    let chatSpotFrom = null;
+    // The driver's first name in the open chat, for "Derek's location" on a
+    // "Send my location" pin (2026-10-18).
+    let chatThemFirst = '';
+    function pickupPointOf(b) {
+      const s = b && b.boarding_stop;
+      if (s && typeof s.lat === 'number' && typeof s.lng === 'number') return { lat: s.lat, lng: s.lng };
+      const r = b && b.ride;
+      if (r && r.start_lat != null && r.start_lng != null) return { lat: Number(r.start_lat), lng: Number(r.start_lng) };
+      return null;
+    }
     let chatMsgs = new Map();   // id → row (dedupes optimistic vs polled)
     let chatSince = null;       // max created_at seen
     let composerFocused = false;
+    let chatClosedNow = false;  // set by renderChat: the declined request's hour is over (0395)
 
     function uuid() {
       try { return crypto.randomUUID(); } catch (_) {
@@ -1760,8 +2230,9 @@
       clear(box);
       const rows = orderedMsgs();
       if (rows.length === 0) {
-        box.appendChild(el('div', 'emptythread',
-          'No messages yet. Say hi — most drivers answer within a few minutes.'));
+        box.appendChild(el('div', 'emptythread', chatClosedNow
+          ? 'No messages were sent before this conversation closed.'
+          : 'No messages yet. Say hi — most drivers answer within a few hours.'));
       }
       for (const m of rows) {
         const mine = m.sender_id === me;
@@ -1770,18 +2241,42 @@
         // THIS viewer has rated (Justin, 2026-09-05). The other side may still
         // need it, so the row stays in the thread for them.
         if (sys && /^⭐ How was your trip\?/.test(String(m.body || '')) && myRatingByBooking[m.booking_id]) continue;
-        const row = el('div', 'brow ' + (sys ? 'sys' : mine ? 'me' : 'them'));
-        const bub = el('div', 'bubble' + (m._state === 'sending' ? ' sending' : m._state === 'failed' ? ' failed' : ''));
-        // textContent: chat bodies are typed by the other party.
-        bub.textContent = m.body || '';
-        row.appendChild(bub);
-        box.appendChild(row);
+        // Meeting spot (0347): the note (if any) as a bubble, then the map card.
+        const spot = !sys && m.place && window.SSMeetingSpot && SSMeetingSpot.valid(m.place) ? m.place : null;
+        // "Send my location" pin (2026-10-18): the same card, labeled by whose.
+        const here = !!spot && !!SSMeetingSpot.isHere && SSMeetingSpot.isHere(m.body);
+        const text = spot ? SSMeetingSpot.noteOf(m.body, spot) : (m.body || '');
+        if (!spot || text) {
+          const row = el('div', 'brow ' + (sys ? 'sys' : mine ? 'me' : 'them'));
+          const bub = el('div', 'bubble' + (m._state === 'sending' ? ' sending' : m._state === 'failed' ? ' failed' : ''));
+          // Text nodes only: chat bodies are typed by the other party.
+          // Addresses and map links become links (2026-10-18).
+          if (window.SSChatLinks) SSChatLinks.fill(bub, text); else bub.textContent = text;
+          row.appendChild(bub);
+          box.appendChild(row);
+        }
+        if (spot) {
+          const srow = el('div', 'brow ' + (mine ? 'me' : 'them'));
+          srow.style.marginTop = '4px';
+          const hereTitle = mine ? 'Your location' : chatThemFirst ? chatThemFirst + '’s location' : 'Their location';
+          srow.appendChild(SSMeetingSpot.card(spot, { from: chatSpotFrom, here: here ? { title: hereTitle } : null }));
+          box.appendChild(srow);
+        }
         if (!sys) {
           const t = el('div', 'btime', m._state === 'sending' ? 'Sending…'
             : m._state === 'failed' ? 'Not sent — tap send to retry'
             : new Date(m.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
           if (!mine) t.style.textAlign = 'left';
           box.appendChild(t);
+          // "Message all riders" (0346): the driver sent this same message
+          // to every confirmed rider, each in their own chat.
+          if (m.broadcast_id) {
+            const bc = el('div', 'btime', 'Sent to every booked rider on this drive');
+            bc.style.fontSize = '12px';
+            bc.style.marginBottom = '6px';
+            if (!mine) bc.style.textAlign = 'left';
+            box.appendChild(bc);
+          }
         }
       }
       if (atBottom) box.scrollTop = box.scrollHeight;
@@ -1824,12 +2319,54 @@
       return !!b && b.source === 'web' && b.status === 'Pending' && !b.payment_verified_at;
     }
 
+    /** Suggest a meeting spot (0347) to my driver: a map card in our chat,
+     *  then the same notification as a typed message. */
+    async function sendSpotMessage(b, place, note, bodyText) {
+      const id = uuid();
+      // bodyText: a "Send my location" pin's own text (SSMeetingSpot.hereBody).
+      const text = bodyText || SSMeetingSpot.body(note, place);
+      const { data, error } = await supabase
+        .from('messages')
+        .insert({ id, booking_id: b.id, sender_id: me, body: text, place })
+        .select(MSG_SELECT)
+        .single();
+      if (error) throw error;
+      absorb([data]);
+      paintThread();
+      const driverId = b.ride && b.ride.driver_id;
+      if (driverId && driverId !== me) {
+        void callFn('send-push', {
+          recipientIds: [driverId],
+          title: 'Seat Sherpa',
+          body: myRawName ? 'You have a new message from rider ' + myRawName : 'You have a new message',
+          data: { type: 'new_message', bookingId: b.id, messageId: id },
+        }).catch(() => {});
+      }
+    }
+
     function renderChat(b) {
       const body = $('chatBody');
       clear(body);
       chatMsgs = new Map();
       chatSince = null;
       composerFocused = false;
+      chatSpotFrom = pickupPointOf(b);
+      // A real first name only: firstName() falls back to "your driver".
+      chatThemFirst = driverRawName(b) ? driverFirst(b) : '';
+      // Chat window after a decline / withdrawal (0395, 2026-10-16): while
+      // the hour runs the standing line counts down and points back to a new
+      // request; after it the composer is gone and the server refuses sends.
+      // Same copy as the app (lib/chat-window.ts). A whole-ride cancel gets
+      // the plain "cancelled" lines: there is no ride left to request.
+      const closesAt = chatClosesAt(b);
+      const chatClosed = closesAt !== null && Date.now() > closesAt;
+      chatClosedNow = chatClosed;
+      const endedWord = isDeclined(b) ? 'declined' : b.cancelled_by === 'passenger' ? 'withdrawn' : 'cancelled';
+      const countdownCopy = (n) => 'This request was ' + endedWord + ', so messages here close in ' + n + (n === 1 ? ' minute' : ' minutes')
+        + (endedWord === 'cancelled' ? '.' : ". If you still want to ride together, send a new request. Rides arranged outside Seat Sherpa aren't covered, and the booking fee still applies.");
+      const closedCopy = 'This conversation closed an hour after the request was ' + endedWord
+        + (endedWord === 'cancelled' ? '.' : '. To ride together, send a new request.');
+      const minutesLeft = closesAt === null ? null : Math.max(1, Math.ceil((closesAt - Date.now()) / 60000));
 
       body.appendChild(backRow('Back to trip', () => go('/trips?ref=' + encodeURIComponent(b.ref_code))));
 
@@ -1839,7 +2376,7 @@
         const c = el('div', 'card');
         c.appendChild(el('div', 'eyebrow', routeLabel(b.ride) + ' · ' + dateLabel(b.ride.dep_date)));
         c.appendChild(el('h1', null, 'Finish your request first'));
-        c.appendChild(el('p', 'sub', 'Your request to ' + driverFirst(b) + " hasn't been sent yet. It reaches them the moment your card is authorized, and that's also when messaging opens. You're only charged if they accept."));
+        c.appendChild(el('p', 'sub', 'Your request to ' + driverFirst(b) + " hasn't been sent yet. It reaches them the moment your card is authorized, and that's also when messaging opens. The seat is only charged if they accept."));
         const pay = el('button', 'primary', 'Finish payment');
         pay.type = 'button';
         pay.addEventListener('click', () => go('/book?id=' + encodeURIComponent(b.ride.id)));
@@ -1852,28 +2389,38 @@
       const card = el('div', 'card');
       card.appendChild(el('div', 'eyebrow', routeLabel(b.ride) + ' · ' + dateLabel(b.ride.dep_date)));
       card.appendChild(el('h1', null, driverDisplay(b)));
-      card.appendChild(el('p', 'sub',
-        'Messages here reach ' + driverFirst(b) + ' in the Seat Sherpa app. '
-        + 'This page checks for replies every few seconds while it’s open.'));
+      card.appendChild(el('p', 'sub', chatClosed
+        ? 'This conversation is closed. Earlier messages stay here.'
+        : 'Messages here reach ' + driverFirst(b) + ' right away, wherever they use Seat Sherpa. '
+          + 'This page checks for replies every few seconds while it’s open.'));
 
       const thread = el('div', 'thread');
       thread.id = 'chatThread';
       card.appendChild(thread);
 
       // CALL (2026-09-03, app parity): the number comes from counterparty_phone()
-      // — Confirmed/Completed only, 24h either side of departure, parties only —
+      // — Confirmed only (0381), 24h either side of departure, parties only —
       // and is fetched only when tapped. The pre-checks just give a friendlier
       // message than the RPC's empty result.
       const callRow = el('div', 'callrow');
       callRow.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 10px;';
       const callBtn = el('button', 'linkbtn', 'Call ' + driverFirst(b));
       callBtn.type = 'button';
-      callBtn.style.cssText = 'border:1px solid #00a8a0;color:#00a8a0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;';
+      callBtn.style.cssText = 'border:1px solid var(--call);color:var(--call);background:transparent;border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;cursor:pointer;';
       const callMsg = el('div', 'msg hidden');
-      callMsg.style.cssText = 'font-size:14px;color:#6b7280;margin:0;';
+      callMsg.style.cssText = 'font-size:14px;color:var(--callmsg);margin:0;';
       callRow.appendChild(callBtn);
       callRow.appendChild(callMsg);
       card.appendChild(callRow);
+      if (chatClosed) callRow.style.display = 'none';
+      // The call window ends when the ride is completed (0381, 2026-10-08).
+      // The REAL status, not the pickup-code display status: calling works for
+      // the whole ride and stops once the booking is Completed.
+      if (b.status === 'Completed') {
+        callBtn.style.display = 'none';
+        callMsg.textContent = 'Calling ended when the ride was completed. Message here instead.';
+        callMsg.classList.remove('hidden');
+      }
       callBtn.addEventListener('click', async () => {
         callMsg.classList.add('hidden');
         const say = (t) => { callMsg.textContent = t; callMsg.classList.remove('hidden'); };
@@ -1896,7 +2443,10 @@
           const row = Array.isArray(data) ? data[0] : data;
           const cc = String((row && row.phone_country_code) || '').replace(/\D/g, '');
           const num = String((row && row.phone) || '').replace(/\D/g, '');
-          if (error || !cc || !num) { say("They haven't added a phone number yet — message here instead."); return; }
+          // No row = the server refused (window closed, ride completed, status
+          // changed while this page was open); a row with no number = no number.
+          if (error || !row) { say("Calling isn't available for this booking right now. Message here instead."); return; }
+          if (!cc || !num) { say("They haven't added a phone number yet. Message here instead."); return; }
           location.href = 'tel:+' + cc + num;
         } catch (_) {
           say("Couldn't get the number just now — try again in a moment.");
@@ -1913,12 +2463,17 @@
       // wording as the app (lib/off-platform-guard.ts offPlatformStandingNotice).
       const standing = el('div', 'hint');
       standing.style.margin = '12px 0 0';
-      standing.textContent = (b.status === 'Confirmed' || b.status === 'Completed')
+      standing.textContent = closesAt !== null && !chatClosed
+        ? countdownCopy(minutesLeft)
+        : b.status === 'Completed'
+        // The call window ended at completion (0381).
+        ? 'Keep it on Seat Sherpa. Payment and no-show protection only cover rides kept here.'
+        : b.status === 'Confirmed'
         ? 'Keep it on Seat Sherpa. Payment and no-show protection only cover rides kept here, and you can call each other from this chat the day before the ride.'
         : b.status === 'Pending'
           ? 'Phone numbers, emails and handles stay hidden until your driver accepts. After that you can call each other from this chat.'
           : "Phone numbers, emails and handles are hidden in this chat because the booking isn't confirmed.";
-      card.appendChild(standing);
+      if (!chatClosed) card.appendChild(standing);
 
       const composer = el('div', 'composer');
       const ta = document.createElement('textarea');
@@ -1929,10 +2484,200 @@
       sendBtn.type = 'button';
       composer.appendChild(ta);
       composer.appendChild(sendBtn);
-      card.appendChild(composer);
+      if (chatClosed) {
+        const closedNote = el('div', 'hint');
+        closedNote.style.margin = '12px 0 0';
+        closedNote.textContent = closedCopy;
+        card.appendChild(closedNote);
+      } else {
+        card.appendChild(composer);
+      }
 
       const cmsg = el('div', 'msg err hidden');
       card.appendChild(cmsg);
+
+      // The hour keeps running while the page is open (review 2026-10-16):
+      // refresh the countdown every 30 s and swap the composer for the
+      // closed note when it ends. The interval dies with the card.
+      if (closesAt !== null && !chatClosed) {
+        const tick = setInterval(() => {
+          if (!document.body.contains(card)) { clearInterval(tick); return; }
+          // A send refused as chat_closed already swapped the composer for the
+          // closed copy; adding the note too showed it twice (bug check 2026-10-19).
+          if (chatClosedNow) { clearInterval(tick); return; }
+          if (Date.now() > closesAt) {
+            clearInterval(tick);
+            chatClosedNow = true;
+            standing.remove();
+            composer.remove();
+            const closedNote = el('div', 'hint');
+            closedNote.style.margin = '12px 0 0';
+            closedNote.textContent = closedCopy;
+            cmsg.before(closedNote);
+            return;
+          }
+          standing.textContent = countdownCopy(Math.max(1, Math.ceil((closesAt - Date.now()) / 60000)));
+        }, 30000);
+      }
+
+      // Meeting spot (0347, Justin 2026-10-04): suggest a spot to the driver
+      // as a map card; the newest one is the current spot, no accept step.
+      // Confirmed bookings only.
+      if (b.status === 'Confirmed' && window.SSMeetingSpot) {
+        const spotActions = el('div');
+        spotActions.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:10px;';
+        const spotBtn = el('button', 'linkbtn', 'Share a meeting spot');
+        spotBtn.type = 'button';
+        spotActions.appendChild(spotBtn);
+        // "Send my location" (Justin, 2026-10-18): a one-time pin of where I
+        // am right now, as a map card. Day-of only (the call window, 24 h
+        // either side of departure), so nobody's home shows up days ahead.
+        const depAt = departureMs(b.ride);
+        const hereOk = Number.isFinite(depAt) && Math.abs(Date.now() - depAt) <= 24 * 3600 * 1000;
+        const hereBtn = hereOk ? el('button', 'linkbtn', 'Send my location') : null;
+        if (hereBtn) { hereBtn.type = 'button'; spotActions.appendChild(hereBtn); }
+        const spotPanel = el('div', 'hidden');
+        spotPanel.style.marginTop = '10px';
+        card.appendChild(spotActions);
+        card.appendChild(spotPanel);
+        // Which panel owns spotPanel right now (review 2026-10-18): opening the
+        // other panel, or "Never mind", bumps it, so a location request still
+        // in flight can neither send nor close a panel it no longer owns.
+        let panelSeq = 0;
+        if (hereBtn) hereBtn.addEventListener('click', () => {
+          const mySeq = ++panelSeq;
+          hereBtn.classList.add('hidden');
+          spotBtn.classList.remove('hidden');
+          clear(spotPanel);
+          cmsg.classList.add('hidden');
+          const live = () => mySeq === panelSeq;
+          const closeHere = () => {
+            if (!live()) return;
+            panelSeq++;
+            clear(spotPanel); spotPanel.classList.add('hidden');
+            hereBtn.classList.remove('hidden'); spotBtn.classList.remove('hidden');
+          };
+          const who = driverFirst(b);
+          const hint = el('div', null, who.charAt(0).toUpperCase() + who.slice(1) + ' will see where you are right now on a map. It’s a one-time pin, not live tracking.');
+          hint.style.cssText = 'font-size:13px;color:var(--sub2);margin:0 0 10px;line-height:1.5;';
+          const send = el('button', 'primary', 'Send my location');
+          send.type = 'button';
+          const never = el('button', 'linkbtn', 'Never mind');
+          never.type = 'button';
+          never.style.display = 'block';
+          never.style.marginTop = '6px';
+          never.addEventListener('click', closeHere);
+          send.addEventListener('click', () => {
+            const fail = (t) => {
+              if (!live()) return;
+              send.disabled = false; send.textContent = 'Send my location';
+              cmsg.textContent = t; cmsg.classList.remove('hidden');
+            };
+            if (!navigator.geolocation) { fail('This browser can’t share your location.'); return; }
+            cmsg.classList.add('hidden');
+            send.disabled = true; send.textContent = 'Finding you…';
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+              if (!live()) return; // "Never mind" while it was finding you
+              // An approximate fix (laptop Wi-Fi or IP) would still become an
+              // exact street address, so it is never sent.
+              if (pos.coords.accuracy > 250) {
+                fail('Your location is only approximate right now. Try again from your phone, or share a meeting spot instead.');
+                return;
+              }
+              const lat = pos.coords.latitude;
+              const lng = pos.coords.longitude;
+              const address = await SSMeetingSpot.reverse(lat, lng);
+              if (!live()) return;
+              const place = { name: '', address: address || (lat.toFixed(5) + ', ' + lng.toFixed(5)), lat, lng };
+              try {
+                await sendSpotMessage(b, place, '', SSMeetingSpot.hereBody(place));
+                closeHere();
+              } catch (e) {
+                fail('Location not sent: ' + ((e && e.message) || 'check your connection and try again.'));
+              }
+            }, (err) => {
+              fail(err && err.code === 1
+                ? 'Location is blocked for this site. Allow it in your browser settings, then try again.'
+                : 'Couldn’t find your location. Try again in a moment.');
+            }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+          });
+          spotPanel.appendChild(hint);
+          spotPanel.appendChild(send);
+          spotPanel.appendChild(never);
+          spotPanel.classList.remove('hidden');
+        });
+        spotBtn.addEventListener('click', () => {
+          const spotSeq = ++panelSeq;
+          if (hereBtn) hereBtn.classList.remove('hidden');
+          spotBtn.classList.add('hidden');
+          clear(spotPanel);
+          let picked = null;
+          const preview = el('div');
+          const share = el('button', 'primary', 'Share this spot');
+          share.type = 'button';
+          share.disabled = true;
+          const pick = SSMeetingSpot.picker((p) => {
+            picked = p;
+            clear(preview);
+            if (p) preview.appendChild(SSMeetingSpot.card(p, { from: chatSpotFrom }));
+            share.disabled = !p;
+          });
+          const note = document.createElement('input');
+          note.type = 'text';
+          note.maxLength = 200;
+          note.placeholder = 'Add a note (optional), e.g. "by the front entrance"';
+          note.setAttribute('aria-label', 'Note with the meeting spot');
+          const closeSpot = () => {
+            if (spotSeq !== panelSeq) return; // the location panel took over
+            panelSeq++;
+            clear(spotPanel); spotPanel.classList.add('hidden');
+            spotBtn.classList.remove('hidden'); if (hereBtn) hereBtn.classList.remove('hidden');
+          };
+          share.addEventListener('click', async () => {
+            if (!picked) return;
+            // The chat's off-platform speed bump, for the note too (bug check
+            // 2026-10-05): warn once, a second tap sends it anyway.
+            const noteText = note.value.trim();
+            const spotLog = (action) => { try { supabase.from('offplatform_warnings').insert({ surface: 'web_chat_rider', hit: 'phone', action, booking_id: b.id }).then(() => {}, () => {}); } catch (_) {} };
+            if (noteText && SSMeetingSpot.phoneHit && SSMeetingSpot.phoneHit(noteText)) {
+              if (share.dataset.warned !== noteText) {
+                share.dataset.warned = noteText;
+                spotLog('shown');
+                cmsg.textContent = SSMeetingSpot.PHONE_WARNING;
+                cmsg.classList.remove('hidden');
+                return;
+              }
+              spotLog('sent_anyway');
+            }
+            cmsg.classList.add('hidden');
+            share.disabled = true; share.textContent = 'Sharing…';
+            try {
+              await sendSpotMessage(b, picked, note.value);
+              closeSpot();
+            } catch (e) {
+              share.disabled = false; share.textContent = 'Share this spot';
+              cmsg.textContent = 'Spot not shared: ' + ((e && e.message) || 'check your connection and try again.');
+              cmsg.classList.remove('hidden');
+            }
+          });
+          const never = el('button', 'linkbtn', 'Never mind');
+          never.type = 'button';
+          never.style.display = 'block';
+          never.style.marginTop = '6px';
+          never.addEventListener('click', closeSpot);
+          const spotHint = el('div', null, 'Pick a place. Your driver gets a map card they can open in Google Maps or Apple Maps.');
+          spotHint.style.cssText = 'font-size:12px;color:var(--sub2);margin:0 0 8px;line-height:1.5;';
+          spotPanel.appendChild(spotHint);
+          spotPanel.appendChild(pick);
+          spotPanel.appendChild(preview);
+          spotPanel.appendChild(note);
+          spotPanel.appendChild(share);
+          spotPanel.appendChild(never);
+          spotPanel.classList.remove('hidden');
+          pick.focusInput();
+        });
+      }
+
       body.appendChild(card);
       body.appendChild(signedInFooter());
 
@@ -1948,6 +2693,7 @@
 
       async function doSend() {
         cmsg.classList.add('hidden');
+        if (chatClosed) return;
         // Retry path: a previously failed bubble re-sends when the composer is
         // empty and the user taps Send again.
         const failed = orderedMsgs().filter((m) => m._state === 'failed');
@@ -1967,12 +2713,22 @@
         // Off-platform contact WARNING — never a block (app parity; covers
         // plain numbers and the letter-interleaved evasion, 0216).
         if (!retryRow && sendBtn.dataset.warned !== text) {
-          let hit = /(^|\D)(\+?1[\s.\-·]?)?\(?\d{3}\)?[\s.\-·]?\d{3}[\s.\-·]?\d{4}(?!\d)/.test(text);
+          // Spelled-out digits ("five one zero, nine zero one, eight three zero
+          // two", 2026-10-11): a run of three or more number words, seven or
+          // more digits in all, is read as the number it spells. Mirrors
+          // lib/off-platform-guard.ts normalizeNumberWords and migration 0386;
+          // the same snippet lives in driving.html and book.html.
+          const probe = text.replace(/\b(?:zero|one|two|three|four|five|six|seven|eight|nine|oh|o|\d+)(?:[\s,.\-()/·*]{0,3}\b(?:zero|one|two|three|four|five|six|seven|eight|nine|oh|o|\d+)\b){2,}/gi, (run) => {
+            const words = (run.match(/\b(zero|one|two|three|four|five|six|seven|eight|nine)\b/gi) || []).length;
+            const digits = run.toLowerCase().replace(/\b(zero|oh|o)\b/g, '0').replace(/\bone\b/g, '1').replace(/\btwo\b/g, '2').replace(/\bthree\b/g, '3').replace(/\bfour\b/g, '4').replace(/\bfive\b/g, '5').replace(/\bsix\b/g, '6').replace(/\bseven\b/g, '7').replace(/\beight\b/g, '8').replace(/\bnine\b/g, '9').replace(/[^0-9]/g, '');
+            return words >= 3 && digits.length >= 10 ? digits : run;
+          });
+          let hit = /(^|\D)(\+?1[\s.\-·]?)?\(?\d{3}\)?[\s.\-·]?\d{3}[\s.\-·]?\d{4}(?!\d)/.test(probe);
           if (!hit) {
             const digs = [];
-            for (let i2 = 0; i2 < text.length; i2++) if (text[i2] >= '0' && text[i2] <= '9') digs.push(i2);
+            for (let i2 = 0; i2 < probe.length; i2++) if (probe[i2] >= '0' && probe[i2] <= '9') digs.push(i2);
             for (let i2 = 0; i2 + 9 < digs.length; i2++) {
-              const win = text.slice(digs[i2], digs[i2 + 9] + 1);
+              const win = probe.slice(digs[i2], digs[i2 + 9] + 1);
               // Mirrors the server masker (0307): skip times, dates, prices, prose, coordinates.
               if (win.length <= 22 && !/[:/$%]/.test(win) && !/^((19|20)\d\d\D{0,3})+$/.test(win) && !/(^|[^A-Za-z0-9])[A-Za-z]{2,}([^A-Za-z0-9]|$)/.test(win) && !/\d\.\d{3,}/.test(win) && !/(^|[^0-9-])((0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01])-(19|20)?\d{2}|(19|20)\d{2}-(0?[1-9]|1[0-2])-(0?[1-9]|[12]\d|3[01]))([^0-9-]|$)/.test(win)) { hit = true; break; }
             }
@@ -1985,12 +2741,14 @@
             sendBtn.dataset.warned = text;
             logWarn('shown');
             // 0306: while the ride is not confirmed the server hides the
-            // number, so say that instead of pretending it will arrive.
+            // number, so say that instead of pretending it will arrive. Every
+            // version ends with the same fact (Justin, 2026-10-11): numbers
+            // are handed over 24 hours before the ride on a confirmed booking.
             cmsg.textContent = !hiddenNow
-              ? 'Sharing phone numbers moves you off Seat Sherpa. Payment and no-show protection only work here, and you can call each other through Seat Sherpa starting the day before the ride.'
+              ? 'Sharing phone numbers moves you off Seat Sherpa. Payment and no-show protection only work here. Seat Sherpa gives you each other\'s phone numbers 24 hours before the ride, so there\'s no need to exchange them now.'
               : b.status === 'Pending'
-                ? 'Phone numbers, emails and handles stay hidden until this ride is confirmed, so yours will be removed from this message. Once you\'re confirmed, you can call each other through Seat Sherpa starting the day before the ride.'
-                : 'Phone numbers, emails and handles are hidden in this chat because the booking isn\'t confirmed, so yours will be removed from this message.';
+                ? 'Phone numbers, emails and handles stay hidden until this ride is confirmed, so yours will be removed from this message. Once the booking is confirmed, Seat Sherpa gives you each other\'s phone numbers 24 hours before the ride, so there\'s no need to exchange them now.'
+                : 'Phone numbers, emails and handles are hidden in this chat because the booking isn\'t confirmed, so yours will be removed from this message. On a confirmed booking, Seat Sherpa gives you each other\'s phone numbers 24 hours before the ride.';
             cmsg.classList.remove('hidden');
             return;
           }
@@ -2039,9 +2797,21 @@
           const row = chatMsgs.get(id);
           if (row) { row._state = 'failed'; chatMsgs.set(id, row); }
           paintThread();
-          cmsg.textContent = (e && e.message)
-            ? 'Message not sent: ' + e.message
-            : "Message not sent. Check your connection and tap Send to retry.";
+          // The hour ran out while this page was open (0395): say so and
+          // take the box away rather than offer a retry.
+          if (e && /chat_closed/i.test(e.message || '')) {
+            // Drop the optimistic bubble too: there is no Send left to retry.
+            chatMsgs.delete(id);
+            chatClosedNow = true;
+            paintThread();
+            composer.remove();
+            standing.remove();
+            cmsg.textContent = closedCopy;
+          } else {
+            cmsg.textContent = (e && e.message)
+              ? 'Message not sent: ' + e.message
+              : "Message not sent. Check your connection and tap Send to retry.";
+          }
           cmsg.classList.remove('hidden');
         } finally {
           sendBtn.disabled = false;
@@ -2099,6 +2869,9 @@
       clearTimers();
       if (chatListenerCleanup) { chatListenerCleanup(); chatListenerCleanup = null; }
       cancelPanelOpen = false;
+      // A calendar error belongs to the visit it happened on: "Your sign-in
+      // expired" must not greet the rider again after they sign back in.
+      calError = null;
 
       const qp = new URLSearchParams(location.search);
       const ref = normRef(qp.get('ref'));

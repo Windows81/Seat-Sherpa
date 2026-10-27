@@ -12,3 +12,10 @@ Upon navigating to the site, I was pleasantly surprised to discover that the cli
 3. full of comments
 
 This is my chance!  The source code shall be mirrored on GitHub!
+
+```ps1
+wget --recursive https://seatsherpa.app/book https://seatsherpa.app/ride https://seatsherpa.app/messages https://seatsherpa.app/post https://seatsherpa.app/js/ss-appbar.js https://seatsherpa.app/js/ss-stops.js && grep -P "[[^']]+js" -h -o -R . | sort.exe -u |% {wget seatsherpa.app/$_}
+mv -Force ./seatsherpa.app .
+grep -E "js/.+\.js" -h -o -R . | sort.exe -u |% {wget seatsherpa.app/$_}
+mv -Force ./seatsherpa.app .
+```

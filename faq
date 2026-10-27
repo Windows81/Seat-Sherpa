@@ -81,84 +81,132 @@ fbq('track','PageView');
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
 
   <style>
+    /* Theme tokens (2026-10-12). Dark is the default and every dark value is
+       the literal this page used before tokens. Light follows the system
+       setting with the shared light palette. */
+    :root {
+      color-scheme: dark;
+      --bg: #0E0E10; --text: #ffffff; --link: #00D4C8;
+      --line: rgba(255,255,255,0.06); --nav-link: #cccccc; --nav-active: #fff; --nav-cta: #00D4C8;
+      --wm-eat: #00D4C8; --wm-sherpa: #ffffff;
+      --glow: rgba(0,212,200,0.10); --h1-top: #ffffff; --h1-bottom: #b3b3b3; --lede: #cccccc;
+      --item-top: #1a1a1d; --item-bottom: #141416; --item-line: rgba(255,255,255,0.05);
+      --q: #fff; --answer: #aaa; --strong: #fff; --toggle: #00D4C8;
+      --teal-fill: #00d4c8; --on-teal: #04201e; --btn-glow: rgba(0,212,200,0.3); --btn-glow-hover: rgba(0,212,200,0.45);
+      --cap: #888; --foot-link: #cccccc; --copyright: #666;
+      --badge-bg: #00a8a0; --badge-ink: #ffffff;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: light;
+        --bg: #F5F6F5; --text: #121416; --link: #007C76;
+        --line: rgba(18,22,22,0.10); --nav-link: #4B5357; --nav-active: #121416; --nav-cta: #007C76;
+        --wm-eat: #00A89F; --wm-sherpa: #121416;
+        --glow: rgba(0,168,159,0.08); --h1-top: #121416; --h1-bottom: #4B5357; --lede: #4B5357;
+        --item-top: #FFFFFF; --item-bottom: #FFFFFF; --item-line: rgba(18,22,22,0.10);
+        --q: #121416; --answer: #4B5357; --strong: #121416; --toggle: #007C76;
+        --btn-glow: rgba(0,168,159,0.25); --btn-glow-hover: rgba(0,168,159,0.35);
+        --cap: #687176; --foot-link: #4B5357; --copyright: #687176;
+        --badge-bg: #00D4C8; --badge-ink: #04201e;
+      }
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10;
-      color: #ffffff;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
     img { max-width: 100%; height: auto; display: block; }
-    a { color: #00D4C8; text-decoration: none; transition: opacity 0.15s; }
+    a { color: var(--link); text-decoration: none; transition: opacity 0.15s; }
     a:hover { opacity: 0.8; }
 
     .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
     /* Nav */
-    nav { padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    nav { padding: 20px 0; border-bottom: 1px solid var(--line); }
     nav .container { display: flex; align-items: center; justify-content: space-between; }
-    nav .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: #fff; }
+    nav .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--nav-active); }
     nav .brand .wordmark { height: 30px; width: auto; display: block; }
     nav .links { display: flex; gap: 24px; font-size: 14px; align-items: center; }
-    nav .links a { color: #cccccc; }
-    nav .links a.active { color: #fff; font-weight: 600; }
-    nav .links a.cta { color: #00D4C8; font-weight: 600; }
+    nav .links a { color: var(--nav-link); }
+    nav .links a.active { color: var(--nav-active); font-weight: 600; }
+    nav .links a.cta { color: var(--nav-cta); font-weight: 600; }
     @media (max-width: 640px) { nav .links a:not(.cta):not(.active) { display: none; } }
 
     /* Page header */
     .faqhead {
       padding: 64px 0 8px;
       text-align: center;
-      background: radial-gradient(ellipse at top, rgba(0,212,200,0.10) 0%, transparent 60%), #0E0E10;
+      background: radial-gradient(ellipse at top, var(--glow) 0%, transparent 60%), var(--bg);
     }
     .faqhead h1 {
       font-size: 44px; line-height: 1.05; letter-spacing: -1px; font-weight: 800; margin-bottom: 14px;
-      background: linear-gradient(180deg, #ffffff 0%, #b3b3b3 100%);
+      background: linear-gradient(180deg, var(--h1-top) 0%, var(--h1-bottom) 100%);
       -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .faqhead p { font-size: 18px; color: #cccccc; max-width: 560px; margin: 0 auto; }
+    .faqhead p { font-size: 18px; color: var(--lede); max-width: 560px; margin: 0 auto; }
     @media (max-width: 600px) { .faqhead { padding: 48px 0 4px; } .faqhead h1 { font-size: 34px; } }
 
     /* FAQ */
     section.faq { padding: 48px 0 80px; }
     .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    /* Two halves of the list: one stacked column on phones (same order and
+       spacing as a single list), side by side on laptops. */
+    .faq-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
     .faq-item {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;
+      background: linear-gradient(180deg, var(--item-top) 0%, var(--item-bottom) 100%);
+      border: 1px solid var(--item-line); border-radius: 12px; overflow: hidden;
     }
     .faq-item summary {
-      padding: 18px 22px; cursor: pointer; font-weight: 600; font-size: 15px; color: #fff;
+      padding: 18px 22px; cursor: pointer; font-weight: 600; font-size: 15px; color: var(--q);
       list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px;
     }
     .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after { content: '+'; font-size: 20px; color: #00D4C8; transition: transform 0.2s; }
+    .faq-item summary::after { content: '+'; font-size: 20px; color: var(--toggle); transition: transform 0.2s; }
     .faq-item[open] summary::after { content: '−'; }
-    .faq-item .body { padding: 0 22px 18px; color: #aaa; font-size: 14px; line-height: 1.7; }
+    .faq-item .body { padding: 0 22px 18px; color: var(--answer); font-size: 14px; line-height: 1.7; }
     .faq-item .body p { margin: 0 0 10px; }
     .faq-item .body p:last-child { margin-bottom: 0; }
-    .faq-item .body strong { color: #fff; font-weight: 600; }
+    .faq-item .body strong { color: var(--strong); font-weight: 600; }
 
     /* Still-stuck band */
     .stuck { text-align: center; margin-top: 40px; }
     .stuck .btn {
-      display: inline-block; padding: 12px 26px; background: #00d4c8; color: #04201e;
+      display: inline-block; padding: 12px 26px; background: var(--teal-fill); color: var(--on-teal);
       font-size: 15px; font-weight: 800; letter-spacing: -0.2px; border-radius: 999px;
-      box-shadow: 0 6px 20px rgba(0,212,200,0.3); transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 6px 20px var(--btn-glow); transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-    .stuck .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,212,200,0.45); }
-    .stuck .sub { color: #888; font-size: 14px; margin-top: 12px; }
+    .stuck .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px var(--btn-glow-hover); }
+    .stuck .sub { color: var(--cap); font-size: 14px; margin-top: 12px; }
 
     /* Footer */
-    footer { padding: 48px 0 64px; border-top: 1px solid rgba(255,255,255,0.06); color: #888; font-size: 14px; }
+    footer { padding: 48px 0 64px; border-top: 1px solid var(--line); color: var(--cap); font-size: 14px; }
     footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
     footer .links { display: flex; gap: 24px; flex-wrap: wrap; }
-    footer .links a { color: #cccccc; }
-    footer .copyright { color: #666; font-size: 13px; }
+    footer .links a { color: var(--foot-link); }
+    footer .copyright { color: var(--copyright); font-size: 13px; }
+
+    /* Laptop (2026-10-12): the questions sit in two columns across the full
+       container instead of one narrow 760px strip. Each column opens and
+       closes on its own, so an expanded answer never leaves a hole in the
+       other column. */
+    @media (min-width: 960px) {
+      .container { max-width: 1180px; }
+      .faqhead { padding: 72px 0 12px; }
+      .faqhead h1 { font-size: 52px; }
+      section.faq { padding: 56px 0 96px; }
+      .faq-list { max-width: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; align-items: start; }
+      .faq-col { gap: 16px; }
+      .faq-item summary { font-size: 16px; padding: 20px 24px; }
+      .faq-item .body { padding: 0 24px 20px; font-size: 15px; }
+      .stuck { margin-top: 56px; }
+    }
   </style>
   <link rel="canonical" href="https://seatsherpa.app/faq" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I get charged when I request a ride?","acceptedAnswer":{"@type":"Answer","text":"No. On a request-to-book ride, your card is only authorized when you send the request — you're charged when the driver accepts. If the driver declines, doesn't respond, or you withdraw the request first, nothing is charged. That means you can ask a question before committing. Add a note with your request — \"can you leave after 6pm?\", \"I have two suitcases\", \"can you pick up near campus?\" — and the driver reads it before any money moves. On instant-book rides you're charged right away, and the payment is held securely until your trip starts."}},{"@type":"Question","name":"How does ride credit work? Does it expire?","acceptedAnswer":{"@type":"Answer","text":"Ride credit (from referrals or promo codes) applies automatically to your next booking — you'll see it deducted on the payment screen. Credit is promotional: it can't be transferred or cashed out, and all credit expires 180 days after the day it's granted. Oldest credit is always used first, so whatever you spend counts against the credit closest to expiring."}},{"@type":"Question","name":"How is this different from Uber or Lyft?","acceptedAnswer":{"@type":"Answer","text":"Seat Sherpa is carpooling, not ride-hailing. The driver is taking the trip anyway and you're sharing the costs (gas, wear) — they're not making a profit. That's why we can keep fees low (5%) and prices fair: drivers can never charge more than the IRS standard mileage rate divided across seats. You're booking a planned trip, not summoning a car. Most rides are long-distance (LA↔Vegas, Bay↔LA, SF↔San Diego) where a one-time carpool makes way more sense than a $400 Uber."}},{"@type":"Question","name":"Do carpoolers get the carpool lane and toll savings?","acceptedAnswer":{"@type":"Answer","text":"Often, yes — it's one of the underrated perks of a real carpool. With two or more people you can use HOV/carpool lanes on California freeways to skip traffic, and with a FasTrak Flex tag set to your headcount, carpools get discounted (sometimes free) tolls in Bay Area express lanes and on the bridges. Two things to know so you're never caught out: most carpool lanes require 2+ occupants, but some — including the San Francisco–Oakland Bay Bridge — require 3+, and toll discounts only apply during the posted carpool hours. Always follow the signs for the lane you're in. Think of it as a bonus on top of splitting the gas, not a guarantee on every road."}},{"@type":"Question","name":"How are prices set? Why are rides so affordable?","acceptedAnswer":{"@type":"Answer","text":"Every route has a price cap. Because drivers are only sharing the real cost of a trip they're already taking — not running a business — there's a hard ceiling on what any seat can cost, tied to how far they're driving (the IRS standard mileage rate, about $0.76/mile, split across the seats). The app enforces it on every ride. That means no surge, no commercial-taxi markup — you pay your share of the gas, not a profit margin. It's how a Bay→LA seat lands closer to the price of a bus ticket than a $400 Uber."}},{"@type":"Question","name":"Is it safe? How do you verify drivers?","acceptedAnswer":{"@type":"Answer","text":"Every driver: Verifies their phone number via SMS Uploads their driver's license (we OCR-verify it isn't expired) Registers their vehicle make, model, color, and plate Connects a Stripe payout account (which itself verifies bank + identity) Builds a public rating from every completed trip You can also see the driver's profile (photo, name, trip count, average rating, real reviews from past riders) before you book. And you can block anyone you don't want to ride with again — they'll never see your rides or messages."}},{"@type":"Question","name":"What if I feel unsafe during a ride?","acceptedAnswer":{"@type":"Answer","text":"Your safety comes first on every trip. Seat Sherpa has a zero-tolerance policy for driving under the influence of alcohol or drugs, and for any unsafe or reckless driving. Drivers agree to it when they join. Situations like this are very rare, but if you're on a trip and have reason to believe your driver is impaired or driving unsafely, ask them to end the trip in a safe location, exit the vehicle, and call 911 if you're ever in danger. No trip is worth your safety. Then report it to us right away so we can act. In the app you can block the driver from the chat menu or their profile (you'll never see their rides or messages again), flag their rating, or email support@seatsherpa.app. We review every report and remove drivers who break the policy."}},{"@type":"Question","name":"What is your policy on alcohol and drugs?","acceptedAnswer":{"@type":"Answer","text":"Zero tolerance, for everyone, on every trip. No one may drive under the influence of alcohol or drugs. No one may consume alcohol or drugs in the vehicle &mdash; that applies to riders exactly as it does to drivers. And no illegal substances may be transported on a Seat Sherpa trip. This is not a guideline we weigh case by case. Anyone found breaking it is removed from the platform, and a driver removed for this does not come back. If you witness any of it, end the trip safely and report it &mdash; block from the chat menu or profile, flag the rating, or email support@seatsherpa.app. Call 911 first if anyone is in immediate danger."}},{"@type":"Question","name":"How does the women drivers badge and filter work?","acceptedAnswer":{"@type":"Answer","text":"It comes straight from the driver’s license each driver uploads when they verify. We read the gender marker printed on that license &mdash; it is not self-declared, and it is not something a driver can set by hand in the app. That is deliberate: a filter people rely on for their comfort is only worth anything if it is tied to verified ID rather than a checkbox. The same source drives both the badge on a driver’s profile and the filter riders use when searching. If your gender marker has changed since your license was issued, upload a current license from your profile and your badge and filter eligibility update with it. If your license is up to date and something still looks wrong, email support@seatsherpa.app and we will sort it out directly."}},{"@type":"Question","name":"What's the 4-digit pickup code?","acceptedAnswer":{"@type":"Answer","text":"At pickup, you'll read your driver a unique 4-digit code from your booking screen. They enter it in their app — that confirms you actually got in the car and starts the trip officially. It's also what releases your payment to the driver. Without your code, the driver can't start the trip or get paid — and if the ride doesn't happen, you're refunded. It's a simple anti-fraud measure that protects both sides: you won't be left paying for a ride that didn't happen, and the driver can't claim a no-show was actually a completed trip."}},{"@type":"Question","name":"When am I charged?","acceptedAnswer":{"@type":"Answer","text":"When you book. For instant-book rides your card is charged right away; for request rides it's only authorized, then charged once the driver accepts. Either way the money is held securely and only released to the driver after your trip starts — when you share your 4-digit pickup code. The driver receives their payout about 2 days after that. If the ride is cancelled before pickup, you're refunded — or, for a request that was only authorized, the hold simply drops off and you see nothing on your statement. Driver cancels = 100% back; otherwise the refund follows the ride's cancellation policy. Refunds process to your original card within 5–10 business days."}},{"@type":"Question","name":"What if my driver cancels?","acceptedAnswer":{"@type":"Answer","text":"You get a 100% refund automatically, regardless of the cancellation policy that ride was posted with. Refund processes to your original payment method within 5–10 business days. You'll also get a push notification and an email so you know immediately. From there you can search for another ride on the same route — the marketplace usually has multiple drivers heading the same way."}},{"@type":"Question","name":"What if I need to cancel?","acceptedAnswer":{"@type":"Answer","text":"Every ride uses the same standard cancellation policy, shown on the ride before you book: 24+ hours before departure: 100% of the seat price refunded. 2–24 hours before: 50% of the seat price refunded. Within 2 hours of departure: no refund. The booking fee is non-refundable when you cancel (5% of the seat price with a $2 minimum; it covers payment processing and server costs). If the driver cancels, you always get 100% back, including the fee. Once your driver enters your pickup code (the trip has officially started), cancellations have to go through support — automatic refunds are off the table at that point."}},{"@type":"Question","name":"Can I bring luggage? Skis? My pet?","acceptedAnswer":{"@type":"Answer","text":"Carry-on bags: most rides include space for a bag, but please check with the driver during booking. Larger luggage limits vary by driver — look for a \"🧳 Large trunk space\" badge on the ride card, or message the driver to confirm. Skis or snowboards: yes — gear rides along on Tahoe runs all season. Look for a \"🎿 Ski rack\" badge (carried on the roof) or \"🧳 Large trunk space\" badge on the ride card; most skis and boards also fit inside a sedan with a rear seat folded. After you book, drop your gear details (board or ski length, boot bag) in the booking chat so your driver can plan the space — drivers posting winter routes expect gear. Pets: only if the driver's profile shows a \"🐕 Pets welcome\" badge. Otherwise message the driver beforehand to ask."}},{"@type":"Question","name":"What if the driver is late or doesn't show?","acceptedAnswer":{"@type":"Answer","text":"You'll get push notifications 24 hours and 2 hours before pickup with the driver's name, vehicle details, plate number, and ETA. Most drivers will message you in the in-app chat if they're running late — that's the fastest way to sort it out. If they never show, you can report it right from your booking screen starting 2 hours after your pickup time (a short buffer in case they're just delayed). The driver gets 24 hours to respond, and if they don't dispute it your booking is cancelled and fully refunded — including the service fee, automatically. Drivers who repeatedly no-show lose their driver privileges. Anything unusual, email support@seatsherpa.app."}},{"@type":"Question","name":"What if I'm late to pickup?","acceptedAnswer":{"@type":"Answer","text":"Drivers will typically wait 10–15 minutes for a confirmed rider — but they're not obligated to wait indefinitely (they have other riders to pick up and a destination to reach). Best move: message your driver in the chat as soon as you know you'll be late. Most drivers are understanding if you communicate. If you're a true no-show with no message, you may forfeit your fare per the ride's cancellation policy."}},{"@type":"Question","name":"Are there hidden fees?","acceptedAnswer":{"@type":"Answer","text":"No. Total = seat price + 5% processing fee. Everything is shown on the booking screen before you tap to pay. The 5% covers credit card processing, secure payment infrastructure, fraud prevention, customer support, and platform operating costs."}},{"@type":"Question","name":"Where can I ride?","acceptedAnswer":{"@type":"Answer","text":"California and Nevada only, for now. Most common routes are SF↔LA, LA↔Vegas, Bay↔LA, LA↔San Diego, and LA↔Palm Springs — but drivers can post any route within those two states. Expansion to the rest of the United States is on the roadmap."}},{"@type":"Question","name":"What's the contact number on my receipt?","acceptedAnswer":{"@type":"Answer","text":"Receipts are emailed from noreply@seatsherpa.app and include a booking reference like SS-A1B2C3. Despite the name, replies to that address are routed straight to our support inbox — or email support@seatsherpa.app directly with your booking reference. We respond within a business day."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I get charged when I request a ride?","acceptedAnswer":{"@type":"Answer","text":"No. On a request-to-book ride, your card is only authorized when you send the request — you're charged when the driver accepts. If the driver declines, doesn't respond, or you withdraw the request first, nothing is charged, with one exception: if you and the driver arrange the trip outside Seat Sherpa, the booking fee is still charged (Terms 3.2). That means you can ask a question before committing. Add a note with your request — \"can you leave after 6pm?\", \"I have two suitcases\", \"can you pick up near campus?\" — and the driver reads it before any money moves. On instant-book rides you're charged right away, and the payment is held securely until your trip starts."}},{"@type":"Question","name":"How does ride credit work? Does it expire?","acceptedAnswer":{"@type":"Answer","text":"Ride credit (from referrals or promo codes) applies automatically to your next booking — you'll see it deducted on the payment screen. Credit is promotional: it can't be transferred or cashed out, and all credit expires 180 days after the day it's granted. Oldest credit is always used first, so whatever you spend counts against the credit closest to expiring."}},{"@type":"Question","name":"How is this different from Uber or Lyft?","acceptedAnswer":{"@type":"Answer","text":"Seat Sherpa is carpooling, not ride-hailing. The driver is taking the trip anyway and you're sharing the costs (gas, wear) — they're not making a profit. That's why we can keep fees low (5%, at least $2) and prices fair: drivers can never charge more than the IRS standard mileage rate divided across seats. You're booking a planned trip, not summoning a car. Most rides are long-distance (LA↔Vegas, Bay↔LA, SF↔San Diego) where a one-time carpool makes way more sense than a $400 Uber."}},{"@type":"Question","name":"Do carpoolers get the carpool lane and toll savings?","acceptedAnswer":{"@type":"Answer","text":"Often, yes — it's one of the underrated perks of a real carpool. With two or more people you can use HOV/carpool lanes on California freeways to skip traffic, and with a FasTrak Flex tag set to your headcount, carpools get discounted (sometimes free) tolls in Bay Area express lanes and on the bridges. Two things to know so you're never caught out: most carpool lanes require 2+ occupants, but some — including the San Francisco–Oakland Bay Bridge — require 3+, and toll discounts only apply during the posted carpool hours. Always follow the signs for the lane you're in. Think of it as a bonus on top of splitting the gas, not a guarantee on every road."}},{"@type":"Question","name":"How are prices set? Why are rides so affordable?","acceptedAnswer":{"@type":"Answer","text":"Every route has a price cap. Because drivers are only sharing the real cost of a trip they're already taking — not running a business — there's a hard ceiling on what any seat can cost, tied to how far they're driving (the IRS standard mileage rate, about $0.76/mile, split across the seats). The app enforces it on every ride. That means no surge, no commercial-taxi markup — you pay your share of the gas, not a profit margin. It's how a Bay→LA seat lands closer to the price of a bus ticket than a $400 Uber."}},{"@type":"Question","name":"Is it safe? How do you verify drivers?","acceptedAnswer":{"@type":"Answer","text":"Every driver: Verifies their phone number via SMS Uploads their driver's license (we OCR-verify it isn't expired) Registers their vehicle make, model, color, and plate Connects a Stripe payout account (which itself verifies bank + identity) Builds a public rating from every completed trip You can also see the driver's profile (photo, name, trip count, average rating, real reviews from past riders) before you book. And you can block anyone you don't want to ride with again — they'll never see your rides or messages."}},{"@type":"Question","name":"What if I feel unsafe during a ride?","acceptedAnswer":{"@type":"Answer","text":"Your safety comes first on every trip. Seat Sherpa has a zero-tolerance policy for driving under the influence of alcohol or drugs, and for any unsafe or reckless driving. Drivers agree to it when they join. Situations like this are very rare, but if you're on a trip and have reason to believe your driver is impaired or driving unsafely, ask them to end the trip in a safe location, exit the vehicle, and call 911 if you're ever in danger. No trip is worth your safety. Then report it to us right away so we can act. In the app you can block the driver from the chat menu or their profile (you'll never see their rides or messages again), flag their rating, or email support@seatsherpa.app. We review every report and remove drivers who break the policy."}},{"@type":"Question","name":"What is your policy on alcohol and drugs?","acceptedAnswer":{"@type":"Answer","text":"Zero tolerance, for everyone, on every trip. No one may drive under the influence of alcohol or drugs. No one may consume alcohol or drugs in the vehicle &mdash; that applies to riders exactly as it does to drivers. And no illegal substances may be transported on a Seat Sherpa trip. This is not a guideline we weigh case by case. Anyone found breaking it is removed from the platform, and a driver removed for this does not come back. If you witness any of it, end the trip safely and report it &mdash; block from the chat menu or profile, flag the rating, or email support@seatsherpa.app. Call 911 first if anyone is in immediate danger."}},{"@type":"Question","name":"How does the women drivers badge and filter work?","acceptedAnswer":{"@type":"Answer","text":"It comes straight from the driver’s license each driver uploads when they verify. We read the gender marker printed on that license &mdash; it is not self-declared, and it is not something a driver can set by hand in the app. That is deliberate: a filter people rely on for their comfort is only worth anything if it is tied to verified ID rather than a checkbox. The same source drives both the badge on a driver’s profile and the filter riders use when searching. If your gender marker has changed since your license was issued, or something looks wrong, email support@seatsherpa.app with a current license or ID and we will update it after checking it by hand."}},{"@type":"Question","name":"What's the 4-digit pickup code?","acceptedAnswer":{"@type":"Answer","text":"At pickup, you'll read your driver a unique 4-digit code from your booking screen. They enter it in their app — that confirms you actually got in the car and starts the trip officially. It's also what releases your payment to the driver. Without your code, the driver can't start the trip or get paid — and if the ride doesn't happen, you're refunded. It's a simple anti-fraud measure that protects both sides: you won't be left paying for a ride that didn't happen, and the driver can't claim a no-show was actually a completed trip."}},{"@type":"Question","name":"When am I charged?","acceptedAnswer":{"@type":"Answer","text":"When you book. For instant-book rides your card is charged right away; for request rides it's only authorized, then charged once the driver accepts. Either way the money is held securely and only released to the driver after your trip starts — when you share your 4-digit pickup code. The driver receives their payout about 2 days after that. If the ride is cancelled before pickup, you're refunded — or, for a request that was only authorized, the hold simply drops off and you see nothing on your statement. Driver cancels = 100% back; otherwise the refund follows the ride's cancellation policy. Refunds process to your original card within 5–10 business days."}},{"@type":"Question","name":"What if my driver cancels?","acceptedAnswer":{"@type":"Answer","text":"You get a 100% refund automatically, regardless of the cancellation policy that ride was posted with. Refund processes to your original payment method within 5–10 business days. You'll also get a push notification and an email so you know immediately. From there you can search for another ride on the same route — the marketplace usually has multiple drivers heading the same way."}},{"@type":"Question","name":"What if I need to cancel?","acceptedAnswer":{"@type":"Answer","text":"Every ride uses the same standard cancellation policy, shown on the ride before you book: 24+ hours before departure: 100% of the seat price refunded. 2–24 hours before: 50% of the seat price refunded. Within 2 hours of departure: no refund. The booking fee is non-refundable when you cancel (5% of the seat price with a $2 minimum; it covers payment processing and server costs). If the driver cancels, you always get 100% back, including the fee. If the driver changes the departure time after you booked, you can cancel for 100% back, including the fee, up to 2 hours before the new departure. Once your driver enters your pickup code (the trip has officially started), cancellations have to go through support — automatic refunds are off the table at that point."}},{"@type":"Question","name":"Can I bring luggage? Skis? My pet?","acceptedAnswer":{"@type":"Answer","text":"Carry-on bags: most rides include space for a bag, but please check with the driver during booking. Larger luggage limits vary by driver — look for a \"🧳 Large trunk space\" badge on the ride card, or message the driver to confirm. Skis or snowboards: yes — gear rides along on Tahoe runs all season. Look for a \"🎿 Ski rack\" badge (carried on the roof) or \"🧳 Large trunk space\" badge on the ride card; most skis and boards also fit inside a sedan with a rear seat folded. After you book, drop your gear details (board or ski length, boot bag) in the booking chat so your driver can plan the space — drivers posting winter routes expect gear. Pets: only if the driver's profile shows a \"🐕 Pets welcome\" badge. Otherwise message the driver beforehand to ask."}},{"@type":"Question","name":"What if the driver is late or doesn't show?","acceptedAnswer":{"@type":"Answer","text":"You'll get push notifications 24 hours and 2 hours before pickup with the driver's name, vehicle details, plate number, and ETA. Most drivers will message you in the in-app chat if they're running late — that's the fastest way to sort it out. If they never show, you can report it right from your booking screen starting 2 hours after your pickup time (a short buffer in case they're just delayed). The driver gets 24 hours to respond, and if they don't dispute it your booking is cancelled and fully refunded — including the service fee, automatically. Drivers who repeatedly no-show lose their driver privileges. Anything unusual, email support@seatsherpa.app."}},{"@type":"Question","name":"What if I'm late to pickup?","acceptedAnswer":{"@type":"Answer","text":"Drivers will typically wait 10–15 minutes for a confirmed rider — but they're not obligated to wait indefinitely (they have other riders to pick up and a destination to reach). Best move: message your driver in the chat as soon as you know you'll be late. Most drivers are understanding if you communicate. If you're a true no-show with no message, you may forfeit your fare per the ride's cancellation policy."}},{"@type":"Question","name":"Are there hidden fees?","acceptedAnswer":{"@type":"Answer","text":"No. Total = seat price + the booking fee (5%, at least $2). Everything is shown on the booking screen before you tap to pay. The 5% covers credit card processing, secure payment infrastructure, fraud prevention, customer support, and platform operating costs."}},{"@type":"Question","name":"Where can I ride?","acceptedAnswer":{"@type":"Answer","text":"California and Nevada only, for now. Most common routes are SF↔LA, LA↔Vegas, Bay↔LA, LA↔San Diego, and LA↔Palm Springs — but drivers can post any route within those two states. Expansion to the rest of the United States is on the roadmap."}},{"@type":"Question","name":"What's the contact number on my receipt?","acceptedAnswer":{"@type":"Answer","text":"Receipts are emailed from noreply@seatsherpa.app and include a booking reference like SS-A1B2C3. Despite the name, replies to that address are routed straight to our support inbox — or email support@seatsherpa.app directly with your booking reference. We respond within a business day."}}]}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://seatsherpa.app/"},{"@type":"ListItem","position":2,"name":"FAQ","item":"https://seatsherpa.app/faq"}]}</script>
 </head>
 <body>
@@ -173,8 +221,8 @@ fbq('track','PageView');
             <path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/>
             <path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/>
           </g>
-          <text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text>
-          <text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text>
+          <text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8" style="fill:var(--wm-eat)">eat</text>
+          <text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff" style="fill:var(--wm-sherpa)">Sherpa</text>
         </svg>
       </a>
       <div class="links">
@@ -198,6 +246,7 @@ fbq('track','PageView');
   <section class="faq">
     <div class="container">
       <div class="faq-list">
+        <div class="faq-col">
 
         <!-- Added 2026-08-13 from a support ticket. A rider asked whether the
              only way to ask a driver about timing was to book and be charged
@@ -236,7 +285,9 @@ fbq('track','PageView');
             <p>
               No. On a request-to-book ride, your card is only <strong>authorized</strong> when you
               send the request — you're charged when the driver accepts. If the driver declines,
-              doesn't respond, or you withdraw the request first, nothing is charged.
+              doesn't respond, or you withdraw the request first, nothing is charged. The one
+              exception: if you and the driver arrange the trip outside Seat Sherpa, the booking
+              fee is still charged (<a href="/terms#off-service-payment">Terms 3.2</a>).
             </p>
             <p>
               That means you can ask a question before committing. Add a note with your request —
@@ -271,7 +322,7 @@ fbq('track','PageView');
           <summary>How is this different from Uber or Lyft?</summary>
           <div class="body">
             <p>
-              Seat Sherpa is <strong>carpooling, not ride-hailing</strong>. The driver is taking the trip anyway and you're sharing the costs (gas, wear) — they're not making a profit. That's why we can keep fees low (5%) and prices fair: drivers can never charge more than the IRS standard mileage rate divided across seats.
+              Seat Sherpa is <strong>carpooling, not ride-hailing</strong>. The driver is taking the trip anyway and you're sharing the costs (gas, wear) — they're not making a profit. That's why we can keep fees low (5%, at least $2) and prices fair: drivers can never charge more than the IRS standard mileage rate divided across seats.
             </p>
             <p>
               You're booking a planned trip, not summoning a car. Most rides are long-distance (LA↔Vegas, Bay↔LA, SF↔San Diego) where a one-time carpool makes way more sense than a $400 Uber.
@@ -360,10 +411,13 @@ fbq('track','PageView');
               The same source drives both the badge on a driver&rsquo;s profile and the filter riders use when searching.
             </p>
             <p>
-              <strong>If your gender marker has changed since your license was issued</strong>, upload a current license from your profile and your badge and filter eligibility update with it. If your license is up to date and something still looks wrong, email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a> and we will sort it out directly.
+              <strong>If your gender marker has changed since your license was issued</strong>, or something looks wrong, email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a> with a current license or ID and we will update it after checking it by hand.
             </p>
           </div>
         </details>
+
+        </div>
+        <div class="faq-col">
 
         <details class="faq-item">
           <summary>What's the 4-digit pickup code?</summary>
@@ -414,6 +468,9 @@ fbq('track','PageView');
               The booking fee is non-refundable when you cancel (5% of the seat price with a $2 minimum; it covers payment processing and server costs). If the <strong>driver</strong> cancels, you always get 100% back, including the fee.
             </p>
             <p>
+              If the <strong>driver changes the departure time</strong> after you booked, you can cancel for 100% back, including the fee, up to 2 hours before the new departure. Inside those last 2 hours the standard tiers apply.
+            </p>
+            <p>
               Once your driver enters your pickup code (the trip has officially started), cancellations have to go through support — automatic refunds are off the table at that point.
             </p>
           </div>
@@ -441,7 +498,7 @@ fbq('track','PageView');
               You'll get push notifications 24 hours and 2 hours before pickup with the driver's name, vehicle details, plate number, and ETA. Most drivers will message you in the in-app chat if they're running late — that's the fastest way to sort it out.
             </p>
             <p>
-              If they never show, you can report it right from your booking screen starting <strong>2 hours after your pickup time</strong> (a short buffer in case they're just delayed). The driver gets 24 hours to respond, and if they don't dispute it your booking is cancelled and <strong>fully refunded — including the service fee</strong>, automatically. Drivers who repeatedly no-show lose their driver privileges. Anything unusual, email <a href="mailto:support@seatsherpa.app" style="color:#00D4C8;">support@seatsherpa.app</a>.
+              If they never show, you can report it right from your booking screen starting <strong>2 hours after your pickup time</strong> (a short buffer in case they're just delayed). The driver gets 24 hours to respond, and if they don't dispute it your booking is cancelled and <strong>fully refunded — including the service fee</strong>, automatically. Drivers who repeatedly no-show lose their driver privileges. Anything unusual, email <a href="mailto:support@seatsherpa.app" style="color:var(--link);">support@seatsherpa.app</a>.
             </p>
           </div>
         </details>
@@ -462,7 +519,7 @@ fbq('track','PageView');
           <summary>Are there hidden fees?</summary>
           <div class="body">
             <p>
-              No. Total = seat price + 5% processing fee. Everything is shown on the booking screen <strong>before you tap to pay</strong>. The 5% covers credit card processing, secure payment infrastructure, fraud prevention, customer support, and platform operating costs.
+              No. Total = seat price + the booking fee (5%, at least $2). Everything is shown on the booking screen <strong>before you tap to pay</strong>. The 5% covers credit card processing, secure payment infrastructure, fraud prevention, customer support, and platform operating costs.
             </p>
           </div>
         </details>
@@ -483,11 +540,12 @@ fbq('track','PageView');
           <summary>What's the contact number on my receipt?</summary>
           <div class="body">
             <p>
-              Receipts are emailed from <strong>noreply@seatsherpa.app</strong> and include a booking reference like <code>SS-A1B2C3</code>. Despite the name, replies to that address are routed straight to our support inbox — or email <a href="mailto:support@seatsherpa.app" style="color:#00D4C8;">support@seatsherpa.app</a> directly with your booking reference. We respond within a business day.
+              Receipts are emailed from <strong>noreply@seatsherpa.app</strong> and include a booking reference like <code>SS-A1B2C3</code>. Despite the name, replies to that address are routed straight to our support inbox — or email <a href="mailto:support@seatsherpa.app" style="color:var(--link);">support@seatsherpa.app</a> directly with your booking reference. We respond within a business day.
             </p>
           </div>
         </details>
 
+        </div>
       </div>
 
       <div class="stuck">
@@ -500,10 +558,10 @@ fbq('track','PageView');
   <!-- ─── Footer ──────────────────────────────────────────────── -->
   
 <!-- App store buttons (ss-store-badges) -->
-<div style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<div class="ss-store-badges" style="text-align:center;margin:40px auto 28px;max-width:560px;padding:0 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <p style="font-size:15px;font-weight:800;margin:0 0 12px;color:inherit;">Get the Seat Sherpa app</p>
-  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=faq" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
-  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=faq" style="display:inline-block;background:#00a8a0;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=faq" style="display:inline-block;background:var(--badge-bg,#00a8a0);color:var(--badge-ink,#ffffff);text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Download on the App Store</a>
+  <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=faq" style="display:inline-block;background:var(--badge-bg,#00a8a0);color:var(--badge-ink,#ffffff);text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;margin:5px 6px;font-size:14px;">Get it on Google Play</a>
 </div>
 <footer>
     <div class="container">

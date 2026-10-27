@@ -65,17 +65,70 @@ fbq('track','PageView');
   <title>Post a ride — Seat Sherpa</title>
   <!-- HIDDEN page (internal testing). Never index, never link from public pages. -->
   <meta name="robots" content="noindex" />
-  <meta name="theme-color" content="#0E0E10" />
+  <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#F5F6F5" media="(prefers-color-scheme: light)" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Color tokens (2026-10-12). Dark values are the page's original
+       literals; the light block follows the visitor's system setting. */
+    :root {
+      --bg: #0E0E10; --card-a: #1a1a1d; --card-b: #141416; --card-line: rgba(255,255,255,0.10); --card-shadow: none;
+      --field: #0E0E10; --field2: #101014; --field-line: rgba(255,255,255,0.14); --row: #0E0E10; --inset: #0E0E10; --inset-line: rgba(255,255,255,0.12);
+      --pop: #1a1a1d; --pop-shadow: none; --hair: rgba(255,255,255,0.08); --hair2: rgba(255,255,255,0.06); --hair3: rgba(255,255,255,0.07); --hair4: rgba(255,255,255,0.10); --hair5: rgba(255,255,255,.08);
+      --sel-bg: #0d1f1e;
+      --text: #fff; --text-ff: #ffffff; --text2: #E8E8EC; --text3: #F5F5F7; --sub: #b9b9c6; --sub-c9: #c9c9d1;
+      --muted: #9a9aa4; --muted2: #9a9aa2; --muted3: #9aa3ad; --muted4: #9aa; --cap: #888; --cap2: #8a8a92; --faint: #666; --off: #444;
+      --link: #00D4C8; --teal: #00D4C8; --on-teal: #04201e; --info-teal: #00D4C8; --teal-sel: #00D4C8;
+      --ok: #4ade80; --ok-bg: rgba(74,222,128,0.12); --ok-line: rgba(74,222,128,0.35); --ok-line2: rgba(74,222,128,0.4); --ok-bg2: rgba(74,222,128,0.08);
+      --err: #ff8a8a; --warn: #ffd166; --warn-bg: rgba(255,193,7,0.10); --warn-line: rgba(255,193,7,0.35);
+      --tline50: rgba(0,212,200,0.5); --tline60: rgba(0,212,200,0.6); --tline45: rgba(0,212,200,0.45); --tline45b: rgba(0,212,200,.45); --tline40: rgba(0,212,200,0.4);
+      --tline35: rgba(0,212,200,0.35); --tline35b: rgba(0,212,200,.35); --tline30: rgba(0,212,200,0.3); --tline25: rgba(0,212,200,0.25);
+      --tsoft08: rgba(0,212,200,0.08); --tsoft08b: rgba(0,212,200,.08); --tsoft10: rgba(0,212,200,0.10); --tsoft06: rgba(0,212,200,0.06); --tsoft14: rgba(0,212,200,.14);
+      --ok-msg: #00D4C8; --link2: #00D4C8; --cap3: #888; --banner-text: #b9e8e4; --tick-line: rgba(255,255,255,0.3); --step-line: rgba(255,255,255,0.2); --dash-line: rgba(255,255,255,0.25);
+      --spin-ring: rgba(255,255,255,0.15); --spin-ring2: rgba(255,255,255,0.2); --seg-in-line: rgba(255,255,255,0.18); --seg-in-bg: rgba(255,255,255,0.06);
+      --pill-line: rgba(255,255,255,.28); --profst-line: rgba(255,255,255,.25);
+      --chip-line: #2a2a33; --chip-bg: #17171d; --switch-off: #33333d; --knob: #fff;
+      --car-shell: #101014; --car-wheel: #26262e; --car-mirror: #2f2f38; --car-line: #2C2C38; --drv-bg: #2C2C38; --drv-text: #fff;
+      --seat-bg: #18181C; --seat-text: #E8E8EC; --seat-label: #8888A8; --seat-sub: #C0C0D0;
+      --logo-text: #ffffff; --logo-eat: #00D4C8;
+      /* No color-scheme here on purpose: the page never set one, so dark
+         keeps the browser-default form controls it has always had. */
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F5F6F5; --card-a: #FFFFFF; --card-b: #FFFFFF; --card-line: rgba(18,22,22,0.10); --card-shadow: 0 1px 2px rgba(18,22,22,0.04), 0 6px 20px rgba(18,22,22,0.05);
+        --field: #EFF1F0; --field2: #EFF1F0; --field-line: rgba(18,22,22,0.18); --row: #FFFFFF; --inset: #F5F6F5; --inset-line: rgba(18,22,22,0.12);
+        --pop: #FFFFFF; --pop-shadow: 0 10px 28px rgba(0,0,0,0.12); --hair: rgba(18,22,22,0.10); --hair2: rgba(18,22,22,0.08); --hair3: rgba(18,22,22,0.10); --hair4: rgba(18,22,22,0.10); --hair5: rgba(18,22,22,0.10);
+        --sel-bg: rgba(0,168,159,0.12);
+        --text: #121416; --text-ff: #121416; --text2: #23272A; --text3: #121416; --sub: #4B5357; --sub-c9: #23272A;
+        --muted: #5B6368; --muted2: #5B6368; --muted3: #5B6368; --muted4: #5B6368; --cap: #687176; --cap2: #687176; --faint: #687176; --off: #A9B0B3;
+        --link: #007C76; --info-teal: #121416; --teal-sel: #007C76;
+        --ok: #1E7B3A; --ok-bg: rgba(30,123,58,0.10); --ok-line: rgba(30,123,58,0.35); --ok-line2: rgba(30,123,58,0.40); --ok-bg2: rgba(30,123,58,0.08);
+        --err: #C62828; --warn: #8A5A00; --warn-bg: #FFF4DB; --warn-line: rgba(138,90,0,0.30);
+        --tline50: rgba(0,124,118,0.45); --tline60: rgba(0,124,118,0.55); --tline45: rgba(0,124,118,0.45); --tline45b: rgba(0,124,118,0.45); --tline40: rgba(0,124,118,0.40);
+        --tline35: rgba(0,124,118,0.40); --tline35b: rgba(0,124,118,0.40); --tline30: rgba(0,124,118,0.35); --tline25: rgba(0,124,118,0.30);
+        --tsoft08: rgba(0,168,159,0.10); --tsoft08b: rgba(0,168,159,0.10); --tsoft10: rgba(0,168,159,0.10); --tsoft06: rgba(0,168,159,0.08); --tsoft14: rgba(0,168,159,0.25);
+        --ok-msg: #1E7B3A; --link2: #00665F; --cap3: #5B6368; --banner-text: #0B5A55; --tick-line: rgba(18,22,22,0.40); --step-line: rgba(18,22,22,0.18); --dash-line: rgba(18,22,22,0.28);
+        --spin-ring: rgba(18,22,22,0.12); --spin-ring2: rgba(18,22,22,0.15); --seg-in-line: rgba(18,22,22,0.18); --seg-in-bg: #EFF1F0;
+        --pill-line: rgba(18,22,22,0.20); --profst-line: rgba(18,22,22,0.28);
+        --chip-line: #D8DCDB; --chip-bg: #EFF1F0; --switch-off: #AEB5B8; --knob: #FFFFFF;
+        --car-shell: #F5F6F5; --car-wheel: #C3C9CB; --car-mirror: #BAC1C3; --car-line: #D8DCDB; --drv-bg: #E3E6E5; --drv-text: #23272A;
+        --seat-bg: #FFFFFF; --seat-text: #23272A; --seat-label: #5B6368; --seat-sub: #4B5357;
+        --logo-text: #121416; --logo-eat: #00A89F;
+        color-scheme: light;
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+      }
+      /* #687176 measured 4.39:1 on the #EFF1F0 fields; one step darker. */
+      input::placeholder, textarea::placeholder { color: #646D72; }
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       display: flex;
@@ -83,14 +136,14 @@ fbq('track','PageView');
       align-items: center;
       padding: 32px 20px 48px;
     }
-    a { color: #00D4C8; text-decoration: none; }
+    a { color: var(--link); text-decoration: none; }
 
     .wrap { width: 100%; max-width: 440px; }
     /* Desktop: the 440px mobile column reads cramped on a laptop. */
     @media (min-width: 720px) { .wrap { max-width: 560px; } }
-    /* Large desktop (Justin, 2026-09-04: "less than 50% of the screen"): scale
-       the whole column up a notch rather than restyle every size. */
-    @media (min-width: 1100px) { .wrap { max-width: 600px; zoom: 1.15; } }
+    /* Large desktop (Justin, 2026-09-04: "less than 50% of the screen"): the
+       old 600px column zoomed 1.15x is replaced by the two-column laptop
+       layout at the end of this sheet (2026-10-12). */
 
     .brand {
       display: flex; align-items: center; justify-content: center;
@@ -98,154 +151,156 @@ fbq('track','PageView');
     }
 
     .card {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.10);
+      background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+      border: 1px solid var(--card-line);
+      box-shadow: var(--card-shadow);
       border-radius: 18px;
       padding: 24px;
       margin-bottom: 20px;
     }
     .card .eyebrow {
       font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-      color: #888; margin-bottom: 12px;
+      color: var(--cap); margin-bottom: 12px;
     }
 
     h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
-    p.sub { font-size: 15px; color: #b9b9c6; line-height: 1.5; margin-bottom: 18px; }
-    label { display: block; font-size: 12.5px; color: #9a9aa4; letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+    p.sub { font-size: 15px; color: var(--sub); line-height: 1.5; margin-bottom: 18px; }
+    label { display: block; font-size: 12.5px; color: var(--muted); letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
     input, textarea, select {
-      width: 100%; background: #0E0E10; border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 16px; margin-bottom: 14px;
+      width: 100%; background: var(--field); border: 1px solid var(--field-line);
+      border-radius: 12px; padding: 14px 16px; color: var(--text); font-size: 16px; margin-bottom: 14px;
       outline: none; transition: border-color 0.15s; font-family: inherit;
     }
-    input:focus, textarea:focus, select:focus { border-color: #00D4C8; }
+    input:focus, textarea:focus, select:focus { border-color: var(--teal-sel); }
     input:disabled { opacity: 0.5; }
     /* iOS renders native time controls wider than their box; normalize so the
        field matches the full-width Continue button (Justin, 2026-08-28). */
     input[type="time"] { -webkit-appearance: none; appearance: none; min-width: 0; text-align: center; }
     .timegrp { display: flex; gap: 10px; margin: 0 0 14px; }
-    .timegrp select { flex: 1; background: #101014; color: #fff; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; padding: 12px 10px; font-size: 16px; text-align: center; }
-    .timegrp select:focus { outline: none; border-color: rgba(0,212,200,0.6); }
+    .timegrp select { flex: 1; background: var(--field2); color: var(--text); border: 1px solid var(--field-line); border-radius: 12px; padding: 12px 10px; font-size: 16px; text-align: center; }
+    .timegrp select:focus { outline: none; border-color: var(--tline60); }
     textarea { resize: vertical; min-height: 88px; }
     .codeinput { text-align: center; letter-spacing: 10px; font-size: 22px; font-weight: 700; }
     button.primary {
-      width: 100%; background: #00D4C8; color: #04201e; border: none; border-radius: 12px;
+      width: 100%; background: var(--teal); color: var(--on-teal); border: none; border-radius: 12px;
       padding: 15px; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
     }
     button.primary:disabled { opacity: 0.5; cursor: default; }
     .linkbtn {
-      background: none; border: none; color: #00D4C8; font-size: 14px; font-weight: 600;
+      background: none; border: none; color: var(--link); font-size: 14px; font-weight: 600;
       cursor: pointer; padding: 0; font-family: inherit;
     }
-    .linkbtn:disabled { color: #666; cursor: default; }
+    .linkbtn:disabled { color: var(--faint); cursor: default; }
     .rowlinks { display: flex; justify-content: space-between; margin-top: 4px; font-size: 14px; }
     .backrow { margin-bottom: 12px; }
-    .backrow .linkbtn { color: #888; font-size: 13px; }
+    .backrow .linkbtn { color: var(--cap); font-size: 13px; }
     .msg { font-size: 14px; line-height: 1.5; margin-top: 12px; }
-    .msg.err { color: #ff8a8a; }
-    .msg.ok { color: #4ade80; }
+    .msg.err { color: var(--err); }
+    .msg.ok { color: var(--ok); }
     .hidden { display: none !important; }
     .center { text-align: center; }
     .icon { font-size: 44px; margin-bottom: 12px; }
-    .hint { font-size: 13px; color: #9a9aa4; margin: -8px 0 14px; line-height: 1.5; }
+    .hint { font-size: 13px; color: var(--muted); margin: -8px 0 14px; line-height: 1.5; }
 
     /* Address autocomplete */
     .ac-wrap { position: relative; }
     .ac-list {
       position: absolute; top: calc(100% - 10px); left: 0; right: 0; z-index: 20;
-      background: #1a1a1d; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
+      background: var(--pop); border: 1px solid var(--field-line); border-radius: 12px;
+      box-shadow: var(--pop-shadow);
       overflow: hidden; max-height: 280px; overflow-y: auto;
     }
     .ac-item {
       display: block; width: 100%; text-align: left; background: none; border: none;
-      border-bottom: 1px solid rgba(255,255,255,0.06); padding: 12px 14px; cursor: pointer;
-      font-family: inherit; color: #fff;
+      border-bottom: 1px solid var(--hair2); padding: 12px 14px; cursor: pointer;
+      font-family: inherit; color: var(--text);
     }
     .ac-item:last-child { border-bottom: none; }
-    .ac-item:hover, .ac-item:focus { background: #0d1f1e; }
+    .ac-item:hover, .ac-item:focus { background: var(--sel-bg); }
     .ac-item .p { font-size: 15px; font-weight: 600; display: block; }
-    .ac-item .s { font-size: 12px; color: #888; display: block; margin-top: 2px; }
+    .ac-item .s { font-size: 12px; color: var(--cap3); display: block; margin-top: 2px; }
     .picked {
-      display: flex; align-items: center; gap: 8px; background: #0d1f1e;
-      border: 1px solid rgba(0,212,200,0.35); border-radius: 12px; padding: 12px 14px;
+      display: flex; align-items: center; gap: 8px; background: var(--sel-bg);
+      border: 1px solid var(--tline35); border-radius: 12px; padding: 12px 14px;
       font-size: 14px; margin-bottom: 14px;
     }
     .picked .addr { flex: 1; line-height: 1.4; }
-    .picked .linkbtn { font-size: 13px; }
+    .picked .linkbtn { font-size: 13px; color: var(--link2); }
 
     /* Choice rows (stopovers, instant, return) */
     .choice {
       display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left;
-      background: #0E0E10; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
-      padding: 14px 16px; color: #fff; cursor: pointer; margin-bottom: 10px;
+      background: var(--row); border: 1px solid var(--field-line); border-radius: 12px;
+      padding: 14px 16px; color: var(--text); cursor: pointer; margin-bottom: 10px;
       transition: border-color 0.15s, background 0.15s; font-family: inherit; font-size: 15px;
     }
-    .choice.sel { border-color: #00D4C8; background: #0d1f1e; }
+    .choice.sel { border-color: var(--teal-sel); background: var(--sel-bg); }
     .choice.locked { opacity: 0.45; cursor: not-allowed; }
     /* Route chooser cards (2026-08-28) */
     .routeopt {
-      display: block; width: 100%; text-align: left; background: #0E0E10;
-      border: 1px solid rgba(255,255,255,0.14); border-radius: 14px; padding: 12px;
-      color: #fff; cursor: pointer; margin-bottom: 12px; font-family: inherit;
+      display: block; width: 100%; text-align: left; background: var(--row);
+      border: 1px solid var(--field-line); border-radius: 14px; padding: 12px;
+      color: var(--text); cursor: pointer; margin-bottom: 12px; font-family: inherit;
       transition: border-color 0.15s, transform 0.1s;
     }
-    .routeopt:hover { border-color: rgba(0,212,200,0.6); transform: translateY(-1px); }
+    .routeopt:hover { border-color: var(--tline60); transform: translateY(-1px); }
     .routeopt img {
       width: 100%; height: 130px; object-fit: cover; border-radius: 10px;
-      display: block; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.06);
-      background: #101014;
+      display: block; margin-bottom: 10px; border: 1px solid var(--hair2);
+      background: var(--field2);
     }
     .routeopt .rt { font-size: 16px; font-weight: 700; }
-    .routeopt .rm { font-size: 13.5px; color: #9a9aa4; margin-top: 2px; }
+    .routeopt .rm { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
     .choice .t { font-weight: 700; display: block; }
-    .choice .d { font-size: 13px; color: #b9b9c6; display: block; margin-top: 3px; line-height: 1.45; }
+    .choice .d { font-size: 13px; color: var(--sub); display: block; margin-top: 3px; line-height: 1.45; }
     .choice .tick {
-      width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid rgba(255,255,255,0.3);
+      width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--tick-line);
       flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center;
-      font-size: 14px; color: #04201e; font-weight: 800;
+      font-size: 14px; color: var(--on-teal); font-weight: 800;
     }
-    .choice.sel .tick { background: #00D4C8; border-color: #00D4C8; }
+    .choice.sel .tick { background: var(--teal); border-color: var(--teal); }
     .choice .tick.radio { border-radius: 50%; }
 
     /* Calendar */
     .cal { margin-bottom: 8px; }
-    .cal .mname { font-size: 14px; font-weight: 700; margin: 12px 0 8px; color: #b9b9c6; }
+    .cal .mname { font-size: 14px; font-weight: 700; margin: 12px 0 8px; color: var(--sub); }
     .cal .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-    .cal .dow { font-size: 10px; color: #666; text-align: center; padding: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
+    .cal .dow { font-size: 10px; color: var(--faint); text-align: center; padding: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
     .cal .day {
       aspect-ratio: 1; border-radius: 10px; border: 1px solid transparent; background: none;
-      color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
+      color: var(--text); font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
       display: flex; align-items: center; justify-content: center;
     }
-    .cal .day:hover { border-color: rgba(0,212,200,0.4); }
-    .cal .day.off { color: #444; cursor: default; }
+    .cal .day:hover { border-color: var(--tline40); }
+    .cal .day.off { color: var(--off); cursor: default; }
     .cal .day.off:hover { border-color: transparent; }
-    .cal .day.sel { background: #00D4C8; color: #04201e; }
+    .cal .day.sel { background: var(--teal); color: var(--on-teal); }
     .calnav { display: flex; align-items: center; justify-content: space-between; margin: 12px 0 8px; }
-    .calnavbtn { width: 34px; height: 34px; border-radius: 10px; border: 1px solid #2a2a33; background: #17171d; color: #b9b9c6; font-size: 20px; line-height: 1; cursor: pointer; }
+    .calnavbtn { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--chip-line); background: var(--chip-bg); color: var(--sub); font-size: 20px; line-height: 1; cursor: pointer; }
     .calnavbtn:disabled { opacity: 0.3; cursor: default; }
     /* Two-month calendar (2026-08-28) */
     .calmonths { display: grid; grid-template-columns: 1fr; gap: 18px; }
     @media (min-width: 720px) { .calmonths { grid-template-columns: 1fr 1fr; } }
     .calmonth > .mname { text-align: center; margin: 0 0 6px; }
     .calbanner {
-      background: rgba(0,212,200,0.08); border: 1px solid rgba(0,212,200,0.25);
-      border-radius: 12px; padding: 10px 14px; font-size: 13.5px; color: #b9e8e4;
+      background: var(--tsoft08); border: 1px solid var(--tline25);
+      border-radius: 12px; padding: 10px 14px; font-size: 13.5px; color: var(--banner-text);
       margin: 2px 0 8px; line-height: 1.5;
     }
     /* "Multiple dates" toggle — mirrors the app's calendar-sheet switch. */
     .multirow { display: flex; align-items: center; justify-content: space-between; margin: 2px 0 6px; }
-    .multilabel { font-size: 13px; font-weight: 600; color: #8a8a92; }
-    .multirow.on .multilabel { color: #00D4C8; }
-    .msw { width: 38px; height: 22px; border-radius: 11px; border: 0; background: #33333d; padding: 2px; cursor: pointer; display: flex; align-items: center; }
-    .mswknob { width: 18px; height: 18px; border-radius: 9px; background: #fff; transition: transform 0.15s ease; }
-    .multirow.on .msw { background: #00D4C8; }
+    .multilabel { font-size: 13px; font-weight: 600; color: var(--cap2); }
+    .multirow.on .multilabel { color: var(--link); }
+    .msw { width: 38px; height: 22px; border-radius: 11px; border: 0; background: var(--switch-off); padding: 2px; cursor: pointer; display: flex; align-items: center; }
+    .mswknob { width: 18px; height: 18px; border-radius: 9px; background: var(--knob); transition: transform 0.15s ease; }
+    .multirow.on .msw { background: var(--teal); }
     .multirow.on .mswknob { transform: translateX(16px); }
 
     /* Steppers */
     .stepper { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 10px 0 18px; }
     .stepper button {
-      width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
-      background: #0E0E10; color: #00D4C8; font-size: 26px; font-weight: 700; cursor: pointer;
+      width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--step-line);
+      background: var(--field); color: var(--link); font-size: 26px; font-weight: 700; cursor: pointer;
       font-family: inherit; line-height: 1;
     }
     .stepper button:disabled { opacity: 0.3; cursor: default; }
@@ -253,118 +308,164 @@ fbq('track','PageView');
        right before booking style / price. Tap toggles a seat. */
     .seatmapcar { width: 250px; margin: 6px auto 10px; }
     .carwrap { position: relative; width: 100%; margin: 6px auto 12px; }
-    .carwheel { position: absolute; width: 14px; height: 62px; border-radius: 7px; background: #26262e; z-index: 0; }
+    .carwheel { position: absolute; width: 14px; height: 62px; border-radius: 7px; background: var(--car-wheel); z-index: 0; }
     .carwheel.wfl { left: -7px; top: 58px; } .carwheel.wfr { right: -7px; top: 58px; }
     .carwheel.wrl { left: -7px; bottom: 48px; } .carwheel.wrr { right: -7px; bottom: 48px; }
-    .carmirror { position: absolute; width: 18px; height: 9px; border-radius: 4px 4px 2px 2px; background: #2f2f38; z-index: 2; top: 36px; }
+    .carmirror { position: absolute; width: 18px; height: 9px; border-radius: 4px 4px 2px 2px; background: var(--car-mirror); z-index: 2; top: 36px; }
     .carmirror.mml { left: -14px; transform: rotate(-14deg); } .carmirror.mmr { right: -14px; transform: rotate(14deg); }
-    .carshell { position: relative; z-index: 1; border: 2px solid #2a2a33; border-radius: 46px 46px 30px 30px; background: #101014; padding: 38px 14px 32px; display: flex; flex-direction: column; gap: 18px; align-items: center; min-height: 400px; justify-content: space-evenly; }
+    .carshell { position: relative; z-index: 1; border: 2px solid var(--chip-line); border-radius: 46px 46px 30px 30px; background: var(--car-shell); padding: 38px 14px 32px; display: flex; flex-direction: column; gap: 18px; align-items: center; min-height: 400px; justify-content: space-evenly; }
     .carrow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
     .carrow.three { grid-template-columns: 1fr 1fr 1fr; }
-    .windshield { width: 86%; height: 6px; border-radius: 999px; background: rgba(0,212,200,.14); }
-    .rowdiv { width: 60%; height: 1px; background: #2C2C38; }
-    .seattile { min-width: 0; font: inherit; color: #E8E8EC; text-align: center; background: #18181C; border: 1px solid #2C2C38; border-radius: 12px; padding: 12px 6px; min-height: 86px; cursor: pointer; transition: transform .12s, opacity .12s; }
+    .windshield { width: 86%; height: 6px; border-radius: 999px; background: var(--tsoft14); }
+    .rowdiv { width: 60%; height: 1px; background: var(--car-line); }
+    .seattile { min-width: 0; font: inherit; color: var(--seat-text); text-align: center; background: var(--seat-bg); border: 1px solid var(--car-line); border-radius: 12px; padding: 12px 6px; min-height: 86px; cursor: pointer; transition: transform .12s, opacity .12s; }
     .seattile:active { transform: scale(.97); }
-    .seattile .sl { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: #8888A8; }
-    .seattile .ss { font-size: 12px; margin-top: 4px; color: #C0C0D0; }
-    .seattile.open { border-color: rgba(0,212,200,.45); background: rgba(0,212,200,.08); }
-    .seattile.open .ss { color: #00D4C8; }
+    .seattile .sl { font-size: 11px; letter-spacing: .5px; text-transform: uppercase; color: var(--seat-label); }
+    .seattile .ss { font-size: 12px; margin-top: 4px; color: var(--seat-sub); }
+    .seattile.open { border-color: var(--tline45b); background: var(--tsoft08b); }
+    .seattile.open .ss { color: var(--link2); }
     .seattile.closed { opacity: .55; border-style: dashed; }
     .seattile.driver { opacity: .75; cursor: default; }
-    .drvbadge { width: 28px; height: 28px; border-radius: 50%; background: #2C2C38; color: #fff; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px; }
+    .drvbadge { width: 28px; height: 28px; border-radius: 50%; background: var(--drv-bg); color: var(--drv-text); font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px; }
     .stepper .val { font-size: 52px; font-weight: 800; letter-spacing: -1px; min-width: 110px; text-align: center; }
     .pill {
-      display: block; text-align: center; background: rgba(74,222,128,0.12); color: #4ade80;
-      border: 1px solid rgba(74,222,128,0.35); border-radius: 999px; padding: 9px 16px;
+      display: block; text-align: center; background: var(--ok-bg); color: var(--ok);
+      border: 1px solid var(--ok-line); border-radius: 999px; padding: 9px 16px;
       font-size: 13.5px; font-weight: 600; margin: 0 0 14px; line-height: 1.4;
     }
-    .pill.cap { background: rgba(255,193,7,0.10); color: #ffd166; border-color: rgba(255,193,7,0.35); }
+    .pill.cap { background: var(--warn-bg); color: var(--warn); border-color: var(--warn-line); }
 
     /* Gate checklist */
     .gates { margin-top: 6px; }
     .gate {
       display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left;
-      background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
-      padding: 13px 15px; color: #fff; cursor: pointer; margin-bottom: 8px;
+      background: var(--row); border: 1px solid var(--inset-line); border-radius: 12px;
+      padding: 13px 15px; color: var(--text); cursor: pointer; margin-bottom: 8px;
       font-family: inherit; font-size: 14px;
     }
     .gate:disabled { cursor: default; }
     .gate .st {
       width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; margin-top: 1px;
       display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800;
-      border: 1.5px solid rgba(255,255,255,0.3); color: #888;
+      border: 1.5px solid var(--tick-line); color: var(--cap);
     }
-    .gate.done { border-color: rgba(0,212,200,0.35); }
-    .gate.done .st { background: #00D4C8; border-color: #00D4C8; color: #04201e; }
+    .gate.done { border-color: var(--tline35); }
+    .gate.done .st { background: var(--teal); border-color: var(--teal); color: var(--on-teal); }
     .gate .t { font-weight: 700; display: block; }
-    .gate .u { font-size: 12.5px; color: #b9b9c6; display: block; margin-top: 2px; line-height: 1.45; }
-    .gate.done .u { color: #666; }
+    .gate .u { font-size: 12.5px; color: var(--sub); display: block; margin-top: 2px; line-height: 1.45; }
+    .gate.done .u { color: var(--faint); }
     .statusline {
-      background: #0d1f1e; border: 1px solid rgba(0,212,200,0.3); border-radius: 12px;
+      background: var(--sel-bg); border: 1px solid var(--tline30); border-radius: 12px;
       padding: 12px 15px; font-size: 14px; font-weight: 600; margin-bottom: 14px; line-height: 1.5;
     }
-    .statusline.live { border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.08); color: #4ade80; }
+    .statusline.live { border-color: var(--ok-line2); background: var(--ok-bg2); color: var(--ok); }
 
     /* Ready-screen ride card */
     .ridecard {
-      background: #0E0E10; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px;
+      background: var(--inset); border: 1px solid var(--inset-line); border-radius: 14px;
       padding: 16px; margin-bottom: 12px;
     }
     .ridecard .route { font-size: 16px; font-weight: 800; letter-spacing: -0.2px; line-height: 1.35; }
-    .ridecard .meta { font-size: 13px; color: #b9b9c6; margin-top: 5px; line-height: 1.5; }
+    .ridecard .meta { font-size: 13px; color: var(--sub); margin-top: 5px; line-height: 1.5; }
 
     /* Avatar / file */
     .avatar-prev {
       width: 112px; height: 112px; border-radius: 50%; object-fit: cover;
-      display: block; margin: 0 auto 16px; border: 2px solid rgba(0,212,200,0.5); background: #0E0E10;
+      display: block; margin: 0 auto 16px; border: 2px solid var(--tline50); background: var(--inset);
     }
     .doc-prev {
       width: 100%; max-height: 220px; object-fit: contain; border-radius: 12px;
-      display: block; margin: 0 auto 16px; border: 1px solid rgba(255,255,255,0.14); background: #0E0E10;
+      display: block; margin: 0 auto 16px; border: 1px solid var(--field-line); background: var(--inset);
     }
     .filebtn {
-      display: block; text-align: center; border: 1px dashed rgba(255,255,255,0.25); border-radius: 12px;
-      padding: 16px; font-size: 14px; color: #b9b9c6; cursor: pointer; margin-bottom: 14px;
+      display: block; text-align: center; border: 1px dashed var(--dash-line); border-radius: 12px;
+      padding: 16px; font-size: 14px; color: var(--sub); cursor: pointer; margin-bottom: 14px;
       transition: border-color 0.15s;
     }
-    .filebtn:hover { border-color: rgba(0,212,200,0.5); }
+    .filebtn:hover { border-color: var(--tline50); }
 
     .store-badge {
       display: flex; align-items: center; gap: 12px;
-      background: #1a1a1d; border: 1px solid rgba(255,255,255,0.1);
+      background: var(--pop); border: 1px solid var(--hair4);
       border-radius: 12px; padding: 14px 20px;
       transition: border-color 0.2s, transform 0.2s; cursor: pointer;
     }
-    .store-badge:hover { border-color: rgba(0,212,200,0.5); transform: translateY(-1px); }
+    .store-badge:hover { border-color: var(--tline50); transform: translateY(-1px); }
 
     .spinner {
       width: 28px; height: 28px; margin: 0 auto 16px;
-      border: 3px solid rgba(255,255,255,0.15); border-top-color: #00D4C8;
+      border: 3px solid var(--spin-ring); border-top-color: var(--teal);
       border-radius: 50%; animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .minispin {
       display: inline-block; width: 14px; height: 14px; vertical-align: -2px;
-      border: 2px solid rgba(255,255,255,0.2); border-top-color: #00D4C8;
+      border: 2px solid var(--spin-ring2); border-top-color: var(--teal);
       border-radius: 50%; animation: spin 0.8s linear infinite;
     }
 
-    .signedin { text-align: center; font-size: 12px; color: #666; margin-top: 14px; }
+    .signedin { text-align: center; font-size: 12px; color: var(--faint); margin-top: 14px; }
     .signedin button { font-size: 12px; }
-    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: #666; line-height: 1.6; }
-    .legal a { color: #888; }
-      .profsec{border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 16px 14px;margin:14px 0}
+    .legal { text-align: center; margin-top: 28px; font-size: 12px; color: var(--faint); line-height: 1.6; }
+    .legal a { color: var(--cap); }
+      .profsec{border:1px solid var(--hair5);border-radius:14px;padding:16px 16px 14px;margin:14px 0}
     .photo-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .google-offer{display:flex;gap:14px;align-items:center;padding:12px;border:1px solid rgba(0,212,200,0.45);border-radius:12px;background:rgba(0,212,200,0.06);margin-bottom:10px}
+    .google-offer{display:flex;gap:14px;align-items:center;padding:12px;border:1px solid var(--tline45);border-radius:12px;background:var(--tsoft06);margin-bottom:10px}
     .google-offer img{width:64px;height:64px;border-radius:50%;object-fit:cover}
     .google-offer-title{font-weight:700;margin-bottom:2px}
-    .google-offer-sub{font-size:13px;color:#9aa3ad;margin-bottom:8px}
+    .google-offer-sub{font-size:13px;color:var(--muted3);margin-bottom:8px}
     .primary.small{padding:8px 14px;font-size:14px;width:auto}
-    .msg.ok{color:#00D4C8}
-    .profsec.done{border-color:rgba(0,212,200,.45)}
+    .msg.ok{color:var(--ok-msg)}
+    .profsec.done{border-color:var(--tline45b)}
     .profhead{display:flex;align-items:center;gap:10px;font-size:17px;margin-bottom:4px}
-    .profst{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.25);font-size:13px;color:#9aa}
-    .profsec.done .profst{background:#00D4C8;color:#04201e;border-color:#00D4C8}
+    .profst{display:inline-flex;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;border:1.5px solid var(--profst-line);font-size:13px;color:var(--muted4)}
+    .profsec.done .profst{background:var(--teal);color:var(--on-teal);border-color:var(--teal)}
+
+    /* Laptop layout (2026-10-12, Justin: "when viewing on my laptop its still
+       geared more towards mobile vertical"). Each step becomes one wide card:
+       the step's back link, title and explanation on the left, its fields on
+       the right, like a desktop settings form. Pure CSS: the intro elements
+       float into the card's widened left padding, so every id, handler and
+       screen of the flow is untouched. Phones and tablets keep the column. */
+    @media (min-width: 960px) {
+      body { padding: 28px 32px 56px; }
+      .wrap { max-width: 1120px; }
+      /* The app bar already carries the wordmark; a second logo under it
+         read as a stray header on a wide screen. */
+      .ss-bar ~ .wrap > .brand { display: none; }
+      #postEscape { margin: 0 0 18px !important; }
+      .card { --intro: 300px; --colgap: 48px; border-radius: 22px; }
+      .card:not(.center) {
+        display: flow-root;
+        padding: 36px 40px 36px calc(40px + var(--intro) + var(--colgap));
+        min-height: 300px;
+        /* hairline between the two columns */
+        background-image: linear-gradient(var(--hair), var(--hair)), linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+        background-size: 1px calc(100% - 72px), 100% 100%;
+        background-position: calc(40px + var(--intro) + var(--colgap) / 2) 36px, 0 0;
+        background-repeat: no-repeat;
+      }
+      .card:not(.center) > .backrow,
+      .card:not(.center) > .eyebrow,
+      .card:not(.center) > h1,
+      .card:not(.center) > h1 + p.sub,
+      #reqBanner, #publishSummary {
+        float: left; clear: left; width: var(--intro);
+        margin-left: calc(-1 * (var(--intro) + var(--colgap))) !important;
+      }
+      .card:not(.center) > h1 { font-size: 30px; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 10px; }
+      .card:not(.center) > h1 + p.sub { font-size: 16px; line-height: 1.55; }
+      #publishSummary { margin-top: 10px !important; }
+      .card.center { max-width: 600px; margin-left: auto; margin-right: auto; padding: 40px; }
+      .card.center h1 { font-size: 26px; }
+      .choice { font-size: 16px; }
+      .choice .d { font-size: 14px; }
+      .hint { font-size: 13.5px; }
+      .legal { margin-top: 36px; }
+    }
+    @media (min-width: 1200px) {
+      .card { --intro: 340px; --colgap: 64px; }
+    }
 </style>
   <!-- Vercel Web Analytics — same as the other funnel pages. -->
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
@@ -390,7 +491,7 @@ fbq('track','PageView');
   </script>
   <div class="wrap">
     <div class="brand">
-      <svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>
+      <svg style="height:36px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8" style="fill:var(--logo-eat)">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff" style="fill:var(--logo-text)">Sherpa</text></svg>
     </div>
 
     <!-- Escape hatches (2026-09-03): a wizard with no way out strands people.
@@ -399,8 +500,8 @@ fbq('track','PageView');
     <!-- Two pills, opposite ends, different weights (Justin, 2026-09-04: the
          dot-separated pair read as one link). -->
     <div id="postEscape" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin:-8px 0 14px;font-size:13px;">
-      <a href="/driving" id="postBackDash" style="color:#00D4C8;font-weight:700;text-decoration:none;border:1px solid rgba(0,212,200,.35);border-radius:999px;padding:6px 12px;">← Back to dashboard</a>
-      <a href="#" id="postStartOver" style="color:#E8E8EC;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 12px;">↺ Start over</a>
+      <a href="/driving" id="postBackDash" style="color:var(--link);font-weight:700;text-decoration:none;border:1px solid var(--tline35b);border-radius:999px;padding:6px 12px;">← Back to dashboard</a>
+      <a href="#" id="postStartOver" style="color:var(--text2);font-weight:600;text-decoration:none;border:1px solid var(--pill-line);border-radius:999px;padding:6px 12px;">↺ Start over</a>
     </div>
 
     <!-- ── FLOW SCREENS ─────────────────────────────────────────────────── -->
@@ -412,7 +513,7 @@ fbq('track','PageView');
          restore path but never shows. -->
     <div class="card hidden" id="stFrom">
       <div class="eyebrow">Post a ride</div>
-      <div id="reqBanner" class="hidden" style="background:rgba(0,212,200,0.08);border:1px solid rgba(0,212,200,0.25);border-radius:12px;padding:10px 14px;font-size:13.5px;color:#b9e8e4;line-height:1.5;margin-bottom:12px;"></div>
+      <div id="reqBanner" class="hidden" style="background:var(--tsoft08);border:1px solid var(--tline25);border-radius:12px;padding:10px 14px;font-size:13.5px;color:var(--banner-text);line-height:1.5;margin-bottom:12px;"></div>
       <h1>Where are you driving?</h1>
       <p class="sub">Exact spots — riders only see the neighborhood. CA & NV trips, 15+ miles.</p>
       <div class="ac-wrap">
@@ -427,7 +528,7 @@ fbq('track','PageView');
         <div class="ac-list hidden" id="toList"></div>
       </div>
       <div class="picked hidden" id="toPicked"><span>🏁</span><span class="addr" id="toPickedAddr"></span><button class="linkbtn" id="toChange">Change</button></div>
-      <p class="sub" id="saveLine" style="margin:2px 0 14px;font-size:16px;color:#fff;">Save up to <strong id="saveAmt" style="color:#00D4C8;">$209</strong> on <span id="saveTripWord">a trip</span> — riders chip in for the seats you're driving anyway.</p>
+      <p class="sub" id="saveLine" style="margin:2px 0 14px;font-size:16px;color:var(--text);">Save up to <strong id="saveAmt" style="color:var(--info-teal);">$228</strong> on <span id="saveTripWord">a trip</span> — riders chip in for the seats you're driving anyway.</p>
       <button class="primary" id="fromBtn" disabled>Continue</button>
       <div class="msg err hidden" id="fromMsg"></div>
     </div>
@@ -452,7 +553,7 @@ fbq('track','PageView');
       <h1>Which way are you driving?</h1>
       <p class="sub">Pick your route — pickup stops get suggested along it.</p>
       <div id="routeLoading" class="center" style="padding: 10px 0 18px;"><div class="spinner"></div><p class="sub" style="margin:0;">Finding routes…</p></div>
-      <img id="routeMap" class="hidden" alt="Route options" style="width:100%;border-radius:12px;border:1px solid rgba(255,255,255,0.08);margin-bottom:12px;background:#101014;" />
+      <img id="routeMap" class="hidden" alt="Route options" style="width:100%;border-radius:12px;border:1px solid var(--hair);margin-bottom:12px;background:var(--field2);" />
       <div id="routeList"></div>
       <button class="primary hidden" id="routeBtn">Continue</button>
       <div class="msg err hidden" id="routeMsg"></div>
@@ -472,6 +573,21 @@ fbq('track','PageView');
         <div class="ac-list hidden" id="stopAddList"></div>
       </div>
       <button class="linkbtn" type="button" id="stopAddBtn" style="display:block;margin:2px 0 14px;">+ Add a city</button>
+      <!-- Note to riders + flexible departure (0326). Collapsed by default,
+           opens in place (no modal). Values live on the leg (cur.note,
+           cur.departFlex); renderNoteFlex() syncs these controls from it. -->
+      <div id="noteFlexWrap" style="margin:0 0 6px;">
+        <button class="linkbtn" type="button" id="noteFlexToggle" aria-expanded="false" aria-controls="noteFlexBody" style="display:block;">Add a note or flexible time</button>
+        <p class="hint" id="noteFlexSub" style="margin:2px 0 14px;">Optional</p>
+        <div id="noteFlexBody" class="hidden" style="margin-top:4px;">
+          <div style="font-weight:700;font-size:15px;margin-bottom:4px;">Departure time</div>
+          <p class="hint" style="margin:0 0 10px;">Can you leave a bit earlier or later if it helps a rider?</p>
+          <div id="flexChoices" role="radiogroup" aria-label="Departure time"></div>
+          <div style="font-weight:700;font-size:15px;margin:6px 0 4px;">Note to riders</div>
+          <textarea id="noteInput" maxlength="200" rows="3" placeholder="Pickup options, luggage room, anything riders should know."></textarea>
+          <p class="hint">Shown on your ride. No phone numbers, emails, or links. <span id="noteCount">0</span>/200</p>
+        </div>
+      </div>
       <button class="primary" id="stopsBtn">Continue</button>
       <div class="msg err hidden" id="stopsMsg"></div>
     </div>
@@ -502,7 +618,7 @@ fbq('track','PageView');
       <!-- Soft lead-time nudge (Justin, 2026-09-03: "no soft prompt that
            posting a few days in advance will get me more riders"). Shown when
            the earliest date is today or tomorrow; never blocks. -->
-      <div class="msg hidden" id="leadHint" style="color:#F5F5F7;border:1px solid rgba(0,212,200,0.45);background:rgba(0,212,200,0.10);border-radius:10px;padding:10px 12px;margin:0 0 14px;font-size:14px;line-height:1.5;"></div>
+      <div class="msg hidden" id="leadHint" style="color:var(--text3);border:1px solid var(--tline45);background:var(--tsoft10);border-radius:10px;padding:10px 12px;margin:0 0 14px;font-size:14px;line-height:1.5;"></div>
       <label for="timeHour">Departure time</label>
       <!-- Dropdowns, not free entry (Justin, 2026-09-01): minutes locked to
            00/15/30/45 like the app; browsers don't enforce step on typed
@@ -557,7 +673,7 @@ fbq('track','PageView');
       <div class="backrow"><button class="linkbtn" data-back="stSeatMap">← Back</button></div>
       <div class="eyebrow">Post a ride</div>
       <h1>How do you want to take bookings?</h1>
-      <p class="sub">You can change this later in the app.</p>
+      <p class="sub">You can change this later.</p>
       <button class="choice sel" id="reviewRow" type="button">
         <span class="tick radio" id="reviewTick">✓</span>
         <span><span class="t">Review every request</span>
@@ -573,7 +689,9 @@ fbq('track','PageView');
 
     <!-- Price -->
     <div class="card hidden" id="stPrice">
-      <div class="backrow"><button class="linkbtn" data-back="stInstant">← Back</button></div>
+      <!-- Back goes to the seat map: the Instant Book step it pointed at was
+           retired 2026-09-10 and Continue never shows it (bug check 10/12). -->
+      <div class="backrow"><button class="linkbtn" data-back="stSeatMap">← Back</button></div>
       <div class="eyebrow">Post a ride</div>
       <h1>Set your price per seat</h1>
       <p class="sub">Riders split your costs for the trip — gas, tolls, wear. You keep the seat price minus a small service fee.</p>
@@ -591,14 +709,14 @@ fbq('track','PageView');
            sells for — same formula the server bills riders with at booking
            (segmentFactor: distance share, 0.3 floor, $10 min, capped at full). -->
       <div id="segWrap" class="hidden" style="margin:16px 0 6px;">
-        <div style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#888;margin-bottom:2px;">Prices for shorter legs</div>
-        <div style="font-size:12.5px;color:#9a9aa2;margin-bottom:8px;">Riders who board or hop off at your stops pay what you set here. We suggest prices for your five biggest legs &mdash; edit any box, or clear it to charge the full seat price. Legs you don&rsquo;t price simply charge the full seat.</div>
+        <div style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--cap);margin-bottom:2px;">Prices for shorter legs</div>
+        <div style="font-size:12.5px;color:var(--muted2);margin-bottom:8px;">Riders who board or hop off at your stops pay what you set here. We suggest prices for your five biggest legs &mdash; edit any box, or clear it to charge the full seat price. Legs you don&rsquo;t price simply charge the full seat.</div>
         <div id="segList"></div>
       </div>
       <!-- Prices of similar rides (2026-08-28, BlaBlaCar parity) — real
            upcoming rides on this corridor from the public marketplace. -->
       <div id="similarWrap" class="hidden" style="margin:16px 0 6px;">
-        <div style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#888;margin-bottom:8px;">Prices of similar rides</div>
+        <div style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--cap);margin-bottom:8px;">Prices of similar rides</div>
         <div id="similarList"></div>
       </div>
       <button class="primary" id="priceBtn" disabled>Continue</button>
@@ -654,15 +772,14 @@ fbq('track','PageView');
       <h1>Sign in to post your ride</h1>
       <!-- Last chance to catch a wrong date/time/price before it's live and
            bookable (audit 8/28: nothing summarized the ride before publish). -->
-      <div id="publishSummary" class="hidden" style="background:#0E0E10;border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:13px 15px;margin:2px 0 16px;"></div>
+      <div id="publishSummary" class="hidden" style="background:var(--inset);border:1px solid var(--inset-line);border-radius:12px;padding:13px 15px;margin:2px 0 16px;"></div>
       <div id="oauthMount" style="margin-top:14px;"></div>
       <p class="sub">We'll email you a sign-in code — no password needed. Then your ride posts.</p>
       <label for="email">Email</label>
       <input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" />
       <button class="primary" id="emailBtn">Email me a code</button>
-      <p data-tos-notice style="color:#8a8a92;font-size:12px;margin:10px 0 0;">By continuing you agree to the <a href="/terms" style="color:#00D4C8;text-decoration:none;">Terms of Service</a> and <a href="/privacy" style="color:#00D4C8;text-decoration:none;">Privacy Policy</a>.</p>
+      <p data-tos-notice style="color:var(--cap2);font-size:12px;margin:10px 0 0;">By continuing you agree to the <a href="/terms" style="color:var(--link);text-decoration:none;">Terms of Service</a> and <a href="/privacy" style="color:var(--link);text-decoration:none;">Privacy Policy</a>.</p>
       <div class="msg err hidden" id="emailMsg"></div>
-      <p data-tos-notice class="hint" style="margin-top:12px;">By continuing you agree to the <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</p>
     </div>
 
     <!-- Email code -->
@@ -857,13 +974,14 @@ fbq('track','PageView');
     </div>
 
     <!-- Not enabled yet (migration pending) -->
+    <!-- Web first (2026-10-03): this used to send the driver to the app, a
+         dead end for someone who only uses the website. Retry, then support;
+         the app is a quiet extra. -->
     <div class="card center hidden" id="stUnavailable">
-      <div class="icon">🚧</div>
-      <h1>Web posting isn't open yet</h1>
-      <p class="sub">This page is still being wired up. Post your ride from the Seat Sherpa app instead.</p>
-      <a class="store-badge" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=post" style="justify-content:center;" aria-label="Get the Seat Sherpa app">
-        <span style="font-size:16px;font-weight:600;color:#fff;">Get the Seat Sherpa app →</span>
-      </a>
+      <h1>Posting isn't working right now</h1>
+      <p class="sub">Something on our side is out of date. Try again in a few minutes. If it keeps happening, email <a href="mailto:support@seatsherpa.app">support@seatsherpa.app</a> and we will get your ride posted.</p>
+      <button class="primary" type="button" onclick="location.reload()">Try again</button>
+      <p class="hint" style="margin-top:14px;">Seat Sherpa is also on the <a href="https://seatsherpa.onelink.me/cGHs?pid=web&c=post">App Store and Google Play</a>.</p>
     </div>
 
     <p class="legal">
@@ -875,6 +993,24 @@ fbq('track','PageView');
 
   <script src="/js/ss-oauth.js"></script>
   <script type="module">
+    // City out of a geocoder address, with the region-as-city guard
+    // ("Westwood, The Westside, California" is Los Angeles, review
+    // 2026-10-02). Same rule as lib/format-address.ts: never a street, a
+    // state or a ZIP; the last cleaned part is the city. '' when nothing fits.
+    function ssCityOf(addr) {
+      const parts = String(addr || '').split(',').map((s) => s.trim()).filter(Boolean);
+      const STATE = /^(california|ca|nevada|nv|arizona|az|oregon|or|usa|united states|us)( +\d{5}(-\d{4})?)?$/i;
+      const cleaned = parts.filter((p) => !/^\d/.test(p) && !STATE.test(p) && !/^\d{5}(-\d{4})?$/.test(p));
+      if (!cleaned.length) return '';
+      const last = cleaned[cleaned.length - 1];
+      const key = last.toLowerCase().replace(/^the\s+/, '');
+      const CITY = { 'westside': 'Los Angeles', 'san fernando valley': 'Los Angeles', 'valley': 'Los Angeles', 'south los angeles': 'Los Angeles', 'east los angeles': 'Los Angeles' };
+      const SKIP = ['south bay', 'east bay', 'peninsula', 'silicon valley', 'north bay', 'inland empire', 'central valley', 'orange county', 'bay area', 'san francisco bay area', 'los angeles county', 'san diego county', 'wine country'];
+      if (CITY[key]) return CITY[key];
+      if (SKIP.indexOf(key) >= 0) return cleaned.length >= 2 ? cleaned[cleaned.length - 2] : last;
+      return last;
+    }
+
     // post.html — v1 web posting (2026-08-21).
     //
     // "Post a ride from the browser": the driver-side sibling of book.html.
@@ -924,7 +1060,50 @@ fbq('track','PageView');
     const WIZARD_SCREENS = new Set(['stFrom','stTo','stRoute','stStops','stDates','stTime','stSeats','stSeatMap','stInstant','stPrice','stRegular','stReturn']);
     const screenTrail = [];
     let quietNav = false;
+    // Driver posting funnel (0398, Justin 2026-10-18 "why are people signing
+    // up to be drivers but not posting"): the same steps the app logs, with
+    // surface 'web'. Fire and forget; a signed-out visitor or a missing
+    // function changes nothing. The server drops repeats inside 10 minutes.
+    // New web drivers fill the trip in BEFORE signing in, and the RPC only
+    // counts signed-in callers, so a step taken signed out waits here and is
+    // sent once a session exists (bug check 2026-10-19). Once per step+detail.
+    const pendingSteps = [];
+    let stepAuthHooked = false;
+    function sendStep(step, detail) {
+      try {
+        supabase.rpc('log_driver_step', { p_step: step, p_detail: detail || null, p_surface: 'web' }).then(() => {}, () => {});
+      } catch (_) {}
+    }
+    function logStep(step, detail) {
+      try {
+        supabase.auth.getSession().then(({ data }) => {
+          if (data && data.session) { sendStep(step, detail); return; }
+          if (!pendingSteps.some((p) => p[0] === step && p[1] === (detail || null))) pendingSteps.push([step, detail || null]);
+          if (stepAuthHooked) return;
+          stepAuthHooked = true;
+          supabase.auth.onAuthStateChange((_ev, session) => {
+            if (!session || pendingSteps.length === 0) return;
+            // Out of the auth callback before calling the API (supabase-js
+            // deadlocks on a request made inside it).
+            setTimeout(() => { pendingSteps.splice(0).forEach(([s, d]) => sendStep(s, d)); }, 0);
+          });
+        }, () => {});
+      } catch (_) {}
+    }
+    // ride_posted once per draft, ever, on this browser: a revisit re-checks
+    // saved drafts and would log the same ride again after the server's
+    // 10-minute repeat window (bug check 2026-10-19).
+    function logRidePosted(draftId) {
+      const k = 'ss_ride_posted_' + draftId;
+      try { if (localStorage.getItem(k)) return; localStorage.setItem(k, '1'); } catch (_) {}
+      logStep('ride_posted');
+    }
+    let postOpenedLogged = false;
+
     function show(id) {
+      // Any trip screen counts as opening the post form: the /drive hand-off,
+      // a refill and a restored draft all start past stFrom.
+      if (WIZARD_SCREENS.has(id) && !postOpenedLogged) { postOpenedLogged = true; logStep('post_opened'); }
       // Browser Back on a gate screen used to leave /post entirely (Justin,
       // 2026-09-02). Push a history entry when stepping INTO a gate from the
       // checklist so Back lands on the checklist instead.
@@ -938,6 +1117,13 @@ fbq('track','PageView');
       currentScreen = id;
       STATES.forEach((s) => $(s).classList.toggle('hidden', s !== id));
       window.scrollTo(0, 0);
+      // Record that the "By continuing you agree" notice was shown, so the
+      // terms acceptance in stampWebSeen is logged only for someone who saw
+      // it (bug check 10/15: /post never logged acceptances at all).
+      try {
+        const notice = document.querySelector('[data-tos-notice]');
+        if (notice && $(id).contains(notice)) sessionStorage.setItem('ss-tos-notice-seen', '1');
+      } catch (_) {}
       // Work-in-progress autosave (audit H2): the email-OTP step actively
       // sends the driver to their mail app, and mobile browsers routinely
       // evict background tabs — before this, a reload dumped a 9-screen
@@ -990,6 +1176,13 @@ fbq('track','PageView');
     // IRS_RATE: $0.76 = the mid-year increase effective Jul 1 2026 (was 0.725).
     // Keep in step with lib/seat-price-cap.ts IRS_MILEAGE_RATE_USD_PER_MILE.
     const IRS_RATE = 0.76, HARD_CAP = 55, FLOOR = 10, MIN_TRIP_MILES = 15;
+    // $60 a seat from 400 cap miles (Justin, 2026-10-12: "make the 60 cap
+    // for rides above 400 miles"). Mirrors lib/seat-price-cap.ts hardCapForMiles and
+    // _shared/web-posting.ts; the IRS cost-share cap still applies on top.
+    const LONG_TRIP_CAP = 60, LONG_TRIP_MILES = 400;
+    function hardCapFor(miles) {
+      return typeof miles === 'number' && isFinite(miles) && miles >= LONG_TRIP_MILES ? LONG_TRIP_CAP : HARD_CAP;
+    }
     // The cost-share cap splits the trip across AT LEAST four riders, however
     // many seats are open (Justin, 2026-09-06: "it should be divided by 4, not
     // divided by 3"). Mirrors lib/seat-price-cap.ts and _shared/web-posting.ts.
@@ -1070,7 +1263,10 @@ fbq('track','PageView');
       { id:'santaclara', pop:130, name:'Santa Clara', lat:37.3541, lng:-121.9552, obj:true },
       { id:'milpitas', pop:80, name:'Milpitas', lat:37.4323, lng:-121.8996, obj:true },
       { id:'berkeley', pop:120, name:'Berkeley', lat:37.8716, lng:-122.2728, obj:true },
-      { id:'concord', pop:200, name:'Concord / Walnut Creek', lat:37.9722, lng:-122.0016, obj:true },
+      // Waypoint moved onto I-680 at the CA-24 junction (Walnut Creek) on
+      // 2026-10-15: the old point (37.9722,-122.0016) sat on CA-242 and cost
+      // every drive-time check +29 min on the way to San Jose.
+      { id:'concord', pop:200, name:'Concord / Walnut Creek', lat:37.9100, lng:-122.0650, obj:true },
       { id:'elkgrove', pop:180, name:'Elk Grove', lat:38.4088, lng:-121.3716, obj:true },
       { id:'turlock', pop:75, name:'Turlock', lat:37.4947, lng:-120.8466, obj:true },
       { id:'santamaria', pop:110, name:'Santa Maria', lat:34.9530, lng:-120.4357, obj:true },
@@ -1120,8 +1316,10 @@ fbq('track','PageView');
       return haversineMiles(leg.start, leg.end) * 1.25;
     }
     function maxSeatPrice(leg, openSeats, apiCapCents) {
-      let cap = HARD_CAP;
       const miles = tripMilesOf(leg);
+      // $60 tier on MEASURED road miles only; the x1.25 estimate keeps $55
+      // (lib/seat-price-cap.ts rule, enforced 10/13).
+      let cap = hardCapFor(typeof leg.roadMiles === 'number' && leg.roadMiles > 0 ? leg.roadMiles : null);
       if (miles > 0 && openSeats > 0) cap = Math.min(cap, Math.floor((miles * IRS_RATE) / Math.max(MIN_SHARE_SEATS, openSeats)));
       if (typeof apiCapCents === 'number' && apiCapCents > 0) cap = Math.min(cap, Math.floor(apiCapCents / 100));
       return Math.max(FLOOR, cap);
@@ -1138,6 +1336,10 @@ fbq('track','PageView');
         // until the map step initialises them from count + comfort.
         seatLayout: null, openSeats: null, seatMapKey: null,
         isReturn: false,
+        // Note to riders + flexible departure (0326). Free text (200 chars,
+        // no contact details) and 0 | 60 | 120 | 720 minutes. Both ride in
+        // the WIP snapshot through legToJson's spread.
+        note: '', departFlex: 0,
       };
     }
     let cur = newLeg();
@@ -1163,6 +1365,17 @@ fbq('track','PageView');
       try {
         supabase.from('profiles').update({ web_seen_at: new Date().toISOString() })
           .eq('id', uid).then(() => {}, () => {});
+      } catch (_) { /* best-effort */ }
+      // Terms acceptance, once per user, only after the sign-in notice was
+      // shown in this tab (same rule as book.html / requests.html). Versions
+      // mirror lib/legal-versions.ts.
+      try {
+        const tosKey = 'ss-tos-web-v1:' + uid;
+        if (sessionStorage.getItem('ss-tos-notice-seen') === '1' && !localStorage.getItem(tosKey)) {
+          supabase.from('terms_acceptances')
+            .insert({ user_id: uid, terms_version: '2026-10-14', privacy_version: '2026-08-08', platform: 'web' })
+            .then((r) => { if (!r || !r.error) { try { localStorage.setItem(tosKey, '1'); } catch (_) {} } }, () => {});
+        }
       } catch (_) { /* best-effort */ }
     }
     // BOOT stamp (Justin's "Jake" probe, round 2): the four in-flow sites
@@ -1371,7 +1584,11 @@ fbq('track','PageView');
       if (cur.start && cur.end) {
         const miles = haversineMiles(cur.start, cur.end) * 1.25;
         if (isFinite(miles) && miles > 0) {
-          const perSeat = Math.min(55, Math.max(10, (miles * 0.76) / Math.max(MIN_SHARE_SEATS, saveSeats)));
+          // The $60 tier only on MEASURED road miles (bug check 10/13: the
+          // x1.25 estimate put SF -> LA at 434 mi and promised $228 while the
+          // price step, on 382 road miles, capped at $55).
+          const measured = typeof cur.roadMiles === 'number' && cur.roadMiles > 0 ? cur.roadMiles : null;
+          const perSeat = Math.min(hardCapFor(measured), Math.max(10, (miles * 0.76) / Math.max(MIN_SHARE_SEATS, saveSeats)));
           // Cap at the trip's real shareable cost — floor × seats otherwise
           // overstates short trips (Fable E2).
           const net = Math.round(Math.min(saveSeats * perSeat, miles * 0.76) * 0.95);
@@ -1380,7 +1597,7 @@ fbq('track','PageView');
           return;
         }
       }
-      amt.textContent = '$209';
+      amt.textContent = '$228';
       word.textContent = 'a trip';
     }
     wireAutocomplete('fromInput', 'fromList', 'fromPicked', 'fromPickedAddr', 'fromChange', 'fromBtn',
@@ -1467,14 +1684,19 @@ fbq('track','PageView');
     // ONE combined map (Justin, 2026-08-28): every option drawn together —
     // the SELECTED route bold dark teal, the rest light teal underneath.
     function routesMapUrl(routes, selIdx) {
+      // Light map for a light system theme (2026-10-12); dark otherwise. The
+      // pale alternates vanish on the light basemap, so they go a shade deeper.
+      const lightMap = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+      const altLine = lightMap ? '5CC2BA-0.7' : '8AE8E1-0.55';
       const overlays = [];
       routes.forEach((r, i) => {
         if (i === selIdx) return;
-        overlays.push('path-3+8AE8E1-0.55(' + encodeURIComponent(encPoly(slimPts(geomOf(r), 35))) + ')');
+        overlays.push('path-3+' + altLine + '(' + encodeURIComponent(encPoly(slimPts(geomOf(r), 35))) + ')');
       });
       // Selected LAST so it draws on top.
       overlays.push('path-5+00B8AD-0.95(' + encodeURIComponent(encPoly(slimPts(geomOf(routes[selIdx]), 45))) + ')');
-      return 'https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/'
+      const mapStyle = lightMap ? 'light-v11' : 'dark-v11';
+      return 'https://api.mapbox.com/styles/v1/mapbox/' + mapStyle + '/static/'
         + overlays.join(',') + '/auto/640x300@2x?padding=32&access_token=' + MAPBOX_TOKEN;
     }
     async function fetchRoutes(coordsStr, alternatives) {
@@ -1780,6 +2002,53 @@ fbq('track','PageView');
       const len2 = dx * dx + dy * dy || 1;
       return ((p.lng - start.lng) * dx + (p.lat - start.lat) * dy) / len2;
     };
+    /** Drivable route through start, stops (travel order), end, as the same
+     *  shape chooseRoute stores ({lng, lat} points), plus miles and minutes.
+     *  Used at publish so the saved road follows the stops the driver picked
+     *  (Justin, 2026-10-05: a 9/10 ride saved the I-5 line while its stops
+     *  were San Luis Obispo and Santa Barbara on the 101). Null on failure. */
+    // Make the leg's road run THROUGH its chosen stops, once per stop set
+    // (bug check 10/13: the price step capped on the direct road while the
+    // published ride stored the through-stops road, so a 382-mi SF -> LA
+    // priced at $55 max became a 423-mi ride whose editors allow $60).
+    // Stops removed again -> back to the direct measurement. Best-effort.
+    async function ensureStopsRouted(leg) {
+      if (!leg || !leg.start || !leg.end) return;
+      const key = Array.from(leg.stops || []).sort().join(',');
+      if (leg._stopsRoutedKey === key) return;
+      const stopPts = Array.from(leg.stops || [])
+        .map((sid) => (leg.stopSuggestions || []).find((x) => x && x.id === sid))
+        .filter((s) => s && Number.isFinite(Number(s.lat)) && Number.isFinite(Number(s.lng)))
+        .map((s) => ({ lat: Number(s.lat), lng: Number(s.lng) }))
+        .sort((a, z) => routeT(leg.start, leg.end, a) - routeT(leg.start, leg.end, z));
+      if (stopPts.length > 0) {
+        const thru = await routeThroughStops([leg.start].concat(stopPts, [leg.end]));
+        if (thru) { leg.routeGeom = thru.geom; leg.roadMiles = thru.miles; leg.roadMinutes = thru.minutes; }
+      } else if (leg._stopsRoutedKey) {
+        const rr = await drivingRoute(leg.start, leg.end).catch(() => null);
+        if (rr) { leg.roadMiles = rr.miles; leg.roadMinutes = rr.minutes; }
+      }
+      leg._stopsRoutedKey = key;
+    }
+    async function routeThroughStops(points) {
+      if (!Array.isArray(points) || points.length < 3 || points.length > 25) return null;
+      try {
+        const res = await fetch('https://api.mapbox.com/directions/v5/mapbox/driving/'
+          + points.map((p) => p.lng + ',' + p.lat).join(';')
+          + '?overview=full&geometries=geojson&alternatives=false&access_token=' + MAPBOX_TOKEN);
+        if (!res.ok) return null;
+        const json = await res.json();
+        const r = json.routes && json.routes[0];
+        if (!r || typeof r.distance !== 'number' || r.distance <= 0) return null;
+        const coords = r.geometry && Array.isArray(r.geometry.coordinates) ? r.geometry.coordinates : [];
+        if (coords.length < 2) return null;
+        return {
+          geom: coords.map((c) => ({ lng: c[0], lat: c[1] })),
+          miles: Math.round((r.distance / 1609.344) * 10) / 10,
+          minutes: typeof r.duration === 'number' && r.duration > 0 ? Math.round(r.duration / 60) : null,
+        };
+      } catch (_) { return null; }
+    }
     // How far a stop must sit from BOTH endpoints. Flat 9 mi on every trip
     // (Justin, 2026-08-28). The old 25 was written for 380-mile hauls and
     // disqualified the whole Peninsula on a 47-mile SF→San Jose; a scaled
@@ -1848,11 +2117,15 @@ fbq('track','PageView');
           if (bFrac < 0.04 || bFrac > 0.96) continue;
           pre2.push({ id: c.id, name: c.name, lat: c.lat, lng: c.lng, pop: c.pop || 0, t: bFrac, cost: best, custom: c.obj === true });
         }
-        return selectSpread(pre2);
+        return await preferSanJose(start, end, minEnd, selectSpread(pre2));
       }
       const pre = [];
       for (const c of [...DESTS, ...WAYPOINTS]) {
         if (c.id === 'burningman') continue;
+        // The Bay Area metro centroid (Hayward) is a destination, not a
+        // boarding point: never a stop on a ride that starts or ends in the
+        // Bay (bug check 10/15; Oakland/Fremont/San Mateo cover it).
+        if (c.id === 'sfba' && (haversineMiles(start, BAY_CENTER) <= 50 || haversineMiles(end, BAY_CENTER) <= 50)) continue;
         if (pre.some((p) => p.id === c.id)) continue;
         const toStart = haversineMiles(start, c), toEnd = haversineMiles(end, c);
         if (toStart < minEnd || toEnd < minEnd) continue;
@@ -1861,7 +2134,7 @@ fbq('track','PageView');
         if (t < 0.04 || t > 0.96) continue;
         pre.push({ id: c.id, name: c.name, lat: c.lat, lng: c.lng, pop: c.pop || 0, t, detour: toStart + toEnd - direct, custom: c.obj === true });
       }
-      if (pre.length === 0) return [];
+      if (pre.length === 0) return await preferSanJose(start, end, minEnd, []);
       let picked = [];
       const directMin = await drivingMinutes([start, end]);
       if (directMin !== null) {
@@ -1875,6 +2148,80 @@ fbq('track','PageView');
       } else {
         picked = selectSpread(pre.filter((c) => c.detour <= 12).map((c) => ({ ...c, cost: c.detour })));
       }
+      return await preferSanJose(start, end, minEnd, picked);
+    }
+    // San Jose over Pleasanton / Livermore (Justin, 2026-10-14: "perhaps we
+    // should add san jose instead of that since pleasanton/livermore is only
+    // accessible by one way", then "add san jose to all of the sf to socal
+    // rides"). The two sit on different roads out of the Bay (I-580 vs US-101
+    // then CA-152), so a ride passes one or the other, never both, and San
+    // Jose is by far the bigger rider pool.
+    //  - Every Bay Area -> SoCal ride gets San Jose checked, whatever the
+    //    detour or chosen road (Oakland/Berkeley pay ~50 min, which Justin
+    //    accepted), unless it starts within 9 mi of San Jose.
+    //  - Elsewhere, when San Jose is within the usual 24-min detour of a ride
+    //    that also lists Pleasanton, San Jose wins the same way.
+    // Pleasanton/Livermore stays listed but unchecked, so an I-580 driver can
+    // still pick it. Mirrors lib/route-fill.ts preferSanJose in the app.
+    const BAY_CENTER = { lat: 37.6688, lng: -122.0808 };
+    function isBayToSoCal(start, end) {
+      return haversineMiles(start, BAY_CENTER) <= 50 && end.lat < 34.6;
+    }
+    // The same trip the other way (Justin 10/14: LA-to-Bay rides get San Jose too).
+    function isSoCalToBay(start, end) {
+      return start.lat < 34.6 && haversineMiles(end, BAY_CENTER) <= 50;
+    }
+    // Straight-line detour in miles of p off the leg a -> b.
+    function legDetour(a, b, p) {
+      return haversineMiles(a, p) + haversineMiles(p, b) - haversineMiles(a, b);
+    }
+    async function preferSanJose(start, end, minEnd, picked) {
+      const ple = picked.find((s) => s.id === 'pleasanton');
+      const sjDest = DESTS.find((d) => d.id === 'sanjose');
+      // Force San Jose only when it lies BETWEEN the two ends, within 10 mi of
+      // the straight line (bug check 10/14: the 50-mi "Bay" circle reaches
+      // Stockton, Tracy, Manteca, Santa Cruz and Morgan Hill, where San Jose is
+      // a 40 to 120 minute detour or behind the start, and the server refuses
+      // a stop more than 30 mi off the line). Mirrors lib/route-fill.ts.
+      const sjT0 = sjDest ? routeT(start, end, sjDest) : -1;
+      const sjOnTheWay = !!sjDest && sjT0 > 0 && sjT0 < 1 && legDetour(start, end, sjDest) <= 10;
+      // Both directions; the Bay end of the trip must be 9+ mi from San Jose
+      // (otherwise San Jose IS the start or the destination).
+      const bayToSoCal = sjOnTheWay && (
+        (isBayToSoCal(start, end) && haversineMiles(start, sjDest) >= 9) ||
+        (isSoCalToBay(start, end) && haversineMiles(end, sjDest) >= 9));
+      if (!ple && !bayToSoCal) return picked;
+      let sj = picked.find((s) => s.id === 'sanjose');
+      if (!sj) {
+        const c = sjDest;
+        if (!c) return picked;
+        let cost = 0;
+        if (bayToSoCal) {
+          // San Jose replaces the East Bay road (I-580), so stops on it would
+          // make a zigzag (Berkeley, Livermore, Tracy, Stockton). Any stop
+          // more than 8 mi off both legs of start -> San Jose -> end stays
+          // listed, unchecked; stops on the San Jose road (Oakland via I-880,
+          // Gilroy, Salinas, Santa Nella, Kettleman City) stay checked. Both
+          // directions. Mirrors lib/route-fill.ts.
+          for (const s of picked) {
+            if (Math.min(legDetour(start, c, s), legDetour(c, end, s)) > 8) s.runnerUp = true;
+          }
+        } else {
+          if (haversineMiles(start, c) < minEnd || haversineMiles(end, c) < minEnd) return picked;
+          const [directMin, viaMin] = await Promise.all([drivingMinutes([start, end]), drivingMinutes([start, c, end])]);
+          if (directMin === null || viaMin === null || viaMin - directMin > 24) return picked;
+          cost = viaMin - directMin;
+        }
+        sj = { id: c.id, name: c.name, lat: c.lat, lng: c.lng, pop: c.pop || 0, t: routeT(start, end, c), cost, custom: false };
+        picked.push(sj);
+      }
+      sj.runnerUp = false;
+      if (ple) ple.runnerUp = true;
+      // Sort on ONE scale: chosen-route candidates carry a polyline fraction as
+      // `t` while the forced San Jose carries a straight-line projection, and
+      // mixing them put chips out of travel order on screen (bug check 10/15).
+      // routeT is also what ensureStopsRouted and the server use to store them.
+      picked.sort((a, b) => routeT(start, end, a) - routeT(start, end, b));
       return picked;
     }
     function selectSpread(cands) {
@@ -1932,6 +2279,7 @@ fbq('track','PageView');
       const epoch = routeEpoch;
       show('stStops');
       setMsg('stopsMsg', '');
+      renderNoteFlex(); // note + flex controls follow the leg (0326)
       $('stopsList').innerHTML = '';
       $('stopsLoading').classList.remove('hidden');
       $('stopsBtn').disabled = true;
@@ -1966,7 +2314,17 @@ fbq('track','PageView');
       }
       cur.stops = prevSel
         ? new Set([...prevSel].filter((id) => sugg.some((x) => x && x.id === id)))
-        : new Set(sugg.filter((s) => !s.runnerUp).slice(0, Math.min(5, maxStopsFor(cur))).map((s) => s.id)); // top picks checked (max 5 by default); runner-ups + long-haul slots are opt-in
+        : (() => {
+            // Top picks checked (max 5 by default); runner-ups + long-haul
+            // slots are opt-in. A forced San Jose is kept FIRST (bug check
+            // 10/15: on SoCal-to-Bay trips it sat sixth in route order and
+            // the slice cut it).
+            const cap = Math.min(5, maxStopsFor(cur));
+            const checked = sugg.filter((s) => !s.runnerUp);
+            const sj = checked.find((s) => s.id === 'sanjose');
+            const rest = checked.filter((s) => s !== sj).slice(0, sj ? Math.max(0, cap - 1) : cap);
+            return new Set([...(sj ? [sj] : []), ...rest].map((s) => s.id));
+          })();
       renderStops();
     }
     function renderStops() {
@@ -1994,7 +2352,194 @@ fbq('track','PageView');
         wrap.appendChild(b);
       }
     }
-    $('stopsBtn').addEventListener('click', () => enterDates());
+    $('stopsBtn').addEventListener('click', () => {
+      // Note pre-check (0326) before leaving the screen that holds the
+      // field, so the refusal lands next to the textarea, not at publish.
+      const problem = noteProblem(cur.note);
+      if (problem) {
+        // 0327: the refusal is a row for the founder (no ride yet; skipped
+        // inside logNoteFlag when nobody is signed in).
+        logNoteFlag({ hit: noteHitFor(cur.note), action: 'blocked', rideId: null, snippet: noteSnippet(cur.note) });
+        renderNoteFlex(true); setMsg('stopsMsg', noteErrorCopy(problem));
+        addSkipNoteLink(problem);
+        return;
+      }
+      enterDates();
+    });
+    // A way past a note refusal (Justin 10/14: a driver whose whole note was
+    // "Call me" was refused three times and never posted). Used by the stops
+    // screen check AND the publish-time bounce, where the server can refuse a
+    // note this page's check let through (e.g. "jo (at) gmail (dot) com"),
+    // which used to loop with no way out (bug check 10/14). An over-length
+    // note is a typo to fix, so it keeps only the message.
+    function addSkipNoteLink(code) {
+      if (noteCodeOf(code) === 'NOTE_TOO_LONG') return;
+      const skip = document.createElement('button');
+      skip.type = 'button';
+      skip.className = 'linkbtn';
+      skip.style.cssText = 'display:block;margin-top:8px';
+      skip.textContent = 'Continue without the note';
+      skip.addEventListener('click', () => {
+        cur.note = '';
+        renderNoteFlex(false);
+        setMsg('stopsMsg', '');
+        enterDates();
+      });
+      $('stopsMsg').appendChild(skip);
+    }
+
+    // ── Note to riders + flexible departure (0326 / 0327) ─────────────────
+    // Client pre-check that mirrors the rides driver_note trigger (phone,
+    // email, link; off-platform payment or contact; asking for extra; 200
+    // chars). The server re-checks and is the authority; this saves a round
+    // trip and words the refusal first. Every refusal and every allowed
+    // mention of cash is one offplatform_warnings row for the founder
+    // (logNoteFlag, surface web_ride_note). The same snippet lives in
+    // driving.html (standalone pages, no shared module): keep them identical.
+    const NOTE_MAX = 200;
+    const NOTE_SNIPPET_MAX = 160;
+    const NOTE_PHONE_RE = /(^|\D)(\+?1[\s.·-]?)?\(?\d{3}\)?[\s.·-]?\d{3}[\s.·-]?\d{4}(\D|$)/;
+    const NOTE_EMAIL_RE = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i;
+    const NOTE_LINK_RE = /(https?:\/\/|www\.[a-z0-9-]+\.[a-z]{2,}|(^|[^a-z0-9])[a-z0-9-]+\.(com|net|org|io|app|me|co|ly|gg|us|info|biz)(\/|[^a-z0-9]|$))/i;
+    // 0327: ported verbatim from the chat scanner (the app's
+    // supabase/functions/_shared/message-risk.ts). No lookbehind.
+    const NOTE_PAYMENT_RE = /\b(venmo|zelle|cash\s?app|cashapp|paypal|western\s?union|wire\s?transfer|crypto|bitcoin)\b/i;
+    const NOTE_CASH_RE = /\b(cash)\s*(only|in\s?hand|when\s+i\s+see\s+you|on\s+arrival|up\s?front|instead|please)\b|\b(pay|give|bring|hand)\s+(me\s+)?(the\s+)?cash\b/i;
+    const NOTE_CASH_ANY_RE = /\b(cash|efectivo)\b/i;
+    const NOTE_EXTRA_PAY_RE = /\b(extra|additional|remaining|rest\s+of\s+the|difference|more)\b[^.!?]{0,40}(\b(pay|payment|money|amount|dollars|bucks)\b|\$\s?\d)|\b(gas\s+money|split(ting)?\s+(the\s+)?gas|chip\s+in|pitch\s+in|tip\s+me|pay\s+(me|you|him|her|the\s+driver)\b(?!\s+a\s+visit)|pay(ing)?\s+directly|dinero\s+extra|pagar\s+(m[aá]s|directo|aparte))\b/i;
+    const NOTE_CANCEL_DIRECT_RE = /\b(cancel|refund)\b[^.!?]{0,80}\b(i('| a)?ll\s+(still\s+)?(drive|take|pick)|drive\s+you|take\s+you|pick\s+you\s+up)\b|\b(just\s+)?cancel\s+(it|the\s+\w+)\s+and\s+(i|we)\b/i;
+    const NOTE_OFFAPP_CONTACT_RE = /\b(text|call|dm|hit)\s+me\b(\s+(at|on))?(\s+(instead|directly|there|here))?(?![^.!?]{0,20}\bin\s+the\s+app\b)|\b(whats\s?app|telegram|signal\s+app|snapchat|instagram|ig|imessage|wechat|kakao|line\s+id)\b|\boff\s+(the\s+)?app\b|\boutside\s+(the\s+)?app\b/i;
+    const NOTE_COPY = {
+      NOTE_CONTACT: 'Keep contact details out of the note. Your note is public to everyone browsing rides, so phone numbers, emails, and links stay out. Riders can message you on Seat Sherpa once they book.',
+      NOTE_OFFPLATFORM: 'Keep payment and contact on Seat Sherpa. Your note is public to everyone browsing rides, so anything about paying outside Seat Sherpa, cash, or moving the conversation elsewhere stays out. Riders book and pay through Seat Sherpa, and you can chat there once they do.',
+      NOTE_EXTRA: 'The seat price is the whole price. Riders pay the price you posted and nothing more at pickup, so a note cannot ask for gas money, tips, or extra. Set the seat price to what the ride is worth and leave it there.',
+      NOTE_TOO_LONG: 'Keep the note to ' + NOTE_MAX + ' characters.',
+    };
+    /** Machine code each hit refuses under; 'cash' is allowed (logged only). */
+    const NOTE_HIT_CODE = {
+      phone: 'NOTE_CONTACT', email: 'NOTE_CONTACT', link: 'NOTE_CONTACT',
+      offapp_payment: 'NOTE_OFFPLATFORM', offapp_contact: 'NOTE_OFFPLATFORM', cancel_and_direct: 'NOTE_OFFPLATFORM',
+      extra_payment: 'NOTE_EXTRA',
+    };
+    /** Default hit when the SERVER refused a note this page let through. */
+    const NOTE_CODE_HIT = { NOTE_CONTACT: 'phone', NOTE_OFFPLATFORM: 'offapp_payment', NOTE_EXTRA: 'extra_payment' };
+    /** Whitespace-collapsed and trimmed; '' when empty. */
+    function noteNormalize(text) { return String(text || '').replace(/\s+/g, ' ').trim(); }
+    /** First 160 characters of the normalized note, for the founder's log. */
+    function noteSnippet(text) { return noteNormalize(text).slice(0, NOTE_SNIPPET_MAX); }
+    /** The hit a refusal is logged under, in rule order (contact, then
+     *  off-platform, then extra), or null when no rule fires. */
+    function noteHitFor(text) {
+      const t = noteNormalize(text);
+      if (!t) return null;
+      // Second pass with digit separators collapsed ("4 1 5 . 5 5 5 . 1 2 3 4").
+      const collapsed = t.replace(/(\d)[\s.·()-]+(?=\d)/g, '$1');
+      if (NOTE_PHONE_RE.test(t) || NOTE_PHONE_RE.test(collapsed)) return 'phone';
+      if (NOTE_EMAIL_RE.test(t)) return 'email';
+      if (NOTE_LINK_RE.test(t)) return 'link';
+      if (NOTE_PAYMENT_RE.test(t) || NOTE_CASH_RE.test(t)) return 'offapp_payment';
+      if (NOTE_OFFAPP_CONTACT_RE.test(t)) return 'offapp_contact';
+      if (NOTE_CANCEL_DIRECT_RE.test(t)) return 'cancel_and_direct';
+      if (NOTE_EXTRA_PAY_RE.test(t)) return 'extra_payment';
+      return null;
+    }
+    /** A note that passed but still deserves a row: a plain mention of cash. */
+    function noteNotifyHit(text) { return NOTE_CASH_ANY_RE.test(noteNormalize(text)) ? 'cash' : null; }
+    /** null when the note is fine, else the machine code. */
+    function noteProblem(text) {
+      const t = noteNormalize(text);
+      if (!t) return null;
+      const hit = noteHitFor(t);
+      if (hit) return NOTE_HIT_CODE[hit];
+      if (t.length > NOTE_MAX) return 'NOTE_TOO_LONG';
+      return null;
+    }
+    /** The machine code inside a code or a Postgres message, or null. */
+    function noteCodeOf(codeOrMessage) {
+      const m = String(codeOrMessage || '').match(/NOTE_(CONTACT|OFFPLATFORM|EXTRA|TOO_LONG)/);
+      return m ? m[0] : null;
+    }
+    /** Refusal copy for a machine code, or a Postgres message that contains
+     *  one. Empty string for anything else. */
+    function noteErrorCopy(codeOrMessage) {
+      const code = noteCodeOf(codeOrMessage);
+      return code ? NOTE_COPY[code] : '';
+    }
+    /** Hit to log for a server-side refusal: this page's own detectors first,
+     *  else the code's default. null for NOTE_TOO_LONG or a non-note error. */
+    function noteRefusalHit(codeOrMessage, text) {
+      const code = noteCodeOf(codeOrMessage);
+      if (!code || !NOTE_CODE_HIT[code]) return null;
+      return noteHitFor(text) || NOTE_CODE_HIT[code];
+    }
+    /** One offplatform_warnings row for the founder (0327): a refused note
+     *  (action 'blocked') or an allowed cash mention ('allowed'). Fire and
+     *  forget: never awaited, never throws, and skipped when nobody is signed
+     *  in (the insert policy needs auth.uid(); post.html pre-checks before
+     *  sign-in). A null hit is a no-op so call sites need no guard. */
+    function logNoteFlag(a) {
+      try {
+        const hit = a && a.hit;
+        if (!hit) return;
+        const row = { surface: 'web_ride_note', hit: hit, action: a.action === 'allowed' ? 'allowed' : 'blocked' };
+        const rideId = Number(a.rideId);
+        row.ride_id = Number.isFinite(rideId) && rideId > 0 ? rideId : null;
+        const snip = String(a.snippet || '').slice(0, NOTE_SNIPPET_MAX);
+        if (snip) row.snippet = snip;
+        supabase.auth.getSession().then(({ data }) => {
+          if (!data || !data.session) return;
+          supabase.from('offplatform_warnings').insert(row).then(() => {}, () => {});
+        }, () => {});
+      } catch (_) {}
+    }
+    const FLEX_CHOICES = [
+      { v: 0, label: 'Exact time' },
+      { v: 60, label: 'About 1 hour' },
+      { v: 120, label: 'About 2 hours' },
+      { v: 720, label: 'Half a day' },
+      // About a day (0352, Justin 2026-10-05: "add the flexible by a day option").
+      { v: 1440, label: 'About a day' },
+    ];
+    // Same .choice rows as the booking-mode and return screens, radio style.
+    function paintFlexChoices() {
+      const host = $('flexChoices');
+      host.innerHTML = '';
+      const sel = FLEX_CHOICES.some((c) => c.v === Number(cur.departFlex)) ? Number(cur.departFlex) : 0;
+      for (const c of FLEX_CHOICES) {
+        const on = c.v === sel;
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'choice' + (on ? ' sel' : '');
+        b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(on));
+        const tick = document.createElement('span'); tick.className = 'tick radio'; tick.textContent = on ? '✓' : '';
+        const t = document.createElement('span'); t.className = 't'; t.textContent = c.label;
+        b.appendChild(tick); b.appendChild(t);
+        b.addEventListener('click', () => { cur.departFlex = c.v; paintFlexChoices(); });
+        host.appendChild(b);
+      }
+    }
+    function setNoteFlexOpen(open) {
+      $('noteFlexBody').classList.toggle('hidden', !open);
+      $('noteFlexToggle').setAttribute('aria-expanded', String(open));
+      $('noteFlexSub').classList.toggle('hidden', open);
+    }
+    /** Sync the controls from cur. Opens the section when the leg already
+     *  carries a note or a flex window (WIP restore, Back, server bounce);
+     *  `open` forces it. */
+    function renderNoteFlex(open) {
+      const note = String(cur.note || '');
+      const hasAny = !!note.trim() || (Number(cur.departFlex) || 0) > 0;
+      setNoteFlexOpen(!!open || hasAny);
+      $('noteInput').value = note;
+      $('noteCount').textContent = String(note.length);
+      paintFlexChoices();
+    }
+    $('noteFlexToggle').addEventListener('click', () => {
+      setNoteFlexOpen($('noteFlexToggle').getAttribute('aria-expanded') !== 'true');
+    });
+    $('noteInput').addEventListener('input', () => {
+      cur.note = $('noteInput').value;
+      $('noteCount').textContent = String(cur.note.length);
+    });
 
     // ── "+ Add a city" (2026-08-28, BlaBlaCar parity) ─────────────────────
     // The catalog is thin on some corridors (mid-I-5) — the driver knows
@@ -2606,6 +3151,8 @@ fbq('track','PageView');
     async function enterPrice() {
       show('stPrice');
       setMsg('priceMsg', '');
+      // Price on the road the ride will store (through its stops).
+      await ensureStopsRouted(cur);
       const fromDest = nearestDestId(cur.start), toDest = nearestDestId(cur.end);
       // The suggestion endpoint is public + aggregate — same one the app uses.
       // Road miles ride along (2026-09-04): the suggestion is distance-banded
@@ -2712,18 +3259,18 @@ fbq('track','PageView');
         if (!shown.length) { $('similarWrap').classList.add('hidden'); return; }
         for (const rd of shown) {
           const row = document.createElement('div');
-          row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px;background:#0E0E10;border:1px solid rgba(255,255,255,0.10);border-radius:12px;padding:11px 14px;margin-bottom:8px;';
+          row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--inset);border:1px solid var(--hair4);border-radius:12px;padding:11px 14px;margin-bottom:8px;';
           const left = document.createElement('div');
           left.style.cssText = 'min-width:0;';
           const t1 = document.createElement('div');
           t1.style.cssText = 'font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
           t1.textContent = (rd.fromArea || '') + ' → ' + (rd.toArea || '');
           const t2 = document.createElement('div');
-          t2.style.cssText = 'font-size:12.5px;color:#9a9aa4;margin-top:1px;';
+          t2.style.cssText = 'font-size:12.5px;color:var(--muted);margin-top:1px;';
           t2.textContent = [rd.driverFirst ? 'by ' + rd.driverFirst : '', rd.soldOut ? 'sold out' : ''].filter(Boolean).join(' · ');
           left.appendChild(t1); left.appendChild(t2);
           const right = document.createElement('div');
-          right.style.cssText = 'font-size:16px;font-weight:800;color:#00D4C8;white-space:nowrap;';
+          right.style.cssText = 'font-size:16px;font-weight:800;color:var(--info-teal);white-space:nowrap;';
           right.textContent = rd.minPrice ? '$' + rd.minPrice + '/seat' : 'Full';
           row.appendChild(left); row.appendChild(right);
           list.appendChild(row);
@@ -2745,7 +3292,7 @@ fbq('track','PageView');
       const legMiles = haversineMiles(b, a) * 1.25;
       const seats = Math.max(1, cur.seatCount || 1);
       const cap = legMiles > 0 ? Math.floor((legMiles * IRS_RATE) / Math.max(MIN_SHARE_SEATS, seats)) : HARD_CAP;
-      return Math.max(FLOOR, Math.min(HARD_CAP, cap, cur.priceUsd || HARD_CAP));
+      return Math.max(FLOOR, Math.min(hardCapFor(legMiles), cap, cur.priceUsd || HARD_CAP));
     }
     // Leg prefill relative to the FULL seat price (Justin, 2026-09-04: "don't
     // drop the leg pricing so much"): a leg that is 60%+ of the trip is 10%
@@ -2777,7 +3324,8 @@ fbq('track','PageView');
       // 'San Diego'. Short addresses without a city component keep part 0.
       const cityOf = (addr, fb) => {
         const parts = String(addr || fb).split(',').map((s2) => s2.trim());
-        return (parts.length >= 3 ? parts[1] : parts[0]) || fb;
+        // Region-as-city guard first (ssCityOf), then the old positional rule.
+        return ssCityOf(addr) || (parts.length >= 3 ? parts[1] : parts[0]) || fb;
       };
       const startName = cityOf(cur.fromAddress, 'Start');
       const endName = cityOf(cur.toAddress, 'End');
@@ -2840,19 +3388,19 @@ fbq('track','PageView');
         // snapped back to 10. The suggestion is a prefill only.
         if (!cur.segEdited[key]) cur.segPrices[key] = segSuggestUsd(pr.a.ll, pr.b.ll, trip);
         const row = document.createElement('div');
-        row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13.5px;';
+        row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--hair3);font-size:13.5px;';
         const left = document.createElement('span');
-        left.style.cssText = 'color:#c9c9d1;flex:1;min-width:0;';
+        left.style.cssText = 'color:var(--sub-c9);flex:1;min-width:0;';
         left.textContent = pr.a.name + ' \u2192 ' + pr.b.name;
         const money = document.createElement('span');
         money.style.cssText = 'display:flex;align-items:center;gap:4px;white-space:nowrap;';
         const dollar = document.createElement('span');
-        dollar.style.cssText = 'color:#00D4C8;font-weight:700;';
+        dollar.style.cssText = 'color:var(--link);font-weight:700;';
         dollar.textContent = '$';
         const inp = document.createElement('input');
         inp.type = 'number'; inp.min = '1'; inp.step = '1'; inp.inputMode = 'numeric';
         inp.title = 'Your price for this leg. Clear it to charge the full seat.';
-        inp.style.cssText = 'width:64px;padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);color:#00D4C8;font-weight:700;font-size:14px;text-align:right;';
+        inp.style.cssText = 'width:64px;padding:6px 8px;border-radius:8px;border:1px solid var(--seg-in-line);background:var(--seg-in-bg);color:var(--link);font-weight:700;font-size:14px;text-align:right;';
         inp.value = cur.segPrices[key] != null ? String(cur.segPrices[key]) : '';
         inp.setAttribute('aria-label', 'Seat price ' + pr.a.name + ' to ' + pr.b.name);
         inp.addEventListener('change', () => {
@@ -2866,7 +3414,7 @@ fbq('track','PageView');
         });
         money.appendChild(dollar); money.appendChild(inp);
         const per = document.createElement('span');
-        per.style.cssText = 'color:#888;font-size:12px;';
+        per.style.cssText = 'color:var(--cap);font-size:12px;';
         per.textContent = '/seat';
         money.appendChild(per);
         row.appendChild(left); row.appendChild(money);
@@ -2876,7 +3424,7 @@ fbq('track','PageView');
         const more = document.createElement('button');
         more.type = 'button';
         more.textContent = 'Show all ' + pairs.length + ' legs';
-        more.style.cssText = 'margin-top:8px;background:none;border:none;color:#00D4C8;font-size:13px;font-weight:600;cursor:pointer;padding:4px 0;font-family:inherit;';
+        more.style.cssText = 'margin-top:8px;background:none;border:none;color:var(--link);font-size:13px;font-weight:600;cursor:pointer;padding:4px 0;font-family:inherit;';
         more.addEventListener('click', () => { cur.segShowAll = true; renderSegPrices(); });
         list.appendChild(more);
       }
@@ -2903,7 +3451,7 @@ fbq('track','PageView');
       {
         const seatCents = cur.priceUsd * 100;
         const driverUsd = (seatCents - Math.floor(seatCents * 500 / 10000)) / 100;
-        $('priceSplit').textContent = 'You keep $' + driverUsd.toFixed(2);
+        $('priceSplit').textContent = 'You keep $' + driverUsd.toFixed(2).split('.00').join('');
       }
       // Color-coded price + feedback (2026-08-28, BlaBlaCar-style): green in
       // the suggested band = "you'll fill fast"; red above it = honest
@@ -2913,20 +3461,21 @@ fbq('track','PageView');
         // reads as no guidance at all — a tight band anchors. Slide the $10
         // window to bracket the suggested price so the default opens green.
         // The server's band is the distance band (Justin, 2026-09-04: <50mi
-        // $10–12, 50–100 $12–20, 100–200 $15–30, 200+ $25–40) — show it as
+        // $10–12, 50–100 $12–20, 100–200 $15–30, 200–300 $25–40, 300+ $30–50
+        // since 2026-10-12) — show it as
         // is, clipped to this trip's cap. (The 9/1 sliding-width logic went
         // with the old cost-basis suggestion.)
         const lo = Math.max(FLOOR, Math.min(Math.round(resp.low_cents / 100), priceCap));
         const hi = Math.max(lo, Math.min(Math.round(resp.high_cents / 100), priceCap));
         const hint = $('priceHint');
         if (cur.priceUsd <= hi) {
-          $('priceVal').style.color = '#4ade80';
+          $('priceVal').style.color = 'var(--ok)';
           hint.textContent = "You'll get riders in no time.";
-          hint.style.color = '#4ade80';
+          hint.style.color = 'var(--ok)';
         } else {
-          $('priceVal').style.color = '#ff8a8a';
+          $('priceVal').style.color = 'var(--err)';
           hint.textContent = 'Riders will probably find cheaper seats than yours.';
-          hint.style.color = '#ff8a8a';
+          hint.style.color = 'var(--err)';
         }
         hint.classList.remove('hidden');
         if (!atCap) {
@@ -2970,6 +3519,12 @@ fbq('track','PageView');
       ret.seatCount = cur.seatCount; ret.comfort = cur.comfort;
       ret.seatLayout = cur.seatLayout; ret.openSeats = Array.isArray(cur.openSeats) ? cur.openSeats.slice() : null; ret.seatMapKey = cur.seatMapKey;
       ret.instant = cur.instant; ret.priceUsd = cur.priceUsd;
+      // Flex window and note both carry to the return leg (0326), matching
+      // the app's round-trip builder: most notes ("flexible on time",
+      // "room for a big bag") read the same in either direction, and the
+      // driver can edit the return leg's note from the console after posting.
+      ret.departFlex = cur.departFlex || 0;
+      ret.note = cur.note || '';
       cur = ret;
       suggestCache = null;
       enterDates();
@@ -2993,10 +3548,16 @@ fbq('track','PageView');
       btn.disabled = true; btn.textContent = 'Resend in 60s';
     }
     async function sendEmailOtp(email) {
-      const { error } = await supabase.auth.signInWithOtp({
+      const send = (captchaToken) => supabase.auth.signInWithOtp({
         email,
-        options: { shouldCreateUser: true, data: { role: 'driver', surface: 'web' } },
+        options: { shouldCreateUser: true, data: { role: 'driver', surface: 'web' }, captchaToken },
       });
+      let { error } = await send();
+      if (error && (error.code === 'captcha_failed' || /captcha/i.test(error.message || ''))) {
+        // Turnstile only when Supabase asks for it (js/ss-captcha.js).
+        const { solveAndRetry } = await import('/js/ss-captcha.js');
+        ({ error } = await solveAndRetry(send));
+      }
       if (error) {
         const m = (error.message || '').toLowerCase();
         if (m.includes('rate limit')) return 'Too many codes requested. Try again in an hour.';
@@ -3014,7 +3575,9 @@ fbq('track','PageView');
       if (!legs.length) { box.classList.add('hidden'); return; }
       const shortPlace = (a) => {
         const parts = String(a || '').split(',').map((s) => s.trim()).filter(Boolean);
-        return parts.length >= 2 ? parts[parts.length - 2] : (parts[0] || '');
+        // Region-as-city guard first (ssCityOf); the positional rule read
+        // "Berkeley, California, United States" as "California" (review 2026-10-02).
+        return ssCityOf(a) || (parts.length >= 2 ? parts[parts.length - 2] : (parts[0] || ''));
       };
       const fmt12 = (t) => {
         const [H, M] = String(t || '').split(':').map(Number);
@@ -3025,17 +3588,17 @@ fbq('track','PageView');
       };
       box.innerHTML = '';
       const title = document.createElement('div');
-      title.style.cssText = 'font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#888;margin-bottom:8px;';
+      title.style.cssText = 'font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--cap);margin-bottom:8px;';
       title.textContent = legs.length > 1 ? "You're publishing 2 trips" : "You're publishing";
       box.appendChild(title);
       legs.forEach((leg, i) => {
         const row = document.createElement('div');
-        row.style.cssText = 'font-size:14px;line-height:1.55;' + (i ? 'margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);' : '');
+        row.style.cssText = 'font-size:14px;line-height:1.55;' + (i ? 'margin-top:10px;padding-top:10px;border-top:1px solid var(--hair);' : '');
         const r1 = document.createElement('div');
         r1.style.cssText = 'font-weight:700;';
         r1.textContent = shortPlace(leg.fromAddress) + ' → ' + shortPlace(leg.toAddress);
         const r2 = document.createElement('div');
-        r2.style.cssText = 'color:#9a9aa4;';
+        r2.style.cssText = 'color:var(--muted);';
         const dates = (leg.dates || []).slice().sort();
         const when = dates.length === 1
           ? fmtDateShort(dates[0]) + ' · ' + fmt12(leg.perDateTimes[dates[0]] || leg.time)
@@ -3235,6 +3798,11 @@ fbq('track','PageView');
         openSeatIds: Array.isArray(leg.openSeats) && leg.openSeats.length ? leg.openSeats : null,
         priceCents: leg.priceUsd * 100,
         instant: leg.instant,
+        // Note to riders + flexible departure (0326). The server trims,
+        // re-checks for contact details and refuses with NOTE_CONTACT /
+        // NOTE_TOO_LONG.
+        note: leg.note || '',
+        departFlexMinutes: leg.departFlex || 0,
         // Driver-set leg prices keyed by wire stop ids (catalog id as-is,
         // custom stops as cust-<index into the stops array above>).
         segmentPrices: (() => {
@@ -3263,13 +3831,14 @@ fbq('track','PageView');
       };
     }
     // Server machine code → the screen that fixes it.
-    const ERR_SCREEN = { BAD_ROUTE: 'stFrom', OUT_OF_AREA: 'stFrom', MIN_TRIP: 'stFrom', BAD_DATES: 'stDates', BAD_SEATS: 'stSeats', BAD_PRICE: 'stPrice', BAD_STOPS: 'stStops' };
+    const ERR_SCREEN = { BAD_ROUTE: 'stFrom', OUT_OF_AREA: 'stFrom', MIN_TRIP: 'stFrom', BAD_DATES: 'stDates', BAD_SEATS: 'stSeats', BAD_PRICE: 'stPrice', BAD_STOPS: 'stStops', NOTE_CONTACT: 'stStops', NOTE_OFFPLATFORM: 'stStops', NOTE_EXTRA: 'stStops', NOTE_TOO_LONG: 'stStops' };
     // BAD_SEATS pointed at timeMsg (a hidden card's element) and stSeats had
     // no message element at all — a server bounce landed the driver on the
     // seats screen with zero explanation (audit M6).
-    const ERR_MSG = { BAD_ROUTE: 'fromMsg', OUT_OF_AREA: 'fromMsg', MIN_TRIP: 'fromMsg', BAD_DATES: 'datesMsg', BAD_SEATS: 'seatsMsg', BAD_PRICE: 'priceMsg', BAD_STOPS: 'stopsMsg' };
+    const ERR_MSG = { BAD_ROUTE: 'fromMsg', OUT_OF_AREA: 'fromMsg', MIN_TRIP: 'fromMsg', BAD_DATES: 'datesMsg', BAD_SEATS: 'seatsMsg', BAD_PRICE: 'priceMsg', BAD_STOPS: 'stopsMsg', NOTE_CONTACT: 'stopsMsg', NOTE_OFFPLATFORM: 'stopsMsg', NOTE_EXTRA: 'stopsMsg', NOTE_TOO_LONG: 'stopsMsg' };
 
     async function publishAll() {
+      logStep('publish_tapped');
       // Snapshot for the network-retry path, which must NOT lose queued legs.
       const legsAtStart = savedLegs.slice();
       $('publishRetry').classList.add('hidden');
@@ -3283,6 +3852,18 @@ fbq('track','PageView');
       for (const leg of savedLegs) {
         // Skip a leg that already published (retry after a partial failure).
         if (leg._published) continue;
+        // Note pre-check (0326): the refusal the DB trigger would send,
+        // without spending the request. Bounces to the stops screen below.
+        const noteCode = noteProblem(leg.note);
+        if (noteCode) {
+          // 0327: the refusal is a row for the founder (no ride yet).
+          logNoteFlag({ hit: noteHitFor(leg.note), action: 'blocked', rideId: null, snippet: noteSnippet(leg.note) });
+          failures.push({ leg, code: noteCode, message: noteErrorCopy(noteCode) }); continue;
+        }
+        // A leg with stops saves the road THROUGH its stops, not the road
+        // picked before the stops were chosen (2026-10-05). Normally already
+        // done at the price step (ensureStopsRouted); this is the safety net.
+        await ensureStopsRouted(leg);
         // Measure the drivable route once per leg (cached on the leg so a
         // retry doesn't re-fetch). Best-effort: null just means the server
         // uses its haversine fallback.
@@ -3299,6 +3880,9 @@ fbq('track','PageView');
           const body = await res.json().catch(() => ({}));
           if (res.ok && body && typeof body.draftId === 'number') {
             leg._published = true;
+            // 0327: the draft was accepted, but a plain mention of cash is
+            // still logged (allowed). No ride id: the draft mints later.
+            logNoteFlag({ hit: noteNotifyHit(leg.note), action: 'allowed', rideId: null, snippet: noteSnippet(leg.note) });
             // A published draft = a driver lead (audit L8). Once per session.
             try {
               if (!window.__ssPostLead && window.ssTrack) { window.__ssPostLead = true; window.ssTrack('Lead'); }
@@ -3311,6 +3895,10 @@ fbq('track','PageView');
               rideIds: Array.isArray(body.rideIds) ? body.rideIds : [],
               gates: body.gates || null,
             });
+            // A driver whose gates were already clear goes live right here,
+            // and refreshGates skips live drafts, so this is the only place
+            // that ride is counted (bug check 2026-10-19).
+            if (body.status === 'live' && Array.isArray(body.rideIds) && body.rideIds.length > 0) logRidePosted(body.draftId);
             continue;
           }
           if (body && body.error === 'MIGRATION_PENDING') { show('stUnavailable'); return; }
@@ -3321,6 +3909,9 @@ fbq('track','PageView');
             $('statusLine').textContent = body.message || 'Your account is suspended. Email support@seatsherpa.app.';
             return;
           }
+          // 0327: a server NOTE_* bounce (a newer trigger than this page) is
+          // logged too; noteRefusalHit is null for every other error code.
+          logNoteFlag({ hit: noteRefusalHit(body && body.error, leg.note), action: 'blocked', rideId: null, snippet: noteSnippet(leg.note) });
           failures.push({ leg, code: body && body.error, message: (body && (body.message || body.error)) || 'Something went wrong.' });
         } catch (e) {
           failures.push({ leg, code: null, message: (e && e.message) || 'Network problem — try again.' });
@@ -3339,7 +3930,11 @@ fbq('track','PageView');
         savedLegs = [];
         if (scr) {
           if (scr === 'stDates') enterDates(); else if (scr === 'stPrice') enterPrice(); else show(scr);
-          setMsg(ERR_MSG[f.code] || 'fromMsg', f.message);
+          // Note refusals (0326): re-sync the note controls to the leg being
+          // edited and open the section so the copy sits next to the field.
+          if (scr === 'stStops' && noteErrorCopy(f.code)) renderNoteFlex(true);
+          setMsg(ERR_MSG[f.code] || 'fromMsg', noteErrorCopy(f.code) || f.message);
+          if (scr === 'stStops' && noteErrorCopy(f.code)) addSkipNoteLink(f.code);
         } else {
           // No mapped screen = network/unknown, NOT a problem with their dates.
           // Keep every leg queued and offer a direct retry (audit 8/28).
@@ -3356,7 +3951,7 @@ fbq('track','PageView');
 
       saveLocal();
       const partialMsg = failures.length > 0
-        ? 'Your outbound published, but the other direction hit a snag: ' + failures[0].message + ' You can post it again any time.'
+        ? 'Your outbound published, but the other direction hit a snag: ' + (noteErrorCopy(failures[0].code) || failures[0].message) + ' You can post it again any time.'
         : '';
       await enterReady(partialMsg);
     }
@@ -3435,8 +4030,9 @@ fbq('track','PageView');
     function shortPlace(addr) {
       const parts = (addr || '').split(',').map((s) => s.trim()).filter(Boolean);
       if (parts.length === 0) return addr || '';
-      // First non-numeric-ish chunk reads as the place name.
-      return parts.length >= 2 && /\d/.test(parts[0]) ? parts[1] : parts[0];
+      // City first (region-as-city guard, review 2026-10-02); then the old
+      // rule: first non-numeric-ish chunk reads as the place name.
+      return ssCityOf(addr) || (parts.length >= 2 && /\d/.test(parts[0]) ? parts[1] : parts[0]);
     }
 
     async function refreshGates() {
@@ -3482,6 +4078,7 @@ fbq('track','PageView');
               const wasPending = d.status !== 'live';
               d.status = 'live';
               d.rideIds = Array.isArray(body.rideIds) ? body.rideIds : [];
+              if (wasPending && d.rideIds.length > 0) logRidePosted(d.id);
               d.note = body.note || (Array.isArray(body.skipped) ? body.skipped.join('; ') : null);
               // Deliberately NO immediate notify-route-searchers call here.
               // The cancel-protection delay (60/15 min) and quiet hours live
@@ -3545,6 +4142,17 @@ fbq('track','PageView');
           : missing.map((m, i) => i === 0 ? m.charAt(0).toUpperCase() + m.slice(1) : m).join(' and ')
             + ' — then this goes live. Car and deposits are optional, but help fill seats.';      }
 
+      // Funnel (0398): which required step is still missing, in the app's
+      // words (the web's "profile" step is photo + license).
+      const funnelGate = (key) => key === 'phone' ? 'phone'
+        : key === 'profile' ? (gateState.license ? 'profile' : 'license')
+        : key === 'car' ? 'car' : null;
+      if (!allLive && publishedDrafts.length > 0) {
+        for (const g of GATE_DEFS) {
+          if (g.blocking && !gateDone(g.key) && funnelGate(g.key)) logStep('gate_shown', funnelGate(g.key));
+        }
+      }
+
       for (const g of GATE_DEFS) {
         const done = gateDone(g.key);
         const b = document.createElement('button');
@@ -3558,7 +4166,7 @@ fbq('track','PageView');
         b.appendChild(st); b.appendChild(txt);
         if (!done) {
           if (g.key === 'payouts') b.addEventListener('click', startStripeOnboarding);
-          else b.addEventListener('click', () => show(g.screen));
+          else b.addEventListener('click', () => { if (funnelGate(g.key)) logStep('gate_go', funnelGate(g.key)); show(g.screen); });
         } else {
           b.disabled = true;
         }
@@ -3575,7 +4183,7 @@ fbq('track','PageView');
         a.style.justifyContent = 'center';
         a.href = '/ride?id=' + encodeURIComponent(firstLive.rideIds[0]);
         const s = document.createElement('span');
-        s.style.cssText = 'font-size:15px;font-weight:600;color:#fff;';
+        s.style.cssText = 'font-size:15px;font-weight:600;color:var(--text);';
         s.textContent = 'See your ride page →';
         a.appendChild(s);
         links.appendChild(a);
@@ -3648,7 +4256,7 @@ fbq('track','PageView');
       setMsg('phoneMsg', '');
       const cc = $('phoneCc').value, num = $('phoneNum').value;
       const e164 = toE164(cc, num);
-      if (!plausibleE164(e164)) { setMsg('phoneMsg', 'Enter a valid US or Canada number (10 digits) — other countries are supported in the app.'); return; }
+      if (!plausibleE164(e164)) { setMsg('phoneMsg', 'Enter a valid US or Canada number (10 digits). For a number from another country, email support@seatsherpa.app or sign up in the Seat Sherpa app.'); return; }
       pendingPhone = { cc: cc.replace(/\D/g, ''), num, e164 };
       const btn = $('phoneSendBtn');
       btn.disabled = true; btn.textContent = 'Sending…';
@@ -3937,7 +4545,7 @@ fbq('track','PageView');
     };
     const BIO_CONTACT_MSG = {
       phone: "Please take the phone number out of your bio — your profile is public to everyone browsing rides. Once a seat is booked you can call your rider from the app.",
-      email: "Please take the email address out of your bio — your profile is public to everyone browsing rides. Once a seat is booked you can message your rider in the app.",
+      email: "Please take the email address out of your bio. Your profile is public to everyone browsing rides. Once a seat is booked you can message your rider on Seat Sherpa.",
     };
 
     $('bioInput').addEventListener('input', () => { $('bioCount').textContent = String(bioWords($('bioInput').value)); });
@@ -4336,12 +4944,21 @@ fbq('track','PageView');
       // city so autocomplete is one tap away, never a silent centroid.
       try {
         const rFrom = qp.get('from'), rTo = qp.get('to'), rDate = qp.get('date');
-        const fromD = rFrom && DESTS.find((d) => d.id === rFrom);
-        const toD = rTo && DESTS.find((d) => d.id === rTo);
+        // Any area or stop this page knows, plus the Inland Empire (an area the
+        // server accepts but this page has no entry for). Bug check 2026-10-07:
+        // post_ride_link to Monterey or Riverside opened a blank form.
+        const areaOf = (id) => DESTS.find((d) => d.id === id) || WAYPOINTS.find((d) => d.id === id)
+          || (id === 'inlandempire' ? { id, name: 'Riverside' } : null);
+        const fromD = rFrom && areaOf(rFrom);
+        const toD = rTo && areaOf(rTo);
         if (fromD && toD) {
           const banner = $('reqBanner');
           if (banner) {
-            banner.textContent = '🙋 Filling a rider request: ' + fromD.name + ' → ' + toD.name
+            // via=agent (2026-10-07): an AI assistant's post_ride_link prefill
+            // (MCP), not a rider request, so the banner just names the trip.
+            // via=email: the lapsed-driver note's link to the driver's own route.
+            const viaAgent = qp.get('via') === 'agent' || qp.get('via') === 'email';
+            banner.textContent = (viaAgent ? 'Posting ' : '🙋 Filling a rider request: ') + fromD.name + ' → ' + toD.name
               + (rDate ? ' · ' + fmtDateShort(rDate) : '') + '. Add your exact pickup and dropoff below.';
             banner.classList.remove('hidden');
           }

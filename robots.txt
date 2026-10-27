@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
+# The AI agent connector (MCP). Agents POST to it; a plain page visit gets a
+# 405 by design, which Search Console reports as "other 4xx".
+Disallow: /mcp
 Sitemap: https://seatsherpa.app/sitemap.xml
+Sitemap: https://seatsherpa.app/sitemap-rides.xml

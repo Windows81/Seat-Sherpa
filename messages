@@ -12,81 +12,120 @@
        mobile. Rows deep-link into the console that owns the thread. -->
   <meta name="robots" content="noindex, nofollow" />
   <meta name="referrer" content="no-referrer" />
-  <meta name="theme-color" content="#0E0E10" />
+  <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#F5F6F5" media="(prefers-color-scheme: light)" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+    /* Color tokens + light theme (2026-10-12). Dark values are this page's
+       own colors, unchanged; the light set follows the phone's or computer's
+       setting. Riding keeps its purple and driving its teal in both. */
+    :root {
+      --bg: #0E0E10; --text: #fff; --link: #00D4C8; --teal: #00D4C8; --on-teal: #04201e;
+      --nav-text: #cfcfd6; --nav-line: #2a2a33; --teal-hover: rgba(0,212,200,0.5); --pill-line: rgba(0,212,200,0.4);
+      --riding: #B48CFF; --driving: #00D4C8; --riding-hover: rgba(180,140,255,0.6); --driving-hover: rgba(0,212,200,0.6);
+      --grad-a: #1a1a1d; --grad-b: #141416; --line: rgba(255,255,255,0.10);
+      --when: #a3a3ae; --route: #adadb8; --preview: #b9b9c6; --none: #8e8e99; --dim: #a3a3ae;
+      --empty-bg: #141416; --empty-line: #2a2a33; --spin-track: #2a2a33;
+      color-scheme: dark;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F5F6F5; --text: #121416; --link: #007C76;
+        --nav-text: #4B5357; --nav-line: #D8DCDB; --teal-hover: rgba(0,124,118,0.45); --pill-line: rgba(0,124,118,0.45);
+        --riding: #6B3FC6; --driving: #007C76; --riding-hover: rgba(107,63,198,0.45); --driving-hover: rgba(0,124,118,0.45);
+        --grad-a: #FFFFFF; --grad-b: #FFFFFF; --line: rgba(18,22,22,0.10);
+        --when: #687176; --route: #4B5357; --preview: #4B5357; --none: #687176; --dim: #687176;
+        --empty-bg: #FFFFFF; --empty-line: rgba(18,22,22,0.18); --spin-track: rgba(18,22,22,0.12);
+        color-scheme: light;
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+      }
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10; color: #fff; -webkit-font-smoothing: antialiased;
+      background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased;
       min-height: 100vh; padding: 26px 16px 60px;
     }
     .wrap { max-width: 440px; margin: 0 auto; }
     @media (min-width: 720px) { .wrap { max-width: 560px; } }
-    @media (min-width: 980px) { .wrap { max-width: 940px; } }
     .brand { display: flex; justify-content: center; margin-bottom: 18px; }
     .wordmark { height: 34px; width: auto; display: block; }
     .consolenav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 22px; }
     .consolenav a {
-      color: #cfcfd6; text-decoration: none; font-size: 14px; font-weight: 600;
-      border: 1px solid #2a2a33; border-radius: 999px; padding: 8px 14px; white-space: nowrap;
+      color: var(--nav-text); text-decoration: none; font-size: 14px; font-weight: 600;
+      border: 1px solid var(--nav-line); border-radius: 999px; padding: 8px 14px; white-space: nowrap;
     }
-    .consolenav a:hover { border-color: rgba(0,212,200,0.5); }
-    .consolenav a.here { border-color: #00D4C8; color: #00D4C8; }
+    .consolenav a:hover { border-color: var(--teal-hover); }
+    .consolenav a.here { border-color: var(--link); color: var(--link); }
     .rolepair { display: inline-flex; gap: 6px; }
     .rolepill {
-      border: 1px solid rgba(0,212,200,0.4); color: #00D4C8; border-radius: 999px;
+      border: 1px solid var(--pill-line); color: var(--link); border-radius: 999px;
       padding: 8px 14px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap;
     }
-    .rolepill.active { background: #00D4C8; color: #04201e; border-color: #00D4C8; }
+    .rolepill.active { background: var(--teal); color: var(--on-teal); border-color: var(--teal); }
     h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 18px; }
     .cols { display: grid; grid-template-columns: 1fr; gap: 22px; }
-    @media (min-width: 980px) { .cols { grid-template-columns: 1fr 1fr; align-items: start; } }
     .colhead {
       font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 700;
       margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
     }
-    .colhead.riding { color: #B48CFF; }
-    .colhead.driving { color: #00D4C8; }
+    .colhead.riding { color: var(--riding); }
+    .colhead.driving { color: var(--driving); }
     .thread {
       display: block; text-decoration: none; color: inherit;
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.10); border-radius: 14px;
+      background: linear-gradient(180deg, var(--grad-a) 0%, var(--grad-b) 100%);
+      border: 1px solid var(--line); border-radius: 14px;
       padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.15s, transform 0.1s;
     }
     .thread:hover { transform: translateY(-1px); }
-    .thread.riding { border-left: 4px solid #B48CFF; }
-    .thread.riding:hover { border-color: rgba(180,140,255,0.6); }
-    .thread.driving { border-left: 4px solid #00D4C8; }
-    .thread.driving:hover { border-color: rgba(0,212,200,0.6); }
+    .thread.riding { border-left: 4px solid var(--riding); }
+    .thread.riding:hover { border-color: var(--riding-hover); }
+    .thread.driving { border-left: 4px solid var(--driving); }
+    .thread.driving:hover { border-color: var(--driving-hover); }
     .throw { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
     .who { font-size: 16px; font-weight: 700; }
-    .when { font-size: 12.5px; color: #a3a3ae; white-space: nowrap; }
-    .route { font-size: 13.5px; color: #adadb8; margin-top: 2px; }
+    .when { font-size: 12.5px; color: var(--when); white-space: nowrap; }
+    .route { font-size: 13.5px; color: var(--route); margin-top: 2px; }
     .preview {
-      font-size: 14px; color: #b9b9c6; margin-top: 8px; line-height: 1.45;
+      font-size: 14px; color: var(--preview); margin-top: 8px; line-height: 1.45;
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-    .preview.none { color: #8e8e99; font-style: italic; }
+    .preview.none { color: var(--none); font-style: italic; }
     .empty {
-      background: #141416; border: 1px dashed #2a2a33; border-radius: 14px;
-      padding: 22px 18px; color: #a3a3ae; font-size: 14.5px; line-height: 1.6; text-align: center;
+      background: var(--empty-bg); border: 1px dashed var(--empty-line); border-radius: 14px;
+      padding: 22px 18px; color: var(--dim); font-size: 14.5px; line-height: 1.6; text-align: center;
       margin-bottom: 10px;
     }
-    .empty a { color: #00D4C8; text-decoration: none; font-weight: 700; }
-    .dim { color: #a3a3ae; }
+    .empty a { color: var(--link); text-decoration: none; font-weight: 700; }
+    .dim { color: var(--dim); }
     .center { text-align: center; }
     .hidden { display: none !important; }
     .spinner {
-      width: 26px; height: 26px; margin: 40px auto; border: 3px solid #2a2a33;
-      border-top-color: #00D4C8; border-radius: 50%; animation: spin 0.9s linear infinite;
+      width: 26px; height: 26px; margin: 40px auto; border: 3px solid var(--spin-track);
+      border-top-color: var(--teal); border-radius: 50%; animation: spin 0.9s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .foot { margin-top: 30px; font-size: 13px; color: #a3a3ae; text-align: center; line-height: 1.7; }
-    .foot a { color: #00D4C8; text-decoration: none; }
+    .foot { margin-top: 30px; font-size: 13px; color: var(--dim); text-align: center; line-height: 1.7; }
+    .foot a { color: var(--link); text-decoration: none; }
+
+    /* Laptop layout (2026-10-12). Below 960px nothing here applies. Each row
+       opens its chat inside the trip or driver console, so this page stays
+       an inbox: riding and driving side by side in a 1160px column (the
+       shared header lines up with it), a little more air in each row. */
+    @media (min-width: 960px) {
+      .wrap { max-width: 1160px; }
+      h1 { font-size: 32px; letter-spacing: -0.6px; margin: 6px 0 24px; }
+      .cols { grid-template-columns: 1fr 1fr; align-items: start; gap: 28px; }
+      .colhead { font-size: 13px; margin-bottom: 12px; }
+      .thread { padding: 16px 18px; }
+      /* Signed out: a small centered notice under a centered title, not a
+         strip across the screen. */
+      #signedOut { max-width: 460px; margin: 0 auto 10px; }
+      .wrap:has(> #signedOut:not(.hidden)) > h1 { text-align: center; margin-top: 7vh; }
+    }
   </style>
 </head>
 <body>
@@ -140,6 +179,22 @@
       }
     }
 
+    // Mapbox sometimes puts a REGION where the city belongs ("Westwood, The
+    // Westside, California": Vladimir's rides 518 and 519, 2026-10-02), and the
+    // last non-state part is then a district, not a city. Known Los Angeles
+    // districts resolve to Los Angeles; other regional labels (South Bay, East
+    // Bay, ...) step back to the part before them, or to nothing so the caller
+    // falls back to the metro name. We go by city name (Justin).
+    function ssPickCity(cleaned) {
+      if (!cleaned || !cleaned.length) return '';
+      var last = String(cleaned[cleaned.length - 1]);
+      var key = last.toLowerCase().replace(/^the\s+/, '');
+      var CITY = { 'westside': 'Los Angeles', 'san fernando valley': 'Los Angeles', 'valley': 'Los Angeles', 'south los angeles': 'Los Angeles', 'east los angeles': 'Los Angeles' };
+      var SKIP = ['south bay', 'east bay', 'peninsula', 'silicon valley', 'north bay', 'inland empire', 'central valley', 'orange county', 'bay area', 'san francisco bay area', 'los angeles county', 'san diego county', 'wine country'];
+      if (CITY[key]) return CITY[key];
+      if (SKIP.indexOf(key) >= 0) return cleaned.length >= 2 ? String(cleaned[cleaned.length - 2]) : '';
+      return last;
+    }
     function cityOf(area) {
       if (!area) return '';
       const parts = String(area).split(',').map((s) => s.trim()).filter(Boolean);
@@ -148,7 +203,7 @@
       const ZIP = /^\d{5}(-\d{4})?$/;
       const cleaned = parts.filter((p) => !/^\d/.test(p) && !STATE.test(p) && !ZIP.test(p));
       if (!cleaned.length) return parts[0];
-      return cleaned[cleaned.length - 1];
+      return ssPickCity(cleaned);
     }
     function routeOf(r) {
       return (cityOf(r.departure_area) || r.from_dest || 'Origin') + ' → ' + (cityOf(r.arrival_area) || r.to_dest || 'Destination');

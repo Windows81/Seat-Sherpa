@@ -63,14 +63,14 @@ fbq('track','PageView');
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drive with Seat Sherpa — Split costs and save up to $209 per trip</title>
-  <meta name="description" content="Headed to Vegas, LA, or San Diego anyway? Share the trip with passengers and save up to $209 in driving costs. Set your own seat price (up to $55), keep 95%. Available on iOS and Android." />
+  <title>Drive with Seat Sherpa — Split costs and save up to $228 per trip</title>
+  <meta name="description" content="Headed to Vegas, LA, or San Diego anyway? Share the trip with passengers and save up to $228 in driving costs. Set your own seat price (up to $55, or $60 over 400 miles), keep 95%. Available on iOS and Android." />
 
   <!-- Open Graph + Twitter cards. Driver-specific image would be nice
        eventually; using the same icon for now so the link preview matches
        the main site visually. -->
   <meta property="og:title" content="Drive with Seat Sherpa" />
-  <meta property="og:description" content="Split costs and save up to $209 per trip on routes you're already driving across California and Nevada." />
+  <meta property="og:description" content="Split costs and save up to $228 per trip on routes you're already driving across California and Nevada." />
   <meta property="og:image" content="https://seatsherpa.app/icon.png" />
   <meta property="og:url" content="https://seatsherpa.app/drive" />
   <meta property="og:type" content="website" />
@@ -84,19 +84,73 @@ fbq('track','PageView');
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Same design system as index.html — kept inline to avoid an
-       extra HTTP request and to keep this page self-contained. */
+    /* Color tokens + light theme (2026-10-12). Dark values are the page's
+       original colors, unchanged; the light set follows the visitor's own
+       system setting (no toggle). Same palette as /rides, /ride and /book.
+       --link is teal TEXT for things you can tap; teal FILLS (buttons) are
+       the same in both themes. */
+    :root {
+      --bg: #0E0E10; --text: #ffffff; --link: #00D4C8;
+      --navline: rgba(255,255,255,0.06); --secline: rgba(255,255,255,0.04); --navlink: #cccccc;
+      --hero-gold: rgba(255,193,7,0.10); --hero-teal: rgba(0,212,200,0.08);
+      --eyebrow-bg: rgba(0,212,200,0.12); --eyebrow-ring: none;
+      --h1a: #ffffff; --h1b: #b3b3b3; --acc-a: #FFD75A; --acc-b: #c8a84b;
+      --pc-bg: #131316; --pc-line: rgba(255,255,255,0.10); --pc-shadow: rgba(0,0,0,0.45); --pc-label: #9a9aa4;
+      --input-bg: #0E0E10; --input-line: rgba(255,255,255,0.14); --input-text: #fff; --ph: #6d6d76;
+      --list-bg: #17171b; --list-line: rgba(255,255,255,0.12); --list-sep: rgba(255,255,255,0.06); --list-hover: rgba(0,212,200,0.08); --list-p: #fff; --list-s: #9a9aa4;
+      --save: #ccc; --gold: #FFD75A; --err: #ff8a8a;
+      --btn-glow: rgba(0,212,200,0.25); --btn-glow-h: rgba(0,212,200,0.35);
+      --btn2-text: #fff; --btn2-line: rgba(255,255,255,0.2); --btn2-hover: rgba(0,212,200,0.5);
+      --sub: #999; --cap: #888; --faqbody: #aaa; --copy: #666;
+      --card-a: #1a1a1d; --card-b: #141416; --card-line: rgba(255,255,255,0.05);
+      --teal-soft: rgba(0,212,200,0.12);
+      --cta-glow: rgba(0,212,200,0.10);
+      --formula-bg: #1a1a1d; --formula-line: rgba(255,255,255,0.06); --formula-text: #ccc;
+      --label: #ddd; --field-bg: #1a1a1d; --field-line: rgba(255,255,255,0.1); --field-focus: rgba(0,212,200,0.5);
+      --invalid: rgba(255,107,107,0.5); --disabled-glow: rgba(0,212,200,0.15); --fineprint: #777;
+      --errbg: rgba(255,107,107,0.10); --errline: rgba(255,107,107,0.35);
+      --ok-a: rgba(0,212,200,0.10); --ok-b: rgba(0,212,200,0.04); --ok-line: rgba(0,212,200,0.3); --ok-icon-bg: rgba(0,212,200,0.18); --ok-p: #bbb;
+      --wm-text: #ffffff; --wm-eat: #00D4C8;
+      color-scheme: dark;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F5F6F5; --text: #121416; --link: #007C76;
+        --navline: rgba(18,22,22,0.10); --secline: rgba(18,22,22,0.10); --navlink: #4B5357;
+        --hero-gold: rgba(255,193,7,0.14); --hero-teal: rgba(0,212,200,0.10);
+        --eyebrow-bg: #FFFFFF; --eyebrow-ring: inset 0 0 0 1px rgba(0,124,118,0.45);
+        --h1a: #121416; --h1b: #23272A; --acc-a: #B07800; --acc-b: #8A5A00;
+        --pc-bg: #FFFFFF; --pc-line: rgba(18,22,22,0.10); --pc-shadow: rgba(0,0,0,0.12); --pc-label: #4B5357;
+        --input-bg: #FFFFFF; --input-line: rgba(18,22,22,0.18); --input-text: #121416; --ph: #687176;
+        --list-bg: #FFFFFF; --list-line: rgba(18,22,22,0.18); --list-sep: rgba(18,22,22,0.10); --list-hover: rgba(0,168,159,0.12); --list-p: #121416; --list-s: #4B5357;
+        --save: #4B5357; --gold: #8A5A00; --err: #C62828;
+        --btn-glow: rgba(0,168,159,0.22); --btn-glow-h: rgba(0,168,159,0.32);
+        --btn2-text: #121416; --btn2-line: rgba(18,22,22,0.18); --btn2-hover: rgba(0,124,118,0.45);
+        --sub: #4B5357; --cap: #687176; --faqbody: #4B5357; --copy: #687176;
+        --card-a: #FFFFFF; --card-b: #FFFFFF; --card-line: rgba(18,22,22,0.10);
+        --teal-soft: rgba(0,168,159,0.12);
+        --cta-glow: rgba(0,212,200,0.10);
+        --formula-bg: #EFF1F0; --formula-line: rgba(18,22,22,0.10); --formula-text: #23272A;
+        --label: #23272A; --field-bg: #FFFFFF; --field-line: rgba(18,22,22,0.18); --field-focus: rgba(0,124,118,0.45);
+        --invalid: rgba(198,40,40,0.5); --disabled-glow: rgba(0,168,159,0.12); --fineprint: #687176;
+        --errbg: rgba(198,40,40,0.08); --errline: rgba(198,40,40,0.35);
+        --ok-a: rgba(0,168,159,0.10); --ok-b: rgba(0,168,159,0.04); --ok-line: rgba(0,124,118,0.45); --ok-icon-bg: rgba(0,168,159,0.12); --ok-p: #4B5357;
+        --wm-text: #121416; --wm-eat: #00A89F;
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368; --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF; --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F; --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+        color-scheme: light;
+      }
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: #0E0E10;
-      color: #ffffff;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
     img { max-width: 100%; height: auto; display: block; }
-    a { color: #00D4C8; text-decoration: none; transition: opacity 0.15s; }
+    a { color: var(--link); text-decoration: none; transition: opacity 0.15s; }
     a:hover { opacity: 0.8; }
 
     .container {
@@ -108,7 +162,7 @@ fbq('track','PageView');
     /* Nav */
     nav {
       padding: 20px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid var(--navline);
     }
     nav .container {
       display: flex;
@@ -121,12 +175,13 @@ fbq('track','PageView');
       gap: 10px;
       font-weight: 700;
       font-size: 17px;
-      color: #fff;
+      color: var(--text);
     }
     nav .brand img { width: 32px; height: 32px; border-radius: 8px; }
     nav .links { display: flex; gap: 24px; font-size: 14px; }
-    nav .links a { color: #cccccc; }
-    nav .links a.active { color: #00D4C8; font-weight: 600; }
+    nav .links a { color: var(--navlink); }
+    nav .links a.active { color: var(--link); font-weight: 600; }
+    nav .links a.post { color: var(--link); font-weight: 700; }
     @media (max-width: 600px) {
       nav .links { display: none; }
     }
@@ -138,14 +193,15 @@ fbq('track','PageView');
       padding: 80px 0 64px;
       text-align: center;
       background:
-        radial-gradient(ellipse at top, rgba(255,193,7,0.10) 0%, transparent 60%),
-        radial-gradient(ellipse at bottom right, rgba(0,212,200,0.08) 0%, transparent 50%),
-        #0E0E10;
+        radial-gradient(ellipse at top, var(--hero-gold) 0%, transparent 60%),
+        radial-gradient(ellipse at bottom right, var(--hero-teal) 0%, transparent 50%),
+        var(--bg);
     }
     .hero .eyebrow {
       display: inline-block;
-      background: rgba(0,212,200,0.12);
-      color: #00D4C8;
+      background: var(--eyebrow-bg);
+      box-shadow: var(--eyebrow-ring);
+      color: var(--link);
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.6px;
@@ -160,13 +216,13 @@ fbq('track','PageView');
       letter-spacing: -1.2px;
       font-weight: 800;
       margin-bottom: 20px;
-      background: linear-gradient(180deg, #ffffff 0%, #b3b3b3 100%);
+      background: linear-gradient(180deg, var(--h1a) 0%, var(--h1b) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .hero h1 .accent {
-      background: linear-gradient(180deg, #FFD75A 0%, #c8a84b 100%);
+      background: linear-gradient(180deg, var(--acc-a) 0%, var(--acc-b) 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -177,10 +233,13 @@ fbq('track','PageView');
     }
     .hero p.tagline {
       font-size: 19px;
-      color: #cccccc;
+      color: var(--navlink);
       max-width: 620px;
       margin: 0 auto 40px;
     }
+    /* Under the post card (were inline styles; same values). */
+    .hero-note { margin: 22px auto 0; max-width: 620px; font-size: 14px; line-height: 1.6; opacity: 0.85; }
+    .hero-how { margin: 10px auto 0; }
 
     /* Hero post card (2026-08-28, BlaBlaCar-style: the From+To widget IS the
        hero — Continue hands the picks to /post which jumps straight to the
@@ -188,12 +247,12 @@ fbq('track','PageView');
     .postcard {
       max-width: 560px;
       margin: 0 auto;
-      background: #131316;
-      border: 1px solid rgba(255,255,255,0.10);
+      background: var(--pc-bg);
+      border: 1px solid var(--pc-line);
       border-radius: 18px;
       padding: 22px 22px 20px;
       text-align: left;
-      box-shadow: 0 18px 48px rgba(0,0,0,0.45);
+      box-shadow: 0 18px 48px var(--pc-shadow);
     }
     .postcard label {
       display: block;
@@ -201,29 +260,29 @@ fbq('track','PageView');
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #9a9aa4;
+      color: var(--pc-label);
       margin: 0 0 6px;
     }
     .pc-wrap { position: relative; margin-bottom: 16px; }
     .pc-wrap input {
       width: 100%;
-      background: #0E0E10;
-      border: 1px solid rgba(255,255,255,0.14);
+      background: var(--input-bg);
+      border: 1px solid var(--input-line);
       border-radius: 12px;
       padding: 13px 14px;
       font-size: 16px;
-      color: #fff;
+      color: var(--input-text);
       font-family: inherit;
       outline: none;
     }
-    .pc-wrap input:focus { border-color: #00D4C8; }
-    .pc-wrap input::placeholder { color: #6d6d76; }
+    .pc-wrap input:focus { border-color: var(--link); }
+    .pc-wrap input::placeholder { color: var(--ph); }
     .pc-list {
       position: absolute;
       top: calc(100% + 4px);
       left: 0; right: 0;
-      background: #17171b;
-      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--list-bg);
+      border: 1px solid var(--list-line);
       border-radius: 12px;
       overflow: hidden;
       z-index: 30;
@@ -236,17 +295,17 @@ fbq('track','PageView');
       text-align: left;
       background: none;
       border: none;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid var(--list-sep);
       padding: 11px 14px;
       cursor: pointer;
       font-family: inherit;
     }
     .pc-list button:last-child { border-bottom: none; }
-    .pc-list button:hover { background: rgba(0,212,200,0.08); }
-    .pc-list .p { display: block; font-size: 14.5px; font-weight: 600; color: #fff; }
-    .pc-list .s { display: block; font-size: 12.5px; color: #9a9aa4; margin-top: 1px; }
-    .pc-save { font-size: 15px; color: #ccc; margin: 2px 0 14px; }
-    .pc-save strong { color: #FFD75A; }
+    .pc-list button:hover { background: var(--list-hover); }
+    .pc-list .p { display: block; font-size: 14.5px; font-weight: 600; color: var(--list-p); }
+    .pc-list .s { display: block; font-size: 12.5px; color: var(--list-s); margin-top: 1px; }
+    .pc-save { font-size: 15px; color: var(--save); margin: 2px 0 14px; }
+    .pc-save strong { color: var(--gold); }
     .pc-go {
       display: block;
       width: 100%;
@@ -256,7 +315,7 @@ fbq('track','PageView');
       text-align: center;
       font-size: 16px;
     }
-    .pc-err { font-size: 14px; color: #ff8a8a; margin: 12px 0 0; }
+    .pc-err { font-size: 14px; color: var(--err); margin: 12px 0 0; }
     .hidden { display: none !important; }
 
     /* CTA buttons */
@@ -276,31 +335,31 @@ fbq('track','PageView');
       font-size: 15px;
       letter-spacing: 0.2px;
       transition: transform 0.15s, box-shadow 0.15s;
-      box-shadow: 0 8px 24px rgba(0,212,200,0.25);
+      box-shadow: 0 8px 24px var(--btn-glow);
     }
     .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 12px 28px rgba(0,212,200,0.35);
+      box-shadow: 0 12px 28px var(--btn-glow-h);
       opacity: 1;
     }
     .btn-secondary {
       display: inline-block;
       background: transparent;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--btn2-text);
+      border: 1px solid var(--btn2-line);
       font-weight: 600;
       padding: 13px 28px;
       border-radius: 100px;
       font-size: 15px;
     }
     .btn-secondary:hover {
-      border-color: rgba(0,212,200,0.5);
+      border-color: var(--btn2-hover);
     }
 
     /* Sections */
     section.earnings, section.how-it-works, section.faq {
       padding: 80px 0;
-      border-top: 1px solid rgba(255,255,255,0.04);
+      border-top: 1px solid var(--secline);
     }
     @media (max-width: 600px) {
       section.earnings, section.how-it-works, section.faq {
@@ -316,7 +375,7 @@ fbq('track','PageView');
     }
     section h2 + p.section-sub {
       text-align: center;
-      color: #999;
+      color: var(--sub);
       max-width: 580px;
       margin: 0 auto 56px;
     }
@@ -334,8 +393,8 @@ fbq('track','PageView');
       gap: 16px;
     }
     .earnings-card {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.05);
+      background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+      border: 1px solid var(--card-line);
       border-radius: 16px;
       padding: 28px 24px;
       position: relative;
@@ -351,35 +410,38 @@ fbq('track','PageView');
     }
     .earnings-card .route {
       font-size: 14px;
-      color: #999;
+      color: var(--sub);
       margin-bottom: 12px;
     }
+    .earnings-card .route em { font-style: normal; font-size: 11px; letter-spacing: 0.5px; }
+    .earnings-card .route em.van { color: var(--gold); font-weight: 700; }
+    .earnings-card .route em.car { color: var(--cap); font-weight: 600; }
     .earnings-card .amount {
       font-size: 36px;
       font-weight: 800;
-      color: #FFD75A;
+      color: var(--gold);
       letter-spacing: -0.8px;
       margin-bottom: 8px;
     }
     .earnings-card .amount-sub {
       font-size: 13px;
-      color: #888;
+      color: var(--cap);
     }
     .earnings-card .breakdown {
       margin-top: 20px;
       padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid var(--navline);
       font-size: 13px;
-      color: #aaa;
+      color: var(--faqbody);
       line-height: 1.7;
     }
     .earnings-card .breakdown strong {
-      color: #fff;
+      color: var(--text);
       font-weight: 600;
     }
     .earnings-fineprint {
       text-align: center;
-      color: #666;
+      color: var(--copy);
       font-size: 12px;
       margin-top: 32px;
       max-width: 720px;
@@ -404,8 +466,8 @@ fbq('track','PageView');
       width: 48px;
       height: 48px;
       border-radius: 24px;
-      background: rgba(0,212,200,0.12);
-      color: #00D4C8;
+      background: var(--teal-soft);
+      color: var(--link);
       font-weight: 800;
       font-size: 20px;
       margin-bottom: 16px;
@@ -416,7 +478,7 @@ fbq('track','PageView');
       margin-bottom: 8px;
     }
     .step p {
-      color: #999;
+      color: var(--sub);
       font-size: 14px;
     }
 
@@ -430,8 +492,8 @@ fbq('track','PageView');
       gap: 12px;
     }
     .faq-item {
-      background: linear-gradient(180deg, #1a1a1d 0%, #141416 100%);
-      border: 1px solid rgba(255,255,255,0.05);
+      background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+      border: 1px solid var(--card-line);
       border-radius: 12px;
       overflow: hidden;
     }
@@ -440,7 +502,7 @@ fbq('track','PageView');
       cursor: pointer;
       font-weight: 600;
       font-size: 15px;
-      color: #fff;
+      color: var(--text);
       list-style: none;
       display: flex;
       justify-content: space-between;
@@ -451,7 +513,7 @@ fbq('track','PageView');
     .faq-item summary::after {
       content: '+';
       font-size: 20px;
-      color: #00D4C8;
+      color: var(--link);
       transition: transform 0.2s;
     }
     .faq-item[open] summary::after {
@@ -459,16 +521,21 @@ fbq('track','PageView');
     }
     .faq-item .body {
       padding: 0 22px 18px;
-      color: #aaa;
+      color: var(--faqbody);
       font-size: 14px;
       line-height: 1.7;
+    }
+    /* The price-cap formula line (was inline styles; same values). */
+    .faq-item .body .formula {
+      background: var(--formula-bg); border: 1px solid var(--formula-line); border-radius: 8px;
+      padding: 14px 18px; font-family: ui-monospace, monospace; font-size: 13px; color: var(--formula-text);
     }
 
     /* Final CTA section */
     .cta-section {
       text-align: center;
       padding: 96px 0;
-      background: radial-gradient(ellipse at center, rgba(0,212,200,0.10) 0%, transparent 60%);
+      background: radial-gradient(ellipse at center, var(--cta-glow) 0%, transparent 60%);
     }
     .cta-section h2 {
       font-size: 40px;
@@ -477,10 +544,12 @@ fbq('track','PageView');
       letter-spacing: -0.8px;
     }
     .cta-section p {
-      color: #aaa;
+      color: var(--faqbody);
       max-width: 480px;
       margin: 0 auto 32px;
     }
+    .cta-section .cta-row-post { justify-content: center; margin: 18px 0 14px; }
+    .cta-section .cta-row-apps { justify-content: center; margin: 0 0 28px; }
     @media (max-width: 600px) {
       .cta-section { padding: 64px 0; }
       .cta-section h2 { font-size: 30px; }
@@ -489,8 +558,8 @@ fbq('track','PageView');
     /* Footer */
     footer {
       padding: 48px 0 64px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      color: #888;
+      border-top: 1px solid var(--navline);
+      color: var(--cap);
       font-size: 14px;
     }
     footer .container {
@@ -504,8 +573,91 @@ fbq('track','PageView');
       gap: 24px;
       flex-wrap: wrap;
     }
-    footer .links a { color: #cccccc; }
-    footer .copyright { color: #666; font-size: 13px; }
+    footer .links a { color: var(--navlink); }
+    footer .copyright { color: var(--copy); font-size: 13px; }
+
+    /* ── Laptop layout (2026-10-12) ────────────────────────────────────
+       From 960px up: the hero is copy left + the post card right (the
+       BlaBlaCar pattern), earnings and steps run four across, the FAQ gets
+       a sticky heading column, and the sign-up section splits into "post
+       now" left and the waitlist form right. Phones are untouched. */
+    @media (min-width: 960px) {
+      .container { max-width: 1200px; padding: 0 40px; }
+
+      .hero { padding: 80px 0 96px; text-align: left; }
+      .hero .container {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+        grid-template-rows: 1fr auto auto auto auto 1fr;
+        grid-template-areas:
+          ".       card"
+          "eyebrow card"
+          "h1      card"
+          "note    card"
+          "how     card"
+          ".       card";
+        column-gap: 64px;
+      }
+      .hero .eyebrow { grid-area: eyebrow; justify-self: start; }
+      .hero h1 { grid-area: h1; font-size: 52px; text-wrap: balance; margin-bottom: 4px; }
+      .hero h1 br { display: none; }
+      .hero h1 #hSaveWord::before { content: ' '; }
+      .postcard { grid-area: card; align-self: center; width: 100%; max-width: 520px; justify-self: end; margin: 0; padding: 28px 28px 24px; }
+      .hero-note { grid-area: note; margin: 18px 0 0; max-width: 34em; font-size: 15px; }
+      .hero-how { grid-area: how; margin: 14px 0 0; }
+
+      .earnings-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+      .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+      .step {
+        text-align: left; padding: 26px 24px; border-radius: 16px;
+        background: linear-gradient(180deg, var(--card-a) 0%, var(--card-b) 100%);
+        border: 1px solid var(--card-line);
+      }
+
+      /* FAQ: heading in a sticky left column, answers right at a readable
+         line length. */
+      section.faq .container {
+        display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 680px);
+        column-gap: 64px; align-items: start;
+      }
+      section.faq h2 { text-align: left; position: sticky; top: 32px; margin: 0; }
+      .faq-list { max-width: none; margin: 0; }
+      .faq-item summary { font-size: 16px; }
+      .faq-item .body { font-size: 15px; }
+
+      /* Ready to drive: post online left, expansion waitlist right. */
+      .cta-section { padding: 112px 0; text-align: left; }
+      .cta-section .container {
+        display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        grid-template-rows: auto auto auto auto 1fr; column-gap: 72px;
+      }
+      .cta-section .container > h2 { grid-column: 1; grid-row: 1; text-align: left; }
+      .cta-section .container > p:nth-of-type(1) { grid-column: 1; grid-row: 2; margin: 0 0 8px; }
+      .cta-section .cta-row-post { grid-column: 1; grid-row: 3; justify-content: flex-start; }
+      .cta-section .cta-row-apps { grid-column: 1; grid-row: 4; justify-content: flex-start; }
+      .cta-section .container > p:nth-of-type(2) { grid-column: 2; grid-row: 1; margin: 0; max-width: none; align-self: end; }
+      /* ".cta-section" prefixes: the form's own styles sit in a later
+         <style> block, so these need the extra weight to win. */
+      .cta-section .signup-form, .cta-section .signup-success { grid-column: 2; grid-row: 2 / -1; }
+      .cta-section .signup-form {
+        max-width: none; margin: 20px 0 0; padding: 28px; border-radius: 18px;
+        background: var(--pc-bg); border: 1px solid var(--pc-line);
+      }
+      .cta-section .form-actions { align-items: flex-start; }
+      .cta-section .form-fineprint { text-align: left; margin: 0; max-width: none; }
+      .cta-section .signup-success { max-width: none; margin: 20px 0 0; align-self: start; }
+      /* The form and the thank-you card share one grid cell here, and
+         .signup-form's display:flex otherwise beats [hidden], so the
+         submitted form would sit under the card. */
+      .cta-section .signup-form[hidden] { display: none; }
+    }
+    /* Every width (2026-10-12): the submit handler hides the form when the
+       thank-you card shows, but display:flex beat [hidden], so on phones the
+       spent form stayed above the card. */
+    .signup-form[hidden] { display: none; }
+    @media (min-width: 1140px) {
+      .earnings-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
   </style>
   <!-- Vercel Web Analytics — this is the paid-ad landing page, so it MUST be
        tracked (it wasn't, which made all Meta ad traffic invisible). -->
@@ -517,15 +669,15 @@ fbq('track','PageView');
   <nav>
     <div class="container">
       <div class="brand">
-        <a href="/" style="display: flex; align-items: center; gap: 10px; color: #fff;">
-          <svg style="height:30px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff">Sherpa</text></svg>
+        <a href="/" style="display: flex; align-items: center; gap: 10px; color: var(--text);">
+          <svg style="height:30px;width:auto;display:block" viewBox="0 -22 600 144" role="img" aria-label="Seat Sherpa" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="wmg" x1="0" y1="1" x2="0.35" y2="0"><stop offset="0" stop-color="#0F9C93"/><stop offset="1" stop-color="#24E4D8"/></linearGradient></defs><g transform="translate(-36.4 -50) scale(0.427)"><path d="M150 342 C 162 312, 236 286, 240 250 C 245 210, 90 196, 94 160 C 97 115, 158 99, 186 86 Q 200 76 214 86 C 192 99, 141 115, 146 160 C 150 196, 313 210, 316 250 C 320 286, 254 312, 250 342 Z" fill="url(#wmg)" stroke="#0B5650" stroke-width="4"/><path d="M200 342 C 208 312, 278 286, 278 250 C 279 210, 120 196, 120 160 C 119 115, 175 99, 200 86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="butt" stroke-dasharray="9 16"/></g><text x="101" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#00D4C8" style="fill:var(--wm-eat)">eat</text><text x="263" y="96" font-family="Outfit, sans-serif" font-weight="600" font-size="86" fill="#ffffff" style="fill:var(--wm-text)">Sherpa</text></svg>
         </a>
       </div>
       <div class="links">
         <a href="/">For riders</a>
         <a href="/drive" class="active">For drivers</a>
         <a href="/colleges">For organizations</a>
-        <a href="/post" style="color:#00D4C8;font-weight:700;">Post a ride</a>
+        <a href="/post" class="post">Post a ride</a>
         <a href="/terms.html">Terms</a>
         <a href="/privacy.html">Privacy</a>
       </div>
@@ -536,7 +688,7 @@ fbq('track','PageView');
   <section class="hero">
     <div class="container">
       <span class="eyebrow">For drivers</span>
-      <h1>Split costs and save up to <span class="accent" id="hSaveAmt">$209</span><br /><span id="hSaveWord">on routes you're already driving</span></h1>
+      <h1>Split costs and save up to <span class="accent" id="hSaveAmt">$228</span><br /><span id="hSaveWord">on routes you're already driving</span></h1>
       <!-- Drive Rewards banner removed 2026-07-31 — program not launched
            (migrations 0122/0123 unrun). Do NOT restore until both have run in
            prod: advertising credit the DB can't grant is a promise we'd break
@@ -564,12 +716,12 @@ fbq('track','PageView');
       <!-- The #1 hesitation, answered before the fold instead of buried in
            the FAQ. "Usually" is load-bearing — we can't promise every
            insurer/state, and the FAQ below carries the full nuance. -->
-      <p style="margin:22px auto 0;max-width:620px;font-size:14px;line-height:1.6;opacity:0.85;">
+      <p class="hero-note">
         🚘 No commercial license, permits, or special insurance usually needed — seat prices are
         capped at the IRS mileage rate, so this is cost-sharing carpooling, not professional
         driving.
       </p>
-      <p style="margin:10px auto 0;"><a href="#how" style="font-size:14.5px;">See how it works ↓</a></p>
+      <p class="hero-how"><a href="#how" style="font-size:14.5px;">See how it works ↓</a></p>
     </div>
   </section>
 
@@ -582,7 +734,7 @@ fbq('track','PageView');
       </p>
       <div class="earnings-grid">
         <div class="earnings-card">
-          <div class="route">Bay Area → LA <em style="color:#FFD75A;font-style:normal;font-size:11px;font-weight:700;letter-spacing:0.5px;">· 7-SEAT VAN</em></div>
+          <div class="route">Bay Area → LA <em class="van">· 7-SEAT VAN</em></div>
           <div class="amount">$228</div>
           <div class="amount-sub">saved on a full ride (6 riders)</div>
           <div class="breakdown">
@@ -593,7 +745,7 @@ fbq('track','PageView');
           </div>
         </div>
         <div class="earnings-card">
-          <div class="route">Bay Area → LA <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
+          <div class="route">Bay Area → LA <em class="car">· 5-SEAT CAR</em></div>
           <div class="amount">$152</div>
           <div class="amount-sub">saved on a full ride (4 riders)</div>
           <div class="breakdown">
@@ -604,7 +756,7 @@ fbq('track','PageView');
           </div>
         </div>
         <div class="earnings-card">
-          <div class="route">LA → Las Vegas <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
+          <div class="route">LA → Las Vegas <em class="car">· 5-SEAT CAR</em></div>
           <div class="amount">$133</div>
           <div class="amount-sub">saved on a full ride (4 riders)</div>
           <div class="breakdown">
@@ -615,7 +767,7 @@ fbq('track','PageView');
           </div>
         </div>
         <div class="earnings-card">
-          <div class="route">LA → San Diego <em style="color:#888;font-style:normal;font-size:11px;font-weight:600;letter-spacing:0.5px;">· 5-SEAT CAR</em></div>
+          <div class="route">LA → San Diego <em class="car">· 5-SEAT CAR</em></div>
           <div class="amount">$76</div>
           <div class="amount-sub">saved on a full ride (4 riders)</div>
           <div class="breakdown">
@@ -627,7 +779,7 @@ fbq('track','PageView');
         </div>
       </div>
       <p class="earnings-fineprint">
-        Examples assume a full ride at typical seat prices for each route. Drivers set their per-seat price within a range that depends on the trip — minimum $10, maximum tied to the IRS standard mileage rate for the distance you're driving (capped at $55). This keeps Seat Sherpa a cost-sharing platform, not a commercial transport service. The 5% fee covers credit card processing and platform operating costs.
+        Examples assume a full ride at typical seat prices for each route. Drivers set their per-seat price within a range that depends on the trip — minimum $10, maximum tied to the IRS standard mileage rate for the distance you're driving (capped at $55, or $60 on trips over 400 miles). This keeps Seat Sherpa a cost-sharing platform, not a commercial transport service. The 5% fee covers credit card processing and platform operating costs.
       </p>
     </div>
   </section>
@@ -672,7 +824,7 @@ fbq('track','PageView');
           <summary>What about my insurance?</summary>
           <div class="body">
             <p>
-              Seat Sherpa is cost-sharing, not commercial driving — same legal category as splitting gas with friends. Your personal auto insurance usually covers it the same way it would cover any personal trip, because our <a href="#" onclick="document.querySelectorAll('details.faq-item').forEach(d=>{if(d.querySelector('summary').textContent.includes('max price per seat')){d.setAttribute('open','');d.scrollIntoView({behavior:'smooth',block:'center'});}});return false;" style="color:#00D4C8;">per-seat price cap</a> keeps you in true cost-sharing territory and away from anything an insurer would call "commercial."
+              Seat Sherpa is cost-sharing, not commercial driving — same legal category as splitting gas with friends. Your personal auto insurance usually covers it the same way it would cover any personal trip, because our <a href="#" onclick="document.querySelectorAll('details.faq-item').forEach(d=>{if(d.querySelector('summary').textContent.includes('max price per seat')){d.setAttribute('open','');d.scrollIntoView({behavior:'smooth',block:'center'});}});return false;" style="color:var(--link);">per-seat price cap</a> keeps you in true cost-sharing territory and away from anything an insurer would call "commercial."
             </p>
             <p>
               The one wrinkle: many personal auto policies contain a "livery exclusion" — language that excludes coverage when the vehicle is used "for hire." A reasonable insurer reading it correctly should say "cost-sharing isn't for-hire, you're covered." An aggressive claims adjuster looking for a reason to deny might point to the app-based payment and refuse to pay. You can't predict which interpretation a specific adjuster will pick when it matters.
@@ -720,7 +872,7 @@ fbq('track','PageView');
             <p>
               For that to hold up, drivers <strong>can't profit</strong> from a trip — they can only recover what the trip actually costs to drive. The IRS publishes a standard mileage rate ($0.76/mile as of July 1, 2026) that's universally accepted as a proxy for the real cost of operating a personal vehicle: gas, wear, depreciation, insurance. We use that as our ceiling:
             </p>
-            <p style="background:#1a1a1d;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 18px;font-family:ui-monospace,monospace;font-size:13px;color:#ccc;">
+            <p class="formula">
               max per-seat price = (trip distance × $0.76) ÷ seats offered (at least 4)
             </p>
             <p>
@@ -730,14 +882,34 @@ fbq('track','PageView');
               <li>LA → San Diego (~120 mi) → max $22/seat</li>
               <li>LA → Vegas (~270 mi) → max $51/seat (IRS cap, still under the $55 ceiling)</li>
               <li>Bay → LA (~380 mi) → would calc to $72, capped at $55 (our hard ceiling)</li>
-              <li>Bay → Las Vegas (~570 mi) → would calc to $108, capped at $55</li>
+              <li>Bay → Las Vegas (~570 mi) → would calc to $108, capped at $60 (the ceiling for trips over 400 miles)</li>
             </ul>
             <p>
-              On longer routes the IRS-rate cap is generous enough that our $55 brand ceiling takes over. On shorter routes the IRS cap binds. Either way, you can't price yourself into "commercial driver" territory by accident — when you post a ride the app shows the exact max for your route (trip distance × $0.76 ÷ seats offered, counted as at least four) and won't let you set a seat price above it.
+              On longer routes the IRS-rate cap is generous enough that our brand ceiling takes over: $55 a seat, or $60 on trips over 400 miles. On shorter routes the IRS cap binds. Either way, you can't price yourself into "commercial driver" territory by accident — when you post a ride the app shows the exact max for your route (trip distance × $0.76 ÷ seats offered, counted as at least four) and won't let you set a seat price above it.
             </p>
             <p>
               <strong>This is also why a rideshare endorsement isn't strictly required</strong> (see the insurance FAQ above): you're staying squarely in cost-sharing territory, which is what your personal auto insurance is designed to cover. The endorsement is a belt-and-suspenders option if you want extra peace of mind, not a legal necessity.
             </p>
+          </div>
+        </details>
+
+        <!-- Quick responder (Justin 2026-10-07). Rule = chipFor() in
+             supabase/functions/_shared/response-time.ts: answered >= half
+             of requests AND (median first reply < 12 h OR <= 2 h on the
+             8am-8pm PT clock, own drives excluded), 90-day window, recounted
+             nightly (recount-quick-responders, 1:15 AM PT). Change both
+             together. -->
+        <details class="faq-item" id="quick-responder">
+          <summary>How do I get the Quick responder badge?</summary>
+          <div class="body">
+            <p style="margin:0 0 12px;">Riders see how quickly you usually reply when they open your driver profile. Drivers who reply fast get it in gold, with a <strong>Quick responder</strong> badge on the rider&rsquo;s booking screen.</p>
+            <p style="margin:0 0 8px;">You get the badge when both of these are true:</p>
+            <ul style="margin:0 0 12px;padding-left:20px;">
+              <li><strong>You usually reply fast.</strong> Your typical first reply to a booking request comes within 12 hours, or within 2 hours counting only 8 AM to 8 PM Pacific. So a request that arrives at 10 PM and gets your answer at 8:30 the next morning still counts as fast, and on that daytime clock, hours spent driving your own posted rides don&rsquo;t count against you.</li>
+              <li><strong>You answer most requests.</strong> You reply to at least half of the booking requests you get.</li>
+            </ul>
+            <p style="margin:0 0 12px;">Any first reply counts: accepting, declining, or a message in the chat. We look at your last 90 days and update the badge every night.</p>
+            <p style="margin:0;"><strong>Why it gets you more bookings:</strong> riders book the drivers who answer. A rider left waiting often books someone else, and riders can now send a backup request to a second ride going their way. The first driver to accept gets the rider, and the other request is withdrawn. Keep notifications on (or watch your email) so you see requests the moment they arrive, and if you can&rsquo;t take a rider, decline quickly. That still counts as a reply.</p>
           </div>
         </details>
 
@@ -816,10 +988,10 @@ fbq('track','PageView');
         <strong>We're live in California and Nevada</strong> — post your first ride right from
         your browser, or grab the app.
       </p>
-      <div class="cta-row" style="justify-content:center;margin:18px 0 14px;">
+      <div class="cta-row cta-row-post">
         <a class="btn-primary" href="/post" style="display:inline-flex;align-items:center;gap:9px;font-size:17px;">🚗 Post a ride online →</a>
       </div>
-      <div class="cta-row" style="justify-content:center;margin:0 0 28px;">
+      <div class="cta-row cta-row-apps">
         <a class="btn-primary" id="driveAppleBtn" href="https://seatsherpa.onelink.me/cGHs?pid=web&c=drive" style="display:inline-flex;align-items:center;gap:9px;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.86-3.08.41-1.09-.47-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.41C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.78 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.1zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
           App Store
@@ -935,11 +1107,11 @@ fbq('track','PageView');
     .form-label {
       font-size: 13px;
       font-weight: 600;
-      color: #ddd;
+      color: var(--label);
       letter-spacing: 0.2px;
     }
     .form-optional {
-      color: #888;
+      color: var(--cap);
       font-weight: 400;
       font-size: 12px;
     }
@@ -947,11 +1119,11 @@ fbq('track','PageView');
     .signup-form input[type="email"],
     .signup-form input[type="tel"],
     .signup-form textarea {
-      background: #1a1a1d;
-      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--field-bg);
+      border: 1px solid var(--field-line);
       border-radius: 10px;
       padding: 12px 14px;
-      color: #fff;
+      color: var(--input-text);
       font-size: 15px;
       font-family: inherit;
       transition: border-color 0.15s;
@@ -960,7 +1132,7 @@ fbq('track','PageView');
     .signup-form input:focus,
     .signup-form textarea:focus {
       outline: none;
-      border-color: rgba(0,212,200,0.5);
+      border-color: var(--field-focus);
     }
     .signup-form textarea {
       resize: vertical;
@@ -975,7 +1147,7 @@ fbq('track','PageView');
     }
     .signup-form.show-validation input:invalid,
     .signup-form.show-validation textarea:invalid {
-      border-color: rgba(255,107,107,0.5);
+      border-color: var(--invalid);
     }
     .form-honeypot {
       /* Move off-screen rather than display:none so screen readers don't
@@ -1004,18 +1176,18 @@ fbq('track','PageView');
       opacity: 0.6;
       cursor: not-allowed;
       transform: none !important;
-      box-shadow: 0 8px 24px rgba(0,212,200,0.15) !important;
+      box-shadow: 0 8px 24px var(--disabled-glow) !important;
     }
     .form-fineprint {
       font-size: 12px;
-      color: #777;
+      color: var(--fineprint);
       max-width: 440px;
       text-align: center;
     }
     .form-error {
-      background: rgba(255,107,107,0.10);
-      border: 1px solid rgba(255,107,107,0.35);
-      color: #ff8a8a;
+      background: var(--errbg);
+      border: 1px solid var(--errline);
+      color: var(--err);
       border-radius: 10px;
       padding: 12px 16px;
       font-size: 14px;
@@ -1025,8 +1197,8 @@ fbq('track','PageView');
       max-width: 540px;
       margin: 40px auto 0;
       padding: 32px 28px;
-      background: linear-gradient(180deg, rgba(0,212,200,0.10) 0%, rgba(0,212,200,0.04) 100%);
-      border: 1px solid rgba(0,212,200,0.3);
+      background: linear-gradient(180deg, var(--ok-a) 0%, var(--ok-b) 100%);
+      border: 1px solid var(--ok-line);
       border-radius: 16px;
       text-align: center;
     }
@@ -1037,8 +1209,8 @@ fbq('track','PageView');
       width: 56px;
       height: 56px;
       border-radius: 28px;
-      background: rgba(0,212,200,0.18);
-      color: #00D4C8;
+      background: var(--ok-icon-bg);
+      color: var(--link);
       font-size: 28px;
       font-weight: 800;
       margin-bottom: 16px;
@@ -1049,7 +1221,7 @@ fbq('track','PageView');
       margin-bottom: 12px;
     }
     .signup-success p {
-      color: #bbb;
+      color: var(--ok-p);
       line-height: 1.55;
     }
   </style>
@@ -1222,9 +1394,10 @@ fbq('track','PageView');
       if (picks.from && picks.to) {
         // Same math as /post's savings hook: 4 open seats (standard car;
         // Justin 2026-08-30) × cost-share cap (hav ×1.25 mi × $0.76/4,
-        // $10 floor, $55 ceiling) minus the 5% fee.
+        // $10 floor, $55 ceiling, $60 from 400 mi) minus the 5% fee.
         var miles = hav(picks.from.coords, picks.to.coords) * 1.25;
         if (isFinite(miles) && miles > 0) {
+          // Estimated miles, so the base $55 tier (the $60 tier needs measured road miles).
           var perSeat = Math.min(55, Math.max(10, (miles * 0.76) / 4));
           // Never advertise more than the trip's actual shareable cost —
           // the $10 floor × seats overstates short trips (Fable E2).
@@ -1237,7 +1410,7 @@ fbq('track','PageView');
         }
       }
       line.classList.add('hidden');
-      $('hSaveAmt').textContent = '$209';
+      $('hSaveAmt').textContent = '$228';
       $('hSaveWord').textContent = "on routes you're already driving";
     }
     function wire(inputId, listId, key) {

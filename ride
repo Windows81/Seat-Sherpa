@@ -69,17 +69,49 @@ fbq('track','PageView');
   <meta property="og:description" content="A driver shared their ride with you. Book a seat from your browser and share the cost of the drive." />
   <meta property="og:image" content="https://seatsherpa.app/icon.png" />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#0E0E10" />
+  <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#F5F6F5" media="(prefers-color-scheme: light)" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Color tokens (2026-10-12). Teal fills (--teal) are buttons; --link is
+       teal TEXT for things you can tap. Nothing else is teal. */
+    :root {
+      --bg: #0E0E10; --card: #141416; --raise: #17171d;
+      --line: rgba(255,255,255,0.08); --line2: rgba(255,255,255,0.14); --chipline: #2a2a33;
+      --text: #ffffff; --text2: #e8e8ee; --sub: #b9b9c6; --cap: #8a8a92; --faint: #66666f;
+      --teal: #00D4C8; --on-teal: #04201e; --link: #00D4C8;
+      --teal-soft: rgba(0,212,200,0.14); --teal-line: rgba(0,212,200,0.45);
+      --dot: #3a3a44; --node: #ffffff; --bar: rgba(20,20,22,0.94); --nudge: #141d1c; --gold: #FFD75A;
+      color-scheme: dark;
+    }
+    /* Light theme (2026-10-12, Justin approved): follows the phone's or
+       computer's own light/dark setting; only the tokens change. Same
+       palette as /rides and /book. --ssbar-* / --ssmenu-* theme the shared
+       header and account menu (js/ss-appbar.js, js/ss-menu.js). */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F5F6F5; --card: #FFFFFF; --raise: #EFF1F0;
+        --line: rgba(18,22,22,0.10); --line2: rgba(18,22,22,0.18); --chipline: #D8DCDB;
+        --text: #121416; --text2: #23272A; --sub: #4B5357; --cap: #687176; --faint: #687176;
+        --link: #007C76; --teal-soft: rgba(0,168,159,0.12); --teal-line: rgba(0,124,118,0.45);
+        --dot: #CDD3D2; --node: #121416; --bar: rgba(255,255,255,0.95); --nudge: #E6F6F4; --gold: #8A5A00;
+        --ssbar-bg: rgba(255,255,255,0.9); --ssbar-line: rgba(18,22,22,0.10); --ssbar-tab: #5B6368;
+        --ssbar-strong: #121416; --ssbar-signin: #23272A; --ssbar-btnline: #D8DCDB; --ssbar-panel: #FFFFFF;
+        --ssbar-hover: rgba(18,22,22,0.06); --ssbar-shadow: rgba(0,0,0,0.12); --ssbar-eat: #00A89F;
+        --ssmenu-btnbg: #EFF1F0; --ssmenu-ini: #007C76; --ssmenu-cap: #687176; --ssmenu-danger: #C62828;
+        color-scheme: light;
+      }
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Form controls don't inherit the page font by default (2026-10-12). */
+    button, input, select, textarea { font-family: inherit; }
     body {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #0E0E10;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       display: flex;
@@ -87,11 +119,21 @@ fbq('track','PageView');
       align-items: center;
       padding: 32px 20px 48px;
     }
-    a { color: #00D4C8; text-decoration: none; }
+    a { color: var(--link); text-decoration: none; }
 
     .wrap { width: 100%; max-width: 440px; }
     /* Desktop: the 440px mobile column reads cramped on a laptop. */
     @media (min-width: 720px) { .wrap { max-width: 560px; } }
+    /* Laptop (2026-10-12): trip on the left, a booking card on the right
+       that stays in view. Only once a ride loaded; a gone ride or a bare
+       /ride keeps the single centered column. */
+    @media (min-width: 960px) {
+      .wrap { max-width: 1080px; }
+      .layout { max-width: 560px; margin: 0 auto; }
+      .layout.has-ride { max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 36px; align-items: start; }
+      .layout.has-ride .book-col { position: sticky; top: 86px; }
+      .layout.has-ride .bookcard { margin-top: 0; }
+    }
 
     /* Brand */
     .brand {
@@ -105,45 +147,118 @@ fbq('track','PageView');
       width: 40px; height: 40px; border-radius: 10px;
     }
     .brand .name { font-size: 20px; font-weight: 800; letter-spacing: -0.4px; }
-    .brand .name .accent { color: #00D4C8; }
+    .brand .name .accent { color: var(--link); }
 
-    /* Ride card */
-    /* Type scale for this page (2026-09-16 de-vibe pass): 22 route, 20 price,
-       16 body, 14 secondary, 12 legal. Nothing else. No eyebrows, no
-       letter-spaced caps: the content says what each block is. */
+    /* Type scale (2026-10-12): 26/34 route, 30 price, 17 places, 16 body,
+       14-15 secondary, 12-13 captions. No eyebrows, no letter-spaced caps. */
     .card {
-      background: #141416;
-      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--card);
+      border: 1px solid var(--line);
       border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 28px;
+      padding: 20px;
+      margin-top: 16px;
     }
-    .route { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.3; }
-    .meta { font-size: 16px; color: #b9b9c6; margin-top: 8px; }
+    .route { font-size: 26px; font-weight: 800; letter-spacing: -0.4px; line-height: 1.2; text-wrap: balance; }
+    @media (min-width: 960px) { .route { font-size: 34px; letter-spacing: -0.6px; } }
+    .meta { font-size: 16px; color: var(--sub); margin-top: 8px; }
+
+    /* Trip timeline: time | rail | place. The rail is one segment per row,
+       so it runs unbroken through rows of any height. */
+    .tl { list-style: none; }
+    /* A fixed time column keeps every row's rail on one line ("10:15 AM" in
+       bold is wider than 64px and nudged its ring sideways). */
+    .tl li { display: grid; grid-template-columns: 74px 16px minmax(0, 1fr); column-gap: 12px; }
+    .tl li[hidden] { display: none; }
+    .tl .t { text-align: right; font-size: 15px; font-weight: 700; white-space: nowrap; padding-top: 1px; font-variant-numeric: tabular-nums; }
+    .tl .rail { position: relative; display: flex; justify-content: center; }
+    .tl .rail::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: var(--dot); }
+    .tl li:first-child .rail::before { top: 10px; }
+    .tl li:last-child .rail::before { bottom: auto; height: 10px; }
+    .tl .node { position: relative; width: 14px; height: 14px; margin-top: 4px; border-radius: 50%; border: 3px solid var(--node); background: var(--card); }
+    .tl li.stop .node { width: 8px; height: 8px; margin-top: 7px; border: 0; background: var(--cap); }
+    .tl li.more-row .node { background: transparent; }
+    .tl .pl { padding-bottom: 16px; min-width: 0; }
+    .tl .pl b { display: block; font-size: 17px; font-weight: 700; overflow-wrap: anywhere; }
+    .tl .pl span { display: block; font-size: 13.5px; color: var(--cap); }
+    .tl li.stop .pl { padding-bottom: 10px; }
+    .tl li.stop .pl b { font-size: 15px; font-weight: 600; color: var(--sub); }
+    .tl li.stop .t { font-size: 13.5px; font-weight: 600; color: var(--cap); padding-top: 2px; }
+    .tl li.est .t { color: var(--sub); font-weight: 600; }
+    .tl li:last-child .pl { padding-bottom: 0; }
+    .tl .more { background: none; border: 0; padding: 0 0 10px; color: var(--link); font-size: 15px; font-weight: 600; cursor: pointer; text-align: left; }
+    .tl-note { margin-top: 14px; font-size: 13px; color: var(--cap); }
+    .tl-note:empty { display: none; }
+
     /* Driver row: photo or initials, then one Verified pill that opens the
        detail of what was checked. Typed checkmarks are gone. */
-    .avatar { width: 44px; height: 44px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: rgba(0,212,200,0.14); color: #00D4C8; font-weight: 800; font-size: 16px; }
-    .tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 14px; font-weight: 600; border: 1px solid rgba(255,255,255,0.14); color: #d7d7de; background: transparent; font-family: inherit; cursor: default; line-height: 1.3; }
-    .tag.verified { border-color: rgba(0,212,200,0.45); color: #00D4C8; cursor: pointer; }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: var(--teal-soft); color: var(--link); font-weight: 800; font-size: 16px; }
+    .tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 14px; font-weight: 600; border: 1px solid var(--line2); color: var(--sub); background: transparent; font-family: inherit; cursor: default; line-height: 1.3; }
+    .tag.verified { border-color: var(--teal-line); color: var(--link); cursor: pointer; }
     .tag svg { width: 14px; height: 14px; }
-    .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 18px 0; }
-    .footer-row { display: flex; align-items: center; justify-content: space-between; }
-    .seats { font-size: 14px; color: #b9b9c6; }
-    .price {
-      font-size: 20px; font-weight: 800;
-      background: linear-gradient(180deg, #ffffff 0%, #b3b3b3 100%);
-      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    .divider { height: 1px; background: var(--line); margin: 18px 0; }
+
+    /* One-row cancellation terms that open the full list. */
+    .card.rows { padding: 2px 18px; }
+    .rowlink { width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 0; background: none; border: 0; color: var(--sub); font-size: 15.5px; line-height: 1.4; text-align: left; cursor: pointer; }
+    .rowlink svg { width: 18px; height: 18px; flex: none; }
+    .rowlink .grow { flex: 1; }
+    .rowlink .chev { transition: transform 0.15s; }
+    .rowlink[aria-expanded="true"] .chev { transform: rotate(180deg); }
+    .policy-list { margin: -4px 0 14px 30px; color: var(--sub); font-size: 14.5px; line-height: 1.5; }
+    .policy-list li + li { margin-top: 4px; }
+    #mapHost img { display: block; width: 100%; margin-top: 16px; border-radius: 14px; border: 1px solid var(--line); }
+
+    /* Booking card: price, seats, the button. */
+    .bookcard { padding: 22px; }
+    .footer-row { display: flex; flex-direction: column; gap: 2px; margin-bottom: 16px; }
+    .price-line { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .price { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
+    .price-note { font-size: 15px; font-weight: 600; color: var(--cap); }
+    .seats { font-size: 15px; color: var(--sub); }
 
     /* CTA */
-    .cta-head { text-align: center; margin-bottom: 18px; }
-    .cta-head h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
-    .cta-head p { font-size: 16px; color: #b9b9c6; line-height: 1.5; }
+    .cta-head { text-align: center; margin-bottom: 14px; }
+    .cta-head h2 { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
+    .cta-head p { font-size: 14.5px; color: var(--sub); line-height: 1.5; }
+    .open-app + .cta-head { margin-bottom: 0; }
 
-    .share-section { margin-top: 28px; text-align: center; }
+    .share-section { margin-top: 16px; text-align: center; }
     .share-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    .share-btn { display: inline-block; padding: 10px 18px; border-radius: 10px; border: 1px solid #2a2a33; background: #17171d; color: #e8e8ee; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: inherit; }
-    .share-btn:hover { border-color: rgba(0,212,200,0.4); }
+    .share-btn { display: inline-block; padding: 10px 18px; border-radius: 10px; border: 1px solid var(--chipline); background: var(--raise); color: var(--text2); font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; font-family: inherit; }
+    .share-btn:hover { border-color: var(--teal-line); }
+
+    /* Phone booking bar: pinned while the card's own button is off screen. */
+    .bookbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 800; display: flex; align-items: center; gap: 14px; padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px)); background: var(--bar); border-top: 1px solid var(--line); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); transition: transform 0.2s ease; }
+    .bookbar[hidden] { display: none; }
+    .bookbar.off { transform: translateY(110%); }
+    .bb-price { flex: 1 1 auto; min-width: 88px; }
+    .bb-price b { display: block; font-size: 21px; font-weight: 800; letter-spacing: -0.3px; color: var(--text); }
+    .bb-price span { display: block; font-size: 13px; color: var(--cap); }
+    .bb-btn { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; display: block; line-height: 50px; height: 50px; padding: 0 24px; border-radius: 999px; background: var(--teal); color: var(--on-teal); font-size: 16px; font-weight: 800; white-space: nowrap; }
+    body.has-bar { padding-bottom: 110px; }
+    @media (min-width: 960px) { .bookbar { display: none !important; } body.has-bar { padding-bottom: 48px; } }
+    @media (prefers-reduced-motion: reduce) { .bookbar, .rowlink .chev { transition: none; } }
+
+    /* Wide laptops (2026-10-12, Justin: "still geared more towards mobile
+       vertical"): the trip column stops being one tall stack. Timeline and
+       map side by side, the driver card splits into who they are (left)
+       and what they wrote (right). Below 1200px the stack stays. */
+    @media (min-width: 1200px) {
+      .wrap { max-width: 1200px; }
+      .layout.has-ride { grid-template-columns: minmax(0, 1fr) 380px; gap: 40px; }
+      /* !important: the fetch reveals #rideCard with an inline display:block. */
+      .layout.has-ride .ride-main { display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; align-items: stretch; }
+      .ride-main > * { grid-column: 1 / -1; }
+      .ride-main > #tripCard { grid-column: 1; grid-row: 3; }
+      .ride-main > #mapHost { grid-column: 2; grid-row: 3; margin-top: 16px; min-height: 260px; }
+      .ride-main > #mapHost:empty { display: none; }
+      .ride-main:has(> #mapHost:empty) > #tripCard { grid-column: 1 / -1; }
+      #mapHost img { height: 100%; margin-top: 0; object-fit: cover; }
+      #driverCard { display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); column-gap: 32px; align-items: start; }
+      #driverCard > * { grid-column: 1 / -1; }
+      #driverCard > .drv-id { grid-column: 1; }
+      #driverCard > .pack { grid-column: 2; align-self: stretch; margin-top: 0 !important; padding-top: 0 !important; border-top: 0 !important; padding-left: 32px; border-left: 1px solid var(--line); }
+    }
     /* Store badges hidden (Justin, 2026-08-28): web booking is first-class on
        this page and the download buttons under the booking CTA just confused
        people. Markup stays (the Android smart-open script references it);
@@ -174,20 +289,23 @@ fbq('track','PageView');
     .open-app {
       display: none;
       align-items: center; justify-content: center; gap: 10px;
-      background: #00D4C8; color: #000 !important;
-      font-size: 16px; font-weight: 800; letter-spacing: -0.2px;
-      border-radius: 100px; padding: 16px 24px; margin-bottom: 14px;
+      background: var(--teal); color: var(--on-teal) !important;
+      font-size: 16.5px; font-weight: 800; letter-spacing: -0.2px;
+      border-radius: 100px; padding: 16px 24px;
       text-align: center;
     }
+    .open-app + .open-app { margin-top: 10px; }
 
-    .learn { text-align: center; margin-top: 24px; font-size: 14px; color: #888; }
+    .learn { text-align: center; margin-top: 28px; font-size: 14px; color: var(--cap); }
     .learn a { font-weight: 600; }
-    .legal { text-align: center; margin-top: 32px; font-size: 12px; color: #666; line-height: 1.6; }
-    .legal a { color: #888; }
+    .legal { text-align: center; margin-top: 24px; font-size: 12px; color: var(--faint); line-height: 1.6; }
+    .legal a { color: var(--cap); }
   </style>
   <!-- Vercel Web Analytics — shared ride links land here; without it every
        share/QR visit was untracked. -->
   <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script><script defer src="/_vercel/insights/script.js"></script>
+  <!-- Click the driver's photo to see it bigger (2026-10-04). -->
+  <script src="/js/ss-photo-zoom.js"></script>
 </head>
 <body>
   <!-- Shared app bar (signed-out public tabs / signed-in console tabs);
@@ -196,39 +314,74 @@ fbq('track','PageView');
   <div id="ssAppBar"></div>
   <div class="wrap">
 
-    <!-- Ride card — populated from the URL query params. Hidden if no ride
-         info is present (someone hit /ride directly). -->
-    <div class="card" id="rideCard" style="display:none;">
-      <div class="route" id="route"></div>
+    <!-- 2026-10-12 layout (Justin approved the before/after): one column on
+         a phone with the price + Book pinned to the bottom of the screen;
+         on a laptop the trip on the left and a booking card on the right
+         that stays in view. #rideCard is now the whole trip column (the
+         fetch reveals it); every id the script below writes is unchanged. -->
+    <div class="layout">
+    <div class="ride-main" id="rideCard" style="display:none;">
+      <h1 class="route" id="route"></h1>
       <div class="meta" id="meta"></div>
-      <div class="meta" id="stops" style="display:none;color:#00D4C8;"></div>
+      <!-- Trip timeline: pickup, stops with their estimated times,
+           drop-off. #stops is the old one-line list, kept as the fallback. -->
+      <div class="card tl-card" id="tripCard" style="display:none;">
+        <ol class="tl" id="timeline"></ol>
+        <p class="tl-note" id="timelineNote"></p>
+      </div>
+      <div class="meta" id="stops" style="display:none;"></div>
+      <div class="card" id="driverCard">
+      <!-- Note to riders + flexible departure (0326): what the driver chose
+           to tell riders. 14 label, 16 body; driver text is textContent only. -->
+      <div id="driverNote" style="display:none;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line);">
+        <div style="font-size:14px;color:var(--sub);">From the driver</div>
+        <div id="driverNoteText" style="display:none;font-size:16px;margin-top:4px;line-height:1.5;white-space:pre-wrap;"></div>
+        <div id="driverFlexLine" style="display:none;font-size:16px;color:var(--sub);margin-top:4px;line-height:1.5;"></div>
+      </div>
       <!-- Driver block (BlaBlaCar benchmark 2026-08-26): riders book PEOPLE.
            We were the only carpool site hiding the driver on the ride page —
            while ALSO verifying more than the competition and saying nothing. -->
-      <div id="driverRow" style="display:none;align-items:center;gap:12px;margin-top:16px;">
-        <img id="driverPhoto" alt="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none;" />
-        <div id="driverInitials" class="avatar" style="display:none;" aria-hidden="true"></div>
+      <div id="driverRow" style="display:none;align-items:center;gap:12px;">
+        <span style="position:relative;flex:none;display:inline-flex;">
+          <img id="driverPhoto" alt="" style="display:none;width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none;" />
+          <div id="driverInitials" class="avatar" style="display:none;" aria-hidden="true"></div>
+          <!-- Female-driver badge (2026-09-24): the app's pink ♀ ring, bottom-right of the avatar. -->
+          <span id="driverFemaleBadge" title="Female driver" aria-label="Female driver" style="display:none;position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:#FF6B9D;border:2px solid var(--card);color:#fff;font-size:11px;line-height:14px;font-weight:700;align-items:center;justify-content:center;">&#9792;</span>
+        </span>
         <div>
           <div id="driverLine" style="font-size:16px;font-weight:700;"></div>
           <div id="driverBadges" style="display:none;gap:6px;flex-wrap:wrap;margin-top:6px;"></div>
-          <div id="driverVerifiedDetail" style="display:none;font-size:14px;color:#9a9aa8;margin-top:6px;"></div>
+          <div id="driverVerifiedDetail" style="display:none;font-size:14px;color:var(--cap);margin-top:6px;"></div>
         </div>
       </div>
-      <div class="divider"></div>
-      <div class="footer-row">
-        <span class="seats">Seats available</span>
-        <span class="price" id="price"></span>
+      </div><!-- /#driverCard -->
+      <!-- Cancellation terms (2026-10-12): one short row that opens the
+           full list, instead of a paragraph that read like a warning. -->
+      <div class="card rows" id="policyCard" style="display:none;">
+        <button type="button" class="rowlink" id="policyRow" aria-expanded="false" aria-controls="policyDetail">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          <span class="grow" id="policyLine"></span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <ul class="policy-list" id="policyDetail" hidden></ul>
       </div>
-      <div class="meta" id="policyLine" style="display:none;margin-top:10px;"></div>
-      <div class="meta" id="moreRides" style="display:none;margin-top:10px;"></div>
-    </div>
+      <div id="mapHost"></div>
+      <div class="meta" id="moreRides" style="display:none;margin-top:14px;"></div>
+    </div><!-- /.ride-main -->
 
-    <div id="refNudge" style="display:none;background:#141d1c;border:1px solid rgba(0,212,200,0.3);border-radius:12px;padding:14px 18px;margin-bottom:22px;text-align:center;font-size:14px;color:#d7d7d7;">
-      New here? Sign up with code <strong id="refCode" style="color:#00D4C8;">CODE</strong> for <strong>$5 off</strong> your first ride.
+    <aside class="book-col">
+    <div class="card bookcard" id="bookCard">
+      <div class="footer-row" style="display:none;">
+        <div class="price-line"><span class="price" id="price"></span><span class="price-note">per seat, all in</span></div>
+        <span class="seats">Seats available</span>
+      </div>
+
+    <div id="refNudge" style="display:none;background:var(--nudge);border:1px solid rgba(0,212,200,0.3);border-radius:12px;padding:14px 18px;margin-bottom:16px;text-align:center;font-size:14px;color:var(--sub);">
+      New here? Sign up with code <strong id="refCode" style="color:var(--text);">CODE</strong> for <strong>$5 off</strong> your first ride.
     </div>
 
     <div class="cta-head">
-      <h1 id="ctaTitle">Grab a seat with Seat Sherpa</h1>
+      <h2 id="ctaTitle">Grab a seat with Seat Sherpa</h2>
       <p id="ctaSub">Book this seat, message the driver, and pay from your browser or in the app.</p>
     </div>
 
@@ -278,11 +431,14 @@ fbq('track','PageView');
     <!-- One share action (2026-09-16): the phone's share sheet where there
          is one, a copied message everywhere else. Six buttons here sat
          under the booking CTA and read as growth chrome, not a ride page. -->
+    </div><!-- /#bookCard -->
     <div class="share-section">
       <div class="share-row">
         <button type="button" class="share-btn" id="shareBtn">Share this ride</button>
       </div>
     </div>
+    </aside>
+    </div><!-- /.layout -->
 
     <p class="learn"><a href="/">About Seat Sherpa</a></p>
 
@@ -292,10 +448,38 @@ fbq('track','PageView');
     </p>
   </div>
 
+  <!-- Phone booking bar (2026-10-12): price + the same button as #webBook,
+       pinned to the bottom while that button is off screen. Mirrors
+       #webBook's link and label; shown only when it is a booking link. -->
+  <div class="bookbar" id="bookBar" hidden>
+    <div class="bb-price"><b id="bbPrice"></b><span id="bbNote">per seat, all in</span></div>
+    <a class="bb-btn" id="bbBtn" href="/book">Book this seat</a>
+  </div>
+
   <script>
     (function () {
+      // The headline normally sits UNDER the button (reassurance, web mode);
+      // when the ride is gone, full or departed the headline is the news and
+      // has to come first. Lives in THIS block: it used to be declared in the
+      // share block below, out of reach of the three calls here, so each one
+      // threw and silently skipped everything after it, including the swap
+      // from "Book this seat" to "See current rides" (found 2026-10-03).
+      function headAboveButton(sub) {
+        var ch = document.querySelector('.cta-head');
+        var wb2 = document.getElementById('webBook');
+        if (ch && wb2 && wb2.parentNode) { wb2.parentNode.insertBefore(ch, wb2); ch.style.marginTop = ''; }
+        var cs = document.getElementById('ctaSub');
+        if (cs && typeof sub === 'string') cs.textContent = sub;
+      }
       var p = new URLSearchParams(window.location.search);
-      var id = p.get('id');
+      // Leading digits only (bug check 2026-10-05): a Facebook post that ran
+      // the link into the next word opened /ride/227My, and public-ride 400s
+      // on anything but a number. Ride ids are numeric.
+      // No digits at all ("abc") = no ride: the browse state, not "That ride
+      // is no longer available" (bug check 2026-10-05).
+      var rawId = p.get('id');
+      var idDigits = /^\d+/.exec(rawId || '');
+      var id = idDigits ? idDigits[0] : '';
       var ref = (p.get('ref') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
       var SUPA = 'https://vmfmbntacifqoqxqxgsk.supabase.co';
       var ANON = 'sb_publishable_TGebz9q_z0kkH0Tuivlr4w_3MPLMxF3';
@@ -331,7 +515,7 @@ fbq('track','PageView');
         // The button says what to do; a headline repeating it above was
         // noise. The line under it carries the one fact that matters.
         document.getElementById('ctaTitle').style.display = 'none';
-        document.getElementById('ctaSub').textContent = 'You are only charged if the driver accepts. Payment is handled by Stripe.';
+        document.getElementById('ctaSub').textContent = 'The seat is only charged if the driver accepts. Payment is handled by Stripe.';
         // The reassurance reads under the button, not above it.
         var ctaHead = document.querySelector('.cta-head');
         if (ctaHead && wb.parentNode) { wb.parentNode.insertBefore(ctaHead, wb.nextSibling); ctaHead.style.marginTop = '12px'; }
@@ -375,7 +559,7 @@ fbq('track','PageView');
                   + (rd.depDate ? '&date=' + encodeURIComponent(rd.depDate) : '');
                 var a = document.createElement('a');
                 a.href = href;
-                a.style.cssText = 'color:#00D4C8;text-decoration:none;';
+                a.style.cssText = 'color:var(--link);text-decoration:none;';
                 a.textContent = 'Tell drivers you still need this trip';
                 var wrap = document.createElement('div');
                 wrap.style.cssText = 'margin-top:8px;';
@@ -409,7 +593,134 @@ fbq('track','PageView');
             }
             // Full or not-yet/no-longer bookable (departs too soon): the book
             // funnel would only bounce them — swap the CTA for browse.
-            if (web && (d.seatsLeft === 0 || d.bookable === false)) {
+            // Leg-aware seats (0356, 2026-10-05): full from the start but open
+            // from a later stop, e.g. every seat taken to Los Angeles and free
+            // from there to San Diego. The button books that stretch; the
+            // full ride keeps its waitlist as a link (Justin: "in addition to
+            // the original having a waitlist").
+            var openStop = (d.legAware && d.openFrom && d.seatsLeft === 0 && d.bookable !== false)
+              ? ((d.routeStops || []).find(function (s) { return s && s.id === d.openFrom.stopId; }) || null)
+              : null;
+            // THE RIDER'S STRETCH (bug check 2026-10-06). A link with
+            // ?board=<stop> (stretch posts, search cards) or a ride open only
+            // from a later stop (openStop) is about the trip FROM that stop
+            // on: header, time, stops, seats, price, title and share text
+            // start there, never the origin, its time or earlier stops
+            // (standing copy rule). A stop the car has already passed gives
+            // way to the first one still ahead, as the book page does.
+            // ?alight=<stop> (a search card's leg) ends it early.
+            var legQp = new URLSearchParams(location.search);
+            var plainStopId = function (v) { return v && /^[a-z0-9-]{1,40}$/.test(v) ? v : ''; };
+            var stopById = function (sid) {
+              return sid ? ((d.routeStops || []).find(function (s) { return s && s.id === sid && typeof s.pos === 'number'; }) || null) : null;
+            };
+            var legStop = stopById(plainStopId(legQp.get('board')));
+            if (openStop && typeof openStop.pos === 'number' && (!legStop || legStop.pos < openStop.pos)) legStop = openStop;
+            if (legStop && legStop.boardable === false) {
+              var nextUp = typeof d.boardableFromIndex === 'number'
+                ? ((d.routeStops || []).find(function (s) { return s && s.id && s.pos === d.boardableFromIndex - 1; }) || null)
+                : null;
+              legStop = nextUp && nextUp.pos > legStop.pos ? nextUp : null;
+            }
+            // The car has left its origin but a later stop is still ahead
+            // (originBoardable false): the page describes the trip from that
+            // stop, like a stretch link. The header, timeline, seats and price
+            // used to start at the origin while the button said "Book from
+            // Los Angeles" and the booking page charged the stretch (bug check
+            // 2026-10-12).
+            if (!legStop && !openStop && d.originBoardable === false && d.bookable !== false && typeof d.boardableFromIndex === 'number') {
+              legStop = (d.routeStops || []).find(function (s) { return s && s.id && typeof s.pos === 'number' && s.pos === d.boardableFromIndex - 1; }) || null;
+            }
+            // ?alight= with no ?board= is a leg from the ORIGIN to a stop
+            // (/rides cards link those): it ends there. It was ignored, so the
+            // page quoted the whole ride ($46.20) for a $14 leg (bug check
+            // 2026-10-12).
+            var legEnd = stopById(plainStopId(legQp.get('alight')));
+            if (legEnd && legStop && legEnd.pos <= legStop.pos) legEnd = null;
+            var onLeg = !!(legStop || legEnd);
+            // "San Diego, CA" reads "San Diego" beside a stop name, which
+            // carries no state; sentences keep the full destination.
+            var legToShort = legEnd ? legEnd.name : String(d.toArea || 'destination').replace(/,\s*[A-Z]{2}$/, '');
+            var legToLong = legEnd ? legEnd.name : (d.toArea || 'the destination');
+            // public-ride's eta: "~11:00 PM" or "~12:05 AM (next day)".
+            var legEta = function (st) {
+              var m = /^~?\s*(\d{1,2}:\d{2}\s*[AP]M)(\s*\(next day\))?/i.exec(String((st && st.eta) || ''));
+              return m ? { time: m[1].toUpperCase(), nextDay: !!m[2] } : null;
+            };
+            // The stop's own calendar day (a stop reached after midnight is
+            // the next day), as YYYY-MM-DD for rideWhen.
+            var legDate = function (st) {
+              var e = legEta(st);
+              var p = String(d.depDate || '').split('-').map(Number);
+              if (!p[0] || !p[1] || !p[2]) return d.depDate || '';
+              var dt = new Date(p[0], p[1] - 1, p[2] + (e && e.nextDay ? 1 : 0));
+              return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+            };
+            var leavesLine = function (st) {
+              var e = legEta(st);
+              return e
+                ? 'Leaves ' + st.name + ' around ' + e.time + ' (estimated) for ' + legToLong + '.'
+                : 'Seats open from ' + st.name + ' to ' + legToLong + '.';
+            };
+            // Seats and price for the stretch, the book page's rules: a
+            // leg-aware seat is open for [board, alight) when it is not
+            // closed and no hold overlaps it, otherwise the live whole-ride
+            // seats; each costs min(its price, the driver's leg price).
+            var legSeats = null, legPrice = null, legVaries = false;
+            if (onLeg) {
+              // Boarding index: 0 = the origin, a stop's pos + 1 otherwise.
+              var lb = legStop ? legStop.pos + 1 : 0;
+              var lN = typeof d.routeStopCount === 'number' ? d.routeStopCount : (d.routeStops || []).length;
+              var la = legEnd ? legEnd.pos + 1 : lN + 1;
+              var lHolds = Array.isArray(d.seatHolds) ? d.seatHolds : [];
+              var lOpen = (d.seats || []).filter(function (s) {
+                if (!s || !s.id) return false;
+                if (d.legAware) {
+                  return s.closed !== true && !lHolds.some(function (h) { return h && h.seat === s.id && Number(h.from) < la && lb < Number(h.to); });
+                }
+                return s.avail !== false && !s.booked;
+              });
+              var lSeg = d.segmentPrices ? d.segmentPrices[(legStop ? legStop.id : 'origin') + '|' + (legEnd ? legEnd.id : 'end')] : undefined;
+              var lLeg = typeof lSeg === 'number' && isFinite(lSeg) && lSeg > 0 ? Math.round(lSeg) : null;
+              var lPrices = lOpen
+                .map(function (s) { return typeof s.price === 'number' ? (lLeg != null ? Math.min(s.price, lLeg) : s.price) : NaN; })
+                .filter(function (v) { return isFinite(v) && v > 0; });
+              legSeats = lOpen.length;
+              if (lPrices.length) {
+                legPrice = Math.min.apply(null, lPrices);
+                var lDistinct = {};
+                lPrices.forEach(function (v) { lDistinct[v] = 1; });
+                legVaries = Object.keys(lDistinct).length > 1;
+              }
+            }
+            var legAlightQ = legEnd ? '&alight=' + encodeURIComponent(legEnd.id) : '';
+            // The car has left the origin but a later stop is still ahead
+            // (2026-10-06, reversing 10/5): book from that stop. Sold-out-from-
+            // start rides take the openStop branch below instead.
+            if (web && !openStop && d.originBoardable === false && d.bookable !== false && typeof d.boardableFromIndex === 'number') {
+              var aheadStop = legStop || (d.routeStops || []).find(function (s) { return s && s.pos === d.boardableFromIndex - 1 && s.id; }) || null;
+              var wbAhead = document.getElementById('webBook');
+              if (aheadStop && wbAhead && wbAhead.style.display !== 'none') {
+                wbAhead.href = '/book?id=' + encodeURIComponent(id) + '&board=' + encodeURIComponent(aheadStop.id) + (legStop ? legAlightQ : '');
+                wbAhead.textContent = 'Book from ' + aheadStop.name;
+                // A stretch link never mentions where the ride started.
+                headAboveButton(legStop ? leavesLine(legStop) : 'This ride has left ' + (d.fromArea || 'its start') + '. '
+                  + (aheadStop.eta ? 'It reaches ' + aheadStop.name + ' around ' + String(aheadStop.eta).replace(/^~\s*/, '') + ' (estimated).' : ''));
+              }
+            }
+            if (web && openStop) {
+              var wbLeg = document.getElementById('webBook');
+              if (wbLeg && wbLeg.style.display !== 'none') {
+                var bookFrom = legStop || openStop;
+                wbLeg.href = '/book?id=' + encodeURIComponent(id) + '&board=' + encodeURIComponent(bookFrom.id) + (legStop ? legAlightQ : '');
+                wbLeg.textContent = 'Book from ' + bookFrom.name;
+                var wl = document.createElement('a');
+                wl.href = '/book?id=' + encodeURIComponent(id) + '&waitlist=1';
+                wl.textContent = 'Need the whole ride? Join the waitlist';
+                wl.style.cssText = 'display:block;text-align:center;margin-top:12px;color:var(--link);font-size:14px;text-decoration:none;';
+                if (wbLeg.parentNode) wbLeg.parentNode.insertBefore(wl, wbLeg.nextSibling);
+              }
+            } else if (web && (d.seatsLeft === 0 || d.bookable === false)) {
               var wbDead = document.getElementById('webBook');
               if (wbDead && wbDead.style.display !== 'none') {
                 if (d.seatsLeft === 0) {
@@ -430,7 +741,15 @@ fbq('track','PageView');
               // the gone/departed path only.
             }
             document.getElementById('rideCard').style.display = 'block';
-            document.getElementById('route').textContent = (d.fromArea || 'A city') + ' → ' + (d.toArea || 'destination');
+            // Two columns on a laptop once there is a trip to show.
+            document.querySelector('.layout').classList.add('has-ride');
+            // The heading drops the state ("Los Angeles → Hayward", Justin
+            // 2026-10-12): every ride is in CA or NV and ", CA" twice made the
+            // title wrap. The tab title and share text keep the full names.
+            var noState = function (s) { return String(s || '').replace(/,\s*[A-Z]{2}$/, ''); };
+            document.getElementById('route').textContent = legStop
+              ? legStop.name + ' → ' + legToShort
+              : (noState(d.fromArea) || 'A city') + ' → ' + (legEnd ? legEnd.name : (noState(d.toArea) || 'destination'));
             if (!window.rideWhen) { window.rideWhen = function rideWhen(dateStr, timeStr) {
   var p = String(dateStr || '').split('-').map(Number);
   if (!p[0] || !p[1] || !p[2]) return '';
@@ -444,11 +763,59 @@ fbq('track','PageView');
 }; }
             var rideWhen = window.rideWhen;
             // Pacific wall-clock, shown as posted (time audit 2026-09-03).
-            document.getElementById('meta').textContent = rideWhen(d.depDate, d.depTime);
-            if (d.stops && d.stops.length) {
+            // A stretch shows its stop's estimate instead: "Sat, Oct 17 ·
+            // around 11:00 PM (estimated)".
+            if (legStop) {
+              var lEta = legEta(legStop);
+              document.getElementById('meta').textContent = rideWhen(legDate(legStop), null)
+                + (lEta ? ' · around ' + lEta.time + ' (estimated)' : '');
+            } else {
+              document.getElementById('meta').textContent = rideWhen(d.depDate, d.depTime);
+            }
+            // A stretch lists only the stops after its boarding stop (and
+            // before its drop-off), never the ones the rider never sees.
+            var shownStops = onLeg
+              ? (d.routeStops || []).filter(function (s) {
+                return s && s.name && typeof s.pos === 'number' && (!legStop || s.pos > legStop.pos) && (!legEnd || s.pos < legEnd.pos);
+              }).map(function (s) { return s.name; })
+              : (d.stops || []);
+            if (shownStops.length) {
               var stopsEl = document.getElementById('stops');
-              stopsEl.textContent = 'Also stops in ' + d.stops.join(' · ');
+              stopsEl.textContent = 'Also stops in ' + shownStops.join(' · ');
               stopsEl.style.display = 'block';
+            }
+            // Note to riders + flexible departure (0326): a chip on the time
+            // line, then a "From the driver" block with the note and the
+            // flex sentence. Driver-written text lands as textContent only.
+            var flexN = Number(d.departFlexMinutes) || 0;
+            var flexChip = flexN === 60 ? 'Flexible, about 1 h'
+              : flexN === 120 ? 'Flexible, about 2 h'
+              : flexN === 720 ? 'Flexible, half a day'
+              : flexN === 1440 ? 'Flexible, about a day' : '';
+            var flexLine = flexN === 60 ? 'Departure is flexible by about 1 hour. Ask in chat once you have booked.'
+              : flexN === 120 ? 'Departure is flexible by about 2 hours. Ask in chat once you have booked.'
+              : flexN === 720 ? 'Departure is flexible by up to half a day. Ask in chat once you have booked.'
+              : flexN === 1440 ? 'Departure is flexible by up to a day, so it may leave the day before or after. Ask in chat once you have booked.' : '';
+            var noteText = String(d.driverNote || '').trim();
+            if (flexChip) {
+              var fc = document.createElement('span');
+              fc.className = 'tag';
+              fc.textContent = flexChip;
+              fc.style.marginLeft = '8px'; fc.style.verticalAlign = '2px';
+              document.getElementById('meta').appendChild(fc);
+            }
+            if (noteText || flexLine) {
+              if (noteText) {
+                var dnt = document.getElementById('driverNoteText');
+                dnt.textContent = noteText;
+                dnt.style.display = 'block';
+              }
+              if (flexLine) {
+                var dfl = document.getElementById('driverFlexLine');
+                dfl.textContent = flexLine;
+                dfl.style.display = 'block';
+              }
+              document.getElementById('driverNote').style.display = 'block';
             }
             // Driver identity + trust badges — the API returned these all
             // along; the page just never showed them (benchmark fix 8/26).
@@ -457,12 +824,25 @@ fbq('track','PageView');
               if (typeof d.driverRating === 'number' && d.driverRating > 0) {
                 // Rating only, no review count (Justin, 2026-09-10): with the
                 // driven-trips count on the same line, "(2)" reads as a weakness.
-                dLine += ' · ★ ' + Number(d.driverRating).toFixed(1);
+                // Ratings round DOWN to one decimal (2026-10-05): 4.95 shows 4.9.
+                dLine += ' · ★ ' + (Math.floor(Math.round(Number(d.driverRating) * 1000) / 100) / 10).toFixed(1);
               }
               if (typeof d.driverTrips === 'number' && d.driverTrips > 0) {
                 dLine += ' · ' + d.driverTrips + ' trip' + (d.driverTrips === 1 ? '' : 's');
               }
-              document.getElementById('driverLine').textContent = dLine;
+              var dl = document.getElementById('driverLine');
+              dl.textContent = dLine;
+              // "Replies in ~N min" (2026-09-25): the app sheet's Replies stat,
+              // on the same line as rating and trips. Since 2026-10-12 only
+              // for drivers holding the Quick to respond chip (gold): "Replies
+              // in 1+ day" read as a warning on the page meant to sell the
+              // seat. Label is server-built text; textContent, never markup.
+              if (d.driverReplies && d.driverReplies.quick === true && typeof d.driverReplies.label === 'string' && d.driverReplies.label) {
+                var rs = document.createElement('span');
+                rs.textContent = ' · Replies in ' + d.driverReplies.label;
+                rs.style.color = 'var(--gold)';
+                dl.appendChild(rs);
+              }
               // Verification is ONE pill, not typed checkmarks (Justin,
               // 2026-09-16: "trust shown as text"). Tapping it opens what was
               // checked. The school badge (0294) is its own neutral pill.
@@ -497,11 +877,16 @@ fbq('track','PageView');
                 var dp = document.getElementById('driverPhoto');
                 dp.src = d.driverPhotoUrl;
                 dp.style.display = 'block';
+                // Click to see it bigger (2026-10-04, /js/ss-photo-zoom.js).
+                if (window.SSPhotoZoom) SSPhotoZoom.mark(dp, d.driverFirst);
               } else {
                 // No photo: initials, the same as the app, never an empty ring.
                 var di = document.getElementById('driverInitials');
                 di.textContent = String(d.driverFirst).trim().charAt(0).toUpperCase();
                 di.style.display = 'flex';
+              }
+              if (d.driverFemale === true) {
+                document.getElementById('driverFemaleBadge').style.display = 'flex';
               }
               document.getElementById('driverRow').style.display = 'flex';
               // Trust pack (2026-08-28): bio + car + written reviews, same
@@ -510,17 +895,18 @@ fbq('track','PageView');
               (function () {
                 var row = document.getElementById('driverRow');
                 var pack = document.createElement('div');
-                pack.style.cssText = 'margin-top:14px;border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;';
+                pack.className = 'pack';
+                pack.style.cssText = 'margin-top:16px;border-top:1px solid var(--line);padding-top:16px;';
                 var added = false;
                 if (d.driverBio) {
                   var bio = document.createElement('div');
-                  bio.style.cssText = 'font-size:14px;color:#b9b9c6;line-height:1.5;';
+                  bio.style.cssText = 'font-size:15px;color:var(--sub);line-height:1.5;';
                   bio.textContent = '“' + d.driverBio + '”';
                   pack.appendChild(bio); added = true;
                 }
                 if (d.car && d.car.label) {
                   var carLine = document.createElement('div');
-                  carLine.style.cssText = 'font-size:13.5px;color:#8a8a92;margin-top:8px;';
+                  carLine.style.cssText = 'font-size:14px;color:var(--cap);margin-top:8px;';
                   carLine.textContent = d.car.label;
                   pack.appendChild(carLine); added = true;
                   if (d.car.photoUrl && /^https:\/\//.test(d.car.photoUrl)) {
@@ -532,17 +918,17 @@ fbq('track','PageView');
                 }
                 if (d.driverReviews && d.driverReviews.length) {
                   var rh = document.createElement('div');
-                  rh.style.cssText = 'font-size:14px;font-weight:700;color:#e8e8ee;margin:14px 0 6px;';
+                  rh.style.cssText = 'font-size:14px;font-weight:700;color:var(--text2);margin:14px 0 6px;';
                   rh.textContent = 'What riders say';
                   pack.appendChild(rh); added = true;
                   var renderRv = function (rv) {
                     var line = document.createElement('div');
-                    line.style.cssText = 'font-size:14px;color:#b9b9c6;line-height:1.5;margin-bottom:8px;';
+                    line.style.cssText = 'font-size:14px;color:var(--sub);line-height:1.5;margin-bottom:8px;';
                     line.textContent = '★'.repeat(Math.max(1, Math.min(5, rv.stars || 5))) + '  “' + rv.comment + '”';
                     var byline = [rv.name, rv.when].filter(Boolean).join(' · ');
                     if (byline) {
                       var meta = document.createElement('div');
-                      meta.style.cssText = 'font-size:12.5px;color:#8a8a92;margin-top:2px;';
+                      meta.style.cssText = 'font-size:12.5px;color:var(--cap);margin-top:2px;';
                       meta.textContent = byline;
                       line.appendChild(meta);
                     }
@@ -553,7 +939,7 @@ fbq('track','PageView');
                     var moreBtn = document.createElement('button');
                     moreBtn.type = 'button';
                     moreBtn.textContent = 'Show all ' + d.driverReviews.length + ' reviews';
-                    moreBtn.style.cssText = 'background:none;border:0;color:#00D4C8;font-size:13.5px;font-weight:600;cursor:pointer;padding:0;margin:2px 0 6px;font-family:inherit;';
+                    moreBtn.style.cssText = 'background:none;border:0;color:var(--link);font-size:13.5px;font-weight:600;cursor:pointer;padding:0;margin:2px 0 6px;font-family:inherit;';
                     moreBtn.addEventListener('click', function () {
                       moreBtn.remove();
                       d.driverReviews.slice(3).forEach(renderRv);
@@ -581,11 +967,12 @@ fbq('track','PageView');
                 // no longer part of the public driver profile.
                 if (!chips.length) return;
                 var wrap = document.createElement('div');
+                wrap.className = 'prefs';
                 wrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;';
                 chips.forEach(function (t) {
                   var c = document.createElement('span');
                   c.textContent = t;
-                  c.style.cssText = 'font-size:12.5px;font-weight:600;color:#b9b9c6;background:#17171d;border:1px solid #2a2a33;border-radius:999px;padding:6px 12px;';
+                  c.style.cssText = 'font-size:12.5px;font-weight:600;color:var(--sub);background:var(--raise);border:1px solid var(--chipline);border-radius:999px;padding:6px 12px;';
                   wrap.appendChild(c);
                 });
                 var row2 = document.getElementById('driverRow');
@@ -606,9 +993,26 @@ fbq('track','PageView');
                   return s && typeof s.lat === 'number' && isFinite(s.lat)
                     && typeof s.lng === 'number' && isFinite(s.lng);
                 });
-                var pts = [d.approxStart]
+                // Stretch view: the map starts at the boarding stop (and ends
+                // at the drop-off stop on a leg link), never at the origin.
+                var hasLL = function (s) {
+                  return !!s && typeof s.lat === 'number' && isFinite(s.lat) && typeof s.lng === 'number' && isFinite(s.lng);
+                };
+                var mStart = d.approxStart, mEnd = d.approxEnd;
+                var legMap = !!legStop && hasLL(legStop);
+                var legMapEnd = !!legEnd && hasLL(legEnd);
+                if (legMap) mStart = { lat: legStop.lat, lng: legStop.lng };
+                // An origin-to-stop leg (?alight= alone) also ends early.
+                if (legMapEnd) mEnd = { lat: legEnd.lat, lng: legEnd.lng };
+                if (legMap || legMapEnd) {
+                  mapStops = mapStops.filter(function (s) {
+                    return typeof s.pos === 'number' && (!legStop || s.pos > legStop.pos) && (!legEnd || s.pos < legEnd.pos);
+                  });
+                  legMap = true;
+                }
+                var pts = [mStart]
                   .concat(mapStops.map(function (s) { return { lat: s.lat, lng: s.lng }; }))
-                  .concat([d.approxEnd]);
+                  .concat([mEnd]);
                 // Standard polyline encoder (precision 5).
                 function enc(points) {
                   var out = '', pl = 0, pg = 0;
@@ -631,53 +1035,152 @@ fbq('track','PageView');
                 // any ride posted while Mapbox was down — fall back to the
                 // straight A→B line built above, which is why `pts` still
                 // gets computed unconditionally.
-                var line = (typeof d.routeGeom === 'string' && d.routeGeom.length > 1)
-                  ? d.routeGeom
-                  : enc(pts);
+                var hasGeom = typeof d.routeGeom === 'string' && d.routeGeom.length > 1;
+                // The driver's road from the boarding stop on: decode it,
+                // project the stop onto its nearest segment and keep the rest
+                // (cut again at the drop-off stop). null when a stop is more
+                // than 10 miles off the line; the straight line is used then.
+                function dec(str) {
+                  var out = [], i = 0, lat = 0, lng = 0;
+                  function nx() {
+                    var r = 0, sh = 0, c;
+                    do { if (i >= str.length) return null; c = str.charCodeAt(i++) - 63; r |= (c & 0x1f) << sh; sh += 5; } while (c >= 0x20);
+                    return r & 1 ? ~(r >> 1) : r >> 1;
+                  }
+                  while (i < str.length) {
+                    var a = nx(), b = nx();
+                    if (a == null || b == null) return [];
+                    lat += a; lng += b;
+                    out.push({ lat: lat / 1e5, lng: lng / 1e5 });
+                  }
+                  return out;
+                }
+                function mi(a, b) {
+                  var k = Math.PI / 180;
+                  var h = Math.pow(Math.sin((b.lat - a.lat) * k / 2), 2)
+                    + Math.cos(a.lat * k) * Math.cos(b.lat * k) * Math.pow(Math.sin((b.lng - a.lng) * k / 2), 2);
+                  return 2 * 3958.8 * Math.asin(Math.sqrt(h));
+                }
+                function near(line, p) {
+                  var cos = Math.cos(p.lat * Math.PI / 180) || 1, best = { i: -1, proj: null, dist: Infinity };
+                  for (var i = 0; i < line.length - 1; i++) {
+                    var a = line[i], b = line[i + 1];
+                    var dx = (b.lng - a.lng) * cos, dy = b.lat - a.lat, len2 = dx * dx + dy * dy;
+                    var t = len2 > 0 ? Math.max(0, Math.min(1, (((p.lng - a.lng) * cos) * dx + (p.lat - a.lat) * dy) / len2)) : 0;
+                    var q = { lat: a.lat + t * (b.lat - a.lat), lng: a.lng + t * (b.lng - a.lng) };
+                    var dd = mi(p, q);
+                    if (dd < best.dist) best = { i: i, proj: q, dist: dd };
+                  }
+                  return best;
+                }
+                function trimmed(geom, from, to) {
+                  var line = dec(geom);
+                  if (line.length < 2) return null;
+                  // A line stored backwards (return legs) is walked from its end.
+                  if (mi(d.approxStart, line[line.length - 1]) + 5 < mi(d.approxStart, line[0])) line.reverse();
+                  var s = near(line, from);
+                  if (s.i < 0 || s.dist > 10) return null;
+                  line = [s.proj].concat(line.slice(s.i + 1));
+                  if (to) {
+                    var e = near(line, to);
+                    if (e.i < 0 || e.dist > 10) return null;
+                    line = line.slice(0, e.i + 1).concat([e.proj]);
+                  }
+                  return line.length >= 2 ? enc(line) : null;
+                }
+                var line = legMap
+                  ? ((hasGeom && trimmed(d.routeGeom, mStart, legMapEnd ? mEnd : null)) || enc(pts))
+                  : (hasGeom ? d.routeGeom : enc(pts));
                 var overlays = ['path-3+00D4C8-0.7(' + encodeURIComponent(line) + ')'];
-                overlays.push('pin-s-a+00D4C8(' + d.approxStart.lng + ',' + d.approxStart.lat + ')');
+                overlays.push('pin-s-a+00D4C8(' + mStart.lng + ',' + mStart.lat + ')');
                 mapStops.slice(0, 3).forEach(function (s) {
                   overlays.push('pin-s+8a8a92(' + s.lng + ',' + s.lat + ')');
                 });
-                overlays.push('pin-s-b+ff5d5d(' + d.approxEnd.lng + ',' + d.approxEnd.lat + ')');
+                overlays.push('pin-s-b+ff5d5d(' + mEnd.lng + ',' + mEnd.lat + ')');
+                // Light map on a phone set to light mode (2026-10-12).
+                var mapStyle = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light-v11' : 'dark-v11';
                 var img = document.createElement('img');
-                img.src = 'https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/'
-                  + overlays.join(',') + '/auto/640x280@2x?padding=40&access_token=' + MB;
+                // A wide laptop shows the map beside the timeline: a squarer
+                // image so cropping to the timeline's height keeps the route.
+                var mapSize = window.innerWidth >= 1200 ? '560x480' : '640x280';
+                img.src = 'https://api.mapbox.com/styles/v1/mapbox/' + mapStyle + '/static/'
+                  + overlays.join(',') + '/auto/' + mapSize + '@2x?padding=40&access_token=' + MB;
                 img.alt = 'Route map';
                 img.loading = 'lazy';
-                img.style.cssText = 'width:100%;border-radius:14px;margin-top:14px;border:1px solid rgba(255,255,255,0.08);';
                 img.onerror = function () { img.remove(); };
-                var card = document.getElementById('rideCard');
+                // Its own slot under the cards now (styled by #mapHost img).
+                var card = document.getElementById('mapHost') || document.getElementById('rideCard');
                 if (card) card.appendChild(img);
               })();
             }
-            // One-liner matching trips.html's POLICY_DETAILS exactly — terms
-            // belong BEFORE money, not after (benchmark fix 8/26).
-            var POLICY_LINE = {
-              standard: 'Cancel 24 hours or more before departure for a full refund of the seat price',
-              free: 'Cancel 2 hours or more before departure for a full refund of the seat price',
-              moderate: 'Cancel 48 hours or more before departure for a full refund of the seat price',
-              strict: 'Cancel 7 days or more before departure for a 50% refund',
+            // Cancellation terms — before money, not after (benchmark fix
+            // 8/26). Since 2026-10-12 one short row that opens the full list
+            // (Justin: the paragraph read like a warning). The list is
+            // book.html's POLICY_DETAILS word for word; keep them in step.
+            var POLICY = {
+              standard: { line: 'Full seat refund up to 24 hours before', details: [
+                'Cancel 24 hours or more before departure: full refund of the seat price',
+                'Cancel 2 to 24 hours before departure: half the seat price back',
+                'Cancel within 2 hours of departure: no refund',
+                'The booking fee is not refunded when you cancel',
+                'If the driver cancels: full refund, booking fee included',
+                'If the driver changes the departure time after you book: full refund, booking fee included, up to 2 hours before the new departure',
+              ] },
+              free: { line: 'Full refund up to 2 hours before', details: [
+                'Cancel 2 hours or more before departure: full refund',
+                'Cancel within 2 hours of departure: no refund',
+              ] },
+              moderate: { line: 'Full refund up to 48 hours before', details: [
+                'Cancel 48 hours or more before departure: full refund',
+                'Cancel 2 to 48 hours before departure: half back',
+                'Cancel within 2 hours of departure: no refund',
+              ] },
+              strict: { line: 'Half back up to 7 days before', details: [
+                'Cancel 7 days or more before departure: half back',
+                'Cancel within 7 days of departure: no refund',
+              ] },
             };
-            if (POLICY_LINE[d.cancellationPolicy]) {
-              var pl = document.getElementById('policyLine');
-              pl.textContent = POLICY_LINE[d.cancellationPolicy];
-              pl.style.display = 'block';
+            var pol = POLICY[d.cancellationPolicy];
+            if (pol) {
+              document.getElementById('policyLine').textContent = pol.line;
+              var pList = document.getElementById('policyDetail');
+              pol.details.forEach(function (t) {
+                var li = document.createElement('li');
+                li.textContent = t;
+                pList.appendChild(li);
+              });
+              var pRow = document.getElementById('policyRow');
+              pRow.addEventListener('click', function () {
+                var open = pList.hidden;
+                pList.hidden = !open;
+                pRow.setAttribute('aria-expanded', String(open));
+              });
+              document.getElementById('policyCard').style.display = 'block';
             }
             // Keep the visitor in the corridor, not just on this one ride.
             // Not gated on ?web=1 (audit 8/28): most visitors arrive from a
             // shared link and had no other path back to the marketplace.
             if (d.fromArea && d.toArea) {
               var mr = document.getElementById('moreRides');
-              mr.innerHTML = '<a href="/rides?web=1" style="color:#00D4C8;text-decoration:none;">See more rides like this</a>';
+              mr.innerHTML = '<a href="/rides?web=1" style="color:var(--link);text-decoration:none;">See more rides like this</a>';
               mr.style.display = 'block';
             }
             var seatsEl = document.querySelector('.seats');
-            if (typeof d.seatsLeft === 'number') {
+            if (onLeg && legSeats != null) {
+              // "4 seats from Los Angeles": nothing about the stretch before it.
+              seatsEl.textContent = legSeats > 0 ? legSeats + ' seat' + (legSeats === 1 ? '' : 's') + (legStop ? ' from ' + legStop.name : ' left') : 'Full';
+            } else if (typeof d.seatsLeft === 'number') {
               seatsEl.textContent = d.seatsLeft > 0 ? (d.seatsLeft + ' seat' + (d.seatsLeft === 1 ? '' : 's') + ' left') : 'Full';
+              if (openStop) {
+                var nOpen = Number(d.openFrom.seatsLeft) || 0;
+                seatsEl.textContent = nOpen + ' seat' + (nOpen === 1 ? '' : 's') + ' from ' + openStop.name;
+              }
             }
             var shareTotal = null;
-            if (d.minPrice && Number(d.minPrice) > 0) {
+            // The stretch's own seat price (min'd with the driver's leg price),
+            // else the ride's cheapest open seat.
+            var basePrice = onLeg ? legPrice : (d.minPrice && Number(d.minPrice) > 0 ? Number(d.minPrice) : null);
+            if (basePrice && basePrice > 0) {
               // Real per-metro rate from the endpoint, not a hardcoded 5% — an admin
               // override otherwise makes this page advertise BELOW the charged total.
               // bookingFeeCents (99¢ on fee-waived drivers) is part of the charged
@@ -686,7 +1189,8 @@ fbq('track','PageView');
               var bookFee = typeof d.bookingFeeCents === 'number' ? d.bookingFeeCents : 0;
               // 0256: the $2 minimum when public-ride says it applies to this ride.
               var minC = typeof d.serviceFeeMinCents === 'number' ? d.serviceFeeMinCents : 0;
-              var total = (Number(d.minPrice) + (Math.max(Math.floor(Number(d.minPrice) * 100 * bps / 10000), minC) + bookFee) / 100).toFixed(2);
+              // Whole dollars read "$42", not "$42.00" (2026-10-12).
+              var total = (basePrice + (Math.max(Math.floor(basePrice * 100 * bps / 10000), minC) + bookFee) / 100).toFixed(2).replace(/\.00$/, '');
               // "from $X" only when the bookable seats actually differ in price
               // (Justin, 2026-09-08: "if all prices are the same now, it
               // shouldn't say from $36, just $36"). Compare the same set the
@@ -697,16 +1201,134 @@ fbq('track','PageView');
               });
               var distinct = {};
               bookableSeats.forEach(function (s) { distinct[s.price] = 1; });
-              var varies = Object.keys(distinct).length > 1;
+              var varies = onLeg ? legVaries : Object.keys(distinct).length > 1;
               document.getElementById('price').textContent = (varies ? 'from $' : '$') + total;
+              document.querySelector('.footer-row').style.display = '';
               shareTotal = total;
             } else {
               document.querySelector('.footer-row').style.display = 'none';
             }
+            // TRIP TIMELINE (2026-10-12, Justin approved the before/after):
+            // pickup and its time, each stop with its estimated time, the
+            // estimated drop-off (public-ride arriveEta). A stretch link
+            // starts at its boarding stop and ends at its drop-off stop, the
+            // same rule as the header. Stop names can be driver-typed, so
+            // every string goes in as textContent. Any failure leaves the
+            // one-line "Also stops in" list as it was.
+            try {
+              var tlHost = document.getElementById('timeline');
+              var clock = function (hhmm) {
+                var h = parseInt(String(hhmm || '').slice(0, 2), 10), mm = String(hhmm || '').slice(3, 5);
+                return isNaN(h) || !/^\d\d$/.test(mm) ? '' : ((h % 12) || 12) + ':' + mm + ' ' + (h >= 12 ? 'PM' : 'AM');
+              };
+              var etaTime = function (eta) { var e = legEta({ eta: eta }); return e ? e.time : ''; };
+              var startDate = legStop ? legDate(legStop) : (d.depDate || '');
+              var tRows = [{
+                cls: 'end', est: !!legStop,
+                time: legStop ? etaTime(legStop.eta) : clock(d.depTime),
+                name: legStop ? legStop.name : (noState(d.fromArea) || 'Start'),
+                cap: legStop && legStop.eta ? 'Pickup, estimated' : 'Pickup',
+              }];
+              (d.routeStops || []).filter(function (s) {
+                return s && s.name && typeof s.pos === 'number' && (!legStop || s.pos > legStop.pos) && (!legEnd || s.pos < legEnd.pos);
+              }).forEach(function (s) { tRows.push({ cls: 'stop', time: etaTime(s.eta), name: s.name }); });
+              var endEta = legEnd ? legEnd.eta : d.arriveEta;
+              var endDay = '';
+              if (endEta) {
+                var endDate = legDate({ eta: endEta });
+                if (endDate && startDate && endDate !== startDate) {
+                  var edp = endDate.split('-').map(Number);
+                  endDay = new Date(edp[0], edp[1] - 1, edp[2]).toLocaleDateString('en-US', { weekday: 'short' });
+                }
+              }
+              tRows.push({
+                cls: 'end', est: true,
+                time: etaTime(endEta),
+                name: legEnd ? legEnd.name : (noState(d.toArea) || 'Destination'),
+                cap: 'Drop-off' + (endDay ? ' · ' + endDay : '') + (endEta ? ', estimated' : ''),
+              });
+              // Long routes fold the middle: the first 3 stops, then "Show N
+              // more stops" (only past 5 stops; ride 559 has 8).
+              var nStops = tRows.length - 2, folded = [];
+              tRows.forEach(function (row, i) {
+                var li = document.createElement('li');
+                li.className = row.cls + (row.est ? ' est' : '');
+                var t = document.createElement('span'); t.className = 't'; t.textContent = row.time || '';
+                var rail = document.createElement('span'); rail.className = 'rail';
+                var node = document.createElement('span'); node.className = 'node'; rail.appendChild(node);
+                var pl2 = document.createElement('span'); pl2.className = 'pl';
+                var nm = document.createElement('b'); nm.textContent = row.name; pl2.appendChild(nm);
+                if (row.cap) { var cp = document.createElement('span'); cp.textContent = row.cap; pl2.appendChild(cp); }
+                li.appendChild(t); li.appendChild(rail); li.appendChild(pl2);
+                if (nStops > 5 && i > 3 && i < tRows.length - 1) { li.hidden = true; folded.push(li); }
+                tlHost.appendChild(li);
+              });
+              if (folded.length) {
+                var moreLi = document.createElement('li');
+                moreLi.className = 'stop more-row';
+                moreLi.innerHTML = '<span class="t"></span><span class="rail"><span class="node"></span></span><span class="pl"></span>';
+                var moreB = document.createElement('button');
+                moreB.type = 'button'; moreB.className = 'more';
+                moreB.textContent = 'Show ' + folded.length + ' more stops';
+                moreB.addEventListener('click', function () {
+                  folded.forEach(function (li) { li.hidden = false; });
+                  moreLi.remove();
+                });
+                moreLi.querySelector('.pl').appendChild(moreB);
+                tlHost.insertBefore(moreLi, folded[0]);
+              }
+              var anyEst = tRows.some(function (r) { return r.time && (r.est || r.cls === 'stop'); });
+              document.getElementById('timelineNote').textContent = anyEst
+                ? 'Times are Pacific. Stop and drop-off times are estimates.'
+                : 'Times are Pacific.';
+              document.getElementById('tripCard').style.display = 'block';
+              document.getElementById('stops').style.display = 'none';
+              // The time now leads the timeline, so the line under the title
+              // is the day and the seats: "Wed, Oct 14 · 3 seats left".
+              var metaEl = document.getElementById('meta');
+              var flexTag = metaEl.querySelector('.tag');
+              var seatsTxt = (seatsEl && seatsEl.textContent) || '';
+              var metaParts = [rideWhen(startDate, null)];
+              // No seat count on a ride that can't be booked any more ("3 seats
+              // left" beside "This ride has already departed", bug check 10/12).
+              if (seatsTxt && seatsTxt !== 'Seats available' && d.bookable !== false) metaParts.push(seatsTxt);
+              metaEl.textContent = metaParts.filter(Boolean).join(' · ');
+              if (flexTag) metaEl.appendChild(flexTag);
+            } catch (_) { /* the one-line stop list stays */ }
+            // No driver details at all: no empty card.
+            (function () {
+              var dc = document.getElementById('driverCard');
+              var rowOn = document.getElementById('driverRow').style.display === 'flex';
+              var noteOn = document.getElementById('driverNote').style.display === 'block';
+              if (!rowOn && !noteOn) dc.style.display = 'none';
+              else if (!rowOn) document.getElementById('driverNote').style.cssText = 'display:block;';
+              // Who the driver is (photo, name, badges, preference chips) in
+              // one block, so a wide laptop can put it beside the bio/car/
+              // reviews block (.pack). A phone sees no difference.
+              if (rowOn) {
+                var drvRow = document.getElementById('driverRow');
+                var idBlock = document.createElement('div');
+                idBlock.className = 'drv-id';
+                dc.insertBefore(idBlock, drvRow);
+                idBlock.appendChild(drvRow);
+                var prefsEl = dc.querySelector(':scope > .prefs');
+                if (prefsEl) idBlock.appendChild(prefsEl);
+              }
+            })();
             // Headline follows the CTA's actual state (scan #2 — the old
             // unconditional overwrite reverted 'Book this carpool ride' and
             // sat "Grab this seat" above a Full/closed button).
-            if (d.seatsLeft === 0) {
+            if (openStop) {
+              // Once the car passes the open stop, the stop still ahead
+              // (legStop), not "Leaves Los Angeles around 11:00 PM" for good.
+              var ctaStop = legStop || openStop;
+              document.getElementById('ctaTitle').textContent = 'Seats open from ' + ctaStop.name;
+              document.getElementById('ctaTitle').style.display = '';
+              // Only the stretch they can book (Justin, 2026-10-06: "they dont
+              // need to know what happens before LA, just estimated time of
+              // departure").
+              headAboveButton(leavesLine(ctaStop));
+            } else if (d.seatsLeft === 0) {
               document.getElementById('ctaTitle').textContent = 'This ride is full';
               document.getElementById('ctaTitle').style.display = '';
               headAboveButton("Join the waitlist and we'll email you if a seat opens.");
@@ -715,13 +1337,20 @@ fbq('track','PageView');
               document.getElementById('ctaTitle').style.display = '';
               headAboveButton('Drivers post new rides every day.');
             }
-            document.title = (d.fromArea || 'Ride') + ' → ' + (d.toArea || '') + ' · Seat Sherpa';
+            document.title = legStop
+              ? legStop.name + ' → ' + legToShort + ' · Seat Sherpa'
+              : (d.fromArea || 'Ride') + ' → ' + (legEnd ? legEnd.name : (d.toArea || '')) + ' · Seat Sherpa';
             // Friendly share message (Justin, 2026-08-28): a shared link should
             // read like a pitch, not a bare URL. Consumed by the share buttons.
             try {
-              var sWhen = d.depDate ? rideWhen(d.depDate, null) : '';
+              // A stretch is shared as the stretch: its stop, its day, its
+              // price, and a link that opens on it (?board=, read below).
+              var sWhen = legStop ? rideWhen(legDate(legStop), null) : (d.depDate ? rideWhen(d.depDate, null) : '');
+              if (legStop) document.body.dataset.shareBoard = legStop.id;
+              if (legEnd) document.body.dataset.shareAlight = legEnd.id;
               document.body.dataset.shareMsg =
-                'Check out this carpool ride from ' + (d.fromArea || 'a city') + ' to ' + (d.toArea || 'its destination')
+                'Check out this carpool ride from '
+                + (legStop ? legStop.name + ' to ' + legToShort : (d.fromArea || 'a city') + ' to ' + (legEnd ? legEnd.name : (d.toArea || 'its destination')))
                 + (sWhen ? ' on ' + sWhen : '')
                 // All-in total, same figure the page advertises (scan #6) —
                 // never a lower bare seat price than the recipient will see.
@@ -775,11 +1404,22 @@ fbq('track','PageView');
       //   seatsherpa.app/ride/330
       // `ref` is the one param worth carrying — it's the referral credit.
       const shareRef = new URLSearchParams(location.search).get('ref');
-      const shortId = new URLSearchParams(location.search).get('id');
-      const url = shortId
-        ? location.origin + '/ride/' + encodeURIComponent(shortId)
-          + (shareRef ? '?ref=' + encodeURIComponent(shareRef) : '')
-        : location.origin + location.pathname + location.search;
+      // Leading digits only, so a mangled link ("227My") is never re-shared.
+      const shortIdRaw = new URLSearchParams(location.search).get('id') || '';
+      const shortId = (/^\d+/.exec(shortIdRaw) || [''])[0];
+      // Lazy, like the message: a stretch view (2026-10-06) shares a link
+      // that opens on the same stretch, /ride/442?board=la, which is also
+      // what the link preview (api/og-ride.js) renders as the stretch.
+      const shareUrl = () => {
+        if (!shortId) return location.origin + location.pathname + location.search;
+        const q = [];
+        const sb = document.body.dataset.shareBoard, sa = document.body.dataset.shareAlight;
+        if (sb && /^[a-z0-9-]{1,40}$/.test(sb)) q.push('board=' + encodeURIComponent(sb));
+        // An origin-to-stop leg shares as one too (alight without board).
+        if (sa && /^[a-z0-9-]{1,40}$/.test(sa)) q.push('alight=' + encodeURIComponent(sa));
+        if (shareRef) q.push('ref=' + encodeURIComponent(shareRef));
+        return location.origin + '/ride/' + encodeURIComponent(shortId) + (q.length ? '?' + q.join('&') : '');
+      };
       // Sharer's referral code (Justin, 2026-08-28): the pitch should carry
       // "$5 off with my code". Best-effort REST read under the shared session.
       try {
@@ -810,7 +1450,7 @@ fbq('track','PageView');
       const shareBtn = document.getElementById('shareBtn');
       const touchShare = !!navigator.share && window.matchMedia('(pointer: coarse)').matches;
       const copyShare = () => {
-        const full = text() + ' ' + url;
+        const full = text() + ' ' + shareUrl();
         (navigator.clipboard ? navigator.clipboard.writeText(full) : Promise.reject())
           .then(() => {
             shareBtn.textContent = 'Copied';
@@ -822,22 +1462,63 @@ fbq('track','PageView');
         if (touchShare) {
           // An in-app browser can expose navigator.share and still refuse it;
           // fall back to copying unless the person simply closed the sheet.
-          navigator.share({ title: text(), text: text(), url: url })
+          navigator.share({ title: text(), text: text(), url: shareUrl() })
             .catch((e) => { if (!e || e.name !== 'AbortError') copyShare(); });
           return;
         }
         copyShare();
       });
-      // The headline normally sits UNDER the button (reassurance, web mode);
-      // when the ride is gone, full or departed the headline is the news and
-      // has to come first.
-      function headAboveButton(sub) {
-        var ch = document.querySelector('.cta-head');
-        var wb2 = document.getElementById('webBook');
-        if (ch && wb2 && wb2.parentNode) { wb2.parentNode.insertBefore(ch, wb2); ch.style.marginTop = ''; }
-        var cs = document.getElementById('ctaSub');
-        if (cs && typeof sub === 'string') cs.textContent = sub;
+    })();
+
+    // ── Phone booking bar (2026-10-12) ─────────────────────────────────
+    // Price + Book pinned to the bottom of a phone screen while the booking
+    // card's own button (#webBook) is off screen; it slides away when that
+    // button scrolls into view, so the two never show at once. It copies
+    // #webBook's link and label whenever the ride fetch changes them, and
+    // only appears for a real booking link (Book this seat / Book from X),
+    // never for See current rides, a waitlist or a departed ride. Hidden on
+    // laptops by CSS, where the booking card itself stays in view.
+    (function () {
+      var wb = document.getElementById('webBook');
+      var bar = document.getElementById('bookBar');
+      if (!wb || !bar || !('IntersectionObserver' in window) || !('MutationObserver' in window)) return;
+      var btn = document.getElementById('bbBtn');
+      var bp = document.getElementById('bbPrice');
+      var bn = document.getElementById('bbNote');
+      var priceEl = document.getElementById('price');
+      var main = document.getElementById('rideCard');
+      var wbOnScreen = false;
+      function sync() {
+        var href = wb.getAttribute('href') || '';
+        var pt = priceEl ? priceEl.textContent.trim() : '';
+        // No price = nothing bookable on this stretch (every seat held): no
+        // bar, the card says why (bug check 2026-10-12).
+        var ok = wb.style.display !== 'none' && main.style.display !== 'none'
+          && /^\/book\?id=\d+/.test(href) && !/[?&]waitlist=1/.test(href) && !!pt;
+        if (ok) {
+          btn.setAttribute('href', href);
+          // "Book from Santa Nella / Los Banos" squeezed the price to nothing
+          // on a 360px phone; the header above already names the stop.
+          var label = wb.textContent.trim();
+          btn.textContent = /^Book from /.test(label) ? 'Book this seat' : label;
+          bp.textContent = pt;
+          bn.style.display = '';
+        }
+        bar.hidden = !ok;
+        bar.classList.toggle('off', wbOnScreen);
+        bar.setAttribute('aria-hidden', String(!ok || wbOnScreen));
+        if (wbOnScreen) btn.setAttribute('tabindex', '-1'); else btn.removeAttribute('tabindex');
+        document.body.classList.toggle('has-bar', ok);
       }
+      new IntersectionObserver(function (entries) {
+        wbOnScreen = entries[entries.length - 1].isIntersecting;
+        sync();
+      }).observe(wb);
+      var mo = new MutationObserver(sync);
+      mo.observe(wb, { attributes: true, childList: true, characterData: true, subtree: true });
+      if (priceEl) mo.observe(priceEl, { childList: true, characterData: true, subtree: true });
+      mo.observe(main, { attributes: true, attributeFilter: ['style'] });
+      sync();
     })();
   </script>
 <!-- ?c= campaign capture, same as the homepage (2026-09-02): scout replies
